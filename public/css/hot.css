@@ -1,0 +1,25 @@
+.hot-page {
+  padding-top: 60px;
+}
+
+.hot {
+  padding: 10px 10px 0 10px;
+}
+
+.hot .posts {
+  background: #ffe973;
+}
+
+.hot .post-action-icon:hover {
+  background: #dcdc00;
+}
+
+
+
+@media (min-width: 620px) {
+  
+  .hot {
+    width: 600px;
+    margin: 0 auto;
+  }
+}

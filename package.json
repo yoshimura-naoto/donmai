@@ -25,6 +25,7 @@
     },
     "dependencies": {
         "vue-click-outside": "^1.1.0",
-        "vue-router": "^3.4.9"
+        "vue-router": "^3.4.9",
+        "vue-textarea-autosize": "^1.1.1"
     }
 }

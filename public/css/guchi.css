@@ -1,0 +1,740 @@
+.guchi {
+  padding-top: 60px;
+  width: 100%;
+}
+
+.guchi-container {
+  /* background: pink; */
+  height: 100%;
+  padding: 10px 10px 0 10px;
+}
+
+/* トップのボタンたち */
+.guchi-top-btns {
+  display: flex;
+}
+
+.guchi-top-btns-1 {
+  flex: 1;
+  display: flex;
+  position: relative;
+  width: 100%;
+  margin-bottom: 10px;
+  color: #3e3d3d;
+}
+
+.guchi-genre-btn {
+  background: #b9b5b5;
+  width: 90px;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  border-radius: 15px;
+}
+
+.guchi-genre-btn:hover {
+  opacity: 0.7;
+  cursor: pointer;
+}
+
+.guchi-genre-list {
+  background: #afacac;
+  position: fixed;
+  top: 100px;
+  width: 200px;
+  height: calc(100% - 140px);
+  overflow: scroll;
+  list-style: none;
+  margin: 0;
+  padding: 15px;
+  border-radius: 15px;
+  display: none;
+  z-index: 1;
+}
+
+.guchi-genre-list-open {
+  display: block;
+}
+
+.guchi-genre-list li {
+  margin: 8px 0 8px 5px;
+}
+
+.guchi-genre-list li a {
+  text-decoration: none;
+  color: #3e3c3e;
+  transition: 0.3s;
+}
+
+.guchi-genre-list li a:hover {
+  background: #9e9d9d;
+  padding: 5px;
+  border-radius: 15px;
+  margin-left: -5px;
+  cursor: pointer;
+}
+
+.guchi-genre-list li .selected {
+  background: #9e9d9d;
+  padding: 5px;
+  border-radius: 15px;
+  margin-left: -5px;
+}
+
+.guchi-new {
+  background: #7cff86;
+  width: 90px;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  border-radius: 15px;
+  margin-left: 8px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.guchi-new:hover {
+  opacity: 0.7;
+}
+
+.guchi-new-form {
+  background: #7cff86;
+  padding: 8px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+.guchi-new-form .top {
+  margin-bottom: 5px;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #a0a0a0;
+}
+
+.guchi-new-form .top-title {
+  font-weight: bold;
+  font-size: 20px;
+  color: #424642;
+}
+
+.guchi-new-form-close {
+  font-size: 14px;
+  letter-spacing: -1px;
+  background: #00dc0f;
+  height: 24px;
+  line-height: 24px;
+  padding: 1px 4px;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.guchi-new-form-close:hover {
+  opacity: 0.7;
+}
+
+.guchi-new-form .bottom {
+  display: flex;
+}
+
+.guchi-new-form .image-select {
+  /* background: orange; */
+  width: 100px;
+  border: 1px solid #909090;
+}
+
+.guchi-new-form .title {
+  text-align: center;
+  font-size: 14px;
+  color: #737373;
+}
+
+.guchi-image-preview-area {
+  position: relative;
+  margin-bottom: 2px;
+}
+
+.guchi-image-preview-area .no-image {
+  position: absolute;
+  top: 30px;
+  left: 19px;
+  font-size: 12px;
+  color: #757575;
+}
+
+.guchi-new-batsu-icon {
+  position: absolute;
+  background: white;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  cursor: pointer;
+  user-select: none;
+  top: 1px;
+  left: 11px;
+}
+
+.guchi-image-preview {
+  width: 80px;
+  height: 80px;
+  background: #b9b9b9;
+  background-size: cover;
+  margin: 0 auto;
+}
+
+.guchi-new-form .image-icon {
+  width: 28px;
+  margin-left: 10px;
+}
+
+.guchi-new-form .title-input {
+  flex: 1;
+  margin-left: 10px;
+}
+
+.guchi-new-form .title-input-title {
+  font-weight: bold;
+  color: #424642;
+  margin-bottom: 3px;
+}
+
+.guchi-new-form .guchi-title-input {
+  width: calc(100% - 6px);
+  border: none;
+  font-size: 15px;
+  padding: 6px 3px;
+  border-radius: 5px;
+}
+
+.guchi-new-form .create {
+  margin-top: 45px;
+}
+
+.guchi-new-form .create-btn {
+  margin-left: auto;
+  width: 100px;
+  background: pink;
+  text-align: center;
+  padding: 5px;
+  font-size: 17px;
+  color: #424642;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.guchi-new-form .create-btn:hover {
+  background: #ffaebc;
+}
+
+.guchi-change-order {
+  display: flex;
+  height: 40px;
+}
+
+.guchi-change-order a {
+  text-decoration: none;
+  color: #5c5a5a;
+  background: #dad284;
+  padding: 3px 8px;
+  height: 24px;
+  border-radius: 12px;
+  margin-left: 5px;
+}
+
+.guchi-change-order .selected {
+  background: #fbf198;
+}
+
+/* スレッド */
+.guchi-thread {
+  background: #a1efa7;
+  color: #3e3d3d;
+  display: block;
+  display: flex;
+  justify-content: space-between;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.guchi-thread:hover {
+  opacity: 0.7;
+}
+
+.thread-left {
+  flex: 1;
+}
+
+.thread-list-icon {
+  width: 55px;
+  display: flex;
+  align-items: center;
+}
+
+.thread-left-icon-image {
+  /* background: orange; */
+  width: 50px;
+  height: 50px;
+  margin-left: 5px;
+  background-size: cover;
+}
+
+.thread-list-icon .none {
+  opacity: 0.4;
+}
+
+.thread-left-top {
+  display: flex;
+  height: 26px;
+  align-items: center;
+}
+
+.genre-icon {
+  background: #fdcfd7;
+  height: 20px;
+  line-height: 20px;
+  font-size: 12px;
+  padding: 0px 5px;
+  margin-left: 3px;
+  border-radius: 6px;
+}
+
+.thread-time {
+  margin-left: 5px;
+  font-size: 11px;
+  color: #a2a2a2;
+  height: 20px;
+  line-height: 22px;
+}
+
+.thread-comment-count {
+  margin-left: 12px;
+  font-size: 15px;
+  color: #6b6a6a;
+  height: 20px;
+}
+
+.thread-comment-count img {
+  width: 20px;
+  vertical-align: -4px;
+}
+
+.thread-title {
+  margin-left: 5px;
+  margin-bottom: 4px;
+  word-break: break-all;
+  line-break: anywhere;
+}
+
+.bookmark {
+  width: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.guchi-genre-wide {
+  display: none;
+}
+
+
+/* グチ詳細ページ */
+.thread-page-container {
+  position: relative;
+}
+
+.thread-scroll-btn {
+  background: lime;
+  width: 50px;
+  height: 50px;
+  text-align: center;
+  position: fixed;
+  margin-left: calc(100% - 70px);
+  margin-top: -36px;
+  border-radius: 8px;
+  opacity: 0.3;
+  cursor: pointer;
+}
+
+.thread-scroll-btn:hover {
+  opacity: 0.5;
+}
+
+.thread-scroll-btn img {
+  height: 26px;
+  margin-top: 12px;
+  user-select: none;
+}
+
+.thread-content {
+  color: #585858;
+}
+
+.thread-back-btn {
+  background: #fda7b6;
+  color: #656565;
+  width: 50px;
+  text-align: center;
+  padding: 2px;
+  margin-bottom: 10px;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.thread-back-btn:hover {
+  background: #ff92a5;
+}
+
+.thread-content {
+  background: #fff7b0;
+  padding: 10px;
+  border-radius: 12px;
+  margin-bottom: 10px;
+}
+
+/* スレッドタイトル */
+.thread-title-area {
+  /* background: springgreen; */
+  display: flex;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #d8d8d8;
+}
+
+.thread-title-area-icon {
+  width: 100px;
+  height: 100px;
+}
+
+.thread-title-area-icon img {
+  width: 100px;
+  height: 100px;
+}
+
+.thread-title-area-right {
+  flex: 1;
+  margin: 5px 0 0 10px;
+}
+
+.thread-title-area-title {
+  margin-bottom: 20px;
+}
+
+.thread-title {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.thread-title-area-infos {
+  display: flex;
+  justify-content: space-between;
+}
+
+.thread-title-area-comment .comment-count {
+  font-size: 14px;
+}
+
+.thread-title-area-comment .comment-count img {
+  width: 20px;
+  vertical-align: -4px;
+}
+
+.thread-title-area-time {
+  font-size: 14px;
+  height: 22px;
+}
+
+.thread-title-area-time .time {
+  margin-top: 1px;
+}
+
+/* コメント一覧 */
+.thread-comment-area {
+  background: #d0eaf5;
+  width: 80%;
+  padding: 10px 10px;
+  margin-bottom: 10px;
+  border-radius: 12px;
+  /* border-bottom: 1px solid #d8d8d8; */
+}
+
+.self-comment {
+  background: #f5d0d6;
+  margin-left: auto;
+}
+
+.thread-comment-area-top {
+  display: flex;
+  font-size: 13px;
+  margin-bottom: 10px;
+}
+
+.thread-comment-area-top .id {
+  margin-right: 15px;
+}
+
+.thread-comment-area-top .self-id {
+  margin-left: auto;
+}
+
+.thread-comment-area-rep a {
+  background: #ffc784;
+  padding: 5px 8px;
+  border-radius: 12px;
+  cursor: pointer;
+  /* transition: 0.3s; */
+}
+
+.thread-comment-area-rep a:hover {
+  opacity: 0.7;
+}
+
+.thread-comment-area-comment {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.thread-comment-area-image {
+  margin-bottom: 20px;
+}
+
+.thread-comment-area-image img {
+  display: block;
+  max-width: calc(100% - 40px);
+  margin: 0 auto;
+  margin-bottom: 10px;
+}
+
+/* .thread-comment-area-bottom {
+  display: flex;
+  justify-content: space-between;
+} */
+
+.thread-comment-area-good {
+  width: 61px;
+  margin-left: auto;
+}
+
+.thread-comment-area-good .good img {
+  width: 24px;
+  height: 24px;
+  vertical-align: -4px;
+  cursor: pointer;
+}
+
+/* コメント投稿エリア */
+.thread-post-area {
+  padding-top: 10px;
+  border-top: 1px solid #d8d8d8;
+}
+
+.thread-post-area .title {
+  font-weight: bold;
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.thread-post-area .input textarea {
+  width: calc(100% - 10px);
+  height: 100px;
+  resize: none;
+  border: none;
+  border-radius: 8px;
+  padding: 5px;
+  font-size: 18px;
+  color: #585858;
+}
+
+.thread-image-preview {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.thread-image-preview .thread-each-image {
+  width: 250px;
+}
+
+.thread-each-preview {
+  position: relative;
+  margin-right: 10px;
+}
+
+.thread-batsu-icon {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 22px;
+  height: 22px;
+  background: white;
+  border-radius: 11px;
+  cursor: pointer;
+}
+
+.thread-post-area .image-upload {
+  height: 32px;
+  margin-bottom: 10px;
+}
+
+.thread-post-area .image-upload img {
+  cursor: pointer;
+}
+
+.thread-post-area .image-upload img:hover {
+  opacity: 0.7;
+}
+
+.thread-post-area .check-btns {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.thread-post-area .check-btns .show-name {
+  margin-left: 30px;
+}
+
+.thread-post-area .check-btns .tokumei,
+.thread-post-area .check-btns .show-name {
+  background: #FF9800;
+  padding: 3px 8px;
+  border-radius: 8px;
+  opacity: 0.5;
+  cursor: pointer;
+}
+
+.thread-post-area .check-btns .selected {
+  opacity: 1;
+}
+
+.thread-post-area .check-btns img {
+  width: 20px;
+  height: 20px;
+  vertical-align: -3px;
+}
+
+.thread-post-area .post .post-btn {
+  background: #ff6f56;
+  width: 100px;
+  font-size: 20px;
+  text-align: center;
+  padding: 5px 0;
+  cursor: pointer;
+  margin: 0 auto;
+  border-radius: 8px;
+}
+
+.thread-post-area .post .post-btn:hover {
+  opacity: 0.7;
+}
+
+
+
+@media (min-width: 600px) {
+
+  .guchi {
+    width: 600px;
+    margin: 0 auto;
+  }
+
+  .thread-scroll-btn {
+    margin-left: 530px;
+  }
+}
+
+
+
+@media (min-width: 830px) {
+
+  .guchi {
+    width: 100%;
+  }
+
+  .thread-scroll-btn {
+    margin-left: 550px;
+  }
+
+  .guchi-container {
+    display: flex;
+    width: 820px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .guchi-genre-btn {
+    display: none;
+  }
+  
+  .guchi-new {
+    margin-left: 0;
+  }
+
+  .thread-box {
+    width: 600px;
+  }
+
+  .guchi-genre-wide {
+    display: block;
+    background: #bfb9b9;
+    color: #4b4b4b;
+    width: 200px;
+    height: calc(100% - 80px);
+    margin-left: 610px;
+    border-radius: 10px;
+    position: fixed;
+    overflow: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .guchi-genre-wide::-webkit-scrollbar {
+    display:none;
+  }
+
+  .guchi-genre-head {
+    background: #bfb9b9;
+    padding: 6px 10px;
+    width: 180px;
+    font-weight: bold;
+    position: fixed;
+    border-radius: 10px 10px 0 0;
+    border-bottom: 1px solid #ada7a7;
+  }
+
+  .guchi-genre-wide ul {
+    margin: 0;
+    padding: 0;
+    padding-top: 36px;
+    list-style: none;
+  }
+
+  .guchi-genre-wide ul li {
+    margin: 5px 0;
+  }
+
+  .guchi-genre-wide ul li a {
+    padding: 5px 8px;
+    margin: 12px;
+    color: #4b4b4b;
+    text-decoration: none;
+    border-radius: 15px;
+    transition: 0.3s;
+  }
+
+  .guchi-genre-wide ul li a:hover {
+    cursor: pointer;
+    background: #aba8a8;
+  }
+
+  .guchi-genre-wide ul li .selected {
+    background: #aba8a8;
+  }
+
+  .thread-content {
+    width: 580px;
+  }
+
+  .guchi-change-order a {
+    margin-left: 5px;
+    margin-right: 0;
+  }
+}
