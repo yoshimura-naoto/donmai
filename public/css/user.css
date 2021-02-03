@@ -3,6 +3,10 @@
   height: 100%;
 }
 
+.user-page-when-overlay {
+  position: relative;
+}
+
 .user-container {
   /* background: pink; */
   height: 100%;
@@ -70,7 +74,7 @@
 }
 
 .userinfo-follow-btn-followed {
-  background: #add4f3;
+  background: #beeef5;
   height: 36px;
   width: 108px;
   color: #3e3c3e;
@@ -83,7 +87,7 @@
 
 .userinfo-follow-btn-followed:hover {
   cursor: pointer;
-  background: #a6f5ff;
+  background: #add4f3;
   color: #6d6969;
 }
 
@@ -210,6 +214,11 @@
   .userinfo-data-area .each-data2,
   .userinfo-data-area .each-data3 {
     cursor: pointer;
+  }
+
+  .userinfo-data-area .each-data2:hover,
+  .userinfo-data-area .each-data3:hover {
+    opacity: 0.6;
   }
 
   .userinfo-data-area .num {

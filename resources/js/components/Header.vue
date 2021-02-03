@@ -12,7 +12,7 @@
 
       <!-- 検索フォーム -->
       <div :class="{ 'no-search': !searchOpened }" class="search search-1">
-        <input v-click-outside="searchClose" class="search-form" id="search" type="text" placeholder="検索">
+        <input v-model="keyword" @keydown.enter="search" v-click-outside="searchClose" class="search-form" id="search" type="text" placeholder="検索">
       </div>
 
       <!-- メニューたち -->
@@ -24,14 +24,19 @@
         </div>
 
         <!-- ジャンルメニュー -->
-        <div :class="{'genre-menu-display-1': $route.path == $router.resolve({ name: 'home' }).href || $route.path == $router.resolve({ name: 'home.genre' }).href}" class="header-genre-menu-2">
+        <div :class="{'genre-menu-display-1': $route.path == $router.resolve({ name: 'home' }).href || $route.path.startsWith('/genre/') }" class="header-genre-menu-2">
           <div class="menu-set-btn-genre" @click="genreMenuToggle" v-click-outside="genreMenuClose">
             ジャンル
           </div>
           <div v-if="genreOpened" class="pulldown-genre-menu">
             <ul>
+              <li>
+                <router-link :to="{ name: 'home' }" :class="{ 'selected': $route.path == '/' }">
+                  すべて
+                </router-link>
+              </li>
               <li v-for="(genre, index) in genres" :key="index">
-                <router-link :to="{ name: genre.route }" :class="{ 'selected': $route.path == $router.resolve({ name: genre.route }).href }">
+                <router-link :to="{ name: 'home.genre', params: { name: genre.route }}" :class="{ 'selected': $route.path == '/genre/' + genre.route }">
                   {{ genre.name }}
                 </router-link>
               </li>
@@ -51,8 +56,8 @@
               </router-link>
             </li>
             <li>
-              <router-link :to="{name: 'home'}">
-                <div class="menu-set-btn">
+              <router-link :to="{name: 'trend'}">
+                <div class="menu-set-btn" :class="{ 'current-2': $route.path == $router.resolve({ name: 'trend' }).href }">
                   トレンド
                 </div>
               </router-link>
@@ -72,7 +77,7 @@
               </router-link>
             </li>
             <li>
-              <router-link :to="{name: 'user'}">
+              <router-link :to="{name: 'user', params: { id: 1 }}">
                 <div class="menu-set-btn">プロフィール</div>
               </router-link>
             </li>
@@ -81,18 +86,23 @@
 
         <!-- 画面幅670px以上の時のヘッダーメニュー -->
         <div class="menu each-menu">
-          <router-link :to="{name: 'home'}" :class="{ 'current': $route.path == $router.resolve({ name: 'home' }).href || $route.path == $router.resolve({ name: 'home.genre' }).href }">
+          <router-link :to="{name: 'home'}" :class="{ 'current': $route.path == $router.resolve({ name: 'home' }).href || $route.path.startsWith('/genre/') }">
             <div class="menu-set-btn">ホーム</div>
           </router-link>
         </div>
-        <div :class="{'genre-menu-display-2': $route.path == $router.resolve({ name: 'home' }).href || $route.path == $router.resolve({ name: 'home.genre' }).href || $route.path == $router.resolve({ name: 'home.aaa' }).href}" class="header-genre-menu-wide">
+        <div :class="{'genre-menu-display-2': $route.path == $router.resolve({ name: 'home' }).href || $route.path.startsWith('/genre/') }" class="header-genre-menu-wide">
           <div class="menu-set-btn-genre-wide" @click="genreMenuToggleWide" v-click-outside="genreMenuWideClose">
             ジャンル
           </div>
           <div v-if="genreMenuWideOpened" class="pulldown-genre-menu">
             <ul>
+              <li>
+                <router-link :to="{ name: 'home' }" :class="{ 'selected': $route.path == '/' }">
+                  すべて
+                </router-link>
+              </li>
               <li v-for="(genre, index) in genres" :key="index">
-                <router-link :to="{ name: genre.route }" :class="{ 'selected': $route.path == $router.resolve({ name: genre.route }).href }">
+                <router-link :to="{ name: 'home.genre', params: { name: genre.route }}" :class="{ 'selected': $route.path == '/genre/' + genre.route }">
                   {{ genre.name }}
                 </router-link>
               </li>
@@ -100,7 +110,7 @@
           </div>
         </div>
         <div class="menu each-menu">
-          <router-link :to="{name: 'home'}">
+          <router-link :to="{name: 'trend'}" :class="{ 'current': $route.path == $router.resolve({ name: 'trend' }).href }">
             <div class="menu-set-btn">トレンド</div>
           </router-link>
         </div>
@@ -118,7 +128,7 @@
           <img :src="'/image/unko.jpg'" @click="toggle" v-click-outside="close" :class="{'clicked':opened}">
           <ul v-if="opened">
             <li>
-              <router-link :to="{name: 'user'}">
+              <router-link :to="{name: 'user', params: { id: 1 }}">
                 プロフィール
               </router-link>
             </li>
@@ -148,94 +158,91 @@ export default {
       genreMenuWideOpened: false,
       searchOpened: false,
       canSearchClose: false,
+      keyword: '',
       genres: [
         {
-          name: 'すべて',
-          route: 'home'
-        },
-        {
           name: '仕事',
-          route: 'home.genre'
+          route: 'jobs'
         },
         {
           name: '日常',
-          route: 'home.aaa'
+          route: 'life'
         },
         {
           name: '人間関係',
-          route: 'home.aaa'
+          route: 'relationships'
         },
         {
           name: 'どじ',
-          route: 'home.aaa'
+          route: 'dozi'
         },
         {
           name: '恥かいた',
-          route: 'home.aaa'
+          route: 'shame'
         },
         {
           name: '学校',
-          route: 'home.aaa'
+          route: 'school'
         },
         {
           name: '恋愛',
-          route: 'home.aaa'
+          route: 'love'
         },
         {
           name: '結婚生活',
-          route: 'home.aaa'
+          route: 'marriage'
         },
         {
           name: 'ゲーム',
-          route: 'home.aaa'
+          route: 'game'
         },
         {
           name: 'うんこうんこうんこ',
-          route: 'home.aaa'
+          route: 'unko'
         },
         {
           name: 'ちんちん',
-          route: 'home.aaa'
+          route: 'chinchin'
         },
         {
           name: 'ちんちん',
-          route: 'home.aaa'
+          route: 'chinchin'
         },
         {
           name: 'ちんちん',
-          route: 'home.aaa'
+          route: 'chinchin'
         },
         {
           name: 'ちんちん',
-          route: 'home.aaa'
+          route: 'chinchin'
         },
         {
           name: 'ちんちん',
-          route: 'home.aaa'
+          route: 'chinchin'
         },
         {
           name: 'ちんちん',
-          route: 'home.aaa'
+          route: 'chinchin'
         },
         {
           name: 'ちんちん',
-          route: 'home.aaa'
+          route: 'chinchin'
         },
         {
           name: 'ちんちん',
-          route: 'home.aaa'
+          route: 'chinchin'
         },
         {
           name: 'ちんちん',
-          route: 'home.aaa'
+          route: 'chinchin'
         },
         {
           name: 'ちんちん',
-          route: 'home.aaa'
+          route: 'chinchin'
         },
         {
           name: 'ちんちん',
-          route: 'home.aaa'
+          route: 'chinchin'
         },
       ],
     }
@@ -281,10 +288,18 @@ export default {
         return;
       }
     },
+    // 検索の処理
+    search(e) {
+      if (e.keyCode !== 13) return;
+      this.$router.push({ name: 'search.post.new', params: { word: this.keyword }})
+        .catch(() => {
+          return;
+        });
+    },
   },
   directives: {
     // 要素の外側クリックを認識するライブラリ
     ClickOutside
-  }
+  },
 }
 </script>

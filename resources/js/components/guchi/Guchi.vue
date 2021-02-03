@@ -7,7 +7,11 @@
       <div class="guchi-main">
 
         <!-- 一覧トップのボタンたち -->
-        <div v-if="$route.path !== $router.resolve({ name: 'guchi.detail' }).href" class="guchi-top-btns">
+        <!-- <div v-if="$route.path !== $router.resolve({ name: 'guchi.detail' }).href" class="guchi-top-btns"> -->
+        <div class="guchi-top-btns">
+
+          <!-- 戻るボタン -->
+          <div v-if="$route.path == $router.resolve({ name: 'guchi.detail' }).href" class="thread-back-btn" @click="$router.go(-1)">戻る</div>
 
           <!-- ジャンルボタン、新規作成ボタン -->
           <div class="guchi-top-btns-1">
@@ -15,25 +19,28 @@
             <div @click="genreMenuOpen" v-click-outside="genreMenuClose" class="guchi-genre-btn">ジャンル</div>
 
             <ul :class="{'guchi-genre-list-open': genreOpen}" class="guchi-genre-list">
+              <li>
+                <router-link :to="{ name: 'guchi.all' }" :class="{ 'selected': $route.path == '/guchi/all' || $route.path == '/guchi/all/trend' }">
+                  すべて
+                </router-link>
+              </li>
               <li v-for="(genre, index) in genres" :key="index">
-                <router-link :to="{ name: genre.route[0] }" :class="{ 'selected': $route.path == $router.resolve({ name: genre.route[0] }).href || $route.path == $router.resolve({ name: genre.route[1] }).href }">
+                <router-link :to="'/guchi/' + genre.route" :class="{ 'selected': $route.path == '/guchi/' + genre.route || $route.path == '/guchi/' + genre.route + '/trend' }">
                   {{ genre.name }}
                 </router-link>
               </li>
             </ul>
 
             <!-- スレッド新規作成ボタン -->
-            <div v-if="!createOpened" class="guchi-new" @click="openCreateForm">
+            <!-- <div v-if="!createOpened" class="guchi-new" @click="openCreateForm"> -->
+            <div v-if="!createOpened && $route.path !== $router.resolve({ name: 'guchi.detail' }).href" class="guchi-new" @click="openCreateForm">
               部屋を作る
             </div>
-            <!-- <div v-if="createOpened" class="guchi-new" @click="closeCreateForm">
-              閉じる
-            </div> -->
 
           </div>
 
           <!-- 新着順と人気順で並べ替えボタン -->
-          <div class="guchi-change-order">
+          <div v-if="$route.path !== $router.resolve({ name: 'guchi.detail' }).href" class="guchi-change-order">
             <router-link v-if="!$route.path.includes('/trend')" :to="$route.path" :class="{ 'selected': !$route.path.includes('/trend') }">
               新着
             </router-link>
@@ -115,8 +122,13 @@
         <div class="guchi-genre-head">ジャンル</div>
 
         <ul>
+          <li>
+            <router-link :to="{ name: 'guchi.all' }" :class="{ 'selected': $route.path == '/guchi/all' || $route.path == '/guchi/all/trend' }">
+              すべて
+            </router-link>
+          </li>
           <li v-for="(genre, index) in genres" :key="index">
-            <router-link :to="{ name: genre.route[0] }" :class="{ 'selected': $route.path == $router.resolve({ name: genre.route[0] }).href || $route.path == $router.resolve({ name: genre.route[1] }).href }">
+            <router-link :to="'/guchi/' + genre.route" :class="{ 'selected': $route.path == '/guchi/' + genre.route || $route.path == '/guchi/' + genre.route + '/trend' }">
               {{ genre.name }}
             </router-link>
           </li>
@@ -143,158 +155,88 @@ export default {
       genreOpen: false,
       genres: [
         {
-          name: 'すべて',
-          route: [
-            'guchi.all',
-            'guchi.all.trend',
-          ]
-        },
-        {
           name: '仕事',
-          route: [
-            'guchi.genre',
-            'guchi.genre.trend',
-            ]
+          route: 'jobs'
         },
         {
           name: '日常',
-          route: [
-            'guchi.aaa',
-            'guchi.aaa',
-            ],
+          route: 'life'
         },
         {
           name: '人間関係',
-          route: [
-            'guchi.aaa',
-            'guchi.aaa',
-            ],
+          route: 'relationships'
         },
         {
           name: 'どじ',
-          route: [
-            'guchi.aaa',
-            'guchi.aaa',
-            ],
+          route: 'dozi'
         },
         {
           name: '恥かいた',
-          route: [
-            'guchi.aaa',
-            'guchi.aaa',
-            ],
+          route: 'shame'
         },
         {
           name: '学校',
-          route: [
-            'guchi.aaa',
-            'guchi.aaa',
-            ],
+          route: 'school'
         },
         {
           name: '恋愛',
-          route: [
-            'guchi.aaa',
-            'guchi.aaa',
-            ],
+          route: 'love'
         },
         {
           name: '結婚生活',
-          route: [
-            'guchi.aaa',
-            'guchi.aaa',
-            ],
+          route: 'marriage'
         },
         {
           name: 'ゲーム',
-          route: [
-            'guchi.aaa',
-            'guchi.aaa',
-            ],
+          route: 'game'
         },
         {
           name: 'うんこうんこうんこ',
-          route: [
-            'guchi.aaa',
-            'guchi.aaa',
-            ],
+          route: 'unko'
         },
         {
           name: 'ちんちん',
-          route: [
-            'guchi.aaa',
-            'guchi.aaa',
-            ],
+          route: 'chinchin'
         },
         {
           name: 'ちんちん',
-          route: [
-            'guchi.aaa',
-            'guchi.aaa',
-            ],
+          route: 'chinchin'
         },
         {
           name: 'ちんちん',
-          route: [
-            'guchi.aaa',
-            'guchi.aaa',
-            ],
+          route: 'chinchin'
         },
         {
           name: 'ちんちん',
-          route: [
-            'guchi.aaa',
-            'guchi.aaa',
-            ],
+          route: 'chinchin'
         },
         {
           name: 'ちんちん',
-          route: [
-            'guchi.aaa',
-            'guchi.aaa',
-            ],
+          route: 'chinchin'
         },
         {
           name: 'ちんちん',
-          route: [
-            'guchi.aaa',
-            'guchi.aaa',
-            ],
+          route: 'chinchin'
         },
         {
           name: 'ちんちん',
-          route: [
-            'guchi.aaa',
-            'guchi.aaa',
-            ],
+          route: 'chinchin'
         },
         {
           name: 'ちんちん',
-          route: [
-            'guchi.aaa',
-            'guchi.aaa',
-            ],
+          route: 'chinchin'
         },
         {
           name: 'ちんちん',
-          route: [
-            'guchi.aaa',
-            'guchi.aaa',
-            ],
+          route: 'chinchin'
         },
         {
           name: 'ちんちん',
-          route: [
-            'guchi.aaa',
-            'guchi.aaa',
-            ],
+          route: 'chinchin'
         },
         {
           name: 'ちんちん',
-          route: [
-            'guchi.aaa',
-            'guchi.aaa',
-            ],
+          route: 'chinchin'
         },
       ],
     }
@@ -330,6 +272,12 @@ export default {
       console.log(this.file);
       console.log(this.url);
     },
+  },
+  beforeRouteUpdate (to, from, next) {
+    if (this.createOpened) {
+      this.closeCreateForm();
+    }
+    next();
   },
   directives: {
     ClickOutside

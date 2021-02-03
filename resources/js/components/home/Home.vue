@@ -13,8 +13,13 @@
         <!-- ジャンル一覧 -->
         <div class="genre-list">
           <ul>
+            <li>
+              <router-link :to="{ name: 'home' }" :class="{ 'selected': $route.path == '/' }">
+                すべて
+              </router-link>
+            </li>
             <li v-for="(genre, index) in genres" :key="index">
-              <router-link :to="{ name: genre.route }" :class="{ 'selected': $route.path == $router.resolve({ name: genre.route }).href }">
+              <router-link :to="'/genre/' + genre.route" :class="{ 'selected': $route.path == '/genre/' + genre.route }">
                 {{ genre.name }}
               </router-link>
             </li>
@@ -34,92 +39,88 @@ export default {
     return {
       genres: [
         {
-          name: 'すべて',
-          route: 'home'
-        },
-        {
           name: '仕事',
-          route: 'home.genre'
+          route: 'jobs'
         },
         {
           name: '日常',
-          route: 'home.aaa'
+          route: 'life'
         },
         {
           name: '人間関係',
-          route: 'home.aaa'
+          route: 'relationships'
         },
         {
           name: 'どじ',
-          route: 'home.aaa'
+          route: 'dozi'
         },
         {
           name: '恥かいた',
-          route: 'home.aaa'
+          route: 'shame'
         },
         {
           name: '学校',
-          route: 'home.aaa'
+          route: 'school'
         },
         {
           name: '恋愛',
-          route: 'home.aaa'
+          route: 'love'
         },
         {
           name: '結婚生活',
-          route: 'home.aaa'
+          route: 'marriage'
         },
         {
           name: 'ゲーム',
-          route: 'home.aaa'
+          route: 'game'
         },
         {
           name: 'うんこうんこうんこ',
-          route: 'home.aaa'
+          route: 'unko'
         },
         {
           name: 'ちんちん',
-          route: 'home.aaa'
+          route: 'chinchin'
         },
         {
           name: 'ちんちん',
-          route: 'home.aaa'
+          route: 'chinchin'
         },
         {
           name: 'ちんちん',
-          route: 'home.aaa'
+          route: 'chinchin'
         },
         {
           name: 'ちんちん',
-          route: 'home.aaa'
+          route: 'chinchin'
         },
         {
           name: 'ちんちん',
-          route: 'home.aaa'
+          route: 'chinchin'
         },
         {
           name: 'ちんちん',
-          route: 'home.aaa'
+          route: 'chinchin'
         },
         {
           name: 'ちんちん',
-          route: 'home.aaa'
+          route: 'chinchin'
         },
         {
           name: 'ちんちん',
-          route: 'home.aaa'
+          route: 'chinchin'
         },
         {
           name: 'ちんちん',
-          route: 'home.aaa'
+          route: 'chinchin'
         },
         {
           name: 'ちんちん',
-          route: 'home.aaa'
+          route: 'chinchin'
         },
         {
           name: 'ちんちん',
-          route: 'home.aaa'
+          route: 'chinchin'
         },
       ],
     }

@@ -1,65 +1,62 @@
 <template>
 
-  <div class="hot-page"> 
+  <!-- 投稿一覧 -->
+  <div class="tags-posts">
 
-    <!-- 投稿一覧 -->
-    <div class="hot">
+    <!-- 各投稿 -->
+    <div v-for="(post, index) in posts" :key="post.id" class="posts">
 
-      <!-- 各投稿 -->
-      <div v-for="(post, index) in posts" :key="post.id" class="posts">
+      <!-- ロゴ画像 -->
+      <div class="logo-area">
+        <router-link :to="{ name: 'user', params: { id: post.userId }}">
+          <img :src="post.userIcon">
+        </router-link>
+      </div>
 
-        <!-- ロゴ画像 -->
-        <div class="logo-area">
-          <router-link :to="{ name: 'user', params: { id: post.user_id } }">
-            <img :src="'../image/unko.jpg'">
+      <!-- 内容表示エリア -->
+      <div class="input-area">
+
+        <!-- ユーザー名 -->
+        <div class="user-name-post">{{ post.user }}</div>
+
+        <!-- テキスト -->
+        <div class="post-body">
+          うんちしたいな。<br>
+          シッコもしたい。<br>
+          もう我慢できない。
+        </div>
+
+        <!-- タグ -->
+        <div v-if="post.tags" class="post-tags">
+          <router-link :to="{ name: 'tags.new', params: { name: tag.replace('#', '') }}" v-for="(tag, index) in post.tags" :key="index">
+            {{ tag }}
           </router-link>
         </div>
 
-        <!-- 内容表示エリア -->
-        <div class="input-area">
-
-          <!-- ユーザー名 -->
-          <div class="user-name-post">{{ post.user }}</div>
-
-          <!-- テキスト -->
-          <div class="post-body">
-            うんちしたいな。<br>
-            シッコもしたい。<br>
-            もう我慢できない。
-          </div>
-
-          <!-- タグ -->
-          <div v-if="post.tags" class="post-tags">
-            <router-link :to="{ name: 'tags.new', params: { name: tag.replace('#', '') }}" v-for="(tag, index) in post.tags" :key="index">
-              {{ tag }}
-            </router-link>
-          </div>
-
-          <!-- 画像表示 -->
-          <div v-if="post.images.length > 0" class="post-image-view">
-            <div v-for="(image, index) in post.images" :key="index" class="each-preview" :class="{ 'one-image-pre': post.images.length == 1, 'two-image-pre': post.images.length == 2, 'three-image-pre': post.images.length == 3, 'four-image-pre': post.images.length == 4, 'yokonaga': post.images.length == 3 && index == 0 }">
-              <div @click="openImageModal(image)" class="each-image-box">
-                <div class="each-image" :style="{ backgroundImage: 'url(' + image + ')' }" :class="{ 'one-each-image': post.images.length == 1, 'two-each-image': post.images.length == 2, 'three-each-image': post.images.length == 3, 'four-each-image': post.images.length == 4, 'yokonaga-image': post.images.length == 3 && index == 0 }"></div>
-              </div>
+        <!-- 画像表示 -->
+        <div v-if="post.images.length > 0" class="post-image-view">
+          <div v-for="(image, index) in post.images" :key="index" class="each-preview" :class="{ 'one-image-pre': post.images.length == 1, 'two-image-pre': post.images.length == 2, 'three-image-pre': post.images.length == 3, 'four-image-pre': post.images.length == 4, 'yokonaga': post.images.length == 3 && index == 0 }">
+            <div @click="openImageModal(image)" class="each-image-box">
+              <div class="each-image" :style="{ backgroundImage: 'url(' + image + ')' }" :class="{ 'one-each-image': post.images.length == 1, 'two-each-image': post.images.length == 2, 'three-each-image': post.images.length == 3, 'four-each-image': post.images.length == 4, 'yokonaga-image': post.images.length == 3 && index == 0 }"></div>
             </div>
           </div>
-
-          <!-- リアクションボタン -->
-          <div class="post-btns">
-            <!-- どんまいボタン -->
-            <div class="post-donmai post-action-icon" @click="donmai(index)">
-              <img v-if="!post.donmai" :src="'../image/donmai.png'" width="30px">
-              <img v-if="post.donmai" :src="'../image/donmaied.png'" width="30px">
-              {{ post.donmai_count }}
-            </div>
-            <!-- コメントボタン -->
-            <div @click="openModalPost(index)" class="post-comment-icon post-action-icon">
-              <img :src="'../image/comment.png'">
-              {{ post.comment_count }}
-            </div>
-          </div>
-
         </div>
+
+        <!-- リアクションボタン -->
+        <div class="post-btns">
+          <!-- どんまいボタン -->
+          <div class="post-donmai post-action-icon" @click="donmai(index)">
+            <img v-if="!post.donmai" :src="'../../image/donmai.png'" width="30px">
+            <img v-if="post.donmai" :src="'../../image/donmaied.png'" width="30px">
+            {{ post.donmai_count }}
+          </div>
+          <!-- コメントボタン -->
+          <div @click="openModalPost(index)" class="post-comment-icon post-action-icon">
+            <img :src="'../../image/comment.png'">
+            {{ post.comment_count }}
+          </div>
+        </div>
+
       </div>
 
     </div>
@@ -76,7 +73,7 @@
           <!-- アイコン画像 -->
           <div class="logo-area">
             <router-link :to="{ name: 'user', params: { id: modalPostUserId }}">
-              <img :src="'../image/unko.jpg'">
+              <img :src="modalPostUserIcon">
             </router-link>
           </div>
 
@@ -125,7 +122,7 @@
             <div class="comment-post-area">
 
               <div class="comment-post-icon">
-                <img :src="'../image/unko.jpg'">
+                <img :src="'../../image/unko.jpg'">
               </div>
             
               <div class="input-3">
@@ -192,8 +189,8 @@
                   <!-- コメントへのいいね -->
                   <div class="overlay-post-good">
                     {{ comment.goodCount }}
-                    <img v-if="!comment.good" :src="'../image/good.png'" @click="commentGood(comment.id)">
-                    <img v-if="comment.good" :src="'../image/gooded.png'" @click="commentGood(comment.id)">
+                    <img v-if="!comment.good" :src="'../../image/good.png'" @click="commentGood(comment.id)">
+                    <img v-if="comment.good" :src="'../../image/gooded.png'" @click="commentGood(comment.id)">
                   </div>
 
                 </div>
@@ -258,8 +255,8 @@
                           <!-- コメントへの返信へのいいね -->
                           <div class="overlay-post-good">
                             {{ reply.goodCount }}
-                            <img v-if="!reply.good" :src="'../image/good.png'" @click="replyGood(comment.id ,reply.id)">
-                            <img v-if="reply.good" :src="'../image/gooded.png'" @click="replyGood(comment.id ,reply.id)">
+                            <img v-if="!reply.good" :src="'../../image/good.png'" @click="replyGood(comment.id ,reply.id)">
+                            <img v-if="reply.good" :src="'../../image/gooded.png'" @click="replyGood(comment.id ,reply.id)">
                           </div>
 
                         </div>
@@ -361,6 +358,7 @@ export default {
       modalPostId: null,
       modalPostUser: '',
       modalPostUserId: null,
+      modalPostUserIcon: '',
       modalPostDonmai: false,
       modalPostDonmaiCount: null,
       modalPostImages: [],
@@ -371,7 +369,7 @@ export default {
           id: 1,
           userId: 2,
           user: '鈴木誠也',
-          icon: '../image/img1.jpg',
+          icon: '../../image/img1.jpg',
           day: '5日前',
           goodCount: 37,
           good: false,
@@ -385,7 +383,7 @@ export default {
               id: 2,
               userId: 3,
               user: '柳田',
-              icon: '../image/img5.jpg',
+              icon: '../../image/img5.jpg',
               day: '4日前',
               goodCount: 37,
               good: false,
@@ -394,7 +392,7 @@ export default {
               id: 3,
               userId: 4,
               user: '筒香',
-              icon: '../image/img6.jpg',
+              icon: '../../image/img6.jpg',
               day: '3日前',
               goodCount: 37,
               good: false,
@@ -403,7 +401,7 @@ export default {
               id: 4,
               userId: 5,
               user: '田中将大',
-              icon: '../image/img7.jpg',
+              icon: '../../image/img7.jpg',
               day: '2日前',
               goodCount: 37,
               good: false,
@@ -412,7 +410,7 @@ export default {
               id: 5,
               userId: 6,
               user: 'ダルビッシュ',
-              icon: '../image/img8.jpg',
+              icon: '../../image/img8.jpg',
               day: '1日前',
               goodCount: 37,
               good: false,
@@ -423,7 +421,7 @@ export default {
           id: 2,
           userId: 4,
           user: 'ジーター',
-          icon: '../image/img2.jpg',
+          icon: '../../image/img2.jpg',
           day: '4日前',
           goodCount: 37,
           good: false,
@@ -438,7 +436,7 @@ export default {
           id: 3,
           userId: 6,
           user: 'ブライアント',
-          icon: '../image/img3.jpg',
+          icon: '../../image/img3.jpg',
           day: '3日前',
           goodCount: 37,
           good: false,
@@ -452,7 +450,7 @@ export default {
               id: 2,
               userId: 3,
               user: 'カーショウ',
-              icon: '../image/img5.jpg',
+              icon: '../../image/img5.jpg',
               day: '4日前',
               goodCount: 37,
               good: false,
@@ -461,7 +459,7 @@ export default {
               id: 3,
               userId: 4,
               user: 'シャーザー',
-              icon: '../image/img6.jpg',
+              icon: '../../image/img6.jpg',
               day: '3日前',
               goodCount: 37,
               good: false,
@@ -470,7 +468,7 @@ export default {
               id: 4,
               userId: 5,
               user: 'バーランダー',
-              icon: '../image/img7.jpg',
+              icon: '../../image/img7.jpg',
               day: '2日前',
               goodCount: 37,
               good: false,
@@ -481,7 +479,7 @@ export default {
           id: 4,
           userId: 8,
           user: '松井秀樹',
-          icon: '../image/img4.jpg',
+          icon: '../../image/img4.jpg',
           day: '2日前',
           goodCount: 37,
           good: false,
@@ -501,61 +499,61 @@ export default {
       modalDonmaiUsers: [
         {
           id: 11,
-          icon: '../image/img1.jpg',
+          icon: '../../image/img1.jpg',
           name: 'ジェイコブ・デグロム',
           followed: false,
         },
         {
           id: 22,
-          icon: '../image/img2.jpg',
+          icon: '../../image/img2.jpg',
           name: 'ゲリット・コール',
           followed: false,
         },
         {
           id: 33,
-          icon: '../image/img3.jpg',
+          icon: '../../image/img3.jpg',
           name: '山本由伸',
           followed: false,
         },
         {
           id: 44,
-          icon: '../image/img4.jpg',
+          icon: '../../image/img4.jpg',
           name: '千賀滉大',
           followed: false,
         },
         {
           id: 55,
-          icon: '../image/img5.jpg',
+          icon: '../../image/img5.jpg',
           name: '菅野智之',
           followed: false,
         },
         {
           id: 66,
-          icon: '../image/img6.jpg',
+          icon: '../../image/img6.jpg',
           name: 'うんこクソ野郎',
           followed: false,
         },
         {
           id: 77,
-          icon: '../image/img6.jpg',
+          icon: '../../image/img6.jpg',
           name: 'うんこクソ野郎',
           followed: false,
         },
         {
           id: 88,
-          icon: '../image/img6.jpg',
+          icon: '../../image/img6.jpg',
           name: 'うんこクソ野郎',
           followed: false,
         },
         {
           id: 99,
-          icon: '../image/img6.jpg',
+          icon: '../../image/img6.jpg',
           name: 'うんこクソ野郎',
           followed: false,
         },
         {
           id: 1010,
-          icon: '../image/img6.jpg',
+          icon: '../../image/img6.jpg',
           name: 'うんこクソ野郎',
           followed: false,
         },
@@ -564,13 +562,15 @@ export default {
       posts: [
         {
           id: 3,
+          userIcon: '../../image/img1.jpg',
           user: 'うんこマン',
-          user_id: 31,
+          userId: 10,
           donmai: false,
           donmai_count: 10000,
-          comment_count: 9,
+          comment_count: 13,
           images: [
-            '../image/img5.jpg',
+            '../../image/img1.jpg',
+            '../../image/img2.jpg',
           ],
           tags: [
             '#ばか',
@@ -582,36 +582,39 @@ export default {
         },
         {
           id: 2,
+          userIcon: '../../image/img2.jpg',
           user: 'ハゲ野郎',
-          user_id: 32,
+          userId: 11,
           donmai: false,
           donmai_count: 9500,
           comment_count: 9,
           images: [
-            '../image/img1.jpg',
-            '../image/img6.jpg',
+            '../../image/img4.jpg',
           ],
         },
         {
           id: 4,
+          userIcon: '../../image/img3.jpg',
           user: 'でべそ野郎',
-          user_id: 33,
+          userId: 12,
           donmai: false,
           donmai_count: 8000,
-          comment_count: 9,
+          comment_count: 7,
           images: [],
         },
         {
           id: 1,
+          userIcon: '../../image/img4.jpg',
           user: 'ちんこ野郎',
-          user_id: 34,
+          userId: 13,
           donmai: false,
           donmai_count: 7400,
-          comment_count: 9,
+          comment_count: 8,
           images: [
-            '../image/img2.jpg',
-            '../image/img3.jpg',
-            '../image/img4.jpg',
+            '../../image/img5.jpg',
+            '../../image/img6.jpg',
+            '../../image/img7.jpg',
+            '../../image/img8.jpg',
           ],
         },
       ]
@@ -652,18 +655,18 @@ export default {
     // モーダルウィンドウ開閉時に背景のスクロール位置を維持
     keepScrollWhenOpen() {
       const body = document.querySelector('body');
-      const hotPage = document.querySelector('.hot-page');
+      const tagsPage = document.querySelector('.tags-page');
       this.scrollPosition = window.pageYOffset;
       body.classList.add('bodyWhenOverlay');
-      hotPage.classList.add('hot-page-when-overlay');
-      hotPage.style.top = -this.scrollPosition + 'px';
+      tagsPage.classList.add('tags-page-when-overlay');
+      tagsPage.style.top = -this.scrollPosition + 'px';
     },
     keepScrollWhenClose() {
       const body = document.querySelector('body');
-      const hotPage = document.querySelector('.hot-page');
+      const tagsPage = document.querySelector('.tags-page');
       body.classList.remove('bodyWhenOverlay');
-      hotPage.classList.remove('hot-page-when-overlay');
-      hotPage.style.top = null;
+      tagsPage.classList.remove('tags-page-when-overlay');
+      tagsPage.style.top = null;
       window.scroll(0, this.scrollPosition);
       this.scrollPosition = null;
     },
@@ -672,7 +675,8 @@ export default {
       this.keepScrollWhenOpen();
       this.modalPostId = this.posts[postIndex].id;
       this.modalPostUser = this.posts[postIndex].user;
-      this.modalPostUserId = this.posts[postIndex].user_id;
+      this.modalPostUserId = this.posts[postIndex].userId;
+      this.modalPostUserIcon = this.posts[postIndex].userIcon;
       this.modalPostDonmai = this.posts[postIndex].donmai;
       this.modalPostDonmaiCount = this.posts[postIndex].donmai_count;
       this.modalPostImages = this.posts[postIndex].images;
@@ -714,6 +718,9 @@ export default {
       img.src = image;
       const img_width = img.width;
       const img_height = img.height;
+      console.log(overlayImage);
+      console.log(img_width);
+      console.log(img_height);
       if (img_height > img_width) {
         overlayImage.classList.add('height-is-bigger');
       }

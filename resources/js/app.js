@@ -3,7 +3,6 @@ import Header from "./components/Header";
 import Home from "./components/home/Home";
 import HomeDefault from "./components/home/HomeDefault";
 import HomeGenre from "./components/home/HomeGenre";
-import HomeAAA from "./components/home/HomeAAA";
 
 import User from "./components/user/User";
 import UserPosts from "./components/user/UserPosts";
@@ -16,12 +15,21 @@ import GuchiAllTrend from "./components/guchi/GuchiAllTrend";
 import GuchiGenre from "./components/guchi/GuchiGenre";
 import GuchiGenreTrend from "./components/guchi/GuchiGenreTrend";
 import GuchiDetail from "./components/guchi/GuchiDetail";
-import GuchiAAA from "./components/guchi/GuchiAAA";
 
 import Hot from "./components/hot/Hot";
 
+import Tags from "./components/tags/Tags";
+import TagsNew from "./components/tags/TagsNew";
+import TagsPopular from "./components/tags/TagsPopular";
 
-// import { component } from 'vue/types/umd';
+import Trend from "./components/trend/Trend";
+
+import Search from "./components/search/Search";
+import SearchPostNew from "./components/search/SearchPostNew";
+import SearchPostPopular from "./components/search/SearchPostPopular";
+import SearchGuchiNew from "./components/search/SearchGuchiNew";
+import SearchGuchiPopular from "./components/search/SearchGuchiPopular";
+import SearchUser from "./components/search/SearchUser";
 
 
 /**
@@ -48,11 +56,6 @@ const router = new VueRouter({
     },
     routes: [
         {
-            path: '/hot',
-            name: 'hot',
-            component: Hot,
-        },
-        {
             path: '/',
             component: Home,
             children: [
@@ -62,20 +65,14 @@ const router = new VueRouter({
                     component: HomeDefault,
                 },
                 {
-                    path: 'jobs',
+                    path: 'genre/:name',
                     name: 'home.genre',
                     component: HomeGenre,
-                },
-                {
-                    // 仮ページ
-                    path: 'aaa',
-                    name: 'home.aaa',
-                    component: HomeAAA,
                 },
             ]
         },
         {
-            path: '/user',
+            path: '/user/:id',
             component: User,
             children: [
                 {
@@ -110,28 +107,79 @@ const router = new VueRouter({
                     component: GuchiAllTrend,
                 },
                 {
-                    path: 'jobs',
-                    name: 'guchi.genre',
-                    component: GuchiGenre,
-                },
-                {
-                    path: 'jobs/trend',
-                    name: 'guchi.genre.trend',
-                    component: GuchiGenreTrend,
-                },
-                {
-                    path: '1',
+                    path: 'room/1',
                     name: 'guchi.detail',
                     component: GuchiDetail,
                 },
                 {
-                    // 仮ページ
-                    path: 'aaa',
-                    name: 'guchi.aaa',
-                    component: GuchiAAA,
+                    path: ':name',
+                    name: 'guchi.genre',
+                    component: GuchiGenre,
+                },
+                {
+                    path: ':name/trend',
+                    name: 'guchi.genre.trend',
+                    component: GuchiGenreTrend,
                 },
             ]
         },
+        {
+            path: '/hot',
+            name: 'hot',
+            component: Hot,
+        },
+        {
+            path: '/tags/:name',
+            component: Tags,
+            children: [
+                {
+                    path: '',
+                    name: 'tags.new',
+                    component: TagsNew,
+                },
+                {
+                    path: 'popular',
+                    name: 'tags.popular',
+                    component: TagsPopular,
+                }
+            ],
+        },
+        {
+            path: '/trend',
+            name: 'trend',
+            component: Trend,
+        },
+        {
+            path: '/search/:word',
+            component: Search,
+            children: [
+                {
+                    path: 'post/new',
+                    name: 'search.post.new',
+                    component: SearchPostNew,
+                },
+                {
+                    path: 'post/popular',
+                    name: 'search.post.popular',
+                    component: SearchPostPopular,
+                },
+                {
+                    path: 'guchi/new',
+                    name: 'search.guchi.new',
+                    component: SearchGuchiNew
+                },
+                {
+                    path: 'guchi/popular',
+                    name: 'search.guchi.popular',
+                    component: SearchGuchiPopular,
+                },
+                {
+                    path: 'user/',
+                    name: 'search.user',
+                    component: SearchUser,
+                }
+            ]
+        }
     ]
 });
 

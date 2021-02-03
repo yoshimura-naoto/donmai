@@ -4,10 +4,12 @@
 
     <div class="thread-page-container">
 
-      <div class="thread-back-btn" @click="$router.go(-1)">戻る</div>
+      <!-- 戻るボタン -->
+      <!-- <div class="thread-back-btn" @click="$router.go(-1)">戻る</div> -->
 
+      <!-- 下ボタン -->
       <div class="thread-scroll-btn" @click="scrollToEnd">
-        <img :src="'../image/shita.png'">
+        <img :src="'../../image/shita.png'">
       </div>
 
       <div class="thread-content">
@@ -16,7 +18,7 @@
         <div class="thread-title-area">
 
           <div class="thread-title-area-icon">
-            <img :src="'../image/unko.jpg'">
+            <img :src="'../../image/unko.jpg'">
           </div>
 
           <div class="thread-title-area-right">
@@ -29,7 +31,7 @@
 
               <div class="thread-title-area-comment">
                 <div class="comment-count">
-                    <img :src="'../image/comment.png'">
+                    <img :src="'../../image/comment.png'">
                     {{ comments.length }}
                 </div>
               </div>
@@ -47,28 +49,32 @@
         <!-- コメント一覧 -->
         <div v-for="comment in comments" :key="comment.id" class="thread-comment-area"  :class="{ 'self-comment': comment.self }">
 
+          <!-- IDと投稿日時 -->
           <div class="thread-comment-area-top">
             <div class="id" :class="{ 'self-id': comment.self }">{{ comment.id }}:</div>
             <div class="time">{{ comment.created_at }}</div>
           </div>
 
+          <!-- コメント本文 -->
           <div class="thread-comment-area-comment">
             {{ comment.content }}
           </div>
 
+          <!-- 画像表示 -->
           <div class="thread-comment-area-image">
             <div v-for="(image, index) in comment.images" :key="index">
-              <img :src="image">
+              <img :src="image" @click="openImageModal(image)">
             </div>
           </div>
 
           <div class="thread-comment-area-bottom">
 
+            <!-- いいね -->
             <div class="thread-comment-area-good">
               <div class="good">
                 {{ comment.good_count }}
-                <img v-if="!comment.gooded" @click="goodToggle(comment.id)" :src="'../image/good.png'">
-                <img v-if="comment.gooded" @click="goodToggle(comment.id)" :src="'../image/gooded.png'">
+                <img v-if="!comment.gooded" @click="goodToggle(comment.id)" :src="'../../image/good.png'">
+                <img v-if="comment.gooded" @click="goodToggle(comment.id)" :src="'../../image/gooded.png'">
               </div>
             </div>
 
@@ -81,41 +87,56 @@
 
           <div class="title">投稿する</div>
 
+          <!-- コメント入力欄 -->
           <div class="input">
             <textarea></textarea>
           </div>
 
+          <!-- 画像のプレビュー -->
           <div class="thread-image-preview">
             <div v-for="(url, index) in urls" :key="index" class="thread-each-preview">
-              <img class="thread-batsu-icon" :src="'../image/batsu.png'" @click="deletePreview(url, index)">
+              <img class="thread-batsu-icon" :src="'../../image/batsu.png'" @click="deletePreview(url, index)">
               <img class="thread-each-image" :src="url">
             </div>
           </div>
 
+          <!-- 画像アップロード -->
           <div class="image-upload">
             <label for="comment-photo">
-              <img :src="'../image/image.png'">
+              <img :src="'../../image/image.png'">
               <input type="file" @change="uploadFile" ref="threadPreview" id="comment-photo" accept="image/*" style="display:none;" multiple>
             </label>
           </div>
 
+          <!-- 匿名か名前公開するか選択 -->
           <div class="check-btns">
             <div class="tokumei" :class="{ 'selected': postStyle == 'anonymous' }" @click="anonymous">
-              <img :src="'../image/check.png'">
+              <img :src="'../../image/check.png'">
               匿名で投稿
             </div>
             <div class="show-name" :class="{ 'selected': postStyle == 'showName' }" @click="showName">
-              <img :src="'../image/check.png'">
+              <img :src="'../../image/check.png'">
               名前とアイコンを表示
             </div>
           </div>
 
+          <!-- 投稿ボタン -->
           <div class="post">
             <div class="post-btn">投稿</div>
           </div>
 
         </div>
 
+      </div>
+
+    </div>
+
+
+    <!-- 画像モーダル -->
+    <div v-show="modalImageShow" @click.self="closeImageModal" class="overlay-image">
+
+      <div class="overlay-image-box">
+        <img :src="modalImage" class="overlay-image-image">
       </div>
 
     </div>
@@ -129,6 +150,9 @@
 export default {
   data() {
     return {
+      // モーダル
+      modalImageShow: false,
+      modalImage: '',
       postStyle: 'anonymous',
       comments: [
         {
@@ -154,8 +178,8 @@ export default {
           created_at: '2021/01/28 18:28',
           content: 'コロナになってから異様にうんこ食べたくなるんだけどわかる人おる？',
           images: [
-            '../image/img1.jpg',
-            '../image/img3.jpg',
+            '../../image/img1.jpg',
+            '../../image/img3.jpg',
           ],
           good_count: 115,
           gooded: true,
@@ -218,7 +242,7 @@ export default {
           created_at: '2021/01/28 18:28',
           content: 'コロナになってから異様にうんこ食べたくなるんだけどわかる人おる？',
           images: [
-            '../image/img5.jpg',
+            '../../image/img5.jpg',
           ],
           good_count: 115,
           gooded: false,
@@ -309,12 +333,59 @@ export default {
     // ページ最下部へスクロール
     scrollToEnd() {
       const element = document.documentElement;
-      const bottom = element.scrollHeight - element.clientHeight - 319;
+      // const bottom = element.scrollHeight - element.clientHeight - 319;
+      const bottom = element.scrollHeight - element.clientHeight;
       window.scroll(0, bottom);
+    },
+    // モーダルウィンドウ開閉時に背景のスクロール位置を維持
+    keepScrollWhenOpen() {
+      const body = document.querySelector('body');
+      const guchiMain = document.querySelector('.guchi-main');
+      this.scrollPosition = window.pageYOffset;
+      body.classList.add('bodyWhenOverlay');
+      guchiMain.classList.add('guchi-main-when-overlay');
+      guchiMain.style.top = -this.scrollPosition + 'px';
+    },
+    keepScrollWhenClose() {
+      const body = document.querySelector('body');
+      const searchPage = document.querySelector('.guchi-main');
+      body.classList.remove('bodyWhenOverlay');
+      searchPage.classList.remove('guchi-main-when-overlay');
+      searchPage.style.top = null;
+      window.scroll(0, this.scrollPosition);
+      this.scrollPosition = null;
+    },
+    // 画像のモーダルウィンドウの開閉
+    openImageModal(image) {
+      this.keepScrollWhenOpen();
+      this.modalImageShow = true;
+      this.modalImage = image;
+      const overlayImage = document.querySelector('.overlay-image-image');
+      const img = new Image();
+      img.src = image;
+      const img_width = img.width;
+      const img_height = img.height;
+      if (img_height > img_width) {
+        overlayImage.classList.add('height-is-bigger');
+      }
+    },
+    closeImageModal() {      
+      this.keepScrollWhenClose();
+      const overlayImage = document.querySelector('.overlay-image-image');
+      overlayImage.classList.remove('height-is-bigger');
+      this.modalImageShow = false;
+      this.modalImage = '';
     },
   },
   mounted() {
     this.scrollToEnd();
+  },
+  beforeRouteLeave (to, from, next) {
+    if (this.modalImageShow) {
+      this.keepScrollWhenClose();
+      this.modalImageShow = false;
+    }
+    next();
   },
 }
 </script>

@@ -9,6 +9,10 @@
   padding: 10px 10px 0 10px;
 }
 
+.guchi-main-when-overlay {
+  position: relative;
+}
+
 /* トップのボタンたち */
 .guchi-top-btns {
   display: flex;
@@ -91,6 +95,7 @@
   margin-left: 8px;
   cursor: pointer;
   user-select: none;
+  color: #6f6f6f;
 }
 
 .guchi-new:hover {
@@ -126,6 +131,7 @@
   padding: 1px 4px;
   border-radius: 12px;
   cursor: pointer;
+  color: #6b6b6b;
 }
 
 .guchi-new-form-close:hover {
@@ -373,10 +379,12 @@
 .thread-back-btn {
   background: #fda7b6;
   color: #656565;
-  width: 50px;
+  width: 72px;
+  font-size: 18px;
   text-align: center;
   padding: 2px;
   margin-bottom: 10px;
+  margin-right: 10px;
   border-radius: 20px;
   cursor: pointer;
 }
@@ -504,6 +512,7 @@
   max-width: calc(100% - 40px);
   margin: 0 auto;
   margin-bottom: 10px;
+  cursor: pointer;
 }
 
 /* .thread-comment-area-bottom {

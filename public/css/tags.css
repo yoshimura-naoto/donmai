@@ -1,0 +1,60 @@
+.tags-page {
+  padding-top: 60px;
+}
+
+.tags-page-when-overlay {
+  position: relative;
+}
+
+.tags {
+  padding: 10px 10px 0 10px;
+}
+
+.tags-top {
+  color: #525252;
+  margin-bottom: 10px;
+}
+
+.tag-name {
+  font-size: 36px;
+  font-weight: bold;
+}
+
+.tag-posts-count {
+  margin-left: 20px;
+}
+
+.tags-btns-area {
+  display: flex;
+  margin-bottom: 10px;
+  border-top: 1px solid #989898;
+}
+
+.tags-btn {
+  display: block;
+  width: 50%;
+  text-align: center;
+  font-size: 18px;
+  color: #676767;
+  text-decoration: none;
+  padding: 8px 0;
+  transition: 0.3s;
+}
+
+.tags-btn:hover {
+  background: #b7b7b7;
+  cursor: pointer;
+}
+
+.tags-btns-area .current {
+  background: #abaaaa;
+}
+
+
+@media (min-width: 620px) {
+  
+  .tags {
+    width: 600px;
+    margin: 0 auto;
+  }
+}

@@ -5,7 +5,7 @@
     <router-link :to="{ name: 'guchi.detail' }" v-for="thread in threads" :key="thread.id" class="guchi-thread">
 
       <div class="thread-list-icon">
-        <div v-if="!thread.icon" class="thread-left-icon-image none" :style="{ backgroundImage: 'url(../image/no-image.png)' }"></div>
+        <div v-if="!thread.icon" class="thread-left-icon-image none" :style="{ backgroundImage: 'url(../../image/no-image.png)' }"></div>
         <div v-if="thread.icon" class="thread-left-icon-image" :style="{ backgroundImage: 'url(' + thread.icon + ')' }"></div>
       </div>
 
@@ -21,7 +21,7 @@
       </div>
 
       <div class="bookmark">
-        <img :src="'../image/bookmark.png'">
+        <img :src="'../../image/bookmark.png'">
       </div>
 
     </router-link>
