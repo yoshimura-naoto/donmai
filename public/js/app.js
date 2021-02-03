@@ -1946,9 +1946,6893 @@ module.exports = {
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ExampleComponent.vue?vue&type=script&lang=js&":
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Header.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Header.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue_click_outside__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-click-outside */ "./node_modules/vue-click-outside/index.js");
+/* harmony import */ var vue_click_outside__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_click_outside__WEBPACK_IMPORTED_MODULE_0__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      opened: false,
+      genreOpened: false,
+      genreMenuWideOpened: false,
+      searchOpened: false,
+      canSearchClose: false,
+      keyword: '',
+      genres: [{
+        name: '仕事',
+        route: 'jobs'
+      }, {
+        name: '日常',
+        route: 'life'
+      }, {
+        name: '人間関係',
+        route: 'relationships'
+      }, {
+        name: 'どじ',
+        route: 'dozi'
+      }, {
+        name: '恥かいた',
+        route: 'shame'
+      }, {
+        name: '学校',
+        route: 'school'
+      }, {
+        name: '恋愛',
+        route: 'love'
+      }, {
+        name: '結婚生活',
+        route: 'marriage'
+      }, {
+        name: 'ゲーム',
+        route: 'game'
+      }, {
+        name: 'うんこうんこうんこ',
+        route: 'unko'
+      }, {
+        name: 'ちんちん',
+        route: 'chinchin'
+      }, {
+        name: 'ちんちん',
+        route: 'chinchin'
+      }, {
+        name: 'ちんちん',
+        route: 'chinchin'
+      }, {
+        name: 'ちんちん',
+        route: 'chinchin'
+      }, {
+        name: 'ちんちん',
+        route: 'chinchin'
+      }, {
+        name: 'ちんちん',
+        route: 'chinchin'
+      }, {
+        name: 'ちんちん',
+        route: 'chinchin'
+      }, {
+        name: 'ちんちん',
+        route: 'chinchin'
+      }, {
+        name: 'ちんちん',
+        route: 'chinchin'
+      }, {
+        name: 'ちんちん',
+        route: 'chinchin'
+      }, {
+        name: 'ちんちん',
+        route: 'chinchin'
+      }]
+    };
+  },
+  methods: {
+    // プロフィールメニューの開閉
+    toggle: function toggle(opened) {
+      this.opened = !this.opened;
+    },
+    close: function close() {
+      this.opened = false;
+    },
+    // ジャンルメニューの開閉
+    genreMenuToggle: function genreMenuToggle() {
+      this.genreOpened = !this.genreOpened;
+    },
+    genreMenuClose: function genreMenuClose() {
+      this.genreOpened = false;
+    },
+    // 画面幅が630px以上1000px未満の時のジャンルメニューの開閉
+    genreMenuToggleWide: function genreMenuToggleWide() {
+      this.genreMenuWideOpened = !this.genreMenuWideOpened;
+    },
+    genreMenuWideClose: function genreMenuWideClose() {
+      this.genreMenuWideOpened = false;
+    },
+    // 検索フォームの表示と非表示切り替え
+    searchOpen: function searchOpen() {
+      if (!this.searchOpened && !this.canSearchClose) {
+        this.searchOpened = true;
+        document.getElementById('search').focus(); // console.log(document.getElementById('search'));
+      }
+    },
+    searchClose: function searchClose() {
+      if (this.searchOpened && this.canSearchClose) {
+        this.searchOpened = false;
+        this.canSearchClose = false;
+      } else if (this.searchOpened && !this.canSearchOpen) {
+        this.searchOpened = true;
+        this.canSearchClose = true;
+      } else {
+        return;
+      }
+    },
+    // 検索の処理
+    search: function search(e) {
+      if (e.keyCode !== 13) return;
+      this.$router.push({
+        name: 'search.post.new',
+        params: {
+          word: this.keyword
+        }
+      })["catch"](function () {
+        return;
+      });
+    }
+  },
+  directives: {
+    // 要素の外側クリックを認識するライブラリ
+    ClickOutside: vue_click_outside__WEBPACK_IMPORTED_MODULE_0___default.a
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/guchi/Guchi.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/guchi/Guchi.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue_click_outside__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-click-outside */ "./node_modules/vue-click-outside/index.js");
+/* harmony import */ var vue_click_outside__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_click_outside__WEBPACK_IMPORTED_MODULE_0__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      file: null,
+      url: null,
+      createOpened: false,
+      genreOpen: false,
+      genres: [{
+        name: '仕事',
+        route: 'jobs'
+      }, {
+        name: '日常',
+        route: 'life'
+      }, {
+        name: '人間関係',
+        route: 'relationships'
+      }, {
+        name: 'どじ',
+        route: 'dozi'
+      }, {
+        name: '恥かいた',
+        route: 'shame'
+      }, {
+        name: '学校',
+        route: 'school'
+      }, {
+        name: '恋愛',
+        route: 'love'
+      }, {
+        name: '結婚生活',
+        route: 'marriage'
+      }, {
+        name: 'ゲーム',
+        route: 'game'
+      }, {
+        name: 'うんこうんこうんこ',
+        route: 'unko'
+      }, {
+        name: 'ちんちん',
+        route: 'chinchin'
+      }, {
+        name: 'ちんちん',
+        route: 'chinchin'
+      }, {
+        name: 'ちんちん',
+        route: 'chinchin'
+      }, {
+        name: 'ちんちん',
+        route: 'chinchin'
+      }, {
+        name: 'ちんちん',
+        route: 'chinchin'
+      }, {
+        name: 'ちんちん',
+        route: 'chinchin'
+      }, {
+        name: 'ちんちん',
+        route: 'chinchin'
+      }, {
+        name: 'ちんちん',
+        route: 'chinchin'
+      }, {
+        name: 'ちんちん',
+        route: 'chinchin'
+      }, {
+        name: 'ちんちん',
+        route: 'chinchin'
+      }, {
+        name: 'ちんちん',
+        route: 'chinchin'
+      }]
+    };
+  },
+  methods: {
+    // ジャンルメーニューの開閉
+    genreMenuOpen: function genreMenuOpen() {
+      this.genreOpen = true;
+    },
+    genreMenuClose: function genreMenuClose() {
+      this.genreOpen = false;
+    },
+    // 部屋作成フォームの表示と非表示
+    openCreateForm: function openCreateForm() {
+      this.createOpened = true;
+    },
+    closeCreateForm: function closeCreateForm() {
+      this.createOpened = false;
+    },
+    // 画像アップロードのプレビュー
+    uploadFile: function uploadFile() {
+      this.file = this.$refs.preview.files[0];
+      this.url = URL.createObjectURL(this.file);
+      this.$refs.preview.value = '';
+      console.log(this.file);
+      console.log(this.url);
+    },
+    // 画像プレビューの削除
+    deletePreview: function deletePreview() {
+      URL.revokeObjectURL(this.url);
+      this.url = '';
+      this.file = '';
+      console.log(this.file);
+      console.log(this.url);
+    }
+  },
+  beforeRouteUpdate: function beforeRouteUpdate(to, from, next) {
+    if (this.createOpened) {
+      this.closeCreateForm();
+    }
+
+    next();
+  },
+  directives: {
+    ClickOutside: vue_click_outside__WEBPACK_IMPORTED_MODULE_0___default.a
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/guchi/GuchiAll.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/guchi/GuchiAll.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue_click_outside__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-click-outside */ "./node_modules/vue-click-outside/index.js");
+/* harmony import */ var vue_click_outside__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_click_outside__WEBPACK_IMPORTED_MODULE_0__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      threads: [{
+        id: 1,
+        genre: '結婚生活',
+        created_at: '2021/1/27 19:07',
+        comment_count: 4698,
+        title: '嫁が怖すぎる件。。。',
+        icon: '../image/img3.jpg'
+      }, {
+        id: 2,
+        genre: '恋愛',
+        created_at: '2021/1/27 19:07',
+        comment_count: 4698,
+        title: '彼女ってどうやったらできるんだろ？'
+      }, {
+        id: 3,
+        genre: '仕事',
+        created_at: '2021/1/27 19:07',
+        comment_count: 4698,
+        title: '上司がうざすぎる！'
+      }, {
+        id: 4,
+        genre: 'ゲーム',
+        created_at: '2021/1/27 19:07',
+        comment_count: 4698,
+        title: 'APEX全然勝てないんだが。。APEX全然勝てないんだが。。APEX全然勝てないんだが。。APEX全然勝てないんだが。。'
+      }, {
+        id: 5,
+        genre: '人間関係',
+        created_at: '2021/1/27 19:07',
+        comment_count: 4698,
+        title: '親友の悪口言い合おうぜ！',
+        icon: '../image/img5.jpg'
+      }, {
+        id: 6,
+        genre: '学校',
+        created_at: '2021/1/27 19:07',
+        comment_count: 4698,
+        title: '夏休みの宿題多過ぎない？？'
+      }, {
+        id: 7,
+        genre: '結婚生活',
+        created_at: '2021/1/27 19:07',
+        comment_count: 4698,
+        title: '嫁が怖すぎる件。。。'
+      }, {
+        id: 8,
+        genre: '恋愛',
+        created_at: '2021/1/27 19:07',
+        comment_count: 4698,
+        title: '彼女ってどうやったらできるんだろ？'
+      }, {
+        id: 9,
+        genre: '仕事',
+        created_at: '2021/1/27 19:07',
+        comment_count: 4698,
+        title: '上司がうざすぎる！',
+        icon: '../image/img7.jpg'
+      }, {
+        id: 10,
+        genre: 'ゲーム',
+        created_at: '2021/1/27 19:07',
+        comment_count: 4698,
+        title: 'APEX全然勝てないんだが。。'
+      }, {
+        id: 11,
+        genre: '人間関係',
+        created_at: '2021/1/27 19:07',
+        comment_count: 4698,
+        title: '親友の悪口言い合おうぜ！'
+      }, {
+        id: 12,
+        genre: '学校',
+        created_at: '2021/1/27 19:07',
+        comment_count: 4698,
+        title: '夏休みの宿題多過ぎない？？'
+      }]
+    };
+  },
+  methods: {},
+  directives: {
+    ClickOutside: vue_click_outside__WEBPACK_IMPORTED_MODULE_0___default.a
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/guchi/GuchiAllTrend.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/guchi/GuchiAllTrend.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue_click_outside__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-click-outside */ "./node_modules/vue-click-outside/index.js");
+/* harmony import */ var vue_click_outside__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_click_outside__WEBPACK_IMPORTED_MODULE_0__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      threads: [{
+        id: 4,
+        genre: 'ゲーム',
+        created_at: '2021/1/27 19:07',
+        comment_count: 12000,
+        title: 'APEX全然勝てないんだが。。APEX全然勝てないんだが。。APEX全然勝てないんだが。。APEX全然勝てないんだが。。'
+      }, {
+        id: 5,
+        genre: '人間関係',
+        created_at: '2021/1/27 19:07',
+        comment_count: 11000,
+        title: '親友の悪口言い合おうぜ！'
+      }, {
+        id: 6,
+        genre: '学校',
+        created_at: '2021/1/27 19:07',
+        comment_count: 10000,
+        title: '夏休みの宿題多過ぎない？？'
+      }, {
+        id: 7,
+        genre: '結婚生活',
+        created_at: '2021/1/27 19:07',
+        comment_count: 9000,
+        title: '嫁が怖すぎる件。。。'
+      }, {
+        id: 8,
+        genre: '恋愛',
+        created_at: '2021/1/27 19:07',
+        comment_count: 8000,
+        title: '彼女ってどうやったらできるんだろ？'
+      }, {
+        id: 9,
+        genre: '仕事',
+        created_at: '2021/1/27 19:07',
+        comment_count: 7000,
+        title: '上司がうざすぎる！'
+      }, {
+        id: 10,
+        genre: 'ゲーム',
+        created_at: '2021/1/27 19:07',
+        comment_count: 6000,
+        title: 'APEX全然勝てないんだが。。'
+      }, {
+        id: 11,
+        genre: '人間関係',
+        created_at: '2021/1/27 19:07',
+        comment_count: 5000,
+        title: '親友の悪口言い合おうぜ！'
+      }, {
+        id: 12,
+        genre: '学校',
+        created_at: '2021/1/27 19:07',
+        comment_count: 4000,
+        title: '夏休みの宿題多過ぎない？？'
+      }, {
+        id: 1,
+        genre: '結婚生活',
+        created_at: '2021/1/27 19:07',
+        comment_count: 3000,
+        title: '嫁が怖すぎる件。。。'
+      }, {
+        id: 2,
+        genre: '恋愛',
+        created_at: '2021/1/27 19:07',
+        comment_count: 2000,
+        title: '彼女ってどうやったらできるんだろ？'
+      }, {
+        id: 3,
+        genre: '仕事',
+        created_at: '2021/1/27 19:07',
+        comment_count: 1000,
+        title: '上司がうざすぎる！'
+      }]
+    };
+  },
+  methods: {},
+  directives: {
+    ClickOutside: vue_click_outside__WEBPACK_IMPORTED_MODULE_0___default.a
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/guchi/GuchiDetail.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/guchi/GuchiDetail.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      // モーダル
+      modalImageShow: false,
+      modalImage: '',
+      postStyle: 'anonymous',
+      comments: [{
+        id: 1,
+        created_at: '2021/01/28 18:28',
+        content: 'コロナになってから異様にうんこ食べたくなるんだけどわかる人おる？',
+        images: [],
+        good_count: 115,
+        gooded: false,
+        self: false
+      }, {
+        id: 2,
+        created_at: '2021/01/28 18:28',
+        content: 'コロナになってから異様にうんこ食べたくなるんだけどわかる人おる？',
+        images: [],
+        good_count: 115,
+        gooded: false,
+        self: true
+      }, {
+        id: 3,
+        created_at: '2021/01/28 18:28',
+        content: 'コロナになってから異様にうんこ食べたくなるんだけどわかる人おる？',
+        images: ['../../image/img1.jpg', '../../image/img3.jpg'],
+        good_count: 115,
+        gooded: true,
+        self: false
+      }, {
+        id: 4,
+        created_at: '2021/01/28 18:28',
+        content: 'コロナになってから異様にうんこ食べたくなるんだけどわかる人おる？',
+        images: [],
+        good_count: 115,
+        gooded: false,
+        self: false
+      }, {
+        id: 5,
+        created_at: '2021/01/28 18:28',
+        content: 'コロナになってから異様にうんこ食べたくなるんだけどわかる人おる？',
+        images: [],
+        good_count: 115,
+        gooded: false,
+        self: false
+      }, {
+        id: 6,
+        created_at: '2021/01/28 18:28',
+        content: 'コロナになってから異様にうんこ食べたくなるんだけどわかる人おる？',
+        images: [],
+        good_count: 115,
+        gooded: false,
+        self: true
+      }, {
+        id: 7,
+        created_at: '2021/01/28 18:28',
+        content: 'コロナになってから異様にうんこ食べたくなるんだけどわかる人おる？',
+        images: [],
+        good_count: 115,
+        gooded: false,
+        self: false
+      }, {
+        id: 8,
+        created_at: '2021/01/28 18:28',
+        content: 'コロナになってから異様にうんこ食べたくなるんだけどわかる人おる？',
+        images: [],
+        good_count: 115,
+        gooded: false
+      }, {
+        id: 9,
+        created_at: '2021/01/28 18:28',
+        content: 'コロナになってから異様にうんこ食べたくなるんだけどわかる人おる？',
+        images: [],
+        good_count: 115,
+        gooded: true
+      }, {
+        id: 10,
+        created_at: '2021/01/28 18:28',
+        content: 'コロナになってから異様にうんこ食べたくなるんだけどわかる人おる？',
+        images: ['../../image/img5.jpg'],
+        good_count: 115,
+        gooded: false,
+        self: true
+      }, {
+        id: 11,
+        created_at: '2021/01/28 18:28',
+        content: 'コロナになってから異様にうんこ食べたくなるんだけどわかる人おる？',
+        images: [],
+        good_count: 115,
+        gooded: false,
+        self: false
+      }, {
+        id: 12,
+        created_at: '2021/01/28 18:28',
+        content: 'コロナになってから異様にうんこ食べたくなるんだけどわかる人おる？',
+        images: [],
+        good_count: 115,
+        gooded: false,
+        self: true
+      }, {
+        id: 13,
+        created_at: '2021/01/28 18:28',
+        content: 'コロナになってから異様にうんこ食べたくなるんだけどわかる人おる？',
+        images: [],
+        good_count: 115,
+        gooded: false,
+        self: false
+      }, {
+        id: 14,
+        created_at: '2021/01/28 18:28',
+        content: 'コロナになってから異様にうんこ食べたくなるんだけどわかる人おる？',
+        images: [],
+        good_count: 115,
+        gooded: false,
+        self: false
+      }],
+      urls: [],
+      files: []
+    };
+  },
+  methods: {
+    // 匿名か名前表示か選択
+    anonymous: function anonymous() {
+      this.postStyle = 'anonymous';
+    },
+    showName: function showName() {
+      this.postStyle = 'showName';
+    },
+    // グッドの切り替え
+    goodToggle: function goodToggle(commentId) {
+      var comment = this.comments.find(function (v) {
+        return v.id == commentId;
+      });
+      comment.gooded = !comment.gooded;
+
+      if (comment.gooded == false) {
+        comment.good_count--;
+      } else {
+        comment.good_count++;
+      }
+    },
+    // 画像アップロードとプレビュー
+    uploadFile: function uploadFile() {
+      var file = this.$refs.threadPreview.files;
+
+      if (this.files.length + file.length > 3) {
+        window.alert('画像は１投稿につき３枚までです！');
+      } else {
+        var _this$files;
+
+        (_this$files = this.files).push.apply(_this$files, _toConsumableArray(file));
+
+        for (var i = 0; i < file.length; i++) {
+          this.urls.push(URL.createObjectURL(file[i]));
+        }
+
+        this.$refs.threadPreview.value = '';
+        console.log(this.files);
+        console.log(this.urls);
+      }
+    },
+    // 画像プレビューの削除
+    deletePreview: function deletePreview(url, index) {
+      this.urls.splice(index, 1);
+      this.files.splice(index, 1);
+      URL.revokeObjectURL(url);
+      console.log(this.files);
+      console.log(this.urls);
+    },
+    // ページ最下部へスクロール
+    scrollToEnd: function scrollToEnd() {
+      var element = document.documentElement; // const bottom = element.scrollHeight - element.clientHeight - 319;
+
+      var bottom = element.scrollHeight - element.clientHeight;
+      window.scroll(0, bottom);
+    },
+    // モーダルウィンドウ開閉時に背景のスクロール位置を維持
+    keepScrollWhenOpen: function keepScrollWhenOpen() {
+      var body = document.querySelector('body');
+      var guchiMain = document.querySelector('.guchi-main');
+      this.scrollPosition = window.pageYOffset;
+      body.classList.add('bodyWhenOverlay');
+      guchiMain.classList.add('guchi-main-when-overlay');
+      guchiMain.style.top = -this.scrollPosition + 'px';
+    },
+    keepScrollWhenClose: function keepScrollWhenClose() {
+      var body = document.querySelector('body');
+      var searchPage = document.querySelector('.guchi-main');
+      body.classList.remove('bodyWhenOverlay');
+      searchPage.classList.remove('guchi-main-when-overlay');
+      searchPage.style.top = null;
+      window.scroll(0, this.scrollPosition);
+      this.scrollPosition = null;
+    },
+    // 画像のモーダルウィンドウの開閉
+    openImageModal: function openImageModal(image) {
+      this.keepScrollWhenOpen();
+      this.modalImageShow = true;
+      this.modalImage = image;
+      var overlayImage = document.querySelector('.overlay-image-image');
+      var img = new Image();
+      img.src = image;
+      var img_width = img.width;
+      var img_height = img.height;
+
+      if (img_height > img_width) {
+        overlayImage.classList.add('height-is-bigger');
+      }
+    },
+    closeImageModal: function closeImageModal() {
+      this.keepScrollWhenClose();
+      var overlayImage = document.querySelector('.overlay-image-image');
+      overlayImage.classList.remove('height-is-bigger');
+      this.modalImageShow = false;
+      this.modalImage = '';
+    }
+  },
+  mounted: function mounted() {
+    this.scrollToEnd();
+  },
+  beforeRouteLeave: function beforeRouteLeave(to, from, next) {
+    if (this.modalImageShow) {
+      this.keepScrollWhenClose();
+      this.modalImageShow = false;
+    }
+
+    next();
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/guchi/GuchiGenre.vue?vue&type=script&lang=js&":
 /*!***************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/ExampleComponent.vue?vue&type=script&lang=js& ***!
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/guchi/GuchiGenre.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue_click_outside__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-click-outside */ "./node_modules/vue-click-outside/index.js");
+/* harmony import */ var vue_click_outside__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_click_outside__WEBPACK_IMPORTED_MODULE_0__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      threads: [{
+        id: 9,
+        genre: '仕事',
+        created_at: '2021/1/27 19:07',
+        comment_count: 5432,
+        title: '上司がうざすぎる！'
+      }, {
+        id: 3,
+        genre: '仕事',
+        created_at: '2021/1/27 19:07',
+        comment_count: 9876,
+        title: '転職したい。。'
+      }]
+    };
+  },
+  methods: {},
+  directives: {
+    ClickOutside: vue_click_outside__WEBPACK_IMPORTED_MODULE_0___default.a
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/guchi/GuchiGenreTrend.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/guchi/GuchiGenreTrend.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue_click_outside__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-click-outside */ "./node_modules/vue-click-outside/index.js");
+/* harmony import */ var vue_click_outside__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_click_outside__WEBPACK_IMPORTED_MODULE_0__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      threads: [{
+        id: 3,
+        genre: '仕事',
+        created_at: '2021/1/27 19:07',
+        comment_count: 9876,
+        title: '転職したい。。'
+      }, {
+        id: 9,
+        genre: '仕事',
+        created_at: '2021/1/27 19:07',
+        comment_count: 5432,
+        title: '上司がうざすぎる！'
+      }]
+    };
+  },
+  methods: {},
+  directives: {
+    ClickOutside: vue_click_outside__WEBPACK_IMPORTED_MODULE_0___default.a
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/home/Home.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/home/Home.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      genres: [{
+        name: '仕事',
+        route: 'jobs'
+      }, {
+        name: '日常',
+        route: 'life'
+      }, {
+        name: '人間関係',
+        route: 'relationships'
+      }, {
+        name: 'どじ',
+        route: 'dozi'
+      }, {
+        name: '恥かいた',
+        route: 'shame'
+      }, {
+        name: '学校',
+        route: 'school'
+      }, {
+        name: '恋愛',
+        route: 'love'
+      }, {
+        name: '結婚生活',
+        route: 'marriage'
+      }, {
+        name: 'ゲーム',
+        route: 'game'
+      }, {
+        name: 'うんこうんこうんこ',
+        route: 'unko'
+      }, {
+        name: 'ちんちん',
+        route: 'chinchin'
+      }, {
+        name: 'ちんちん',
+        route: 'chinchin'
+      }, {
+        name: 'ちんちん',
+        route: 'chinchin'
+      }, {
+        name: 'ちんちん',
+        route: 'chinchin'
+      }, {
+        name: 'ちんちん',
+        route: 'chinchin'
+      }, {
+        name: 'ちんちん',
+        route: 'chinchin'
+      }, {
+        name: 'ちんちん',
+        route: 'chinchin'
+      }, {
+        name: 'ちんちん',
+        route: 'chinchin'
+      }, {
+        name: 'ちんちん',
+        route: 'chinchin'
+      }, {
+        name: 'ちんちん',
+        route: 'chinchin'
+      }, {
+        name: 'ちんちん',
+        route: 'chinchin'
+      }]
+    };
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/home/HomeDefault.vue?vue&type=script&lang=js&":
+/*!***************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/home/HomeDefault.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      scrollPosition: null,
+      value: '',
+      urls: [],
+      files: [],
+      imageCount: 0,
+      text: '',
+      height: '20px',
+      commentInput: '',
+      commentHeight: '31px',
+      // モーダル
+      modalPostShow: false,
+      modalPostId: null,
+      modalPostUser: '',
+      modalPostUserId: null,
+      modalPostDonmai: false,
+      modalPostDonmaiCount: null,
+      modalPostImages: [],
+      modalPostTags: [],
+      modalPostCommentCount: 9,
+      modalPostComments: [{
+        id: 1,
+        userId: 2,
+        user: '鈴木誠也',
+        icon: '../image/img1.jpg',
+        day: '5日前',
+        goodCount: 37,
+        good: false,
+        replyCount: 4,
+        replyShow: false,
+        replyFormOpened: false,
+        replyInput: '',
+        replyHeight: '31px',
+        replies: [{
+          id: 2,
+          userId: 3,
+          user: '柳田',
+          icon: '../image/img5.jpg',
+          day: '4日前',
+          goodCount: 37,
+          good: false
+        }, {
+          id: 3,
+          userId: 4,
+          user: '筒香',
+          icon: '../image/img6.jpg',
+          day: '3日前',
+          goodCount: 37,
+          good: false
+        }, {
+          id: 4,
+          userId: 5,
+          user: '田中将大',
+          icon: '../image/img7.jpg',
+          day: '2日前',
+          goodCount: 37,
+          good: false
+        }, {
+          id: 5,
+          userId: 6,
+          user: 'ダルビッシュ',
+          icon: '../image/img8.jpg',
+          day: '1日前',
+          goodCount: 37,
+          good: false
+        }]
+      }, {
+        id: 2,
+        userId: 4,
+        user: 'ジーター',
+        icon: '../image/img2.jpg',
+        day: '4日前',
+        goodCount: 37,
+        good: false,
+        replyCount: 0,
+        replyShow: false,
+        replyFormOpened: false,
+        replyInput: '',
+        replyHeight: '31px',
+        replies: []
+      }, {
+        id: 3,
+        userId: 6,
+        user: 'ブライアント',
+        icon: '../image/img3.jpg',
+        day: '3日前',
+        goodCount: 37,
+        good: false,
+        replyCount: 3,
+        replyShow: false,
+        replyFormOpened: false,
+        replyInput: '',
+        replyHeight: '31px',
+        replies: [{
+          id: 2,
+          userId: 3,
+          user: 'カーショウ',
+          icon: '../image/img5.jpg',
+          day: '4日前',
+          goodCount: 37,
+          good: false
+        }, {
+          id: 3,
+          userId: 4,
+          user: 'シャーザー',
+          icon: '../image/img6.jpg',
+          day: '3日前',
+          goodCount: 37,
+          good: false
+        }, {
+          id: 4,
+          userId: 5,
+          user: 'バーランダー',
+          icon: '../image/img7.jpg',
+          day: '2日前',
+          goodCount: 37,
+          good: false
+        }]
+      }, {
+        id: 4,
+        userId: 8,
+        user: '松井秀樹',
+        icon: '../image/img4.jpg',
+        day: '2日前',
+        goodCount: 37,
+        good: false,
+        replyCount: 0,
+        replyShow: false,
+        replyFormOpened: false,
+        replyInput: '',
+        replyHeight: '31px',
+        replies: []
+      }],
+      // 画像モーダル
+      modalImageShow: false,
+      modalImage: '',
+      // どんまいモーダル
+      modalDonmaiShow: false,
+      modalDonmaiUsers: [{
+        id: 11,
+        icon: '../image/img1.jpg',
+        name: 'ジェイコブ・デグロム',
+        followed: false
+      }, {
+        id: 22,
+        icon: '../image/img2.jpg',
+        name: 'ゲリット・コール',
+        followed: false
+      }, {
+        id: 33,
+        icon: '../image/img3.jpg',
+        name: '山本由伸',
+        followed: false
+      }, {
+        id: 44,
+        icon: '../image/img4.jpg',
+        name: '千賀滉大',
+        followed: false
+      }, {
+        id: 55,
+        icon: '../image/img5.jpg',
+        name: '菅野智之',
+        followed: false
+      }, {
+        id: 66,
+        icon: '../image/img6.jpg',
+        name: 'うんこクソ野郎',
+        followed: false
+      }, {
+        id: 77,
+        icon: '../image/img6.jpg',
+        name: 'うんこクソ野郎',
+        followed: false
+      }, {
+        id: 88,
+        icon: '../image/img6.jpg',
+        name: 'うんこクソ野郎',
+        followed: false
+      }, {
+        id: 99,
+        icon: '../image/img6.jpg',
+        name: 'うんこクソ野郎',
+        followed: false
+      }, {
+        id: 1010,
+        icon: '../image/img6.jpg',
+        name: 'うんこクソ野郎',
+        followed: false
+      }],
+      // 投稿
+      posts: [{
+        id: 1,
+        user: 'なおとくん',
+        userId: 1,
+        donmai: false,
+        donmai_count: 43,
+        comment_count: 9,
+        images: ['../image/img1.jpg', '../image/img3.jpg', '../image/img5.jpg', '../image/img7.jpg'],
+        tags: ['#ばか', '#あほ', '#うんち', '#ちんちん', '#ハゲ']
+      }, {
+        id: 2,
+        user: '城之内くん',
+        userId: 2,
+        donmai: false,
+        donmai_count: 27,
+        comment_count: 11,
+        images: ['../image/img6.jpg'],
+        tags: ['#ひぐらし', '#にぱー', '#けいちゃん', '#おやしろさま']
+      }, {
+        id: 3,
+        user: 'マイケル',
+        userId: 3,
+        donmai: false,
+        donmai_count: 65,
+        comment_count: 12,
+        images: ['../image/img1.jpg', '../image/img2.jpg', '../image/tatenaga.jpg'],
+        tags: ['#天気', '#洪水']
+      }]
+    };
+  },
+  methods: {
+    // 投稿のテキストエリアの高さをフレキシブルに
+    changeHeight: function changeHeight() {
+      var _this = this;
+
+      this.height = this.$refs.area.scrollHeight + 'px';
+      this.height = 31 + 'px';
+      this.$nextTick(function () {
+        _this.height = _this.$refs.area.scrollHeight + 'px';
+      });
+    },
+    // コメント入力欄の高さをフレキシブルに
+    changeCommentHeight: function changeCommentHeight() {
+      var _this2 = this;
+
+      this.commentHeight = this.$refs.commentarea.scrollHeight + 'px';
+      this.commentHeight = 18 + 'px';
+      this.$nextTick(function () {
+        _this2.commentHeight = _this2.$refs.commentarea.scrollHeight + 'px';
+      });
+    },
+    // コメントへの返信フォームの高さをフレキシブルに変更するメソッド
+    // changeReplyHeight(i) {
+    //   this.modalPostComments[i].replyHeight = this.$refs.replyarea[i].scrollHeight + 'px';
+    //   this.modalPostComments[i].replyHeight = 18 + 'px';
+    //   this.$nextTick(() => {
+    //     this.modalPostComments[i].replyHeight = this.$refs.replyarea[i].scrollHeight + 'px';
+    //   });
+    // },
+    // 画像アップロードでプレビュー
+    uploadFile: function uploadFile() {
+      var file = this.$refs.preview.files;
+
+      if (this.files.length + file.length > 4) {
+        window.alert('画像は最大４枚までです！');
+      } else {
+        var _this$files;
+
+        (_this$files = this.files).push.apply(_this$files, _toConsumableArray(file));
+
+        for (var i = 0; i < file.length; i++) {
+          this.urls.push(URL.createObjectURL(file[i]));
+        }
+
+        this.$refs.preview.value = '';
+      }
+
+      this.imageCount = this.files.length; // console.log(this.files);
+      // console.log(this.urls);
+      // console.log(this.imageCount);
+    },
+    // 画像プレビューの削除
+    deletePreview: function deletePreview(url, index) {
+      this.urls.splice(index, 1);
+      this.files.splice(index, 1);
+      URL.revokeObjectURL(url);
+      this.imageCount = this.files.length; // console.log(this.files);
+      // console.log(this.urls);
+      // console.log(this.imageCount);
+    },
+    // どんまい機能の処理
+    donmai: function donmai(i) {
+      var post = this.posts[i];
+      post.donmai = !post.donmai;
+
+      if (post.donmai == false) {
+        post.donmai_count--;
+      } else {
+        post.donmai_count++;
+      }
+    },
+    // モーダルのどんまい機能
+    modalDonmai: function modalDonmai(i) {
+      var post = this.posts.find(function (v) {
+        return v.id == i;
+      });
+      post.donmai = !post.donmai;
+      this.modalPostDonmai = !this.modalPostDonmai;
+
+      if (!this.modalPostDonmai) {
+        post.donmai_count--;
+        this.modalPostDonmaiCount--;
+      } else {
+        post.donmai_count++;
+        this.modalPostDonmaiCount++;
+      }
+    },
+    // モーダルウィンドウ開閉時に背景のスクロール位置を維持
+    keepScrollWhenOpen: function keepScrollWhenOpen() {
+      var body = document.querySelector('body');
+      var mainHome = document.querySelector('.main-home');
+      this.scrollPosition = window.pageYOffset;
+      body.classList.add('bodyWhenOverlay');
+      mainHome.classList.add('main-home-when-overlay');
+      mainHome.style.top = -this.scrollPosition + 'px';
+    },
+    keepScrollWhenClose: function keepScrollWhenClose() {
+      var body = document.querySelector('body');
+      var mainHome = document.querySelector('.main-home');
+      body.classList.remove('bodyWhenOverlay');
+      mainHome.classList.remove('main-home-when-overlay');
+      mainHome.style.top = null;
+      window.scroll(0, this.scrollPosition);
+      this.scrollPosition = null;
+    },
+    // 投稿のモーダルウィンドウの開閉
+    openModalPost: function openModalPost(postIndex) {
+      this.keepScrollWhenOpen();
+      this.modalPostId = this.posts[postIndex].id;
+      this.modalPostUser = this.posts[postIndex].user;
+      this.modalPostUserId = this.posts[postIndex].userId;
+      this.modalPostDonmai = this.posts[postIndex].donmai;
+      this.modalPostDonmaiCount = this.posts[postIndex].donmai_count;
+      this.modalPostImages = this.posts[postIndex].images;
+      this.modalPostTags = this.posts[postIndex].tags;
+      this.modalPostCommentCount = this.posts[postIndex].comment_count;
+      this.modalPostShow = true;
+    },
+    closeModalPost: function closeModalPost() {
+      this.keepScrollWhenClose();
+      this.modalPostShow = false;
+      this.modalPostId = null;
+      this.modalPostUser = '';
+      this.modalPostUserId = null;
+      this.modalPostDonmai = false;
+      this.modalPostDonmaiCount = null;
+      this.modalPostImages = [];
+      this.modalPostTags = [];
+      this.modalPostCommentCount = null;
+      this.modalPostComments.map(function (element) {
+        element.replyShow = false;
+      });
+    },
+    // どんまいしたユーザーのモーダルウィンドウの開閉
+    openModalDonmai: function openModalDonmai() {
+      this.modalDonmaiShow = true;
+    },
+    closeModalDonmai: function closeModalDonmai() {
+      this.modalDonmaiShow = false;
+    },
+    // 画像のモーダルウィンドウの開閉
+    openImageModal: function openImageModal(image) {
+      if (!this.modalPostShow) {
+        this.keepScrollWhenOpen();
+      }
+
+      this.modalImageShow = true;
+      this.modalImage = image;
+      var overlayImage = document.querySelector('.overlay-image-image');
+      var img = new Image();
+      img.src = image;
+      var img_width = img.width;
+      var img_height = img.height; // console.log(overlayImage);
+      // console.log(img_width);
+      // console.log(img_height);
+
+      if (img_height > img_width) {
+        overlayImage.classList.add('height-is-bigger');
+      }
+    },
+    closeImageModal: function closeImageModal() {
+      if (!this.modalPostShow) {
+        this.keepScrollWhenClose();
+      }
+
+      var overlayImage = document.querySelector('.overlay-image-image');
+      overlayImage.classList.remove('height-is-bigger');
+      this.modalImageShow = false;
+      this.modalImage = '';
+    },
+    // どんまいしたユーザーのフォローとアンフォロー
+    donmaiFollowToggle: function donmaiFollowToggle(i) {
+      this.modalDonmaiUsers[i].followed = !this.modalDonmaiUsers[i].followed;
+    },
+    //コメントへの返信の表示と非表示
+    openCommentReply: function openCommentReply(i) {
+      this.modalPostComments[i].replyShow = true;
+    },
+    closeCommentReply: function closeCommentReply(i) {
+      this.modalPostComments[i].replyShow = false;
+    },
+    // コメントのいいね機能
+    commentGood: function commentGood(i) {
+      var comment = this.modalPostComments.find(function (v) {
+        return v.id == i;
+      });
+      comment.good = !comment.good;
+
+      if (!comment.good) {
+        comment.goodCount--;
+      } else {
+        comment.goodCount++;
+      }
+    },
+    // コメントの返信へのいいね機能
+    replyGood: function replyGood(comId, repId) {
+      var comment = this.modalPostComments.find(function (v) {
+        return v.id == comId;
+      });
+      var reply = comment.replies.find(function (v) {
+        return v.id == repId;
+      });
+      reply.good = !reply.good;
+
+      if (!reply.good) {
+        reply.goodCount--;
+      } else {
+        reply.goodCount++;
+      }
+    },
+    // コメントへの返信フォームの表示と非表示
+    openReplyForm: function openReplyForm(i) {
+      this.modalPostComments[i].replyFormOpened = true;
+    },
+    closeReplyForm: function closeReplyForm(i) {
+      this.modalPostComments[i].replyFormOpened = false;
+    }
+  },
+  computed: {
+    // テキストエリアの高さを計算
+    styles: function styles() {
+      return {
+        'height': this.height
+      };
+    },
+    commentStyles: function commentStyles() {
+      return {
+        'height': this.commentHeight
+      };
+    } // replyStyles(i) {
+    //   return {
+    //     'height': this.modalPostComments[i].replyHeight,
+    //   }
+    // },
+
+  },
+  watch: {
+    // テキストエリアの高さの変化を監視
+    text: function text() {
+      this.changeHeight();
+    },
+    commentInput: function commentInput() {
+      this.changeCommentHeight();
+    } // modalPostComments: {
+    //   handler: function() {
+    //     this.changeReplyHeight();
+    //   },
+    //   deep: true
+    // },
+
+  },
+  mounted: function mounted() {
+    // マウント時にもテキストエリアの高さをフレキシブルに
+    this.changeHeight();
+  },
+  beforeRouteLeave: function beforeRouteLeave(to, from, next) {
+    if (this.modalPostShow || this.modalImageShow) {
+      this.keepScrollWhenClose();
+      this.modalPostShow = false;
+      this.modalImageShow = false;
+    }
+
+    next();
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/home/HomeGenre.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/home/HomeGenre.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      scrollPosition: null,
+      commentInput: '',
+      commentHeight: '31px',
+      // モーダル
+      modalPostShow: false,
+      modalPostId: null,
+      modalPostUser: '',
+      modalPostUserId: null,
+      modalPostDonmai: false,
+      modalPostDonmaiCount: null,
+      modalPostImages: [],
+      modalPostTags: [],
+      modalPostCommentCount: 9,
+      modalPostComments: [{
+        id: 1,
+        userId: 2,
+        user: '鈴木誠也',
+        icon: '../image/img1.jpg',
+        day: '5日前',
+        goodCount: 37,
+        good: false,
+        replyCount: 4,
+        replyShow: false,
+        replyFormOpened: false,
+        replyInput: '',
+        replyHeight: '31px',
+        replies: [{
+          id: 2,
+          userId: 3,
+          user: '柳田',
+          icon: '../image/img5.jpg',
+          day: '4日前',
+          goodCount: 37,
+          good: false
+        }, {
+          id: 3,
+          userId: 4,
+          user: '筒香',
+          icon: '../image/img6.jpg',
+          day: '3日前',
+          goodCount: 37,
+          good: false
+        }, {
+          id: 4,
+          userId: 5,
+          user: '田中将大',
+          icon: '../image/img7.jpg',
+          day: '2日前',
+          goodCount: 37,
+          good: false
+        }, {
+          id: 5,
+          userId: 6,
+          user: 'ダルビッシュ',
+          icon: '../image/img8.jpg',
+          day: '1日前',
+          goodCount: 37,
+          good: false
+        }]
+      }, {
+        id: 2,
+        userId: 4,
+        user: 'ジーター',
+        icon: '../image/img2.jpg',
+        day: '4日前',
+        goodCount: 37,
+        good: false,
+        replyCount: 0,
+        replyShow: false,
+        replyFormOpened: false,
+        replyInput: '',
+        replyHeight: '31px',
+        replies: []
+      }, {
+        id: 3,
+        userId: 6,
+        user: 'ブライアント',
+        icon: '../image/img3.jpg',
+        day: '3日前',
+        goodCount: 37,
+        good: false,
+        replyCount: 3,
+        replyShow: false,
+        replyFormOpened: false,
+        replyInput: '',
+        replyHeight: '31px',
+        replies: [{
+          id: 2,
+          userId: 3,
+          user: 'カーショウ',
+          icon: '../image/img5.jpg',
+          day: '4日前',
+          goodCount: 37,
+          good: false
+        }, {
+          id: 3,
+          userId: 4,
+          user: 'シャーザー',
+          icon: '../image/img6.jpg',
+          day: '3日前',
+          goodCount: 37,
+          good: false
+        }, {
+          id: 4,
+          userId: 5,
+          user: 'バーランダー',
+          icon: '../image/img7.jpg',
+          day: '2日前',
+          goodCount: 37,
+          good: false
+        }]
+      }, {
+        id: 4,
+        userId: 8,
+        user: '松井秀樹',
+        icon: '../image/img4.jpg',
+        day: '2日前',
+        goodCount: 37,
+        good: false,
+        replyCount: 0,
+        replyShow: false,
+        replyFormOpened: false,
+        replyInput: '',
+        replyHeight: '31px',
+        replies: []
+      }],
+      // 画像モーダル
+      modalImageShow: false,
+      modalImage: '',
+      // どんまいモーダル
+      modalDonmaiShow: false,
+      modalDonmaiUsers: [{
+        id: 11,
+        icon: '../image/img1.jpg',
+        name: 'ジェイコブ・デグロム',
+        followed: false
+      }, {
+        id: 22,
+        icon: '../image/img2.jpg',
+        name: 'ゲリット・コール',
+        followed: false
+      }, {
+        id: 33,
+        icon: '../image/img3.jpg',
+        name: '山本由伸',
+        followed: false
+      }, {
+        id: 44,
+        icon: '../image/img4.jpg',
+        name: '千賀滉大',
+        followed: false
+      }, {
+        id: 55,
+        icon: '../image/img5.jpg',
+        name: '菅野智之',
+        followed: false
+      }, {
+        id: 66,
+        icon: '../image/img6.jpg',
+        name: 'うんこクソ野郎',
+        followed: false
+      }, {
+        id: 77,
+        icon: '../image/img6.jpg',
+        name: 'うんこクソ野郎',
+        followed: false
+      }, {
+        id: 88,
+        icon: '../image/img6.jpg',
+        name: 'うんこクソ野郎',
+        followed: false
+      }, {
+        id: 99,
+        icon: '../image/img6.jpg',
+        name: 'うんこクソ野郎',
+        followed: false
+      }, {
+        id: 1010,
+        icon: '../image/img6.jpg',
+        name: 'うんこクソ野郎',
+        followed: false
+      }],
+      // 投稿
+      posts: [{
+        id: 1,
+        user: 'うんこマン',
+        userId: 4,
+        donmai: false,
+        donmai_count: 15,
+        comment_count: 13,
+        images: ['../image/img1.jpg', '../image/img2.jpg'],
+        tags: ['#ばか', '#あほ', '#うんち', '#ちんちん', '#ハゲ']
+      }, {
+        id: 2,
+        user: 'ちんこ野郎',
+        userId: 5,
+        donmai: false,
+        donmai_count: 37,
+        comment_count: 21,
+        images: ['../image/img2.jpg', '../image/img3.jpg', '../image/img4.jpg']
+      } // {
+      //   id: 3,
+      //   user: 'マザーファッカー',
+      //   donmai: false,
+      // },
+      ]
+    };
+  },
+  methods: {
+    // コメント入力欄の高さをフレキシブルに
+    changeCommentHeight: function changeCommentHeight() {
+      var _this = this;
+
+      this.commentHeight = this.$refs.commentarea.scrollHeight + 'px';
+      this.commentHeight = 18 + 'px';
+      this.$nextTick(function () {
+        _this.commentHeight = _this.$refs.commentarea.scrollHeight + 'px';
+      });
+    },
+    // どんまい機能の処理
+    donmai: function donmai(index) {
+      var post = this.posts[index];
+      post.donmai = !post.donmai;
+
+      if (post.donmai == false) {
+        post.donmai_count--;
+      } else {
+        post.donmai_count++;
+      }
+    },
+    // モーダルのどんまい機能
+    modalDonmai: function modalDonmai(i) {
+      var post = this.posts.find(function (v) {
+        return v.id == i;
+      });
+      post.donmai = !post.donmai;
+      this.modalPostDonmai = !this.modalPostDonmai;
+
+      if (!this.modalPostDonmai) {
+        post.donmai_count--;
+        this.modalPostDonmaiCount--;
+      } else {
+        post.donmai_count++;
+        this.modalPostDonmaiCount++;
+      }
+    },
+    // モーダルウィンドウ開閉時に背景のスクロール位置を維持
+    keepScrollWhenOpen: function keepScrollWhenOpen() {
+      var body = document.querySelector('body');
+      var mainHome = document.querySelector('.main-home');
+      this.scrollPosition = window.pageYOffset;
+      body.classList.add('bodyWhenOverlay');
+      mainHome.classList.add('main-home-when-overlay');
+      mainHome.style.top = -this.scrollPosition + 'px';
+    },
+    keepScrollWhenClose: function keepScrollWhenClose() {
+      var body = document.querySelector('body');
+      var mainHome = document.querySelector('.main-home');
+      body.classList.remove('bodyWhenOverlay');
+      mainHome.classList.remove('main-home-when-overlay');
+      mainHome.style.top = null;
+      window.scroll(0, this.scrollPosition);
+      this.scrollPosition = null;
+    },
+    // 投稿のモーダルウィンドウの開閉
+    openModalPost: function openModalPost(postIndex) {
+      this.keepScrollWhenOpen();
+      this.modalPostId = this.posts[postIndex].id;
+      this.modalPostUser = this.posts[postIndex].user;
+      this.modalPostUserId = this.posts[postIndex].userId;
+      this.modalPostDonmai = this.posts[postIndex].donmai;
+      this.modalPostDonmaiCount = this.posts[postIndex].donmai_count;
+      this.modalPostImages = this.posts[postIndex].images;
+      this.modalPostTags = this.posts[postIndex].tags;
+      this.modalPostCommentCount = this.posts[postIndex].comment_count;
+      this.modalPostShow = true;
+    },
+    closeModalPost: function closeModalPost() {
+      this.keepScrollWhenClose();
+      this.modalPostShow = false;
+      this.modalPostId = null;
+      this.modalPostUser = '';
+      this.modalPostUserId = null;
+      this.modalPostDonmai = false;
+      this.modalPostDonmaiCount = null;
+      this.modalPostImages = [];
+      this.modalPostTags = [];
+      this.modalPostCommentCount = null;
+      this.modalPostComments.map(function (element) {
+        element.replyShow = false;
+      });
+    },
+    // どんまいしたユーザーのモーダルウィンドウの開閉
+    openModalDonmai: function openModalDonmai() {
+      this.modalDonmaiShow = true;
+    },
+    closeModalDonmai: function closeModalDonmai() {
+      this.modalDonmaiShow = false;
+    },
+    // 画像のモーダルウィンドウの開閉
+    openImageModal: function openImageModal(image) {
+      if (!this.modalPostShow) {
+        this.keepScrollWhenOpen();
+      }
+
+      this.modalImageShow = true;
+      this.modalImage = image;
+      var overlayImage = document.querySelector('.overlay-image-image');
+      var img = new Image();
+      img.src = image;
+      var img_width = img.width;
+      var img_height = img.height;
+      console.log(overlayImage);
+      console.log(img_width);
+      console.log(img_height);
+
+      if (img_height > img_width) {
+        overlayImage.classList.add('height-is-bigger');
+      }
+    },
+    closeImageModal: function closeImageModal() {
+      if (!this.modalPostShow) {
+        this.keepScrollWhenClose();
+      }
+
+      var overlayImage = document.querySelector('.overlay-image-image');
+      overlayImage.classList.remove('height-is-bigger');
+      this.modalImageShow = false;
+      this.modalImage = '';
+    },
+    // どんまいしたユーザーのフォローとアンフォロー
+    donmaiFollowToggle: function donmaiFollowToggle(i) {
+      this.modalDonmaiUsers[i].followed = !this.modalDonmaiUsers[i].followed;
+    },
+    //コメントへの返信の表示と非表示
+    openCommentReply: function openCommentReply(i) {
+      this.modalPostComments[i].replyShow = true;
+    },
+    closeCommentReply: function closeCommentReply(i) {
+      this.modalPostComments[i].replyShow = false;
+    },
+    // コメントのいいね機能
+    commentGood: function commentGood(i) {
+      var comment = this.modalPostComments.find(function (v) {
+        return v.id == i;
+      });
+      comment.good = !comment.good;
+
+      if (!comment.good) {
+        comment.goodCount--;
+      } else {
+        comment.goodCount++;
+      }
+    },
+    // コメントの返信へのいいね機能
+    replyGood: function replyGood(comId, repId) {
+      var comment = this.modalPostComments.find(function (v) {
+        return v.id == comId;
+      });
+      var reply = comment.replies.find(function (v) {
+        return v.id == repId;
+      });
+      reply.good = !reply.good;
+
+      if (!reply.good) {
+        reply.goodCount--;
+      } else {
+        reply.goodCount++;
+      }
+    },
+    // コメントへの返信フォームの表示と非表示
+    openReplyForm: function openReplyForm(i) {
+      this.modalPostComments[i].replyFormOpened = true;
+    },
+    closeReplyForm: function closeReplyForm(i) {
+      this.modalPostComments[i].replyFormOpened = false;
+    }
+  },
+  computed: {
+    // コメント入力欄の高さを計算
+    commentStyles: function commentStyles() {
+      return {
+        'height': this.commentHeight
+      };
+    } // replyStyles(i) {
+    //   return {
+    //     'height': this.modalPostComments[i].replyHeight,
+    //   }
+    // },
+
+  },
+  watch: {
+    // コメント入力欄の高さの変化を監視
+    commentInput: function commentInput() {
+      this.changeCommentHeight();
+    } // modalPostComments: {
+    //   handler: function() {
+    //     this.changeReplyHeight();
+    //   },
+    //   deep: true
+    // },
+
+  },
+  beforeRouteLeave: function beforeRouteLeave(to, from, next) {
+    if (this.modalPostShow || this.modalImageShow) {
+      this.keepScrollWhenClose();
+      this.modalPostShow = false;
+      this.modalImageShow = false;
+    }
+
+    next();
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/hot/Hot.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/hot/Hot.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      scrollPosition: null,
+      commentInput: '',
+      commentHeight: '31px',
+      // モーダル
+      modalPostShow: false,
+      modalPostId: null,
+      modalPostUser: '',
+      modalPostUserId: null,
+      modalPostDonmai: false,
+      modalPostDonmaiCount: null,
+      modalPostImages: [],
+      modalPostTags: [],
+      modalPostCommentCount: 9,
+      modalPostComments: [{
+        id: 1,
+        userId: 2,
+        user: '鈴木誠也',
+        icon: '../image/img1.jpg',
+        day: '5日前',
+        goodCount: 37,
+        good: false,
+        replyCount: 4,
+        replyShow: false,
+        replyFormOpened: false,
+        replyInput: '',
+        replyHeight: '31px',
+        replies: [{
+          id: 2,
+          userId: 3,
+          user: '柳田',
+          icon: '../image/img5.jpg',
+          day: '4日前',
+          goodCount: 37,
+          good: false
+        }, {
+          id: 3,
+          userId: 4,
+          user: '筒香',
+          icon: '../image/img6.jpg',
+          day: '3日前',
+          goodCount: 37,
+          good: false
+        }, {
+          id: 4,
+          userId: 5,
+          user: '田中将大',
+          icon: '../image/img7.jpg',
+          day: '2日前',
+          goodCount: 37,
+          good: false
+        }, {
+          id: 5,
+          userId: 6,
+          user: 'ダルビッシュ',
+          icon: '../image/img8.jpg',
+          day: '1日前',
+          goodCount: 37,
+          good: false
+        }]
+      }, {
+        id: 2,
+        userId: 4,
+        user: 'ジーター',
+        icon: '../image/img2.jpg',
+        day: '4日前',
+        goodCount: 37,
+        good: false,
+        replyCount: 0,
+        replyShow: false,
+        replyFormOpened: false,
+        replyInput: '',
+        replyHeight: '31px',
+        replies: []
+      }, {
+        id: 3,
+        userId: 6,
+        user: 'ブライアント',
+        icon: '../image/img3.jpg',
+        day: '3日前',
+        goodCount: 37,
+        good: false,
+        replyCount: 3,
+        replyShow: false,
+        replyFormOpened: false,
+        replyInput: '',
+        replyHeight: '31px',
+        replies: [{
+          id: 2,
+          userId: 3,
+          user: 'カーショウ',
+          icon: '../image/img5.jpg',
+          day: '4日前',
+          goodCount: 37,
+          good: false
+        }, {
+          id: 3,
+          userId: 4,
+          user: 'シャーザー',
+          icon: '../image/img6.jpg',
+          day: '3日前',
+          goodCount: 37,
+          good: false
+        }, {
+          id: 4,
+          userId: 5,
+          user: 'バーランダー',
+          icon: '../image/img7.jpg',
+          day: '2日前',
+          goodCount: 37,
+          good: false
+        }]
+      }, {
+        id: 4,
+        userId: 8,
+        user: '松井秀樹',
+        icon: '../image/img4.jpg',
+        day: '2日前',
+        goodCount: 37,
+        good: false,
+        replyCount: 0,
+        replyShow: false,
+        replyFormOpened: false,
+        replyInput: '',
+        replyHeight: '31px',
+        replies: []
+      }],
+      // 画像モーダル
+      modalImageShow: false,
+      modalImage: '',
+      // どんまいモーダル
+      modalDonmaiShow: false,
+      modalDonmaiUsers: [{
+        id: 11,
+        icon: '../image/img1.jpg',
+        name: 'ジェイコブ・デグロム',
+        followed: false
+      }, {
+        id: 22,
+        icon: '../image/img2.jpg',
+        name: 'ゲリット・コール',
+        followed: false
+      }, {
+        id: 33,
+        icon: '../image/img3.jpg',
+        name: '山本由伸',
+        followed: false
+      }, {
+        id: 44,
+        icon: '../image/img4.jpg',
+        name: '千賀滉大',
+        followed: false
+      }, {
+        id: 55,
+        icon: '../image/img5.jpg',
+        name: '菅野智之',
+        followed: false
+      }, {
+        id: 66,
+        icon: '../image/img6.jpg',
+        name: 'うんこクソ野郎',
+        followed: false
+      }, {
+        id: 77,
+        icon: '../image/img6.jpg',
+        name: 'うんこクソ野郎',
+        followed: false
+      }, {
+        id: 88,
+        icon: '../image/img6.jpg',
+        name: 'うんこクソ野郎',
+        followed: false
+      }, {
+        id: 99,
+        icon: '../image/img6.jpg',
+        name: 'うんこクソ野郎',
+        followed: false
+      }, {
+        id: 1010,
+        icon: '../image/img6.jpg',
+        name: 'うんこクソ野郎',
+        followed: false
+      }],
+      // 投稿
+      posts: [{
+        id: 3,
+        user: 'うんこマン',
+        user_id: 31,
+        donmai: false,
+        donmai_count: 10000,
+        comment_count: 9,
+        images: ['../image/img5.jpg'],
+        tags: ['#ばか', '#あほ', '#うんち', '#ちんちん', '#ハゲ']
+      }, {
+        id: 2,
+        user: 'ハゲ野郎',
+        user_id: 32,
+        donmai: false,
+        donmai_count: 9500,
+        comment_count: 9,
+        images: ['../image/img1.jpg', '../image/img6.jpg']
+      }, {
+        id: 4,
+        user: 'でべそ野郎',
+        user_id: 33,
+        donmai: false,
+        donmai_count: 8000,
+        comment_count: 9,
+        images: []
+      }, {
+        id: 1,
+        user: 'ちんこ野郎',
+        user_id: 34,
+        donmai: false,
+        donmai_count: 7400,
+        comment_count: 9,
+        images: ['../image/img2.jpg', '../image/img3.jpg', '../image/img4.jpg']
+      }]
+    };
+  },
+  methods: {
+    // コメント入力欄の高さをフレキシブルに
+    changeCommentHeight: function changeCommentHeight() {
+      var _this = this;
+
+      this.commentHeight = this.$refs.commentarea.scrollHeight + 'px';
+      this.commentHeight = 18 + 'px';
+      this.$nextTick(function () {
+        _this.commentHeight = _this.$refs.commentarea.scrollHeight + 'px';
+      });
+    },
+    // どんまい機能の処理
+    donmai: function donmai(index) {
+      var post = this.posts[index];
+      post.donmai = !post.donmai;
+
+      if (post.donmai == false) {
+        post.donmai_count--;
+      } else {
+        post.donmai_count++;
+      }
+    },
+    // モーダルのどんまい機能
+    modalDonmai: function modalDonmai(i) {
+      var post = this.posts.find(function (v) {
+        return v.id == i;
+      });
+      post.donmai = !post.donmai;
+      this.modalPostDonmai = !this.modalPostDonmai;
+
+      if (!this.modalPostDonmai) {
+        post.donmai_count--;
+        this.modalPostDonmaiCount--;
+      } else {
+        post.donmai_count++;
+        this.modalPostDonmaiCount++;
+      }
+    },
+    // モーダルウィンドウ開閉時に背景のスクロール位置を維持
+    keepScrollWhenOpen: function keepScrollWhenOpen() {
+      var body = document.querySelector('body');
+      var hotPage = document.querySelector('.hot-page');
+      this.scrollPosition = window.pageYOffset;
+      body.classList.add('bodyWhenOverlay');
+      hotPage.classList.add('hot-page-when-overlay');
+      hotPage.style.top = -this.scrollPosition + 'px';
+    },
+    keepScrollWhenClose: function keepScrollWhenClose() {
+      var body = document.querySelector('body');
+      var hotPage = document.querySelector('.hot-page');
+      body.classList.remove('bodyWhenOverlay');
+      hotPage.classList.remove('hot-page-when-overlay');
+      hotPage.style.top = null;
+      window.scroll(0, this.scrollPosition);
+      this.scrollPosition = null;
+    },
+    // 投稿のモーダルウィンドウの開閉
+    openModalPost: function openModalPost(postIndex) {
+      this.keepScrollWhenOpen();
+      this.modalPostId = this.posts[postIndex].id;
+      this.modalPostUser = this.posts[postIndex].user;
+      this.modalPostUserId = this.posts[postIndex].user_id;
+      this.modalPostDonmai = this.posts[postIndex].donmai;
+      this.modalPostDonmaiCount = this.posts[postIndex].donmai_count;
+      this.modalPostImages = this.posts[postIndex].images;
+      this.modalPostTags = this.posts[postIndex].tags;
+      this.modalPostCommentCount = this.posts[postIndex].comment_count;
+      this.modalPostShow = true;
+    },
+    closeModalPost: function closeModalPost() {
+      this.keepScrollWhenClose();
+      this.modalPostShow = false;
+      this.modalPostId = null;
+      this.modalPostUser = '';
+      this.modalPostUserId = null;
+      this.modalPostDonmai = false;
+      this.modalPostDonmaiCount = null;
+      this.modalPostImages = [];
+      this.modalPostTags = [];
+      this.modalPostCommentCount = null;
+      this.modalPostComments.map(function (element) {
+        element.replyShow = false;
+      });
+    },
+    // どんまいしたユーザーのモーダルウィンドウの開閉
+    openModalDonmai: function openModalDonmai() {
+      this.modalDonmaiShow = true;
+    },
+    closeModalDonmai: function closeModalDonmai() {
+      this.modalDonmaiShow = false;
+    },
+    // 画像のモーダルウィンドウの開閉
+    openImageModal: function openImageModal(image) {
+      if (!this.modalPostShow) {
+        this.keepScrollWhenOpen();
+      }
+
+      this.modalImageShow = true;
+      this.modalImage = image;
+      var overlayImage = document.querySelector('.overlay-image-image');
+      var img = new Image();
+      img.src = image;
+      var img_width = img.width;
+      var img_height = img.height;
+
+      if (img_height > img_width) {
+        overlayImage.classList.add('height-is-bigger');
+      }
+    },
+    closeImageModal: function closeImageModal() {
+      if (!this.modalPostShow) {
+        this.keepScrollWhenClose();
+      }
+
+      var overlayImage = document.querySelector('.overlay-image-image');
+      overlayImage.classList.remove('height-is-bigger');
+      this.modalImageShow = false;
+      this.modalImage = '';
+    },
+    // どんまいしたユーザーのフォローとアンフォロー
+    donmaiFollowToggle: function donmaiFollowToggle(i) {
+      this.modalDonmaiUsers[i].followed = !this.modalDonmaiUsers[i].followed;
+    },
+    //コメントへの返信の表示と非表示
+    openCommentReply: function openCommentReply(i) {
+      this.modalPostComments[i].replyShow = true;
+    },
+    closeCommentReply: function closeCommentReply(i) {
+      this.modalPostComments[i].replyShow = false;
+    },
+    // コメントのいいね機能
+    commentGood: function commentGood(i) {
+      var comment = this.modalPostComments.find(function (v) {
+        return v.id == i;
+      });
+      comment.good = !comment.good;
+
+      if (!comment.good) {
+        comment.goodCount--;
+      } else {
+        comment.goodCount++;
+      }
+    },
+    // コメントの返信へのいいね機能
+    replyGood: function replyGood(comId, repId) {
+      var comment = this.modalPostComments.find(function (v) {
+        return v.id == comId;
+      });
+      var reply = comment.replies.find(function (v) {
+        return v.id == repId;
+      });
+      reply.good = !reply.good;
+
+      if (!reply.good) {
+        reply.goodCount--;
+      } else {
+        reply.goodCount++;
+      }
+    },
+    // コメントへの返信フォームの表示と非表示
+    openReplyForm: function openReplyForm(i) {
+      this.modalPostComments[i].replyFormOpened = true;
+    },
+    closeReplyForm: function closeReplyForm(i) {
+      this.modalPostComments[i].replyFormOpened = false;
+    }
+  },
+  computed: {
+    // コメント入力欄の高さを計算
+    commentStyles: function commentStyles() {
+      return {
+        'height': this.commentHeight
+      };
+    } // replyStyles(i) {
+    //   return {
+    //     'height': this.modalPostComments[i].replyHeight,
+    //   }
+    // },
+
+  },
+  watch: {
+    // コメント入力欄の高さの変化を監視
+    commentInput: function commentInput() {
+      this.changeCommentHeight();
+    } // modalPostComments: {
+    //   handler: function() {
+    //     this.changeReplyHeight();
+    //   },
+    //   deep: true
+    // },
+
+  },
+  beforeRouteLeave: function beforeRouteLeave(to, from, next) {
+    if (this.modalPostShow || this.modalImageShow) {
+      this.keepScrollWhenClose();
+      this.modalPostShow = false;
+      this.modalImageShow = false;
+    }
+
+    next();
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/search/Search.vue?vue&type=script&lang=js&":
+/*!************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/search/Search.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/search/SearchGuchiNew.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/search/SearchGuchiNew.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue_click_outside__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-click-outside */ "./node_modules/vue-click-outside/index.js");
+/* harmony import */ var vue_click_outside__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_click_outside__WEBPACK_IMPORTED_MODULE_0__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      threads: [{
+        id: 1,
+        genre: '結婚生活',
+        created_at: '2021/1/27 19:07',
+        comment_count: 4698,
+        title: '嫁が怖すぎる件。。。',
+        icon: '../../../image/img3.jpg'
+      }, {
+        id: 2,
+        genre: '恋愛',
+        created_at: '2021/1/27 19:07',
+        comment_count: 4698,
+        title: '彼女ってどうやったらできるんだろ？'
+      }, {
+        id: 3,
+        genre: '仕事',
+        created_at: '2021/1/27 19:07',
+        comment_count: 4698,
+        title: '上司がうざすぎる！'
+      }, {
+        id: 4,
+        genre: 'ゲーム',
+        created_at: '2021/1/27 19:07',
+        comment_count: 4698,
+        title: 'APEX全然勝てないんだが。。APEX全然勝てないんだが。。APEX全然勝てないんだが。。APEX全然勝てないんだが。。'
+      }, {
+        id: 5,
+        genre: '人間関係',
+        created_at: '2021/1/27 19:07',
+        comment_count: 4698,
+        title: '親友の悪口言い合おうぜ！',
+        icon: '../../../image/img5.jpg'
+      }, {
+        id: 6,
+        genre: '学校',
+        created_at: '2021/1/27 19:07',
+        comment_count: 4698,
+        title: '夏休みの宿題多過ぎない？？'
+      }, {
+        id: 7,
+        genre: '結婚生活',
+        created_at: '2021/1/27 19:07',
+        comment_count: 4698,
+        title: '嫁が怖すぎる件。。。'
+      }, {
+        id: 8,
+        genre: '恋愛',
+        created_at: '2021/1/27 19:07',
+        comment_count: 4698,
+        title: '彼女ってどうやったらできるんだろ？'
+      }, {
+        id: 9,
+        genre: '仕事',
+        created_at: '2021/1/27 19:07',
+        comment_count: 4698,
+        title: '上司がうざすぎる！',
+        icon: '../../../image/img7.jpg'
+      }, {
+        id: 10,
+        genre: 'ゲーム',
+        created_at: '2021/1/27 19:07',
+        comment_count: 4698,
+        title: 'APEX全然勝てないんだが。。'
+      }, {
+        id: 11,
+        genre: '人間関係',
+        created_at: '2021/1/27 19:07',
+        comment_count: 4698,
+        title: '親友の悪口言い合おうぜ！'
+      }, {
+        id: 12,
+        genre: '学校',
+        created_at: '2021/1/27 19:07',
+        comment_count: 4698,
+        title: '夏休みの宿題多過ぎない？？'
+      }]
+    };
+  },
+  methods: {},
+  directives: {
+    ClickOutside: vue_click_outside__WEBPACK_IMPORTED_MODULE_0___default.a
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/search/SearchGuchiPopular.vue?vue&type=script&lang=js&":
+/*!************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/search/SearchGuchiPopular.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue_click_outside__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-click-outside */ "./node_modules/vue-click-outside/index.js");
+/* harmony import */ var vue_click_outside__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_click_outside__WEBPACK_IMPORTED_MODULE_0__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      threads: [{
+        id: 1,
+        genre: '結婚生活',
+        created_at: '2021/1/27 19:07',
+        comment_count: 4698,
+        title: '嫁が怖すぎる件。。。',
+        icon: '../../../image/img4.jpg'
+      }, {
+        id: 2,
+        genre: '恋愛',
+        created_at: '2021/1/27 19:07',
+        comment_count: 4698,
+        title: '彼女ってどうやったらできるんだろ？',
+        icon: '../../../image/img5.jpg'
+      }, {
+        id: 3,
+        genre: '仕事',
+        created_at: '2021/1/27 19:07',
+        comment_count: 4698,
+        title: '上司がうざすぎる！'
+      }, {
+        id: 4,
+        genre: 'ゲーム',
+        created_at: '2021/1/27 19:07',
+        comment_count: 4698,
+        title: 'APEX全然勝てないんだが。。APEX全然勝てないんだが。。APEX全然勝てないんだが。。APEX全然勝てないんだが。。'
+      }, {
+        id: 5,
+        genre: '人間関係',
+        created_at: '2021/1/27 19:07',
+        comment_count: 4698,
+        title: '親友の悪口言い合おうぜ！',
+        icon: '../../../image/img5.jpg'
+      }, {
+        id: 6,
+        genre: '学校',
+        created_at: '2021/1/27 19:07',
+        comment_count: 4698,
+        title: '夏休みの宿題多過ぎない？？'
+      }, {
+        id: 7,
+        genre: '結婚生活',
+        created_at: '2021/1/27 19:07',
+        comment_count: 4698,
+        title: '嫁が怖すぎる件。。。'
+      }, {
+        id: 8,
+        genre: '恋愛',
+        created_at: '2021/1/27 19:07',
+        comment_count: 4698,
+        title: '彼女ってどうやったらできるんだろ？'
+      }, {
+        id: 9,
+        genre: '仕事',
+        created_at: '2021/1/27 19:07',
+        comment_count: 4698,
+        title: '上司がうざすぎる！',
+        icon: '../../../image/img7.jpg'
+      }, {
+        id: 10,
+        genre: 'ゲーム',
+        created_at: '2021/1/27 19:07',
+        comment_count: 4698,
+        title: 'APEX全然勝てないんだが。。'
+      }, {
+        id: 11,
+        genre: '人間関係',
+        created_at: '2021/1/27 19:07',
+        comment_count: 4698,
+        title: '親友の悪口言い合おうぜ！'
+      }, {
+        id: 12,
+        genre: '学校',
+        created_at: '2021/1/27 19:07',
+        comment_count: 4698,
+        title: '夏休みの宿題多過ぎない？？'
+      }]
+    };
+  },
+  methods: {},
+  directives: {
+    ClickOutside: vue_click_outside__WEBPACK_IMPORTED_MODULE_0___default.a
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/search/SearchPostNew.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/search/SearchPostNew.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      scrollPosition: null,
+      commentInput: '',
+      commentHeight: '31px',
+      // モーダル
+      modalPostShow: false,
+      modalPostId: null,
+      modalPostUser: '',
+      modalPostUserId: null,
+      modalPostUserIcon: '',
+      modalPostDonmai: false,
+      modalPostDonmaiCount: null,
+      modalPostImages: [],
+      modalPostTags: [],
+      modalPostCommentCount: 9,
+      modalPostComments: [{
+        id: 1,
+        userId: 2,
+        user: '鈴木誠也',
+        icon: '../../../image/img1.jpg',
+        day: '5日前',
+        goodCount: 37,
+        good: false,
+        replyCount: 4,
+        replyShow: false,
+        replyFormOpened: false,
+        replyInput: '',
+        replyHeight: '31px',
+        replies: [{
+          id: 2,
+          userId: 3,
+          user: '柳田',
+          icon: '../../../image/img5.jpg',
+          day: '4日前',
+          goodCount: 37,
+          good: false
+        }, {
+          id: 3,
+          userId: 4,
+          user: '筒香',
+          icon: '../../../image/img6.jpg',
+          day: '3日前',
+          goodCount: 37,
+          good: false
+        }, {
+          id: 4,
+          userId: 5,
+          user: '田中将大',
+          icon: '../../../image/img7.jpg',
+          day: '2日前',
+          goodCount: 37,
+          good: false
+        }, {
+          id: 5,
+          userId: 6,
+          user: 'ダルビッシュ',
+          icon: '../../../image/img8.jpg',
+          day: '1日前',
+          goodCount: 37,
+          good: false
+        }]
+      }, {
+        id: 2,
+        userId: 4,
+        user: 'ジーター',
+        icon: '../../../image/img2.jpg',
+        day: '4日前',
+        goodCount: 37,
+        good: false,
+        replyCount: 0,
+        replyShow: false,
+        replyFormOpened: false,
+        replyInput: '',
+        replyHeight: '31px',
+        replies: []
+      }, {
+        id: 3,
+        userId: 6,
+        user: 'ブライアント',
+        icon: '../../../image/img3.jpg',
+        day: '3日前',
+        goodCount: 37,
+        good: false,
+        replyCount: 3,
+        replyShow: false,
+        replyFormOpened: false,
+        replyInput: '',
+        replyHeight: '31px',
+        replies: [{
+          id: 2,
+          userId: 3,
+          user: 'カーショウ',
+          icon: '../../../image/img5.jpg',
+          day: '4日前',
+          goodCount: 37,
+          good: false
+        }, {
+          id: 3,
+          userId: 4,
+          user: 'シャーザー',
+          icon: '../../../image/img6.jpg',
+          day: '3日前',
+          goodCount: 37,
+          good: false
+        }, {
+          id: 4,
+          userId: 5,
+          user: 'バーランダー',
+          icon: '../../../image/img7.jpg',
+          day: '2日前',
+          goodCount: 37,
+          good: false
+        }]
+      }, {
+        id: 4,
+        userId: 8,
+        user: '松井秀樹',
+        icon: '../../../image/img4.jpg',
+        day: '2日前',
+        goodCount: 37,
+        good: false,
+        replyCount: 0,
+        replyShow: false,
+        replyFormOpened: false,
+        replyInput: '',
+        replyHeight: '31px',
+        replies: []
+      }],
+      // 画像モーダル
+      modalImageShow: false,
+      modalImage: '',
+      // どんまいモーダル
+      modalDonmaiShow: false,
+      modalDonmaiUsers: [{
+        id: 11,
+        icon: '../../../image/img1.jpg',
+        name: 'ジェイコブ・デグロム',
+        followed: false
+      }, {
+        id: 22,
+        icon: '../../../image/img2.jpg',
+        name: 'ゲリット・コール',
+        followed: false
+      }, {
+        id: 33,
+        icon: '../../../image/img3.jpg',
+        name: '山本由伸',
+        followed: false
+      }, {
+        id: 44,
+        icon: '../../../image/img4.jpg',
+        name: '千賀滉大',
+        followed: false
+      }, {
+        id: 55,
+        icon: '../../../image/img5.jpg',
+        name: '菅野智之',
+        followed: false
+      }, {
+        id: 66,
+        icon: '../../../image/img6.jpg',
+        name: 'うんこクソ野郎',
+        followed: false
+      }, {
+        id: 77,
+        icon: '../../../image/img6.jpg',
+        name: 'うんこクソ野郎',
+        followed: false
+      }, {
+        id: 88,
+        icon: '../../../image/img6.jpg',
+        name: 'うんこクソ野郎',
+        followed: false
+      }, {
+        id: 99,
+        icon: '../../../image/img6.jpg',
+        name: 'うんこクソ野郎',
+        followed: false
+      }, {
+        id: 1010,
+        icon: '../../../image/img6.jpg',
+        name: 'うんこクソ野郎',
+        followed: false
+      }],
+      // 投稿
+      posts: [{
+        id: 3,
+        user: 'うんこマン',
+        userId: 15,
+        userIcon: '../../../image/img1.jpg',
+        donmai: false,
+        donmai_count: 10000,
+        comment_count: 9,
+        images: ['../../../image/img5.jpg'],
+        tags: ['#ばか', '#あほ', '#うんち', '#ちんちん', '#ハゲ']
+      }, {
+        id: 2,
+        user: 'ハゲ野郎',
+        userId: 16,
+        userIcon: '../../../image/img2.jpg',
+        donmai: false,
+        donmai_count: 9500,
+        comment_count: 10,
+        images: ['../../../image/img1.jpg', '../../../image/img6.jpg']
+      }, {
+        id: 4,
+        user: 'でべそ野郎',
+        userId: 17,
+        userIcon: '../../../image/img3.jpg',
+        donmai: false,
+        donmai_count: 8000,
+        comment_count: 11,
+        images: []
+      }, {
+        id: 1,
+        user: 'ちんこ野郎',
+        userId: 18,
+        userIcon: '../../../image/img4.jpg',
+        donmai: false,
+        donmai_count: 7400,
+        comment_count: 12,
+        images: ['../../../image/img2.jpg', '../../../image/img3.jpg', '../../../image/img4.jpg']
+      }]
+    };
+  },
+  methods: {
+    // コメント入力欄の高さをフレキシブルに
+    changeCommentHeight: function changeCommentHeight() {
+      var _this = this;
+
+      this.commentHeight = this.$refs.commentarea.scrollHeight + 'px';
+      this.commentHeight = 18 + 'px';
+      this.$nextTick(function () {
+        _this.commentHeight = _this.$refs.commentarea.scrollHeight + 'px';
+      });
+    },
+    // どんまい機能の処理
+    donmai: function donmai(index) {
+      var post = this.posts[index];
+      post.donmai = !post.donmai;
+
+      if (post.donmai == false) {
+        post.donmai_count--;
+      } else {
+        post.donmai_count++;
+      }
+    },
+    // モーダルのどんまい機能
+    modalDonmai: function modalDonmai(i) {
+      var post = this.posts.find(function (v) {
+        return v.id == i;
+      });
+      post.donmai = !post.donmai;
+      this.modalPostDonmai = !this.modalPostDonmai;
+
+      if (!this.modalPostDonmai) {
+        post.donmai_count--;
+        this.modalPostDonmaiCount--;
+      } else {
+        post.donmai_count++;
+        this.modalPostDonmaiCount++;
+      }
+    },
+    // モーダルウィンドウ開閉時に背景のスクロール位置を維持
+    keepScrollWhenOpen: function keepScrollWhenOpen() {
+      var body = document.querySelector('body');
+      var searchPage = document.querySelector('.search-page');
+      this.scrollPosition = window.pageYOffset;
+      body.classList.add('bodyWhenOverlay');
+      searchPage.classList.add('search-page-when-overlay');
+      searchPage.style.top = -this.scrollPosition + 'px';
+    },
+    keepScrollWhenClose: function keepScrollWhenClose() {
+      var body = document.querySelector('body');
+      var searchPage = document.querySelector('.search-page');
+      body.classList.remove('bodyWhenOverlay');
+      searchPage.classList.remove('search-page-when-overlay');
+      searchPage.style.top = null;
+      window.scroll(0, this.scrollPosition);
+      this.scrollPosition = null;
+    },
+    // 投稿のモーダルウィンドウの開閉
+    openModalPost: function openModalPost(postIndex) {
+      this.keepScrollWhenOpen();
+      this.modalPostId = this.posts[postIndex].id;
+      this.modalPostUser = this.posts[postIndex].user;
+      this.modalPostUserId = this.posts[postIndex].userId;
+      this.modalPostUserIcon = this.posts[postIndex].userIcon;
+      this.modalPostDonmai = this.posts[postIndex].donmai;
+      this.modalPostDonmaiCount = this.posts[postIndex].donmai_count;
+      this.modalPostImages = this.posts[postIndex].images;
+      this.modalPostTags = this.posts[postIndex].tags;
+      this.modalPostCommentCount = this.posts[postIndex].comment_count;
+      this.modalPostShow = true;
+    },
+    closeModalPost: function closeModalPost() {
+      this.keepScrollWhenClose();
+      this.modalPostShow = false;
+      this.modalPostId = null;
+      this.modalPostUser = '';
+      this.modalPostUserId = null;
+      this.modalPostDonmai = false;
+      this.modalPostDonmaiCount = null;
+      this.modalPostImages = [];
+      this.modalPostTags = [];
+      this.modalPostCommentCount = null;
+      this.modalPostComments.map(function (element) {
+        element.replyShow = false;
+      });
+    },
+    // どんまいしたユーザーのモーダルウィンドウの開閉
+    openModalDonmai: function openModalDonmai() {
+      this.modalDonmaiShow = true;
+    },
+    closeModalDonmai: function closeModalDonmai() {
+      this.modalDonmaiShow = false;
+    },
+    // 画像のモーダルウィンドウの開閉
+    openImageModal: function openImageModal(image) {
+      if (!this.modalPostShow) {
+        this.keepScrollWhenOpen();
+      }
+
+      this.modalImageShow = true;
+      this.modalImage = image;
+      var overlayImage = document.querySelector('.overlay-image-image');
+      var img = new Image();
+      img.src = image;
+      var img_width = img.width;
+      var img_height = img.height;
+
+      if (img_height > img_width) {
+        overlayImage.classList.add('height-is-bigger');
+      }
+    },
+    closeImageModal: function closeImageModal() {
+      if (!this.modalPostShow) {
+        this.keepScrollWhenClose();
+      }
+
+      var overlayImage = document.querySelector('.overlay-image-image');
+      overlayImage.classList.remove('height-is-bigger');
+      this.modalImageShow = false;
+      this.modalImage = '';
+    },
+    // どんまいしたユーザーのフォローとアンフォロー
+    donmaiFollowToggle: function donmaiFollowToggle(i) {
+      this.modalDonmaiUsers[i].followed = !this.modalDonmaiUsers[i].followed;
+    },
+    //コメントへの返信の表示と非表示
+    openCommentReply: function openCommentReply(i) {
+      this.modalPostComments[i].replyShow = true;
+    },
+    closeCommentReply: function closeCommentReply(i) {
+      this.modalPostComments[i].replyShow = false;
+    },
+    // コメントのいいね機能
+    commentGood: function commentGood(i) {
+      var comment = this.modalPostComments.find(function (v) {
+        return v.id == i;
+      });
+      comment.good = !comment.good;
+
+      if (!comment.good) {
+        comment.goodCount--;
+      } else {
+        comment.goodCount++;
+      }
+    },
+    // コメントの返信へのいいね機能
+    replyGood: function replyGood(comId, repId) {
+      var comment = this.modalPostComments.find(function (v) {
+        return v.id == comId;
+      });
+      var reply = comment.replies.find(function (v) {
+        return v.id == repId;
+      });
+      reply.good = !reply.good;
+
+      if (!reply.good) {
+        reply.goodCount--;
+      } else {
+        reply.goodCount++;
+      }
+    },
+    // コメントへの返信フォームの表示と非表示
+    openReplyForm: function openReplyForm(i) {
+      this.modalPostComments[i].replyFormOpened = true;
+    },
+    closeReplyForm: function closeReplyForm(i) {
+      this.modalPostComments[i].replyFormOpened = false;
+    }
+  },
+  computed: {
+    // コメント入力欄の高さを計算
+    commentStyles: function commentStyles() {
+      return {
+        'height': this.commentHeight
+      };
+    } // replyStyles(i) {
+    //   return {
+    //     'height': this.modalPostComments[i].replyHeight,
+    //   }
+    // },
+
+  },
+  watch: {
+    // コメント入力欄の高さの変化を監視
+    commentInput: function commentInput() {
+      this.changeCommentHeight();
+    } // modalPostComments: {
+    //   handler: function() {
+    //     this.changeReplyHeight();
+    //   },
+    //   deep: true
+    // },
+
+  },
+  beforeRouteLeave: function beforeRouteLeave(to, from, next) {
+    if (this.modalPostShow || this.modalImageShow) {
+      this.keepScrollWhenClose();
+      this.modalPostShow = false;
+      this.modalImageShow = false;
+    }
+
+    next();
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/search/SearchPostPopular.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/search/SearchPostPopular.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      scrollPosition: null,
+      commentInput: '',
+      commentHeight: '31px',
+      // モーダル
+      modalPostShow: false,
+      modalPostId: null,
+      modalPostUser: '',
+      modalPostUserId: null,
+      modalPostUserIcon: '',
+      modalPostDonmai: false,
+      modalPostDonmaiCount: null,
+      modalPostImages: [],
+      modalPostTags: [],
+      modalPostCommentCount: 9,
+      modalPostComments: [{
+        id: 1,
+        userId: 2,
+        user: '鈴木誠也',
+        icon: '../../../image/img1.jpg',
+        day: '5日前',
+        goodCount: 37,
+        good: false,
+        replyCount: 4,
+        replyShow: false,
+        replyFormOpened: false,
+        replyInput: '',
+        replyHeight: '31px',
+        replies: [{
+          id: 2,
+          userId: 3,
+          user: '柳田',
+          icon: '../../../image/img5.jpg',
+          day: '4日前',
+          goodCount: 37,
+          good: false
+        }, {
+          id: 3,
+          userId: 4,
+          user: '筒香',
+          icon: '../../../image/img6.jpg',
+          day: '3日前',
+          goodCount: 37,
+          good: false
+        }, {
+          id: 4,
+          userId: 5,
+          user: '田中将大',
+          icon: '../../../image/img7.jpg',
+          day: '2日前',
+          goodCount: 37,
+          good: false
+        }, {
+          id: 5,
+          userId: 6,
+          user: 'ダルビッシュ',
+          icon: '../../../image/img8.jpg',
+          day: '1日前',
+          goodCount: 37,
+          good: false
+        }]
+      }, {
+        id: 2,
+        userId: 4,
+        user: 'ジーター',
+        icon: '../../../image/img2.jpg',
+        day: '4日前',
+        goodCount: 37,
+        good: false,
+        replyCount: 0,
+        replyShow: false,
+        replyFormOpened: false,
+        replyInput: '',
+        replyHeight: '31px',
+        replies: []
+      }, {
+        id: 3,
+        userId: 6,
+        user: 'ブライアント',
+        icon: '../../../image/img3.jpg',
+        day: '3日前',
+        goodCount: 37,
+        good: false,
+        replyCount: 3,
+        replyShow: false,
+        replyFormOpened: false,
+        replyInput: '',
+        replyHeight: '31px',
+        replies: [{
+          id: 2,
+          userId: 3,
+          user: 'カーショウ',
+          icon: '../../../image/img5.jpg',
+          day: '4日前',
+          goodCount: 37,
+          good: false
+        }, {
+          id: 3,
+          userId: 4,
+          user: 'シャーザー',
+          icon: '../../../image/img6.jpg',
+          day: '3日前',
+          goodCount: 37,
+          good: false
+        }, {
+          id: 4,
+          userId: 5,
+          user: 'バーランダー',
+          icon: '../../../image/img7.jpg',
+          day: '2日前',
+          goodCount: 37,
+          good: false
+        }]
+      }, {
+        id: 4,
+        userId: 8,
+        user: '松井秀樹',
+        icon: '../../../image/img4.jpg',
+        day: '2日前',
+        goodCount: 37,
+        good: false,
+        replyCount: 0,
+        replyShow: false,
+        replyFormOpened: false,
+        replyInput: '',
+        replyHeight: '31px',
+        replies: []
+      }],
+      // 画像モーダル
+      modalImageShow: false,
+      modalImage: '',
+      // どんまいモーダル
+      modalDonmaiShow: false,
+      modalDonmaiUsers: [{
+        id: 11,
+        icon: '../../../image/img1.jpg',
+        name: 'ジェイコブ・デグロム',
+        followed: false
+      }, {
+        id: 22,
+        icon: '../../../image/img2.jpg',
+        name: 'ゲリット・コール',
+        followed: false
+      }, {
+        id: 33,
+        icon: '../../../image/img3.jpg',
+        name: '山本由伸',
+        followed: false
+      }, {
+        id: 44,
+        icon: '../../../image/img4.jpg',
+        name: '千賀滉大',
+        followed: false
+      }, {
+        id: 55,
+        icon: '../../../image/img5.jpg',
+        name: '菅野智之',
+        followed: false
+      }, {
+        id: 66,
+        icon: '../../../image/img6.jpg',
+        name: 'うんこクソ野郎',
+        followed: false
+      }, {
+        id: 77,
+        icon: '../../../image/img6.jpg',
+        name: 'うんこクソ野郎',
+        followed: false
+      }, {
+        id: 88,
+        icon: '../../../image/img6.jpg',
+        name: 'うんこクソ野郎',
+        followed: false
+      }, {
+        id: 99,
+        icon: '../../../image/img6.jpg',
+        name: 'うんこクソ野郎',
+        followed: false
+      }, {
+        id: 1010,
+        icon: '../../../image/img6.jpg',
+        name: 'うんこクソ野郎',
+        followed: false
+      }],
+      // 投稿
+      posts: [{
+        id: 3,
+        user: 'うんこマン',
+        userId: 19,
+        userIcon: '../../../image/img5.jpg',
+        donmai: false,
+        donmai_count: 10000,
+        comment_count: 210,
+        images: ['../../../image/img1.jpg'],
+        tags: ['#ばか', '#あほ', '#うんち', '#ちんちん', '#ハゲ']
+      }, {
+        id: 2,
+        user: 'ハゲ野郎',
+        userId: 20,
+        userIcon: '../../../image/img6.jpg',
+        donmai: false,
+        donmai_count: 9500,
+        comment_count: 220,
+        images: ['../../../image/img1.jpg', '../../../image/img6.jpg']
+      }, {
+        id: 4,
+        user: 'でべそ野郎',
+        userId: 21,
+        userIcon: '../../../image/img7.jpg',
+        donmai: false,
+        donmai_count: 8000,
+        comment_count: 230,
+        images: []
+      }, {
+        id: 1,
+        user: 'ちんこ野郎',
+        userId: 22,
+        userIcon: '../../../image/img8.jpg',
+        donmai: false,
+        donmai_count: 7400,
+        comment_count: 100,
+        images: ['../../../image/img2.jpg', '../../../image/img3.jpg', '../../../image/img4.jpg']
+      }]
+    };
+  },
+  methods: {
+    // コメント入力欄の高さをフレキシブルに
+    changeCommentHeight: function changeCommentHeight() {
+      var _this = this;
+
+      this.commentHeight = this.$refs.commentarea.scrollHeight + 'px';
+      this.commentHeight = 18 + 'px';
+      this.$nextTick(function () {
+        _this.commentHeight = _this.$refs.commentarea.scrollHeight + 'px';
+      });
+    },
+    // どんまい機能の処理
+    donmai: function donmai(index) {
+      var post = this.posts[index];
+      post.donmai = !post.donmai;
+
+      if (post.donmai == false) {
+        post.donmai_count--;
+      } else {
+        post.donmai_count++;
+      }
+    },
+    // モーダルのどんまい機能
+    modalDonmai: function modalDonmai(i) {
+      var post = this.posts.find(function (v) {
+        return v.id == i;
+      });
+      post.donmai = !post.donmai;
+      this.modalPostDonmai = !this.modalPostDonmai;
+
+      if (!this.modalPostDonmai) {
+        post.donmai_count--;
+        this.modalPostDonmaiCount--;
+      } else {
+        post.donmai_count++;
+        this.modalPostDonmaiCount++;
+      }
+    },
+    // モーダルウィンドウ開閉時に背景のスクロール位置を維持
+    keepScrollWhenOpen: function keepScrollWhenOpen() {
+      var body = document.querySelector('body');
+      var searchPage = document.querySelector('.search-page');
+      this.scrollPosition = window.pageYOffset;
+      body.classList.add('bodyWhenOverlay');
+      searchPage.classList.add('search-page-when-overlay');
+      searchPage.style.top = -this.scrollPosition + 'px';
+    },
+    keepScrollWhenClose: function keepScrollWhenClose() {
+      var body = document.querySelector('body');
+      var searchPage = document.querySelector('.search-page');
+      body.classList.remove('bodyWhenOverlay');
+      searchPage.classList.remove('search-page-when-overlay');
+      searchPage.style.top = null;
+      window.scroll(0, this.scrollPosition);
+      this.scrollPosition = null;
+    },
+    // 投稿のモーダルウィンドウの開閉
+    openModalPost: function openModalPost(postIndex) {
+      this.keepScrollWhenOpen();
+      this.modalPostId = this.posts[postIndex].id;
+      this.modalPostUser = this.posts[postIndex].user;
+      this.modalPostUserId = this.posts[postIndex].userId;
+      this.modalPostUserIcon = this.posts[postIndex].userIcon;
+      this.modalPostDonmai = this.posts[postIndex].donmai;
+      this.modalPostDonmaiCount = this.posts[postIndex].donmai_count;
+      this.modalPostImages = this.posts[postIndex].images;
+      this.modalPostTags = this.posts[postIndex].tags;
+      this.modalPostCommentCount = this.posts[postIndex].comment_count;
+      this.modalPostShow = true;
+    },
+    closeModalPost: function closeModalPost() {
+      this.keepScrollWhenClose();
+      this.modalPostShow = false;
+      this.modalPostId = null;
+      this.modalPostUser = '';
+      this.modalPostUserId = null;
+      this.modalPostDonmai = false;
+      this.modalPostDonmaiCount = null;
+      this.modalPostImages = [];
+      this.modalPostTags = [];
+      this.modalPostCommentCount = null;
+      this.modalPostComments.map(function (element) {
+        element.replyShow = false;
+      });
+    },
+    // どんまいしたユーザーのモーダルウィンドウの開閉
+    openModalDonmai: function openModalDonmai() {
+      this.modalDonmaiShow = true;
+    },
+    closeModalDonmai: function closeModalDonmai() {
+      this.modalDonmaiShow = false;
+    },
+    // 画像のモーダルウィンドウの開閉
+    openImageModal: function openImageModal(image) {
+      if (!this.modalPostShow) {
+        this.keepScrollWhenOpen();
+      }
+
+      this.modalImageShow = true;
+      this.modalImage = image;
+      var overlayImage = document.querySelector('.overlay-image-image');
+      var img = new Image();
+      img.src = image;
+      var img_width = img.width;
+      var img_height = img.height;
+
+      if (img_height > img_width) {
+        overlayImage.classList.add('height-is-bigger');
+      }
+    },
+    closeImageModal: function closeImageModal() {
+      if (!this.modalPostShow) {
+        this.keepScrollWhenClose();
+      }
+
+      var overlayImage = document.querySelector('.overlay-image-image');
+      overlayImage.classList.remove('height-is-bigger');
+      this.modalImageShow = false;
+      this.modalImage = '';
+    },
+    // どんまいしたユーザーのフォローとアンフォロー
+    donmaiFollowToggle: function donmaiFollowToggle(i) {
+      this.modalDonmaiUsers[i].followed = !this.modalDonmaiUsers[i].followed;
+    },
+    //コメントへの返信の表示と非表示
+    openCommentReply: function openCommentReply(i) {
+      this.modalPostComments[i].replyShow = true;
+    },
+    closeCommentReply: function closeCommentReply(i) {
+      this.modalPostComments[i].replyShow = false;
+    },
+    // コメントのいいね機能
+    commentGood: function commentGood(i) {
+      var comment = this.modalPostComments.find(function (v) {
+        return v.id == i;
+      });
+      comment.good = !comment.good;
+
+      if (!comment.good) {
+        comment.goodCount--;
+      } else {
+        comment.goodCount++;
+      }
+    },
+    // コメントの返信へのいいね機能
+    replyGood: function replyGood(comId, repId) {
+      var comment = this.modalPostComments.find(function (v) {
+        return v.id == comId;
+      });
+      var reply = comment.replies.find(function (v) {
+        return v.id == repId;
+      });
+      reply.good = !reply.good;
+
+      if (!reply.good) {
+        reply.goodCount--;
+      } else {
+        reply.goodCount++;
+      }
+    },
+    // コメントへの返信フォームの表示と非表示
+    openReplyForm: function openReplyForm(i) {
+      this.modalPostComments[i].replyFormOpened = true;
+    },
+    closeReplyForm: function closeReplyForm(i) {
+      this.modalPostComments[i].replyFormOpened = false;
+    }
+  },
+  computed: {
+    // コメント入力欄の高さを計算
+    commentStyles: function commentStyles() {
+      return {
+        'height': this.commentHeight
+      };
+    } // replyStyles(i) {
+    //   return {
+    //     'height': this.modalPostComments[i].replyHeight,
+    //   }
+    // },
+
+  },
+  watch: {
+    // コメント入力欄の高さの変化を監視
+    commentInput: function commentInput() {
+      this.changeCommentHeight();
+    } // modalPostComments: {
+    //   handler: function() {
+    //     this.changeReplyHeight();
+    //   },
+    //   deep: true
+    // },
+
+  },
+  beforeRouteLeave: function beforeRouteLeave(to, from, next) {
+    if (this.modalPostShow || this.modalImageShow) {
+      this.keepScrollWhenClose();
+      this.modalPostShow = false;
+      this.modalImageShow = false;
+    }
+
+    next();
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/search/SearchUser.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/search/SearchUser.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      users: [{
+        id: 3,
+        icon: '../../image/unko.jpg',
+        name: 'チンカス',
+        followed: false,
+        pr: 'うんちが大好き。うんちが大好き。うんちが大好き。うんちが大好き。うんちが大好き。うんちが大好き。うんちが大好き。うんちが大好き。うんちが大好き。うんちが大好き。'
+      }, {
+        id: 6,
+        icon: '../../image/img1.jpg',
+        name: 'いぬぬわん',
+        followed: false,
+        pr: 'わんわん。わんわん。わんわん。わんわん。わんわん。わんわん。わんわん。わんわん。わんわん。わんわん。'
+      }, {
+        id: 9,
+        icon: '../../image/img4.jpg',
+        name: 'ふるでりか',
+        followed: false,
+        pr: 'にぱー！にぱー！にぱー！にぱー！にぱー！にぱー！にぱー！にぱー！にぱー！にぱー！にぱー！'
+      }]
+    };
+  },
+  methods: {
+    // フォローボタンの処理
+    toggleFollow: function toggleFollow(user) {
+      user.followed = !user.followed;
+    },
+    toUserPage: function toUserPage(user_id) {
+      this.$router.push({
+        name: 'user',
+        params: {
+          id: user_id
+        }
+      });
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/tags/Tags.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/tags/Tags.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/tags/TagsNew.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/tags/TagsNew.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      scrollPosition: null,
+      commentInput: '',
+      commentHeight: '31px',
+      // モーダル
+      modalPostShow: false,
+      modalPostId: null,
+      modalPostUser: '',
+      modalPostUserId: null,
+      modalPostUserIcon: '',
+      modalPostDonmai: false,
+      modalPostDonmaiCount: null,
+      modalPostImages: [],
+      modalPostTags: [],
+      modalPostCommentCount: 9,
+      modalPostComments: [{
+        id: 1,
+        userId: 2,
+        user: '鈴木誠也',
+        icon: '../../image/img1.jpg',
+        day: '5日前',
+        goodCount: 37,
+        good: false,
+        replyCount: 4,
+        replyShow: false,
+        replyFormOpened: false,
+        replyInput: '',
+        replyHeight: '31px',
+        replies: [{
+          id: 2,
+          userId: 3,
+          user: '柳田',
+          icon: '../../image/img5.jpg',
+          day: '4日前',
+          goodCount: 37,
+          good: false
+        }, {
+          id: 3,
+          userId: 4,
+          user: '筒香',
+          icon: '../../image/img6.jpg',
+          day: '3日前',
+          goodCount: 37,
+          good: false
+        }, {
+          id: 4,
+          userId: 5,
+          user: '田中将大',
+          icon: '../../image/img7.jpg',
+          day: '2日前',
+          goodCount: 37,
+          good: false
+        }, {
+          id: 5,
+          userId: 6,
+          user: 'ダルビッシュ',
+          icon: '../../image/img8.jpg',
+          day: '1日前',
+          goodCount: 37,
+          good: false
+        }]
+      }, {
+        id: 2,
+        userId: 4,
+        user: 'ジーター',
+        icon: '../../image/img2.jpg',
+        day: '4日前',
+        goodCount: 37,
+        good: false,
+        replyCount: 0,
+        replyShow: false,
+        replyFormOpened: false,
+        replyInput: '',
+        replyHeight: '31px',
+        replies: []
+      }, {
+        id: 3,
+        userId: 6,
+        user: 'ブライアント',
+        icon: '../../image/img3.jpg',
+        day: '3日前',
+        goodCount: 37,
+        good: false,
+        replyCount: 3,
+        replyShow: false,
+        replyFormOpened: false,
+        replyInput: '',
+        replyHeight: '31px',
+        replies: [{
+          id: 2,
+          userId: 3,
+          user: 'カーショウ',
+          icon: '../../image/img5.jpg',
+          day: '4日前',
+          goodCount: 37,
+          good: false
+        }, {
+          id: 3,
+          userId: 4,
+          user: 'シャーザー',
+          icon: '../../image/img6.jpg',
+          day: '3日前',
+          goodCount: 37,
+          good: false
+        }, {
+          id: 4,
+          userId: 5,
+          user: 'バーランダー',
+          icon: '../../image/img7.jpg',
+          day: '2日前',
+          goodCount: 37,
+          good: false
+        }]
+      }, {
+        id: 4,
+        userId: 8,
+        user: '松井秀樹',
+        icon: '../../image/img4.jpg',
+        day: '2日前',
+        goodCount: 37,
+        good: false,
+        replyCount: 0,
+        replyShow: false,
+        replyFormOpened: false,
+        replyInput: '',
+        replyHeight: '31px',
+        replies: []
+      }],
+      // 画像モーダル
+      modalImageShow: false,
+      modalImage: '',
+      // どんまいモーダル
+      modalDonmaiShow: false,
+      modalDonmaiUsers: [{
+        id: 11,
+        icon: '../../image/img1.jpg',
+        name: 'ジェイコブ・デグロム',
+        followed: false
+      }, {
+        id: 22,
+        icon: '../../image/img2.jpg',
+        name: 'ゲリット・コール',
+        followed: false
+      }, {
+        id: 33,
+        icon: '../../image/img3.jpg',
+        name: '山本由伸',
+        followed: false
+      }, {
+        id: 44,
+        icon: '../../image/img4.jpg',
+        name: '千賀滉大',
+        followed: false
+      }, {
+        id: 55,
+        icon: '../../image/img5.jpg',
+        name: '菅野智之',
+        followed: false
+      }, {
+        id: 66,
+        icon: '../../image/img6.jpg',
+        name: 'うんこクソ野郎',
+        followed: false
+      }, {
+        id: 77,
+        icon: '../../image/img6.jpg',
+        name: 'うんこクソ野郎',
+        followed: false
+      }, {
+        id: 88,
+        icon: '../../image/img6.jpg',
+        name: 'うんこクソ野郎',
+        followed: false
+      }, {
+        id: 99,
+        icon: '../../image/img6.jpg',
+        name: 'うんこクソ野郎',
+        followed: false
+      }, {
+        id: 1010,
+        icon: '../../image/img6.jpg',
+        name: 'うんこクソ野郎',
+        followed: false
+      }],
+      // 投稿
+      posts: [{
+        id: 3,
+        userIcon: '../../image/img3.jpg',
+        user: 'うんこマン',
+        userId: 6,
+        donmai: false,
+        donmai_count: 10000,
+        comment_count: 9,
+        images: ['../../image/img5.jpg'],
+        tags: ['#ばか', '#あほ', '#うんち', '#ちんちん', '#ハゲ']
+      }, {
+        id: 2,
+        userIcon: '../../image/img4.jpg',
+        user: 'ハゲ野郎',
+        userId: 7,
+        donmai: false,
+        donmai_count: 9500,
+        comment_count: 9,
+        images: ['../../image/img1.jpg', '../../image/img6.jpg']
+      }, {
+        id: 4,
+        userIcon: '../../image/img5.jpg',
+        user: 'でべそ野郎',
+        userId: 8,
+        donmai: false,
+        donmai_count: 8000,
+        comment_count: 9,
+        images: []
+      }, {
+        id: 1,
+        userIcon: '../../image/img6.jpg',
+        user: 'ちんこ野郎',
+        userId: 9,
+        donmai: false,
+        donmai_count: 7400,
+        comment_count: 9,
+        images: ['../../image/img2.jpg', '../../image/img3.jpg', '../../image/img4.jpg']
+      }]
+    };
+  },
+  methods: {
+    // コメント入力欄の高さをフレキシブルに
+    changeCommentHeight: function changeCommentHeight() {
+      var _this = this;
+
+      this.commentHeight = this.$refs.commentarea.scrollHeight + 'px';
+      this.commentHeight = 18 + 'px';
+      this.$nextTick(function () {
+        _this.commentHeight = _this.$refs.commentarea.scrollHeight + 'px';
+      });
+    },
+    // どんまい機能の処理
+    donmai: function donmai(index) {
+      var post = this.posts[index];
+      post.donmai = !post.donmai;
+
+      if (post.donmai == false) {
+        post.donmai_count--;
+      } else {
+        post.donmai_count++;
+      }
+    },
+    // モーダルのどんまい機能
+    modalDonmai: function modalDonmai(i) {
+      var post = this.posts.find(function (v) {
+        return v.id == i;
+      });
+      post.donmai = !post.donmai;
+      this.modalPostDonmai = !this.modalPostDonmai;
+
+      if (!this.modalPostDonmai) {
+        post.donmai_count--;
+        this.modalPostDonmaiCount--;
+      } else {
+        post.donmai_count++;
+        this.modalPostDonmaiCount++;
+      }
+    },
+    // モーダルウィンドウ開閉時に背景のスクロール位置を維持
+    keepScrollWhenOpen: function keepScrollWhenOpen() {
+      var body = document.querySelector('body');
+      var tagsPage = document.querySelector('.tags-page');
+      this.scrollPosition = window.pageYOffset;
+      body.classList.add('bodyWhenOverlay');
+      tagsPage.classList.add('tags-page-when-overlay');
+      tagsPage.style.top = -this.scrollPosition + 'px';
+    },
+    keepScrollWhenClose: function keepScrollWhenClose() {
+      var body = document.querySelector('body');
+      var tagsPage = document.querySelector('.tags-page');
+      body.classList.remove('bodyWhenOverlay');
+      tagsPage.classList.remove('tags-page-when-overlay');
+      tagsPage.style.top = null;
+      window.scroll(0, this.scrollPosition);
+      this.scrollPosition = null;
+    },
+    // 投稿のモーダルウィンドウの開閉
+    openModalPost: function openModalPost(postIndex) {
+      this.keepScrollWhenOpen();
+      this.modalPostId = this.posts[postIndex].id;
+      this.modalPostUser = this.posts[postIndex].user;
+      this.modalPostUserId = this.posts[postIndex].userId;
+      this.modalPostUserIcon = this.posts[postIndex].userIcon;
+      this.modalPostDonmai = this.posts[postIndex].donmai;
+      this.modalPostDonmaiCount = this.posts[postIndex].donmai_count;
+      this.modalPostImages = this.posts[postIndex].images;
+      this.modalPostTags = this.posts[postIndex].tags;
+      this.modalPostCommentCount = this.posts[postIndex].comment_count;
+      this.modalPostShow = true;
+    },
+    closeModalPost: function closeModalPost() {
+      this.keepScrollWhenClose();
+      this.modalPostShow = false;
+      this.modalPostId = null;
+      this.modalPostUser = '';
+      this.modalPostUserId = null;
+      this.modalPostDonmai = false;
+      this.modalPostDonmaiCount = null;
+      this.modalPostImages = [];
+      this.modalPostTags = [];
+      this.modalPostCommentCount = null;
+      this.modalPostComments.map(function (element) {
+        element.replyShow = false;
+      });
+    },
+    // どんまいしたユーザーのモーダルウィンドウの開閉
+    openModalDonmai: function openModalDonmai() {
+      this.modalDonmaiShow = true;
+    },
+    closeModalDonmai: function closeModalDonmai() {
+      this.modalDonmaiShow = false;
+    },
+    // 画像のモーダルウィンドウの開閉
+    openImageModal: function openImageModal(image) {
+      if (!this.modalPostShow) {
+        this.keepScrollWhenOpen();
+      }
+
+      this.modalImageShow = true;
+      this.modalImage = image;
+      var overlayImage = document.querySelector('.overlay-image-image');
+      var img = new Image();
+      img.src = image;
+      var img_width = img.width;
+      var img_height = img.height; // console.log(overlayImage);
+      // console.log(img_width);
+      // console.log(img_height);
+
+      if (img_height > img_width) {
+        overlayImage.classList.add('height-is-bigger');
+      }
+    },
+    closeImageModal: function closeImageModal() {
+      if (!this.modalPostShow) {
+        this.keepScrollWhenClose();
+      }
+
+      var overlayImage = document.querySelector('.overlay-image-image');
+      overlayImage.classList.remove('height-is-bigger');
+      this.modalImageShow = false;
+      this.modalImage = '';
+    },
+    // どんまいしたユーザーのフォローとアンフォロー
+    donmaiFollowToggle: function donmaiFollowToggle(i) {
+      this.modalDonmaiUsers[i].followed = !this.modalDonmaiUsers[i].followed;
+    },
+    //コメントへの返信の表示と非表示
+    openCommentReply: function openCommentReply(i) {
+      this.modalPostComments[i].replyShow = true;
+    },
+    closeCommentReply: function closeCommentReply(i) {
+      this.modalPostComments[i].replyShow = false;
+    },
+    // コメントのいいね機能
+    commentGood: function commentGood(i) {
+      var comment = this.modalPostComments.find(function (v) {
+        return v.id == i;
+      });
+      comment.good = !comment.good;
+
+      if (!comment.good) {
+        comment.goodCount--;
+      } else {
+        comment.goodCount++;
+      }
+    },
+    // コメントの返信へのいいね機能
+    replyGood: function replyGood(comId, repId) {
+      var comment = this.modalPostComments.find(function (v) {
+        return v.id == comId;
+      });
+      var reply = comment.replies.find(function (v) {
+        return v.id == repId;
+      });
+      reply.good = !reply.good;
+
+      if (!reply.good) {
+        reply.goodCount--;
+      } else {
+        reply.goodCount++;
+      }
+    },
+    // コメントへの返信フォームの表示と非表示
+    openReplyForm: function openReplyForm(i) {
+      this.modalPostComments[i].replyFormOpened = true;
+    },
+    closeReplyForm: function closeReplyForm(i) {
+      this.modalPostComments[i].replyFormOpened = false;
+    },
+    // モーダルのタグをクリックして新たなタグページへ遷移する際の処理
+    fromModalTagToTag: function fromModalTagToTag() {
+      var body = document.querySelector('body');
+      var tagsPage = document.querySelector('.tags-page');
+      body.classList.remove('bodyWhenOverlay');
+      tagsPage.classList.remove('tags-page-when-overlay');
+      tagsPage.style.top = null;
+      this.scrollPosition = null;
+      this.modalPostShow = false;
+    }
+  },
+  computed: {
+    // コメント入力欄の高さを計算
+    commentStyles: function commentStyles() {
+      return {
+        'height': this.commentHeight
+      };
+    } // replyStyles(i) {
+    //   return {
+    //     'height': this.modalPostComments[i].replyHeight,
+    //   }
+    // },
+
+  },
+  watch: {
+    // コメント入力欄の高さの変化を監視
+    commentInput: function commentInput() {
+      this.changeCommentHeight();
+    } // modalPostComments: {
+    //   handler: function() {
+    //     this.changeReplyHeight();
+    //   },
+    //   deep: true
+    // },
+
+  },
+  beforeRouteLeave: function beforeRouteLeave(to, from, next) {
+    if (this.modalPostShow || this.modalImageShow) {
+      this.keepScrollWhenClose();
+      this.modalPostShow = false;
+      this.modalImageShow = false;
+    }
+
+    next();
+  },
+  beforeRouteUpdate: function beforeRouteUpdate(to, from, next) {
+    if (this.modalPostShow || this.modalImageShow) {
+      this.keepScrollWhenClose();
+      this.modalPostShow = false;
+      this.modalImageShow = false;
+    }
+
+    next();
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/tags/TagsPopular.vue?vue&type=script&lang=js&":
+/*!***************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/tags/TagsPopular.vue?vue&type=script&lang=js& ***!
   \***************************************************************************************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -1971,9 +8855,2907 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      scrollPosition: null,
+      commentInput: '',
+      commentHeight: '31px',
+      // モーダル
+      modalPostShow: false,
+      modalPostId: null,
+      modalPostUser: '',
+      modalPostUserId: null,
+      modalPostUserIcon: '',
+      modalPostDonmai: false,
+      modalPostDonmaiCount: null,
+      modalPostImages: [],
+      modalPostTags: [],
+      modalPostCommentCount: 9,
+      modalPostComments: [{
+        id: 1,
+        userId: 2,
+        user: '鈴木誠也',
+        icon: '../../image/img1.jpg',
+        day: '5日前',
+        goodCount: 37,
+        good: false,
+        replyCount: 4,
+        replyShow: false,
+        replyFormOpened: false,
+        replyInput: '',
+        replyHeight: '31px',
+        replies: [{
+          id: 2,
+          userId: 3,
+          user: '柳田',
+          icon: '../../image/img5.jpg',
+          day: '4日前',
+          goodCount: 37,
+          good: false
+        }, {
+          id: 3,
+          userId: 4,
+          user: '筒香',
+          icon: '../../image/img6.jpg',
+          day: '3日前',
+          goodCount: 37,
+          good: false
+        }, {
+          id: 4,
+          userId: 5,
+          user: '田中将大',
+          icon: '../../image/img7.jpg',
+          day: '2日前',
+          goodCount: 37,
+          good: false
+        }, {
+          id: 5,
+          userId: 6,
+          user: 'ダルビッシュ',
+          icon: '../../image/img8.jpg',
+          day: '1日前',
+          goodCount: 37,
+          good: false
+        }]
+      }, {
+        id: 2,
+        userId: 4,
+        user: 'ジーター',
+        icon: '../../image/img2.jpg',
+        day: '4日前',
+        goodCount: 37,
+        good: false,
+        replyCount: 0,
+        replyShow: false,
+        replyFormOpened: false,
+        replyInput: '',
+        replyHeight: '31px',
+        replies: []
+      }, {
+        id: 3,
+        userId: 6,
+        user: 'ブライアント',
+        icon: '../../image/img3.jpg',
+        day: '3日前',
+        goodCount: 37,
+        good: false,
+        replyCount: 3,
+        replyShow: false,
+        replyFormOpened: false,
+        replyInput: '',
+        replyHeight: '31px',
+        replies: [{
+          id: 2,
+          userId: 3,
+          user: 'カーショウ',
+          icon: '../../image/img5.jpg',
+          day: '4日前',
+          goodCount: 37,
+          good: false
+        }, {
+          id: 3,
+          userId: 4,
+          user: 'シャーザー',
+          icon: '../../image/img6.jpg',
+          day: '3日前',
+          goodCount: 37,
+          good: false
+        }, {
+          id: 4,
+          userId: 5,
+          user: 'バーランダー',
+          icon: '../../image/img7.jpg',
+          day: '2日前',
+          goodCount: 37,
+          good: false
+        }]
+      }, {
+        id: 4,
+        userId: 8,
+        user: '松井秀樹',
+        icon: '../../image/img4.jpg',
+        day: '2日前',
+        goodCount: 37,
+        good: false,
+        replyCount: 0,
+        replyShow: false,
+        replyFormOpened: false,
+        replyInput: '',
+        replyHeight: '31px',
+        replies: []
+      }],
+      // 画像モーダル
+      modalImageShow: false,
+      modalImage: '',
+      // どんまいモーダル
+      modalDonmaiShow: false,
+      modalDonmaiUsers: [{
+        id: 11,
+        icon: '../../image/img1.jpg',
+        name: 'ジェイコブ・デグロム',
+        followed: false
+      }, {
+        id: 22,
+        icon: '../../image/img2.jpg',
+        name: 'ゲリット・コール',
+        followed: false
+      }, {
+        id: 33,
+        icon: '../../image/img3.jpg',
+        name: '山本由伸',
+        followed: false
+      }, {
+        id: 44,
+        icon: '../../image/img4.jpg',
+        name: '千賀滉大',
+        followed: false
+      }, {
+        id: 55,
+        icon: '../../image/img5.jpg',
+        name: '菅野智之',
+        followed: false
+      }, {
+        id: 66,
+        icon: '../../image/img6.jpg',
+        name: 'うんこクソ野郎',
+        followed: false
+      }, {
+        id: 77,
+        icon: '../../image/img6.jpg',
+        name: 'うんこクソ野郎',
+        followed: false
+      }, {
+        id: 88,
+        icon: '../../image/img6.jpg',
+        name: 'うんこクソ野郎',
+        followed: false
+      }, {
+        id: 99,
+        icon: '../../image/img6.jpg',
+        name: 'うんこクソ野郎',
+        followed: false
+      }, {
+        id: 1010,
+        icon: '../../image/img6.jpg',
+        name: 'うんこクソ野郎',
+        followed: false
+      }],
+      // 投稿
+      posts: [{
+        id: 3,
+        userIcon: '../../image/img1.jpg',
+        user: 'うんこマン',
+        userId: 10,
+        donmai: false,
+        donmai_count: 10000,
+        comment_count: 13,
+        images: ['../../image/img1.jpg', '../../image/img2.jpg'],
+        tags: ['#ばか', '#あほ', '#うんち', '#ちんちん', '#ハゲ']
+      }, {
+        id: 2,
+        userIcon: '../../image/img2.jpg',
+        user: 'ハゲ野郎',
+        userId: 11,
+        donmai: false,
+        donmai_count: 9500,
+        comment_count: 9,
+        images: ['../../image/img4.jpg']
+      }, {
+        id: 4,
+        userIcon: '../../image/img3.jpg',
+        user: 'でべそ野郎',
+        userId: 12,
+        donmai: false,
+        donmai_count: 8000,
+        comment_count: 7,
+        images: []
+      }, {
+        id: 1,
+        userIcon: '../../image/img4.jpg',
+        user: 'ちんこ野郎',
+        userId: 13,
+        donmai: false,
+        donmai_count: 7400,
+        comment_count: 8,
+        images: ['../../image/img5.jpg', '../../image/img6.jpg', '../../image/img7.jpg', '../../image/img8.jpg']
+      }]
+    };
+  },
+  methods: {
+    // コメント入力欄の高さをフレキシブルに
+    changeCommentHeight: function changeCommentHeight() {
+      var _this = this;
+
+      this.commentHeight = this.$refs.commentarea.scrollHeight + 'px';
+      this.commentHeight = 18 + 'px';
+      this.$nextTick(function () {
+        _this.commentHeight = _this.$refs.commentarea.scrollHeight + 'px';
+      });
+    },
+    // どんまい機能の処理
+    donmai: function donmai(index) {
+      var post = this.posts[index];
+      post.donmai = !post.donmai;
+
+      if (post.donmai == false) {
+        post.donmai_count--;
+      } else {
+        post.donmai_count++;
+      }
+    },
+    // モーダルのどんまい機能
+    modalDonmai: function modalDonmai(i) {
+      var post = this.posts.find(function (v) {
+        return v.id == i;
+      });
+      post.donmai = !post.donmai;
+      this.modalPostDonmai = !this.modalPostDonmai;
+
+      if (!this.modalPostDonmai) {
+        post.donmai_count--;
+        this.modalPostDonmaiCount--;
+      } else {
+        post.donmai_count++;
+        this.modalPostDonmaiCount++;
+      }
+    },
+    // モーダルウィンドウ開閉時に背景のスクロール位置を維持
+    keepScrollWhenOpen: function keepScrollWhenOpen() {
+      var body = document.querySelector('body');
+      var tagsPage = document.querySelector('.tags-page');
+      this.scrollPosition = window.pageYOffset;
+      body.classList.add('bodyWhenOverlay');
+      tagsPage.classList.add('tags-page-when-overlay');
+      tagsPage.style.top = -this.scrollPosition + 'px';
+    },
+    keepScrollWhenClose: function keepScrollWhenClose() {
+      var body = document.querySelector('body');
+      var tagsPage = document.querySelector('.tags-page');
+      body.classList.remove('bodyWhenOverlay');
+      tagsPage.classList.remove('tags-page-when-overlay');
+      tagsPage.style.top = null;
+      window.scroll(0, this.scrollPosition);
+      this.scrollPosition = null;
+    },
+    // 投稿のモーダルウィンドウの開閉
+    openModalPost: function openModalPost(postIndex) {
+      this.keepScrollWhenOpen();
+      this.modalPostId = this.posts[postIndex].id;
+      this.modalPostUser = this.posts[postIndex].user;
+      this.modalPostUserId = this.posts[postIndex].userId;
+      this.modalPostUserIcon = this.posts[postIndex].userIcon;
+      this.modalPostDonmai = this.posts[postIndex].donmai;
+      this.modalPostDonmaiCount = this.posts[postIndex].donmai_count;
+      this.modalPostImages = this.posts[postIndex].images;
+      this.modalPostTags = this.posts[postIndex].tags;
+      this.modalPostCommentCount = this.posts[postIndex].comment_count;
+      this.modalPostShow = true;
+    },
+    closeModalPost: function closeModalPost() {
+      this.keepScrollWhenClose();
+      this.modalPostShow = false;
+      this.modalPostId = null;
+      this.modalPostUser = '';
+      this.modalPostUserId = null;
+      this.modalPostDonmai = false;
+      this.modalPostDonmaiCount = null;
+      this.modalPostImages = [];
+      this.modalPostTags = [];
+      this.modalPostCommentCount = null;
+      this.modalPostComments.map(function (element) {
+        element.replyShow = false;
+      });
+    },
+    // どんまいしたユーザーのモーダルウィンドウの開閉
+    openModalDonmai: function openModalDonmai() {
+      this.modalDonmaiShow = true;
+    },
+    closeModalDonmai: function closeModalDonmai() {
+      this.modalDonmaiShow = false;
+    },
+    // 画像のモーダルウィンドウの開閉
+    openImageModal: function openImageModal(image) {
+      if (!this.modalPostShow) {
+        this.keepScrollWhenOpen();
+      }
+
+      this.modalImageShow = true;
+      this.modalImage = image;
+      var overlayImage = document.querySelector('.overlay-image-image');
+      var img = new Image();
+      img.src = image;
+      var img_width = img.width;
+      var img_height = img.height;
+      console.log(overlayImage);
+      console.log(img_width);
+      console.log(img_height);
+
+      if (img_height > img_width) {
+        overlayImage.classList.add('height-is-bigger');
+      }
+    },
+    closeImageModal: function closeImageModal() {
+      if (!this.modalPostShow) {
+        this.keepScrollWhenClose();
+      }
+
+      var overlayImage = document.querySelector('.overlay-image-image');
+      overlayImage.classList.remove('height-is-bigger');
+      this.modalImageShow = false;
+      this.modalImage = '';
+    },
+    // どんまいしたユーザーのフォローとアンフォロー
+    donmaiFollowToggle: function donmaiFollowToggle(i) {
+      this.modalDonmaiUsers[i].followed = !this.modalDonmaiUsers[i].followed;
+    },
+    //コメントへの返信の表示と非表示
+    openCommentReply: function openCommentReply(i) {
+      this.modalPostComments[i].replyShow = true;
+    },
+    closeCommentReply: function closeCommentReply(i) {
+      this.modalPostComments[i].replyShow = false;
+    },
+    // コメントのいいね機能
+    commentGood: function commentGood(i) {
+      var comment = this.modalPostComments.find(function (v) {
+        return v.id == i;
+      });
+      comment.good = !comment.good;
+
+      if (!comment.good) {
+        comment.goodCount--;
+      } else {
+        comment.goodCount++;
+      }
+    },
+    // コメントの返信へのいいね機能
+    replyGood: function replyGood(comId, repId) {
+      var comment = this.modalPostComments.find(function (v) {
+        return v.id == comId;
+      });
+      var reply = comment.replies.find(function (v) {
+        return v.id == repId;
+      });
+      reply.good = !reply.good;
+
+      if (!reply.good) {
+        reply.goodCount--;
+      } else {
+        reply.goodCount++;
+      }
+    },
+    // コメントへの返信フォームの表示と非表示
+    openReplyForm: function openReplyForm(i) {
+      this.modalPostComments[i].replyFormOpened = true;
+    },
+    closeReplyForm: function closeReplyForm(i) {
+      this.modalPostComments[i].replyFormOpened = false;
+    }
+  },
+  computed: {
+    // コメント入力欄の高さを計算
+    commentStyles: function commentStyles() {
+      return {
+        'height': this.commentHeight
+      };
+    } // replyStyles(i) {
+    //   return {
+    //     'height': this.modalPostComments[i].replyHeight,
+    //   }
+    // },
+
+  },
+  watch: {
+    // コメント入力欄の高さの変化を監視
+    commentInput: function commentInput() {
+      this.changeCommentHeight();
+    } // modalPostComments: {
+    //   handler: function() {
+    //     this.changeReplyHeight();
+    //   },
+    //   deep: true
+    // },
+
+  },
+  beforeRouteLeave: function beforeRouteLeave(to, from, next) {
+    if (this.modalPostShow || this.modalImageShow) {
+      this.keepScrollWhenClose();
+      this.modalPostShow = false;
+      this.modalImageShow = false;
+    }
+
+    next();
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/trend/Trend.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/trend/Trend.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      frame: 0,
+      intervalId: 0,
+      trends: [{
+        tag: '#うんち',
+        postCount: 124324,
+        postCountShow: 0
+      }, {
+        tag: '#おやしろさま',
+        postCount: 91563,
+        postCountShow: 0
+      }, {
+        tag: '#ばか',
+        postCount: 82123,
+        postCountShow: 0
+      }, {
+        tag: '#シンジ',
+        postCount: 70543,
+        postCountShow: 0
+      }, {
+        tag: '#エヴァンゲリオン',
+        postCount: 63056,
+        postCountShow: 0
+      }, {
+        tag: '#ひぐらし',
+        postCount: 50375,
+        postCountShow: 0
+      }, {
+        tag: '#さとこ',
+        postCount: 30274,
+        postCountShow: 0
+      }, {
+        tag: '#ハゲ',
+        postCount: 22647,
+        postCountShow: 0
+      }, {
+        tag: '#うへへ',
+        postCount: 3000,
+        postCountShow: 0
+      }]
+    };
+  },
+  methods: {
+    // グラフの描画
+    makeGraph: function makeGraph() {
+      var firstPostCount = this.trends[0].postCount;
+
+      for (var i = 0; i < this.trends.length; i++) {
+        var trend = document.querySelector('.trend-box').children[i];
+        var postCount = this.trends[i].postCount;
+        trend.children[2].style.width = postCount / firstPostCount * 100 + '%';
+      }
+    },
+    postCountPlus: function postCountPlus() {
+      var frameCount = 50;
+      this.frame++;
+
+      for (var i = 0; i < this.trends.length; i++) {
+        this.trends[i].postCountShow += Math.floor(this.trends[i].postCount / frameCount);
+
+        if (this.frame == frameCount) {
+          this.trends[i].postCountShow = this.trends[i].postCount;
+        }
+      }
+
+      if (this.frame == frameCount) {
+        clearInterval(this.intervalId);
+      }
+    },
+    postCountUp: function postCountUp() {
+      var self = this;
+      this.intervalId = setInterval(function () {
+        self.postCountPlus();
+      }, 20);
+    }
+  },
   mounted: function mounted() {
-    console.log('Component mounted.');
+    this.makeGraph();
+    this.postCountUp();
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/user/User.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/user/User.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      icon: '../../image/unko.jpg',
+      name: 'うんこマン',
+      followed: false,
+      postCount: 8000,
+      follower: 3450,
+      follow: 2155,
+      // 前のページのルート
+      prevRoute: null,
+      // フォロー・フォロワーのモーダル
+      isFollowModal: false,
+      modalFollowShow: false,
+      modalFollowers: [{
+        id: 111,
+        icon: '../../image/img1.jpg',
+        name: 'あああああ',
+        followed: false
+      }, {
+        id: 222,
+        icon: '../../image/img2.jpg',
+        name: 'いいいいい',
+        followed: false
+      }, {
+        id: 333,
+        icon: '../../image/img3.jpg',
+        name: 'ううううううう',
+        followed: false
+      }, {
+        id: 444,
+        icon: '../../image/img4.jpg',
+        name: 'えええええええ',
+        followed: false
+      }, {
+        id: 555,
+        icon: '../../image/img5.jpg',
+        name: 'おおおおおお',
+        followed: false
+      }, {
+        id: 666,
+        icon: '../../image/img6.jpg',
+        name: 'かかかかかかか',
+        followed: false
+      }, {
+        id: 777,
+        icon: '../../image/img7.jpg',
+        name: '聴き聴ききききき',
+        followed: false
+      }, {
+        id: 888,
+        icon: '../../image/img8.jpg',
+        name: 'クククククくくく',
+        followed: false
+      }],
+      modalFollows: [{
+        id: 123,
+        icon: '../../image/img7.jpg',
+        name: 'マイク',
+        followed: true
+      }, {
+        id: 234,
+        icon: '../../image/img8.jpg',
+        name: 'マイク',
+        followed: true
+      }, {
+        id: 345,
+        icon: '../../image/img2.jpg',
+        name: 'マイク',
+        followed: true
+      }, {
+        id: 456,
+        icon: '../../image/img1.jpg',
+        name: 'マイク',
+        followed: true
+      }]
+    };
+  },
+  methods: {
+    // モーダルウィンドウ開閉時に背景のスクロール位置を維持
+    keepScrollWhenOpen: function keepScrollWhenOpen() {
+      var body = document.querySelector('body');
+      var userPage = document.querySelector('.user-page');
+      this.scrollPosition = window.pageYOffset;
+      body.classList.add('bodyWhenOverlay');
+      userPage.classList.add('user-page-when-overlay');
+      userPage.style.top = -this.scrollPosition + 'px';
+    },
+    keepScrollWhenClose: function keepScrollWhenClose() {
+      var body = document.querySelector('body');
+      var userPage = document.querySelector('.user-page');
+      body.classList.remove('bodyWhenOverlay');
+      userPage.classList.remove('user-page-when-overlay');
+      userPage.style.top = null;
+      window.scroll(0, this.scrollPosition);
+      this.scrollPosition = null;
+    },
+    // フォロー・フォロワーのモーダルウィンドウの開閉
+    opneModalFollow: function opneModalFollow(n) {
+      this.keepScrollWhenOpen();
+
+      if (n == 1) {
+        this.isFollowModal = false;
+      } else {
+        this.isFollowModal = true;
+      }
+
+      this.modalFollowShow = true;
+    },
+    closeModalFollow: function closeModalFollow() {
+      this.keepScrollWhenClose();
+      this.modalFollowShow = false;
+      console.log('うんこ');
+    },
+    // フォローとアンフォローの処理
+    toggleFollow: function toggleFollow() {
+      this.followed = !this.followed;
+
+      if (this.followed) {
+        this.follower++;
+      } else {
+        this.follower--;
+      }
+    },
+    // フォロー・フォロワーのフォローとアンフォロー
+    followToggle: function followToggle(i) {
+      if (this.isFollowModal) {
+        this.modalFollows[i].followed = !this.modalFollows[i].followed;
+      } else {
+        this.modalFollowers[i].followed = !this.modalFollowers[i].followed;
+      }
+    } // フォロー・フォロワーモーダルのユーザーをクリックした際の処理
+    // fromModalFollwToUser() {
+    //   const body = document.querySelector('body');
+    //   const userPage = document.querySelector('.user-page');
+    //   body.classList.remove('bodyWhenOverlay');
+    //   userPage.classList.remove('user-page-when-overlay');
+    //   userPage.style.top = null;
+    //   this.scrollPosition = null;
+    //   this.modalFollowShow = false;
+    // }
+
+  },
+  beforeRouteLeave: function beforeRouteLeave(to, from, next) {
+    if (this.modalFollowShow) {
+      this.keepScrollWhenClose();
+      this.modalFollowShow = false;
+    }
+
+    next();
+  },
+  beforeRouteUpdate: function beforeRouteUpdate(to, from, next) {
+    if (this.modalFollowShow) {
+      this.keepScrollWhenClose();
+      this.modalFollowShow = false;
+    }
+
+    next();
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/user/UserDonmai.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/user/UserDonmai.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      scrollPosition: null,
+      commentInput: '',
+      commentHeight: '31px',
+      // モーダル
+      modalPostShow: false,
+      modalPostId: null,
+      modalPostUser: '',
+      modalPostUserId: null,
+      modalPostUserIcon: '',
+      modalPostDonmai: false,
+      modalPostDonmaiCount: null,
+      modalPostImages: [],
+      modalPostTags: [],
+      modalPostCommentCount: 9,
+      modalPostComments: [{
+        id: 1,
+        userId: 2,
+        user: '鈴木誠也',
+        icon: '../../image/img1.jpg',
+        day: '5日前',
+        goodCount: 37,
+        good: false,
+        replyCount: 4,
+        replyShow: false,
+        replyFormOpened: false,
+        replyInput: '',
+        replyHeight: '31px',
+        replies: [{
+          id: 2,
+          userId: 3,
+          user: '柳田',
+          icon: '../../image/img5.jpg',
+          day: '4日前',
+          goodCount: 37,
+          good: false
+        }, {
+          id: 3,
+          userId: 4,
+          user: '筒香',
+          icon: '../../image/img6.jpg',
+          day: '3日前',
+          goodCount: 37,
+          good: false
+        }, {
+          id: 4,
+          userId: 5,
+          user: '田中将大',
+          icon: '../../image/img7.jpg',
+          day: '2日前',
+          goodCount: 37,
+          good: false
+        }, {
+          id: 5,
+          userId: 6,
+          user: 'ダルビッシュ',
+          icon: '../../image/img8.jpg',
+          day: '1日前',
+          goodCount: 37,
+          good: false
+        }]
+      }, {
+        id: 2,
+        userId: 4,
+        user: 'ジーター',
+        icon: '../../image/img2.jpg',
+        day: '4日前',
+        goodCount: 37,
+        good: false,
+        replyCount: 0,
+        replyShow: false,
+        replyFormOpened: false,
+        replyInput: '',
+        replyHeight: '31px',
+        replies: []
+      }, {
+        id: 3,
+        userId: 6,
+        user: 'ブライアント',
+        icon: '../../image/img3.jpg',
+        day: '3日前',
+        goodCount: 37,
+        good: false,
+        replyCount: 3,
+        replyShow: false,
+        replyFormOpened: false,
+        replyInput: '',
+        replyHeight: '31px',
+        replies: [{
+          id: 2,
+          userId: 3,
+          user: 'カーショウ',
+          icon: '../../image/img5.jpg',
+          day: '4日前',
+          goodCount: 37,
+          good: false
+        }, {
+          id: 3,
+          userId: 4,
+          user: 'シャーザー',
+          icon: '../../image/img6.jpg',
+          day: '3日前',
+          goodCount: 37,
+          good: false
+        }, {
+          id: 4,
+          userId: 5,
+          user: 'バーランダー',
+          icon: '../../image/img7.jpg',
+          day: '2日前',
+          goodCount: 37,
+          good: false
+        }]
+      }, {
+        id: 4,
+        userId: 8,
+        user: '松井秀樹',
+        icon: '../../image/img4.jpg',
+        day: '2日前',
+        goodCount: 37,
+        good: false,
+        replyCount: 0,
+        replyShow: false,
+        replyFormOpened: false,
+        replyInput: '',
+        replyHeight: '31px',
+        replies: []
+      }],
+      // 画像モーダル
+      modalImageShow: false,
+      modalImage: '',
+      // どんまいモーダル
+      modalDonmaiShow: false,
+      modalDonmaiUsers: [{
+        id: 11,
+        icon: '../../image/img1.jpg',
+        name: 'ジェイコブ・デグロム',
+        followed: false
+      }, {
+        id: 22,
+        icon: '../../image/img2.jpg',
+        name: 'ゲリット・コール',
+        followed: false
+      }, {
+        id: 33,
+        icon: '../../image/img3.jpg',
+        name: '山本由伸',
+        followed: false
+      }, {
+        id: 44,
+        icon: '../../image/img4.jpg',
+        name: '千賀滉大',
+        followed: false
+      }, {
+        id: 55,
+        icon: '../../image/img5.jpg',
+        name: '菅野智之',
+        followed: false
+      }, {
+        id: 66,
+        icon: '../../image/img6.jpg',
+        name: 'うんこクソ野郎',
+        followed: false
+      }, {
+        id: 77,
+        icon: '../../image/img6.jpg',
+        name: 'うんこクソ野郎',
+        followed: false
+      }, {
+        id: 88,
+        icon: '../../image/img6.jpg',
+        name: 'うんこクソ野郎',
+        followed: false
+      }, {
+        id: 99,
+        icon: '../../image/img6.jpg',
+        name: 'うんこクソ野郎',
+        followed: false
+      }, {
+        id: 1010,
+        icon: '../../image/img6.jpg',
+        name: 'うんこクソ野郎',
+        followed: false
+      }],
+      // 投稿
+      posts: [{
+        id: 1,
+        userIcon: '../../image/img3.jpg',
+        user: 'あほばか',
+        user_id: 52,
+        donmai: true,
+        donmai_count: 82,
+        comment_count: 9,
+        images: ['../../image/img2.jpg'],
+        tags: ['#ばか', '#あほ', '#うんち', '#ちんちん', '#ハゲ']
+      }, {
+        id: 2,
+        userIcon: '../../image/img4.jpg',
+        user: 'ちんちん',
+        user_id: 51,
+        donmai: true,
+        donmai_count: 37,
+        comment_count: 9,
+        images: ['../../image/img6.jpg']
+      }]
+    };
+  },
+  methods: {
+    // コメント入力欄の高さをフレキシブルに
+    changeCommentHeight: function changeCommentHeight() {
+      var _this = this;
+
+      this.commentHeight = this.$refs.commentarea.scrollHeight + 'px';
+      this.commentHeight = 18 + 'px';
+      this.$nextTick(function () {
+        _this.commentHeight = _this.$refs.commentarea.scrollHeight + 'px';
+      });
+    },
+    // どんまい機能の処理
+    donmai: function donmai(index) {
+      var post = this.posts[index];
+      post.donmai = !post.donmai;
+
+      if (post.donmai == false) {
+        post.donmai_count--;
+      } else {
+        post.donmai_count++;
+      }
+    },
+    // モーダルのどんまい機能
+    modalDonmai: function modalDonmai(i) {
+      var post = this.posts.find(function (v) {
+        return v.id == i;
+      });
+      post.donmai = !post.donmai;
+      this.modalPostDonmai = !this.modalPostDonmai;
+
+      if (!this.modalPostDonmai) {
+        post.donmai_count--;
+        this.modalPostDonmaiCount--;
+      } else {
+        post.donmai_count++;
+        this.modalPostDonmaiCount++;
+      }
+    },
+    // モーダルウィンドウ開閉時に背景のスクロール位置を維持
+    keepScrollWhenOpen: function keepScrollWhenOpen() {
+      var body = document.querySelector('body');
+      var userPage = document.querySelector('.user-page');
+      this.scrollPosition = window.pageYOffset;
+      body.classList.add('bodyWhenOverlay');
+      userPage.classList.add('user-page-when-overlay');
+      userPage.style.top = -this.scrollPosition + 'px';
+    },
+    keepScrollWhenClose: function keepScrollWhenClose() {
+      var body = document.querySelector('body');
+      var userPage = document.querySelector('.user-page');
+      body.classList.remove('bodyWhenOverlay');
+      userPage.classList.remove('user-page-when-overlay');
+      userPage.style.top = null;
+      window.scroll(0, this.scrollPosition);
+      this.scrollPosition = null;
+    },
+    // 投稿のモーダルウィンドウの開閉
+    openModalPost: function openModalPost(postIndex) {
+      this.keepScrollWhenOpen();
+      this.modalPostId = this.posts[postIndex].id;
+      this.modalPostUser = this.posts[postIndex].user;
+      this.modalPostUserId = this.posts[postIndex].user_id;
+      this.modalPostUserIcon = this.posts[postIndex].userIcon;
+      this.modalPostDonmai = this.posts[postIndex].donmai;
+      this.modalPostDonmaiCount = this.posts[postIndex].donmai_count;
+      this.modalPostImages = this.posts[postIndex].images;
+      this.modalPostTags = this.posts[postIndex].tags;
+      this.modalPostCommentCount = this.posts[postIndex].comment_count;
+      this.modalPostShow = true;
+    },
+    closeModalPost: function closeModalPost() {
+      this.keepScrollWhenClose();
+      this.modalPostShow = false;
+      this.modalPostId = null;
+      this.modalPostUser = '';
+      this.modalPostUserId = null;
+      this.modalPostDonmai = false;
+      this.modalPostDonmaiCount = null;
+      this.modalPostImages = [];
+      this.modalPostTags = [];
+      this.modalPostCommentCount = null;
+      this.modalPostComments.map(function (element) {
+        element.replyShow = false;
+      });
+    },
+    // どんまいしたユーザーのモーダルウィンドウの開閉
+    openModalDonmai: function openModalDonmai() {
+      this.modalDonmaiShow = true;
+    },
+    closeModalDonmai: function closeModalDonmai() {
+      this.modalDonmaiShow = false;
+    },
+    // 画像のモーダルウィンドウの開閉
+    openImageModal: function openImageModal(image) {
+      if (!this.modalPostShow) {
+        this.keepScrollWhenOpen();
+      }
+
+      this.modalImageShow = true;
+      this.modalImage = image;
+      var overlayImage = document.querySelector('.overlay-image-image');
+      var img = new Image();
+      img.src = image;
+      var img_width = img.width;
+      var img_height = img.height;
+
+      if (img_height > img_width) {
+        overlayImage.classList.add('height-is-bigger');
+      }
+    },
+    closeImageModal: function closeImageModal() {
+      if (!this.modalPostShow) {
+        this.keepScrollWhenClose();
+      }
+
+      var overlayImage = document.querySelector('.overlay-image-image');
+      overlayImage.classList.remove('height-is-bigger');
+      this.modalImageShow = false;
+      this.modalImage = '';
+    },
+    // どんまいしたユーザーのフォローとアンフォロー
+    donmaiFollowToggle: function donmaiFollowToggle(i) {
+      this.modalDonmaiUsers[i].followed = !this.modalDonmaiUsers[i].followed;
+    },
+    //コメントへの返信の表示と非表示
+    openCommentReply: function openCommentReply(i) {
+      this.modalPostComments[i].replyShow = true;
+    },
+    closeCommentReply: function closeCommentReply(i) {
+      this.modalPostComments[i].replyShow = false;
+    },
+    // コメントのいいね機能
+    commentGood: function commentGood(i) {
+      var comment = this.modalPostComments.find(function (v) {
+        return v.id == i;
+      });
+      comment.good = !comment.good;
+
+      if (!comment.good) {
+        comment.goodCount--;
+      } else {
+        comment.goodCount++;
+      }
+    },
+    // コメントの返信へのいいね機能
+    replyGood: function replyGood(comId, repId) {
+      var comment = this.modalPostComments.find(function (v) {
+        return v.id == comId;
+      });
+      var reply = comment.replies.find(function (v) {
+        return v.id == repId;
+      });
+      reply.good = !reply.good;
+
+      if (!reply.good) {
+        reply.goodCount--;
+      } else {
+        reply.goodCount++;
+      }
+    },
+    // コメントへの返信フォームの表示と非表示
+    openReplyForm: function openReplyForm(i) {
+      this.modalPostComments[i].replyFormOpened = true;
+    },
+    closeReplyForm: function closeReplyForm(i) {
+      this.modalPostComments[i].replyFormOpened = false;
+    }
+  },
+  computed: {
+    // コメント入力欄の高さを計算
+    commentStyles: function commentStyles() {
+      return {
+        'height': this.commentHeight
+      };
+    } // replyStyles(i) {
+    //   return {
+    //     'height': this.modalPostComments[i].replyHeight,
+    //   }
+    // },
+
+  },
+  watch: {
+    // コメント入力欄の高さの変化を監視
+    commentInput: function commentInput() {
+      this.changeCommentHeight();
+    } // modalPostComments: {
+    //   handler: function() {
+    //     this.changeReplyHeight();
+    //   },
+    //   deep: true
+    // },
+
+  },
+  beforeRouteLeave: function beforeRouteLeave(to, from, next) {
+    if (this.modalPostShow || this.modalImageShow) {
+      this.keepScrollWhenClose();
+      this.modalPostShow = false;
+      this.modalImageShow = false;
+    }
+
+    next();
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/user/UserGuchi.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/user/UserGuchi.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      threads: [{
+        id: 3,
+        genre: '仕事',
+        created_at: '2021/1/27 19:07',
+        title: '上司がうざすぎる！'
+      }, {
+        id: 6,
+        genre: '学校',
+        created_at: '2021/1/27 19:07',
+        title: '夏休みの宿題多過ぎない？？'
+      }, {
+        id: 9,
+        genre: '仕事',
+        created_at: '2021/1/27 19:07',
+        title: '上司がうざすぎる！'
+      }, {
+        id: 12,
+        genre: '学校',
+        created_at: '2021/1/27 19:07',
+        title: '夏休みの宿題多過ぎない？？'
+      }]
+    };
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/user/UserPosts.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/user/UserPosts.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      scrollPosition: null,
+      commentInput: '',
+      commentHeight: '31px',
+      // モーダル
+      modalPostShow: false,
+      modalPostId: null,
+      modalPostUser: '',
+      modalPostUserId: null,
+      modalPostDonmai: false,
+      modalPostDonmaiCount: null,
+      modalPostImages: [],
+      modalPostTags: [],
+      modalPostCommentCount: 9,
+      modalPostComments: [{
+        id: 1,
+        userId: 2,
+        user: '鈴木誠也',
+        icon: '../../image/img1.jpg',
+        day: '5日前',
+        goodCount: 37,
+        good: false,
+        replyCount: 4,
+        replyShow: false,
+        replyFormOpened: false,
+        replyInput: '',
+        replyHeight: '31px',
+        replies: [{
+          id: 2,
+          userId: 3,
+          user: '柳田',
+          icon: '../../image/img5.jpg',
+          day: '4日前',
+          goodCount: 37,
+          good: false
+        }, {
+          id: 3,
+          userId: 4,
+          user: '筒香',
+          icon: '../../image/img6.jpg',
+          day: '3日前',
+          goodCount: 37,
+          good: false
+        }, {
+          id: 4,
+          userId: 5,
+          user: '田中将大',
+          icon: '../../image/img7.jpg',
+          day: '2日前',
+          goodCount: 37,
+          good: false
+        }, {
+          id: 5,
+          userId: 6,
+          user: 'ダルビッシュ',
+          icon: '../../image/img8.jpg',
+          day: '1日前',
+          goodCount: 37,
+          good: false
+        }]
+      }, {
+        id: 2,
+        userId: 4,
+        user: 'ジーター',
+        icon: '../../image/img2.jpg',
+        day: '4日前',
+        goodCount: 37,
+        good: false,
+        replyCount: 0,
+        replyShow: false,
+        replyFormOpened: false,
+        replyInput: '',
+        replyHeight: '31px',
+        replies: []
+      }, {
+        id: 3,
+        userId: 6,
+        user: 'ブライアント',
+        icon: '../../image/img3.jpg',
+        day: '3日前',
+        goodCount: 37,
+        good: false,
+        replyCount: 3,
+        replyShow: false,
+        replyFormOpened: false,
+        replyInput: '',
+        replyHeight: '31px',
+        replies: [{
+          id: 2,
+          userId: 3,
+          user: 'カーショウ',
+          icon: '../../image/img5.jpg',
+          day: '4日前',
+          goodCount: 37,
+          good: false
+        }, {
+          id: 3,
+          userId: 4,
+          user: 'シャーザー',
+          icon: '../../image/img6.jpg',
+          day: '3日前',
+          goodCount: 37,
+          good: false
+        }, {
+          id: 4,
+          userId: 5,
+          user: 'バーランダー',
+          icon: '../../image/img7.jpg',
+          day: '2日前',
+          goodCount: 37,
+          good: false
+        }]
+      }, {
+        id: 4,
+        userId: 8,
+        user: '松井秀樹',
+        icon: '../../image/img4.jpg',
+        day: '2日前',
+        goodCount: 37,
+        good: false,
+        replyCount: 0,
+        replyShow: false,
+        replyFormOpened: false,
+        replyInput: '',
+        replyHeight: '31px',
+        replies: []
+      }],
+      // 画像モーダル
+      modalImageShow: false,
+      modalImage: '',
+      // どんまいモーダル
+      modalDonmaiShow: false,
+      modalDonmaiUsers: [{
+        id: 11,
+        icon: '../../image/img1.jpg',
+        name: 'ジェイコブ・デグロム',
+        followed: false
+      }, {
+        id: 22,
+        icon: '../../image/img2.jpg',
+        name: 'ゲリット・コール',
+        followed: false
+      }, {
+        id: 33,
+        icon: '../../image/img3.jpg',
+        name: '山本由伸',
+        followed: false
+      }, {
+        id: 44,
+        icon: '../../image/img4.jpg',
+        name: '千賀滉大',
+        followed: false
+      }, {
+        id: 55,
+        icon: '../../image/img5.jpg',
+        name: '菅野智之',
+        followed: false
+      }, {
+        id: 66,
+        icon: '../../image/img6.jpg',
+        name: 'うんこクソ野郎',
+        followed: false
+      }, {
+        id: 77,
+        icon: '../../image/img6.jpg',
+        name: 'うんこクソ野郎',
+        followed: false
+      }, {
+        id: 88,
+        icon: '../../image/img6.jpg',
+        name: 'うんこクソ野郎',
+        followed: false
+      }, {
+        id: 99,
+        icon: '../../image/img6.jpg',
+        name: 'うんこクソ野郎',
+        followed: false
+      }, {
+        id: 1010,
+        icon: '../../image/img6.jpg',
+        name: 'うんこクソ野郎',
+        followed: false
+      }],
+      posts: [{
+        id: 1,
+        user: 'なおとくん',
+        donmai: false,
+        donmai_count: 57,
+        comment_count: 9,
+        images: ['../../image/img1.jpg', '../../image/img4.jpg'],
+        tags: ['#ばか', '#あほ', '#うんち', '#ちんちん', '#ハゲ']
+      }, {
+        id: 2,
+        user: 'なおとくん',
+        donmai: false,
+        donmai_count: 93,
+        comment_count: 9,
+        images: ['../../image/img5.jpg', '../../image/img7.jpg']
+      }, {
+        id: 3,
+        user: 'なおとくん',
+        donmai: false,
+        donmai_count: 17,
+        comment_count: 11,
+        images: ['../../image/img3.jpg', '../../image/img8.jpg']
+      }]
+    };
+  },
+  methods: {
+    // コメント入力欄の高さをフレキシブルに
+    changeCommentHeight: function changeCommentHeight() {
+      var _this = this;
+
+      this.commentHeight = this.$refs.commentarea.scrollHeight + 'px';
+      this.commentHeight = 18 + 'px';
+      this.$nextTick(function () {
+        _this.commentHeight = _this.$refs.commentarea.scrollHeight + 'px';
+      });
+    },
+    // どんまい機能の処理
+    donmai: function donmai(index) {
+      var post = this.posts[index];
+      post.donmai = !post.donmai;
+
+      if (post.donmai == false) {
+        post.donmai_count--;
+      } else {
+        post.donmai_count++;
+      }
+    },
+    // モーダルのどんまい機能
+    modalDonmai: function modalDonmai(i) {
+      var post = this.posts.find(function (v) {
+        return v.id == i;
+      });
+      post.donmai = !post.donmai;
+      this.modalPostDonmai = !this.modalPostDonmai;
+
+      if (!this.modalPostDonmai) {
+        post.donmai_count--;
+        this.modalPostDonmaiCount--;
+      } else {
+        post.donmai_count++;
+        this.modalPostDonmaiCount++;
+      }
+    },
+    // モーダルウィンドウ開閉時に背景のスクロール位置を維持
+    keepScrollWhenOpen: function keepScrollWhenOpen() {
+      var body = document.querySelector('body');
+      var userPage = document.querySelector('.user-page');
+      this.scrollPosition = window.pageYOffset;
+      body.classList.add('bodyWhenOverlay');
+      userPage.classList.add('user-page-when-overlay');
+      userPage.style.top = -this.scrollPosition + 'px';
+    },
+    keepScrollWhenClose: function keepScrollWhenClose() {
+      var body = document.querySelector('body');
+      var userPage = document.querySelector('.user-page');
+      body.classList.remove('bodyWhenOverlay');
+      userPage.classList.remove('user-page-when-overlay');
+      userPage.style.top = null;
+      window.scroll(0, this.scrollPosition);
+      this.scrollPosition = null;
+    },
+    // 投稿のモーダルウィンドウの開閉
+    openModalPost: function openModalPost(postIndex) {
+      this.keepScrollWhenOpen();
+      this.modalPostId = this.posts[postIndex].id;
+      this.modalPostUser = this.posts[postIndex].user;
+      this.modalPostUserId = this.$route.params.id;
+      this.modalPostDonmai = this.posts[postIndex].donmai;
+      this.modalPostDonmaiCount = this.posts[postIndex].donmai_count;
+      this.modalPostImages = this.posts[postIndex].images;
+      this.modalPostTags = this.posts[postIndex].tags;
+      this.modalPostCommentCount = this.posts[postIndex].comment_count;
+      this.modalPostShow = true;
+    },
+    closeModalPost: function closeModalPost() {
+      this.keepScrollWhenClose();
+      this.modalPostShow = false;
+      this.modalPostId = null;
+      this.modalPostUser = '';
+      this.modalPostUserId = null;
+      this.modalPostDonmai = false;
+      this.modalPostDonmaiCount = null;
+      this.modalPostImages = [];
+      this.modalPostTags = [];
+      this.modalPostCommentCount = null;
+      this.modalPostComments.map(function (element) {
+        element.replyShow = false;
+      });
+    },
+    // どんまいしたユーザーのモーダルウィンドウの開閉
+    openModalDonmai: function openModalDonmai() {
+      this.modalDonmaiShow = true;
+    },
+    closeModalDonmai: function closeModalDonmai() {
+      this.modalDonmaiShow = false;
+    },
+    // 画像のモーダルウィンドウの開閉
+    openImageModal: function openImageModal(image) {
+      if (!this.modalPostShow) {
+        this.keepScrollWhenOpen();
+      }
+
+      this.modalImageShow = true;
+      this.modalImage = image;
+      var overlayImage = document.querySelector('.overlay-image-image');
+      var img = new Image();
+      img.src = image;
+      var img_width = img.width;
+      var img_height = img.height;
+
+      if (img_height > img_width) {
+        overlayImage.classList.add('height-is-bigger');
+      }
+    },
+    closeImageModal: function closeImageModal() {
+      if (!this.modalPostShow) {
+        this.keepScrollWhenClose();
+      }
+
+      var overlayImage = document.querySelector('.overlay-image-image');
+      overlayImage.classList.remove('height-is-bigger');
+      this.modalImageShow = false;
+      this.modalImage = '';
+    },
+    // どんまいしたユーザーのフォローとアンフォロー
+    donmaiFollowToggle: function donmaiFollowToggle(i) {
+      this.modalDonmaiUsers[i].followed = !this.modalDonmaiUsers[i].followed;
+    },
+    //コメントへの返信の表示と非表示
+    openCommentReply: function openCommentReply(i) {
+      this.modalPostComments[i].replyShow = true;
+    },
+    closeCommentReply: function closeCommentReply(i) {
+      this.modalPostComments[i].replyShow = false;
+    },
+    // コメントのいいね機能
+    commentGood: function commentGood(i) {
+      var comment = this.modalPostComments.find(function (v) {
+        return v.id == i;
+      });
+      comment.good = !comment.good;
+
+      if (!comment.good) {
+        comment.goodCount--;
+      } else {
+        comment.goodCount++;
+      }
+    },
+    // コメントの返信へのいいね機能
+    replyGood: function replyGood(comId, repId) {
+      var comment = this.modalPostComments.find(function (v) {
+        return v.id == comId;
+      });
+      var reply = comment.replies.find(function (v) {
+        return v.id == repId;
+      });
+      reply.good = !reply.good;
+
+      if (!reply.good) {
+        reply.goodCount--;
+      } else {
+        reply.goodCount++;
+      }
+    },
+    // コメントへの返信フォームの表示と非表示
+    openReplyForm: function openReplyForm(i) {
+      this.modalPostComments[i].replyFormOpened = true;
+    },
+    closeReplyForm: function closeReplyForm(i) {
+      this.modalPostComments[i].replyFormOpened = false;
+    }
+  },
+  computed: {
+    // コメント入力欄の高さを計算
+    commentStyles: function commentStyles() {
+      return {
+        'height': this.commentHeight
+      };
+    } // replyStyles(i) {
+    //   return {
+    //     'height': this.modalPostComments[i].replyHeight,
+    //   }
+    // },
+
+  },
+  watch: {
+    // コメント入力欄の高さの変化を監視
+    commentInput: function commentInput() {
+      this.changeCommentHeight();
+    } // modalPostComments: {
+    //   handler: function() {
+    //     this.changeReplyHeight();
+    //   },
+    //   deep: true
+    // },
+
+  },
+  beforeRouteLeave: function beforeRouteLeave(to, from, next) {
+    if (this.modalPostShow || this.modalImageShow) {
+      this.keepScrollWhenClose();
+      this.modalPostShow = false;
+      this.modalImageShow = false;
+    }
+
+    next();
+  },
+  beforeRouteUpdate: function beforeRouteUpdate(to, from, next) {
+    if (this.modalPostShow || this.modalImageShow) {
+      this.keepScrollWhenClose();
+      this.modalPostShow = false;
+      this.modalImageShow = false;
+    }
+
+    next();
   }
 });
 
@@ -37568,9 +47350,1436 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ExampleComponent.vue?vue&type=template&id=299e239e&":
+/***/ "./node_modules/vue-click-outside/index.js":
+/*!*************************************************!*\
+  !*** ./node_modules/vue-click-outside/index.js ***!
+  \*************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+function validate(binding) {
+  if (typeof binding.value !== 'function') {
+    console.warn('[Vue-click-outside:] provided expression', binding.expression, 'is not a function.')
+    return false
+  }
+
+  return true
+}
+
+function isPopup(popupItem, elements) {
+  if (!popupItem || !elements)
+    return false
+
+  for (var i = 0, len = elements.length; i < len; i++) {
+    try {
+      if (popupItem.contains(elements[i])) {
+        return true
+      }
+      if (elements[i].contains(popupItem)) {
+        return false
+      }
+    } catch(e) {
+      return false
+    }
+  }
+
+  return false
+}
+
+function isServer(vNode) {
+  return typeof vNode.componentInstance !== 'undefined' && vNode.componentInstance.$isServer
+}
+
+exports = module.exports = {
+  bind: function (el, binding, vNode) {
+    if (!validate(binding)) return
+
+    // Define Handler and cache it on the element
+    function handler(e) {
+      if (!vNode.context) return
+
+      // some components may have related popup item, on which we shall prevent the click outside event handler.
+      var elements = e.path || (e.composedPath && e.composedPath())
+      elements && elements.length > 0 && elements.unshift(e.target)
+
+      if (el.contains(e.target) || isPopup(vNode.context.popupItem, elements)) return
+
+      el.__vueClickOutside__.callback(e)
+    }
+
+    // add Event Listeners
+    el.__vueClickOutside__ = {
+      handler: handler,
+      callback: binding.value
+    }
+    const clickHandler = 'ontouchstart' in document.documentElement ? 'touchstart' : 'click';
+    !isServer(vNode) && document.addEventListener(clickHandler, handler)
+  },
+
+  update: function (el, binding) {
+    if (validate(binding)) el.__vueClickOutside__.callback = binding.value
+  },
+
+  unbind: function (el, binding, vNode) {
+    // Remove Event Listeners
+    const clickHandler = 'ontouchstart' in document.documentElement ? 'touchstart' : 'click';
+    !isServer(vNode) && el.__vueClickOutside__ && document.removeEventListener(clickHandler, el.__vueClickOutside__.handler)
+    delete el.__vueClickOutside__
+  }
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Header.vue?vue&type=template&id=1f42fb90&":
+/*!*********************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Header.vue?vue&type=template&id=1f42fb90& ***!
+  \*********************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "header" }, [
+    _c("div", { staticClass: "header-1" }, [
+      _c(
+        "div",
+        { staticClass: "logo" },
+        [
+          _c("router-link", { attrs: { to: { name: "home" } } }, [
+            _c("img", { attrs: { src: "/image/logo.png", alt: "ロゴ画像" } })
+          ])
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "search search-1",
+          class: { "no-search": !_vm.searchOpened }
+        },
+        [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.keyword,
+                expression: "keyword"
+              },
+              {
+                name: "click-outside",
+                rawName: "v-click-outside",
+                value: _vm.searchClose,
+                expression: "searchClose"
+              }
+            ],
+            staticClass: "search-form",
+            attrs: { id: "search", type: "text", placeholder: "検索" },
+            domProps: { value: _vm.keyword },
+            on: {
+              keydown: function($event) {
+                if (
+                  !$event.type.indexOf("key") &&
+                  _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+                ) {
+                  return null
+                }
+                return _vm.search($event)
+              },
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.keyword = $event.target.value
+              }
+            }
+          })
+        ]
+      ),
+      _vm._v(" "),
+      !_vm.searchOpened
+        ? _c("div", { staticClass: "menus" }, [
+            _c(
+              "div",
+              { staticClass: "search-icon", on: { click: _vm.searchOpen } },
+              [_c("img", { attrs: { src: "/image/search2.png" } })]
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass: "header-genre-menu-2",
+                class: {
+                  "genre-menu-display-1":
+                    _vm.$route.path ==
+                      _vm.$router.resolve({ name: "home" }).href ||
+                    _vm.$route.path.startsWith("/genre/")
+                }
+              },
+              [
+                _c(
+                  "div",
+                  {
+                    directives: [
+                      {
+                        name: "click-outside",
+                        rawName: "v-click-outside",
+                        value: _vm.genreMenuClose,
+                        expression: "genreMenuClose"
+                      }
+                    ],
+                    staticClass: "menu-set-btn-genre",
+                    on: { click: _vm.genreMenuToggle }
+                  },
+                  [_vm._v("\n          ジャンル\n        ")]
+                ),
+                _vm._v(" "),
+                _vm.genreOpened
+                  ? _c("div", { staticClass: "pulldown-genre-menu" }, [
+                      _c(
+                        "ul",
+                        [
+                          _c(
+                            "li",
+                            [
+                              _c(
+                                "router-link",
+                                {
+                                  class: { selected: _vm.$route.path == "/" },
+                                  attrs: { to: { name: "home" } }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                すべて\n              "
+                                  )
+                                ]
+                              )
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _vm._l(_vm.genres, function(genre, index) {
+                            return _c(
+                              "li",
+                              { key: index },
+                              [
+                                _c(
+                                  "router-link",
+                                  {
+                                    class: {
+                                      selected:
+                                        _vm.$route.path ==
+                                        "/genre/" + genre.route
+                                    },
+                                    attrs: {
+                                      to: {
+                                        name: "home.genre",
+                                        params: { name: genre.route }
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _vm._v(
+                                      "\n                " +
+                                        _vm._s(genre.name) +
+                                        "\n              "
+                                    )
+                                  ]
+                                )
+                              ],
+                              1
+                            )
+                          })
+                        ],
+                        2
+                      )
+                    ])
+                  : _vm._e()
+              ]
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "menu menu-set" }, [
+              _c("div", [_vm._v("MENU")]),
+              _vm._v(" "),
+              _c("ul", [
+                _c(
+                  "li",
+                  [
+                    _c("router-link", { attrs: { to: { name: "home" } } }, [
+                      _c(
+                        "div",
+                        {
+                          staticClass: "menu-set-btn",
+                          class: {
+                            "current-2":
+                              _vm.$route.path ==
+                              _vm.$router.resolve({ name: "home" }).href
+                          }
+                        },
+                        [_vm._v("\n                ホーム\n              ")]
+                      )
+                    ])
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "li",
+                  [
+                    _c("router-link", { attrs: { to: { name: "trend" } } }, [
+                      _c(
+                        "div",
+                        {
+                          staticClass: "menu-set-btn",
+                          class: {
+                            "current-2":
+                              _vm.$route.path ==
+                              _vm.$router.resolve({ name: "trend" }).href
+                          }
+                        },
+                        [_vm._v("\n                トレンド\n              ")]
+                      )
+                    ])
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "li",
+                  [
+                    _c("router-link", { attrs: { to: { name: "hot" } } }, [
+                      _c(
+                        "div",
+                        {
+                          staticClass: "menu-set-btn",
+                          class: {
+                            "current-2":
+                              _vm.$route.path ==
+                              _vm.$router.resolve({ name: "hot" }).href
+                          }
+                        },
+                        [_vm._v("\n                話題の投稿\n              ")]
+                      )
+                    ])
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "li",
+                  [
+                    _c(
+                      "router-link",
+                      { attrs: { to: { name: "guchi.all" } } },
+                      [
+                        _c(
+                          "div",
+                          {
+                            staticClass: "menu-set-btn",
+                            class: {
+                              "current-2": _vm.$route.path.startsWith("/guchi")
+                            }
+                          },
+                          [
+                            _vm._v(
+                              "\n                みんなでグチ\n              "
+                            )
+                          ]
+                        )
+                      ]
+                    )
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "li",
+                  [
+                    _c(
+                      "router-link",
+                      { attrs: { to: { name: "user", params: { id: 1 } } } },
+                      [
+                        _c("div", { staticClass: "menu-set-btn" }, [
+                          _vm._v("プロフィール")
+                        ])
+                      ]
+                    )
+                  ],
+                  1
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "menu each-menu" },
+              [
+                _c(
+                  "router-link",
+                  {
+                    class: {
+                      current:
+                        _vm.$route.path ==
+                          _vm.$router.resolve({ name: "home" }).href ||
+                        _vm.$route.path.startsWith("/genre/")
+                    },
+                    attrs: { to: { name: "home" } }
+                  },
+                  [
+                    _c("div", { staticClass: "menu-set-btn" }, [
+                      _vm._v("ホーム")
+                    ])
+                  ]
+                )
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass: "header-genre-menu-wide",
+                class: {
+                  "genre-menu-display-2":
+                    _vm.$route.path ==
+                      _vm.$router.resolve({ name: "home" }).href ||
+                    _vm.$route.path.startsWith("/genre/")
+                }
+              },
+              [
+                _c(
+                  "div",
+                  {
+                    directives: [
+                      {
+                        name: "click-outside",
+                        rawName: "v-click-outside",
+                        value: _vm.genreMenuWideClose,
+                        expression: "genreMenuWideClose"
+                      }
+                    ],
+                    staticClass: "menu-set-btn-genre-wide",
+                    on: { click: _vm.genreMenuToggleWide }
+                  },
+                  [_vm._v("\n          ジャンル\n        ")]
+                ),
+                _vm._v(" "),
+                _vm.genreMenuWideOpened
+                  ? _c("div", { staticClass: "pulldown-genre-menu" }, [
+                      _c(
+                        "ul",
+                        [
+                          _c(
+                            "li",
+                            [
+                              _c(
+                                "router-link",
+                                {
+                                  class: { selected: _vm.$route.path == "/" },
+                                  attrs: { to: { name: "home" } }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                すべて\n              "
+                                  )
+                                ]
+                              )
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _vm._l(_vm.genres, function(genre, index) {
+                            return _c(
+                              "li",
+                              { key: index },
+                              [
+                                _c(
+                                  "router-link",
+                                  {
+                                    class: {
+                                      selected:
+                                        _vm.$route.path ==
+                                        "/genre/" + genre.route
+                                    },
+                                    attrs: {
+                                      to: {
+                                        name: "home.genre",
+                                        params: { name: genre.route }
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _vm._v(
+                                      "\n                " +
+                                        _vm._s(genre.name) +
+                                        "\n              "
+                                    )
+                                  ]
+                                )
+                              ],
+                              1
+                            )
+                          })
+                        ],
+                        2
+                      )
+                    ])
+                  : _vm._e()
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "menu each-menu" },
+              [
+                _c(
+                  "router-link",
+                  {
+                    class: {
+                      current:
+                        _vm.$route.path ==
+                        _vm.$router.resolve({ name: "trend" }).href
+                    },
+                    attrs: { to: { name: "trend" } }
+                  },
+                  [
+                    _c("div", { staticClass: "menu-set-btn" }, [
+                      _vm._v("トレンド")
+                    ])
+                  ]
+                )
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "menu each-menu" },
+              [
+                _c(
+                  "router-link",
+                  {
+                    class: {
+                      current:
+                        _vm.$route.path ==
+                        _vm.$router.resolve({ name: "hot" }).href
+                    },
+                    attrs: { to: { name: "hot" } }
+                  },
+                  [
+                    _c("div", { staticClass: "menu-set-btn" }, [
+                      _vm._v("話題の投稿")
+                    ])
+                  ]
+                )
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "menu each-menu" },
+              [
+                _c(
+                  "router-link",
+                  {
+                    class: { current: _vm.$route.path.startsWith("/guchi") },
+                    attrs: { to: { name: "guchi.all" } }
+                  },
+                  [
+                    _c("div", { staticClass: "menu-set-btn" }, [
+                      _vm._v("みんなでグチ")
+                    ])
+                  ]
+                )
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "icon each-menu" }, [
+              _c("img", {
+                directives: [
+                  {
+                    name: "click-outside",
+                    rawName: "v-click-outside",
+                    value: _vm.close,
+                    expression: "close"
+                  }
+                ],
+                class: { clicked: _vm.opened },
+                attrs: { src: "/image/unko.jpg" },
+                on: { click: _vm.toggle }
+              }),
+              _vm._v(" "),
+              _vm.opened
+                ? _c("ul", [
+                    _c(
+                      "li",
+                      [
+                        _c(
+                          "router-link",
+                          {
+                            attrs: { to: { name: "user", params: { id: 1 } } }
+                          },
+                          [_vm._v("\n              プロフィール\n            ")]
+                        )
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _vm._m(0)
+                  ])
+                : _vm._e()
+            ])
+          ])
+        : _vm._e()
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("li", [
+      _c("a", [_vm._v("\n              ログアウト\n            ")])
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/guchi/Guchi.vue?vue&type=template&id=d5bc69fc&":
+/*!**************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/guchi/Guchi.vue?vue&type=template&id=d5bc69fc& ***!
+  \**************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { ref: "scrollend", staticClass: "guchi" }, [
+    _c("div", { staticClass: "guchi-container" }, [
+      _c(
+        "div",
+        { staticClass: "guchi-main" },
+        [
+          _c("div", { staticClass: "guchi-top-btns" }, [
+            _vm.$route.path ==
+            _vm.$router.resolve({ name: "guchi.detail" }).href
+              ? _c(
+                  "div",
+                  {
+                    staticClass: "thread-back-btn",
+                    on: {
+                      click: function($event) {
+                        return _vm.$router.go(-1)
+                      }
+                    }
+                  },
+                  [_vm._v("戻る")]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _c("div", { staticClass: "guchi-top-btns-1" }, [
+              _c(
+                "div",
+                {
+                  directives: [
+                    {
+                      name: "click-outside",
+                      rawName: "v-click-outside",
+                      value: _vm.genreMenuClose,
+                      expression: "genreMenuClose"
+                    }
+                  ],
+                  staticClass: "guchi-genre-btn",
+                  on: { click: _vm.genreMenuOpen }
+                },
+                [_vm._v("ジャンル")]
+              ),
+              _vm._v(" "),
+              _c(
+                "ul",
+                {
+                  staticClass: "guchi-genre-list",
+                  class: { "guchi-genre-list-open": _vm.genreOpen }
+                },
+                [
+                  _c(
+                    "li",
+                    [
+                      _c(
+                        "router-link",
+                        {
+                          class: {
+                            selected:
+                              _vm.$route.path == "/guchi/all" ||
+                              _vm.$route.path == "/guchi/all/trend"
+                          },
+                          attrs: { to: { name: "guchi.all" } }
+                        },
+                        [_vm._v("\n                すべて\n              ")]
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _vm._l(_vm.genres, function(genre, index) {
+                    return _c(
+                      "li",
+                      { key: index },
+                      [
+                        _c(
+                          "router-link",
+                          {
+                            class: {
+                              selected:
+                                _vm.$route.path == "/guchi/" + genre.route ||
+                                _vm.$route.path ==
+                                  "/guchi/" + genre.route + "/trend"
+                            },
+                            attrs: { to: "/guchi/" + genre.route }
+                          },
+                          [
+                            _vm._v(
+                              "\n                " +
+                                _vm._s(genre.name) +
+                                "\n              "
+                            )
+                          ]
+                        )
+                      ],
+                      1
+                    )
+                  })
+                ],
+                2
+              ),
+              _vm._v(" "),
+              !_vm.createOpened &&
+              _vm.$route.path !==
+                _vm.$router.resolve({ name: "guchi.detail" }).href
+                ? _c(
+                    "div",
+                    {
+                      staticClass: "guchi-new",
+                      on: { click: _vm.openCreateForm }
+                    },
+                    [_vm._v("\n            部屋を作る\n          ")]
+                  )
+                : _vm._e()
+            ]),
+            _vm._v(" "),
+            _vm.$route.path !==
+            _vm.$router.resolve({ name: "guchi.detail" }).href
+              ? _c(
+                  "div",
+                  { staticClass: "guchi-change-order" },
+                  [
+                    !_vm.$route.path.includes("/trend")
+                      ? _c(
+                          "router-link",
+                          {
+                            class: {
+                              selected: !_vm.$route.path.includes("/trend")
+                            },
+                            attrs: { to: _vm.$route.path }
+                          },
+                          [_vm._v("\n            新着\n          ")]
+                        )
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _vm.$route.path.includes("/trend")
+                      ? _c(
+                          "router-link",
+                          {
+                            class: {
+                              selected: !_vm.$route.path.includes("/trend")
+                            },
+                            attrs: { to: _vm.$route.path.slice(0, -6) }
+                          },
+                          [_vm._v("\n            新着\n          ")]
+                        )
+                      : _vm._e(),
+                    _vm._v(" "),
+                    !_vm.$route.path.includes("/trend")
+                      ? _c(
+                          "router-link",
+                          {
+                            class: {
+                              selected: _vm.$route.path.includes("/trend")
+                            },
+                            attrs: { to: _vm.$route.path + "/trend" }
+                          },
+                          [_vm._v("\n            人気\n          ")]
+                        )
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _vm.$route.path.includes("/trend")
+                      ? _c(
+                          "router-link",
+                          {
+                            class: {
+                              selected: _vm.$route.path.includes("/trend")
+                            },
+                            attrs: { to: _vm.$route.path }
+                          },
+                          [_vm._v("\n            人気\n          ")]
+                        )
+                      : _vm._e()
+                  ],
+                  1
+                )
+              : _vm._e()
+          ]),
+          _vm._v(" "),
+          _vm.createOpened &&
+          _vm.$route.path !== _vm.$router.resolve({ name: "guchi.detail" }).href
+            ? _c("div", { staticClass: "guchi-new-form" }, [
+                _c("div", { staticClass: "top" }, [
+                  _c("div", { staticClass: "top-title" }, [
+                    _vm._v("\n            部屋を作成\n          ")
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass: "guchi-new-form-close",
+                      on: { click: _vm.closeCreateForm }
+                    },
+                    [_vm._v("\n            とじる\n          ")]
+                  )
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "bottom" }, [
+                  _c("div", { staticClass: "image-select" }, [
+                    _c("div", { staticClass: "title" }, [
+                      _vm._v("\n              画像を選択\n            ")
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "guchi-image-preview-area" }, [
+                      !_vm.file
+                        ? _c("div", { staticClass: "no-image" }, [
+                            _vm._v("NO IMAGE")
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.file && !_vm.$route.path.includes("/trend")
+                        ? _c("img", {
+                            staticClass: "guchi-new-batsu-icon",
+                            attrs: { src: "../image/batsu.png" },
+                            on: { click: _vm.deletePreview }
+                          })
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.file && _vm.$route.path.includes("/trend")
+                        ? _c("img", {
+                            staticClass: "guchi-new-batsu-icon",
+                            attrs: { src: "../../image/batsu.png" },
+                            on: { click: _vm.deletePreview }
+                          })
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _c("div", {
+                        staticClass: "guchi-image-preview",
+                        style: { backgroundImage: "url(" + _vm.url + ")" }
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _c("label", [
+                      !_vm.$route.path.includes("/trend")
+                        ? _c("img", {
+                            staticClass: "image-icon",
+                            attrs: { src: "../image/image.png" }
+                          })
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.$route.path.includes("/trend")
+                        ? _c("img", {
+                            staticClass: "image-icon",
+                            attrs: { src: "../../image/image.png" }
+                          })
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _c("input", {
+                        ref: "preview",
+                        staticClass: "file-upload",
+                        attrs: { type: "file", accept: "image/*" },
+                        on: { change: _vm.uploadFile }
+                      })
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _vm._m(0)
+                ])
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          _c("router-view")
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "guchi-genre-wide" }, [
+        _c("div", { staticClass: "guchi-genre-head" }, [_vm._v("ジャンル")]),
+        _vm._v(" "),
+        _c(
+          "ul",
+          [
+            _c(
+              "li",
+              [
+                _c(
+                  "router-link",
+                  {
+                    class: {
+                      selected:
+                        _vm.$route.path == "/guchi/all" ||
+                        _vm.$route.path == "/guchi/all/trend"
+                    },
+                    attrs: { to: { name: "guchi.all" } }
+                  },
+                  [_vm._v("\n            すべて\n          ")]
+                )
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _vm._l(_vm.genres, function(genre, index) {
+              return _c(
+                "li",
+                { key: index },
+                [
+                  _c(
+                    "router-link",
+                    {
+                      class: {
+                        selected:
+                          _vm.$route.path == "/guchi/" + genre.route ||
+                          _vm.$route.path == "/guchi/" + genre.route + "/trend"
+                      },
+                      attrs: { to: "/guchi/" + genre.route }
+                    },
+                    [
+                      _vm._v(
+                        "\n            " + _vm._s(genre.name) + "\n          "
+                      )
+                    ]
+                  )
+                ],
+                1
+              )
+            })
+          ],
+          2
+        )
+      ])
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "title-input" }, [
+      _c("div", { staticClass: "title-input-title" }, [
+        _vm._v("トークテーマを入力")
+      ]),
+      _vm._v(" "),
+      _c("input", {
+        staticClass: "guchi-title-input",
+        attrs: { type: "text" }
+      }),
+      _vm._v(" "),
+      _c("div", { staticClass: "create" }, [
+        _c("div", { staticClass: "create-btn" }, [_vm._v("作成")])
+      ])
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/guchi/GuchiAll.vue?vue&type=template&id=fa11ba22&":
+/*!*****************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/guchi/GuchiAll.vue?vue&type=template&id=fa11ba22& ***!
+  \*****************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "thread-box" },
+    _vm._l(_vm.threads, function(thread) {
+      return _c(
+        "router-link",
+        {
+          key: thread.id,
+          staticClass: "guchi-thread",
+          attrs: { to: { name: "guchi.detail" } }
+        },
+        [
+          _c("div", { staticClass: "thread-list-icon" }, [
+            !thread.icon
+              ? _c("div", {
+                  staticClass: "thread-left-icon-image none",
+                  style: { backgroundImage: "url(../image/no-image.png)" }
+                })
+              : _vm._e(),
+            _vm._v(" "),
+            thread.icon
+              ? _c("div", {
+                  staticClass: "thread-left-icon-image",
+                  style: { backgroundImage: "url(" + thread.icon + ")" }
+                })
+              : _vm._e()
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "thread-left" }, [
+            _c("div", { staticClass: "thread-left-top" }, [
+              _c("div", { staticClass: "genre-icon" }, [
+                _vm._v(_vm._s(thread.genre))
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "thread-time" }, [
+                _vm._v(_vm._s(thread.created_at))
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "thread-comment-count" }, [
+                _c("img", { attrs: { src: "../image/comment.png" } }),
+                _vm._v(
+                  "\n          " + _vm._s(thread.comment_count) + "\n        "
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "thread-title" }, [
+              _vm._v(_vm._s(thread.title))
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "bookmark" }, [
+            _c("img", { attrs: { src: "../image/bookmark.png" } })
+          ])
+        ]
+      )
+    }),
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/guchi/GuchiAllTrend.vue?vue&type=template&id=f59028c4&":
+/*!**********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/guchi/GuchiAllTrend.vue?vue&type=template&id=f59028c4& ***!
+  \**********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "thread-box" },
+    _vm._l(_vm.threads, function(thread) {
+      return _c(
+        "router-link",
+        {
+          key: thread.id,
+          staticClass: "guchi-thread",
+          attrs: { to: { name: "guchi.detail" } }
+        },
+        [
+          _c("div", { staticClass: "thread-list-icon" }, [
+            !thread.icon
+              ? _c("div", {
+                  staticClass: "thread-left-icon-image none",
+                  style: { backgroundImage: "url(../../image/no-image.png)" }
+                })
+              : _vm._e(),
+            _vm._v(" "),
+            thread.icon
+              ? _c("div", {
+                  staticClass: "thread-left-icon-image",
+                  style: { backgroundImage: "url(" + thread.icon + ")" }
+                })
+              : _vm._e()
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "thread-left" }, [
+            _c("div", { staticClass: "thread-left-top" }, [
+              _c("div", { staticClass: "genre-icon" }, [
+                _vm._v(_vm._s(thread.genre))
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "thread-time" }, [
+                _vm._v(_vm._s(thread.created_at))
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "thread-comment-count" }, [
+                _c("img", { attrs: { src: "../../image/comment.png" } }),
+                _vm._v(
+                  "\n          " + _vm._s(thread.comment_count) + "\n        "
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "thread-title" }, [
+              _vm._v(_vm._s(thread.title))
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "bookmark" }, [
+            _c("img", { attrs: { src: "../../image/bookmark.png" } })
+          ])
+        ]
+      )
+    }),
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/guchi/GuchiDetail.vue?vue&type=template&id=16a9b773&":
+/*!********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/guchi/GuchiDetail.vue?vue&type=template&id=16a9b773& ***!
+  \********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "thread-page" }, [
+    _c("div", { staticClass: "thread-page-container" }, [
+      _c(
+        "div",
+        { staticClass: "thread-scroll-btn", on: { click: _vm.scrollToEnd } },
+        [_c("img", { attrs: { src: "../../image/shita.png" } })]
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "thread-content" },
+        [
+          _c("div", { staticClass: "thread-title-area" }, [
+            _c("div", { staticClass: "thread-title-area-icon" }, [
+              _c("img", { attrs: { src: "../../image/unko.jpg" } })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "thread-title-area-right" }, [
+              _vm._m(0),
+              _vm._v(" "),
+              _c("div", { staticClass: "thread-title-area-infos" }, [
+                _c("div", { staticClass: "thread-title-area-comment" }, [
+                  _c("div", { staticClass: "comment-count" }, [
+                    _c("img", { attrs: { src: "../../image/comment.png" } }),
+                    _vm._v(
+                      "\n                  " +
+                        _vm._s(_vm.comments.length) +
+                        "\n              "
+                    )
+                  ])
+                ]),
+                _vm._v(" "),
+                _vm._m(1)
+              ])
+            ])
+          ]),
+          _vm._v(" "),
+          _vm._l(_vm.comments, function(comment) {
+            return _c(
+              "div",
+              {
+                key: comment.id,
+                staticClass: "thread-comment-area",
+                class: { "self-comment": comment.self }
+              },
+              [
+                _c("div", { staticClass: "thread-comment-area-top" }, [
+                  _c(
+                    "div",
+                    { staticClass: "id", class: { "self-id": comment.self } },
+                    [_vm._v(_vm._s(comment.id) + ":")]
+                  ),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "time" }, [
+                    _vm._v(_vm._s(comment.created_at))
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "thread-comment-area-comment" }, [
+                  _vm._v(
+                    "\n          " + _vm._s(comment.content) + "\n        "
+                  )
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "thread-comment-area-image" },
+                  _vm._l(comment.images, function(image, index) {
+                    return _c("div", { key: index }, [
+                      _c("img", {
+                        attrs: { src: image },
+                        on: {
+                          click: function($event) {
+                            return _vm.openImageModal(image)
+                          }
+                        }
+                      })
+                    ])
+                  }),
+                  0
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "thread-comment-area-bottom" }, [
+                  _c("div", { staticClass: "thread-comment-area-good" }, [
+                    _c("div", { staticClass: "good" }, [
+                      _vm._v(
+                        "\n              " +
+                          _vm._s(comment.good_count) +
+                          "\n              "
+                      ),
+                      !comment.gooded
+                        ? _c("img", {
+                            attrs: { src: "../../image/good.png" },
+                            on: {
+                              click: function($event) {
+                                return _vm.goodToggle(comment.id)
+                              }
+                            }
+                          })
+                        : _vm._e(),
+                      _vm._v(" "),
+                      comment.gooded
+                        ? _c("img", {
+                            attrs: { src: "../../image/gooded.png" },
+                            on: {
+                              click: function($event) {
+                                return _vm.goodToggle(comment.id)
+                              }
+                            }
+                          })
+                        : _vm._e()
+                    ])
+                  ])
+                ])
+              ]
+            )
+          }),
+          _vm._v(" "),
+          _c("div", { staticClass: "thread-post-area" }, [
+            _c("div", { staticClass: "title" }, [_vm._v("投稿する")]),
+            _vm._v(" "),
+            _vm._m(2),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "thread-image-preview" },
+              _vm._l(_vm.urls, function(url, index) {
+                return _c(
+                  "div",
+                  { key: index, staticClass: "thread-each-preview" },
+                  [
+                    _c("img", {
+                      staticClass: "thread-batsu-icon",
+                      attrs: { src: "../../image/batsu.png" },
+                      on: {
+                        click: function($event) {
+                          return _vm.deletePreview(url, index)
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("img", {
+                      staticClass: "thread-each-image",
+                      attrs: { src: url }
+                    })
+                  ]
+                )
+              }),
+              0
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "image-upload" }, [
+              _c("label", { attrs: { for: "comment-photo" } }, [
+                _c("img", { attrs: { src: "../../image/image.png" } }),
+                _vm._v(" "),
+                _c("input", {
+                  ref: "threadPreview",
+                  staticStyle: { display: "none" },
+                  attrs: {
+                    type: "file",
+                    id: "comment-photo",
+                    accept: "image/*",
+                    multiple: ""
+                  },
+                  on: { change: _vm.uploadFile }
+                })
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "check-btns" }, [
+              _c(
+                "div",
+                {
+                  staticClass: "tokumei",
+                  class: { selected: _vm.postStyle == "anonymous" },
+                  on: { click: _vm.anonymous }
+                },
+                [
+                  _c("img", { attrs: { src: "../../image/check.png" } }),
+                  _vm._v("\n            匿名で投稿\n          ")
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass: "show-name",
+                  class: { selected: _vm.postStyle == "showName" },
+                  on: { click: _vm.showName }
+                },
+                [
+                  _c("img", { attrs: { src: "../../image/check.png" } }),
+                  _vm._v("\n            名前とアイコンを表示\n          ")
+                ]
+              )
+            ]),
+            _vm._v(" "),
+            _vm._m(3)
+          ])
+        ],
+        2
+      )
+    ]),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        directives: [
+          {
+            name: "show",
+            rawName: "v-show",
+            value: _vm.modalImageShow,
+            expression: "modalImageShow"
+          }
+        ],
+        staticClass: "overlay-image",
+        on: {
+          click: function($event) {
+            if ($event.target !== $event.currentTarget) {
+              return null
+            }
+            return _vm.closeImageModal($event)
+          }
+        }
+      },
+      [
+        _c("div", { staticClass: "overlay-image-box" }, [
+          _c("img", {
+            staticClass: "overlay-image-image",
+            attrs: { src: _vm.modalImage }
+          })
+        ])
+      ]
+    )
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "thread-title-area-title" }, [
+      _c("div", { staticClass: "thread-title" }, [
+        _vm._v("うんこ食べたくなってこない？うんこ食べたくなってこない？")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "thread-title-area-time" }, [
+      _c("div", { staticClass: "time" }, [_vm._v("2021/01/28 18:28")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "input" }, [_c("textarea")])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "post" }, [
+      _c("div", { staticClass: "post-btn" }, [_vm._v("投稿")])
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/guchi/GuchiGenre.vue?vue&type=template&id=20f2fc51&":
 /*!*******************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/ExampleComponent.vue?vue&type=template&id=299e239e& ***!
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/guchi/GuchiGenre.vue?vue&type=template&id=20f2fc51& ***!
   \*******************************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -37583,29 +48792,10787 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c(
+    "div",
+    { staticClass: "thread-box" },
+    _vm._l(_vm.threads, function(thread) {
+      return _c(
+        "router-link",
+        {
+          key: thread.id,
+          staticClass: "guchi-thread",
+          attrs: { to: { name: "guchi.detail" } }
+        },
+        [
+          _c("div", { staticClass: "thread-list-icon" }, [
+            !thread.icon
+              ? _c("div", {
+                  staticClass: "thread-left-icon-image none",
+                  style: { backgroundImage: "url(../image/no-image.png)" }
+                })
+              : _vm._e(),
+            _vm._v(" "),
+            thread.icon
+              ? _c("div", {
+                  staticClass: "thread-left-icon-image",
+                  style: { backgroundImage: "url(" + thread.icon + ")" }
+                })
+              : _vm._e()
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "thread-left" }, [
+            _c("div", { staticClass: "thread-left-top" }, [
+              _c("div", { staticClass: "genre-icon" }, [
+                _vm._v(_vm._s(thread.genre))
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "thread-time" }, [
+                _vm._v(_vm._s(thread.created_at))
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "thread-comment-count" }, [
+                _c("img", { attrs: { src: "../image/comment.png" } }),
+                _vm._v(
+                  "\n          " + _vm._s(thread.comment_count) + "\n        "
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "thread-title" }, [
+              _vm._v(_vm._s(thread.title))
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "bookmark" }, [
+            _c("img", { attrs: { src: "../image/bookmark.png" } })
+          ])
+        ]
+      )
+    }),
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/guchi/GuchiGenreTrend.vue?vue&type=template&id=5ef69f7c&":
+/*!************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/guchi/GuchiGenreTrend.vue?vue&type=template&id=5ef69f7c& ***!
+  \************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "thread-box" },
+    _vm._l(_vm.threads, function(thread) {
+      return _c(
+        "router-link",
+        {
+          key: thread.id,
+          staticClass: "guchi-thread",
+          attrs: { to: { name: "guchi.detail" } }
+        },
+        [
+          _c("div", { staticClass: "thread-list-icon" }, [
+            !thread.icon
+              ? _c("div", {
+                  staticClass: "thread-left-icon-image none",
+                  style: { backgroundImage: "url(../../image/no-image.png)" }
+                })
+              : _vm._e(),
+            _vm._v(" "),
+            thread.icon
+              ? _c("div", {
+                  staticClass: "thread-left-icon-image",
+                  style: { backgroundImage: "url(" + thread.icon + ")" }
+                })
+              : _vm._e()
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "thread-left" }, [
+            _c("div", { staticClass: "thread-left-top" }, [
+              _c("div", { staticClass: "genre-icon" }, [
+                _vm._v(_vm._s(thread.genre))
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "thread-time" }, [
+                _vm._v(_vm._s(thread.created_at))
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "thread-comment-count" }, [
+                _c("img", { attrs: { src: "../../image/comment.png" } }),
+                _vm._v(
+                  "\n          " + _vm._s(thread.comment_count) + "\n        "
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "thread-title" }, [
+              _vm._v(_vm._s(thread.title))
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "bookmark" }, [
+            _c("img", { attrs: { src: "../../image/bookmark.png" } })
+          ])
+        ]
+      )
+    }),
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/home/Home.vue?vue&type=template&id=1f26c2f4&":
+/*!************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/home/Home.vue?vue&type=template&id=1f26c2f4& ***!
+  \************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "home" },
+    [
+      _c("router-view"),
+      _vm._v(" "),
+      _c("div", { staticClass: "sidemenu" }, [
+        _c("div", { staticClass: "sidemenu-box" }, [
+          _c("div", { staticClass: "genre-head" }, [_vm._v("ジャンル")]),
+          _vm._v(" "),
+          _c("div", { staticClass: "genre-list" }, [
+            _c(
+              "ul",
+              [
+                _c(
+                  "li",
+                  [
+                    _c(
+                      "router-link",
+                      {
+                        class: { selected: _vm.$route.path == "/" },
+                        attrs: { to: { name: "home" } }
+                      },
+                      [_vm._v("\n              すべて\n            ")]
+                    )
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _vm._l(_vm.genres, function(genre, index) {
+                  return _c(
+                    "li",
+                    { key: index },
+                    [
+                      _c(
+                        "router-link",
+                        {
+                          class: {
+                            selected: _vm.$route.path == "/genre/" + genre.route
+                          },
+                          attrs: { to: "/genre/" + genre.route }
+                        },
+                        [
+                          _vm._v(
+                            "\n              " +
+                              _vm._s(genre.name) +
+                              "\n            "
+                          )
+                        ]
+                      )
+                    ],
+                    1
+                  )
+                })
+              ],
+              2
+            )
+          ])
+        ])
+      ])
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/home/HomeDefault.vue?vue&type=template&id=7ff7385d&":
+/*!*******************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/home/HomeDefault.vue?vue&type=template&id=7ff7385d& ***!
+  \*******************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "main-home" },
+    [
+      _c("div", { staticClass: "new-post" }, [
+        _c("div", { staticClass: "logo-area" }, [
+          _c("img", { attrs: { src: "../image/unko.jpg" } })
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "input-area" }, [
+          _c("div", { staticClass: "input-1" }, [
+            _c("textarea", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.text,
+                  expression: "text"
+                }
+              ],
+              ref: "area",
+              staticClass: "flex-textarea",
+              style: _vm.styles,
+              attrs: { placeholder: "なんかあった？" },
+              domProps: { value: _vm.text },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.text = $event.target.value
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _vm._m(0),
+          _vm._v(" "),
+          _vm.imageCount > 0
+            ? _c(
+                "div",
+                { staticClass: "image-preview" },
+                _vm._l(_vm.urls, function(url, index) {
+                  return _c(
+                    "div",
+                    {
+                      key: index,
+                      staticClass: "each-preview",
+                      class: {
+                        "one-image-pre": _vm.imageCount == 1,
+                        "two-image-pre": _vm.imageCount == 2,
+                        "three-image-pre": _vm.imageCount == 3,
+                        "four-image-pre": _vm.imageCount == 4,
+                        yokonaga: _vm.imageCount == 3 && index == 0
+                      }
+                    },
+                    [
+                      _c("div", { staticClass: "delete-image" }, [
+                        _c("img", {
+                          staticClass: "batsu-icon",
+                          attrs: { src: "../image/batsu.png" },
+                          on: {
+                            click: function($event) {
+                              return _vm.deletePreview(url, index)
+                            }
+                          }
+                        })
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "each-image-box" }, [
+                        _c("div", {
+                          staticClass: "each-image",
+                          class: {
+                            "one-each-image": _vm.imageCount == 1,
+                            "two-each-image": _vm.imageCount == 2,
+                            "three-each-image": _vm.imageCount == 3,
+                            "four-each-image": _vm.imageCount == 4,
+                            "yokonaga-image": _vm.imageCount == 3 && index == 0
+                          },
+                          style: { backgroundImage: "url(" + url + ")" }
+                        })
+                      ])
+                    ]
+                  )
+                }),
+                0
+              )
+            : _vm._e(),
+          _vm._v(" "),
+          _c("div", { staticClass: "input-2" }, [
+            _c("div", { staticClass: "image-add" }, [
+              _c("label", [
+                _c("img", {
+                  staticClass: "image-icon",
+                  attrs: { src: "../image/image.png", alt: "画像追加" }
+                }),
+                _vm._v(" "),
+                _c("input", {
+                  ref: "preview",
+                  staticClass: "file-upload",
+                  attrs: { type: "file", accept: "image/*", multiple: "" },
+                  on: { change: _vm.uploadFile }
+                })
+              ])
+            ]),
+            _vm._v(" "),
+            _vm._m(1)
+          ])
+        ])
+      ]),
+      _vm._v(" "),
+      _vm._l(_vm.posts, function(post, index) {
+        return _c("div", { key: post.id, staticClass: "posts" }, [
+          _c(
+            "div",
+            { staticClass: "logo-area" },
+            [
+              _c(
+                "router-link",
+                {
+                  attrs: { to: { name: "user", params: { id: post.userId } } }
+                },
+                [_c("img", { attrs: { src: "../image/unko.jpg" } })]
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "input-area" }, [
+            _c("div", { staticClass: "user-name-post" }, [
+              _vm._v(_vm._s(post.user))
+            ]),
+            _vm._v(" "),
+            _vm._m(2, true),
+            _vm._v(" "),
+            post.tags
+              ? _c(
+                  "div",
+                  { staticClass: "post-tags" },
+                  _vm._l(post.tags, function(tag, index) {
+                    return _c(
+                      "router-link",
+                      {
+                        key: index,
+                        attrs: {
+                          to: {
+                            name: "tags.new",
+                            params: { name: tag.replace("#", "") }
+                          }
+                        }
+                      },
+                      [_vm._v("\n          " + _vm._s(tag) + "\n        ")]
+                    )
+                  }),
+                  1
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            post.images.length > 0
+              ? _c(
+                  "div",
+                  { staticClass: "post-image-view" },
+                  _vm._l(post.images, function(image, index) {
+                    return _c(
+                      "div",
+                      {
+                        key: index,
+                        staticClass: "each-preview",
+                        class: {
+                          "one-image-pre": post.images.length == 1,
+                          "two-image-pre": post.images.length == 2,
+                          "three-image-pre": post.images.length == 3,
+                          "four-image-pre": post.images.length == 4,
+                          yokonaga: post.images.length == 3 && index == 0
+                        }
+                      },
+                      [
+                        _c(
+                          "div",
+                          {
+                            staticClass: "each-image-box",
+                            on: {
+                              click: function($event) {
+                                return _vm.openImageModal(image)
+                              }
+                            }
+                          },
+                          [
+                            _c("div", {
+                              staticClass: "each-image",
+                              class: {
+                                "one-each-image": post.images.length == 1,
+                                "two-each-image": post.images.length == 2,
+                                "three-each-image": post.images.length == 3,
+                                "four-each-image": post.images.length == 4,
+                                "yokonaga-image":
+                                  post.images.length == 3 && index == 0
+                              },
+                              style: { backgroundImage: "url(" + image + ")" }
+                            })
+                          ]
+                        )
+                      ]
+                    )
+                  }),
+                  0
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _c("div", { staticClass: "post-btns" }, [
+              _c(
+                "div",
+                {
+                  staticClass: "post-donmai post-action-icon",
+                  on: {
+                    click: function($event) {
+                      return _vm.donmai(index)
+                    }
+                  }
+                },
+                [
+                  !post.donmai
+                    ? _c("img", {
+                        attrs: { src: "../image/donmai.png", width: "30px" }
+                      })
+                    : _vm._e(),
+                  _vm._v(" "),
+                  post.donmai
+                    ? _c("img", {
+                        attrs: { src: "../image/donmaied.png", width: "30px" }
+                      })
+                    : _vm._e(),
+                  _vm._v(
+                    "\n          " + _vm._s(post.donmai_count) + "\n        "
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass: "post-comment-icon post-action-icon",
+                  on: {
+                    click: function($event) {
+                      return _vm.openModalPost(index)
+                    }
+                  }
+                },
+                [
+                  _c("img", { attrs: { src: "../image/comment.png" } }),
+                  _vm._v(
+                    "\n          " + _vm._s(post.comment_count) + "\n        "
+                  )
+                ]
+              )
+            ])
+          ])
+        ])
+      }),
+      _vm._v(" "),
+      _vm.modalPostShow
+        ? _c(
+            "div",
+            {
+              staticClass: "overlay-post",
+              on: {
+                click: function($event) {
+                  if ($event.target !== $event.currentTarget) {
+                    return null
+                  }
+                  return _vm.closeModalPost($event)
+                }
+              }
+            },
+            [
+              _c("div", { staticClass: "overlay-post-content" }, [
+                _c("div", { staticClass: "posts-overlay" }, [
+                  _c(
+                    "div",
+                    { staticClass: "logo-area" },
+                    [
+                      _c(
+                        "router-link",
+                        {
+                          attrs: {
+                            to: {
+                              name: "user",
+                              params: { id: _vm.modalPostUserId }
+                            }
+                          }
+                        },
+                        [_c("img", { attrs: { src: "../image/unko.jpg" } })]
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "input-area" },
+                    [
+                      _c("div", { staticClass: "user-name-post" }, [
+                        _vm._v(_vm._s(_vm.modalPostUser))
+                      ]),
+                      _vm._v(" "),
+                      _vm._m(3),
+                      _vm._v(" "),
+                      _vm.modalPostTags
+                        ? _c(
+                            "div",
+                            { staticClass: "post-tags" },
+                            _vm._l(_vm.modalPostTags, function(tag, index) {
+                              return _c(
+                                "router-link",
+                                {
+                                  key: index,
+                                  attrs: {
+                                    to: {
+                                      name: "tags.new",
+                                      params: { name: tag.replace("#", "") }
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n              " +
+                                      _vm._s(tag) +
+                                      "\n            "
+                                  )
+                                ]
+                              )
+                            }),
+                            1
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.modalPostImages.length > 0
+                        ? _c(
+                            "div",
+                            { staticClass: "post-image-view" },
+                            _vm._l(_vm.modalPostImages, function(image, index) {
+                              return _c(
+                                "div",
+                                {
+                                  key: index,
+                                  staticClass: "each-preview",
+                                  class: {
+                                    "one-image-pre":
+                                      _vm.modalPostImages.length == 1,
+                                    "two-image-pre":
+                                      _vm.modalPostImages.length == 2,
+                                    "three-image-pre":
+                                      _vm.modalPostImages.length == 3,
+                                    "four-image-pre":
+                                      _vm.modalPostImages.length == 4,
+                                    yokonaga:
+                                      _vm.modalPostImages.length == 3 &&
+                                      index == 0
+                                  }
+                                },
+                                [
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass: "each-image-box",
+                                      on: {
+                                        click: function($event) {
+                                          return _vm.openImageModal(image)
+                                        }
+                                      }
+                                    },
+                                    [
+                                      _c("div", {
+                                        staticClass: "each-image",
+                                        class: {
+                                          "one-each-image":
+                                            _vm.modalPostImages.length == 1,
+                                          "two-each-image":
+                                            _vm.modalPostImages.length == 2,
+                                          "three-each-image":
+                                            _vm.modalPostImages.length == 3,
+                                          "four-each-image":
+                                            _vm.modalPostImages.length == 4,
+                                          "yokonaga-image":
+                                            _vm.modalPostImages.length == 3 &&
+                                            index == 0
+                                        },
+                                        style: {
+                                          backgroundImage: "url(" + image + ")"
+                                        }
+                                      })
+                                    ]
+                                  )
+                                ]
+                              )
+                            }),
+                            0
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "post-btns-overlay" }, [
+                        _c(
+                          "div",
+                          {
+                            staticClass: "post-donmai-overlay post-action-icon",
+                            on: { click: _vm.openModalDonmai }
+                          },
+                          [
+                            _c("b", [_vm._v(_vm._s(_vm.modalPostDonmaiCount))]),
+                            _vm._v("件のどんまい\n            ")
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "post-comment-icon-overlay post-action-icon-comment-overlay"
+                          },
+                          [
+                            _c("b", [
+                              _vm._v(_vm._s(_vm.modalPostCommentCount))
+                            ]),
+                            _vm._v("件のコメント\n            ")
+                          ]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "comment-post-area" }, [
+                        _c("div", { staticClass: "comment-post-icon" }, [
+                          _c("img", { attrs: { src: "../image/unko.jpg" } })
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "input-3" }, [
+                          _c("textarea", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.commentInput,
+                                expression: "commentInput"
+                              }
+                            ],
+                            ref: "commentarea",
+                            staticClass: "flex-textarea-2",
+                            style: _vm.commentStyles,
+                            attrs: { placeholder: "コメントを入力" },
+                            domProps: { value: _vm.commentInput },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.commentInput = $event.target.value
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "comment-btn-main" }, [
+                            _vm._v("\n                コメント\n              ")
+                          ])
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _vm._l(_vm.modalPostComments, function(comment, index) {
+                        return _c(
+                          "div",
+                          {
+                            key: comment.id,
+                            staticClass: "overlay-post-comment-area"
+                          },
+                          [
+                            _c(
+                              "div",
+                              { staticClass: "overlay-post-comment-left" },
+                              [
+                                _c(
+                                  "router-link",
+                                  {
+                                    attrs: {
+                                      to: {
+                                        name: "user",
+                                        params: { id: comment.userId }
+                                      }
+                                    }
+                                  },
+                                  [_c("img", { attrs: { src: comment.icon } })]
+                                )
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              { staticClass: "overlay-post-comment-right" },
+                              [
+                                _c(
+                                  "div",
+                                  { staticClass: "overlay-post-comment-top" },
+                                  [
+                                    _c(
+                                      "div",
+                                      { staticClass: "overlay-post-name" },
+                                      [
+                                        _vm._v(
+                                          "\n                  " +
+                                            _vm._s(comment.user) +
+                                            "\n                "
+                                        )
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "div",
+                                      { staticClass: "overlay-post-day" },
+                                      [
+                                        _vm._v(
+                                          "\n                  " +
+                                            _vm._s(comment.day) +
+                                            "\n                "
+                                        )
+                                      ]
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  { staticClass: "overlay-post-comment" },
+                                  [
+                                    _vm._v(
+                                      "\n                うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。\n              "
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  { staticClass: "overlay-post-bottom" },
+                                  [
+                                    _c(
+                                      "div",
+                                      {
+                                        staticClass:
+                                          "overlay-post-comment-count"
+                                      },
+                                      [
+                                        comment.replyCount && !comment.replyShow
+                                          ? _c(
+                                              "div",
+                                              {
+                                                staticClass:
+                                                  "post-comment-count",
+                                                on: {
+                                                  click: function($event) {
+                                                    return _vm.openCommentReply(
+                                                      index
+                                                    )
+                                                  }
+                                                }
+                                              },
+                                              [
+                                                _vm._v(
+                                                  "\n                    ▼ " +
+                                                    _vm._s(comment.replyCount) +
+                                                    "件の返信を表示\n                  "
+                                                )
+                                              ]
+                                            )
+                                          : _vm._e(),
+                                        _vm._v(" "),
+                                        comment.replyCount && comment.replyShow
+                                          ? _c(
+                                              "div",
+                                              {
+                                                staticClass:
+                                                  "post-comment-count",
+                                                on: {
+                                                  click: function($event) {
+                                                    return _vm.closeCommentReply(
+                                                      index
+                                                    )
+                                                  }
+                                                }
+                                              },
+                                              [
+                                                _vm._v(
+                                                  "\n                    ▲ " +
+                                                    _vm._s(comment.replyCount) +
+                                                    "件の返信を非表示\n                  "
+                                                )
+                                              ]
+                                            )
+                                          : _vm._e(),
+                                        _vm._v(" "),
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass: "comment-replay-btn",
+                                            on: {
+                                              click: function($event) {
+                                                return _vm.openReplyForm(index)
+                                              }
+                                            }
+                                          },
+                                          [_vm._v("返信する")]
+                                        )
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "div",
+                                      { staticClass: "overlay-post-good" },
+                                      [
+                                        _vm._v(
+                                          "\n                  " +
+                                            _vm._s(comment.goodCount) +
+                                            "\n                  "
+                                        ),
+                                        !comment.good
+                                          ? _c("img", {
+                                              attrs: {
+                                                src: "../image/good.png"
+                                              },
+                                              on: {
+                                                click: function($event) {
+                                                  return _vm.commentGood(
+                                                    comment.id
+                                                  )
+                                                }
+                                              }
+                                            })
+                                          : _vm._e(),
+                                        _vm._v(" "),
+                                        comment.good
+                                          ? _c("img", {
+                                              attrs: {
+                                                src: "../image/gooded.png"
+                                              },
+                                              on: {
+                                                click: function($event) {
+                                                  return _vm.commentGood(
+                                                    comment.id
+                                                  )
+                                                }
+                                              }
+                                            })
+                                          : _vm._e()
+                                      ]
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                comment.replyFormOpened
+                                  ? _c("div", { staticClass: "input-3" }, [
+                                      _c("textarea", {
+                                        directives: [
+                                          {
+                                            name: "model",
+                                            rawName: "v-model",
+                                            value: comment.replyInput,
+                                            expression: "comment.replyInput"
+                                          }
+                                        ],
+                                        ref: "replyarea",
+                                        refInFor: true,
+                                        staticClass: "flex-textarea-2",
+                                        attrs: { placeholder: "返信を入力" },
+                                        domProps: { value: comment.replyInput },
+                                        on: {
+                                          input: function($event) {
+                                            if ($event.target.composing) {
+                                              return
+                                            }
+                                            _vm.$set(
+                                              comment,
+                                              "replyInput",
+                                              $event.target.value
+                                            )
+                                          }
+                                        }
+                                      }),
+                                      _vm._v(" "),
+                                      _c(
+                                        "div",
+                                        { staticClass: "comment-reply-btns" },
+                                        [
+                                          _c(
+                                            "div",
+                                            {
+                                              staticClass: "reply-cancel-btn",
+                                              on: {
+                                                click: function($event) {
+                                                  return _vm.closeReplyForm(
+                                                    index
+                                                  )
+                                                }
+                                              }
+                                            },
+                                            [
+                                              _vm._v(
+                                                "\n                    キャンセル\n                  "
+                                              )
+                                            ]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "div",
+                                            { staticClass: "comment-btn" },
+                                            [
+                                              _vm._v(
+                                                "\n                    コメント\n                  "
+                                              )
+                                            ]
+                                          )
+                                        ]
+                                      )
+                                    ])
+                                  : _vm._e(),
+                                _vm._v(" "),
+                                comment.replyShow
+                                  ? _c(
+                                      "div",
+                                      _vm._l(comment.replies, function(reply) {
+                                        return _c(
+                                          "div",
+                                          {
+                                            key: reply.id,
+                                            staticClass: "comment-reply-area"
+                                          },
+                                          [
+                                            _c(
+                                              "div",
+                                              {
+                                                staticClass:
+                                                  "overlay-post-comment-reply-area"
+                                              },
+                                              [
+                                                _c(
+                                                  "div",
+                                                  {
+                                                    staticClass:
+                                                      "overlay-post-comment-left"
+                                                  },
+                                                  [
+                                                    _c(
+                                                      "router-link",
+                                                      {
+                                                        attrs: {
+                                                          to: {
+                                                            name: "user",
+                                                            params: {
+                                                              id: reply.userId
+                                                            }
+                                                          }
+                                                        }
+                                                      },
+                                                      [
+                                                        _c("img", {
+                                                          attrs: {
+                                                            src: reply.icon
+                                                          }
+                                                        })
+                                                      ]
+                                                    )
+                                                  ],
+                                                  1
+                                                ),
+                                                _vm._v(" "),
+                                                _c(
+                                                  "div",
+                                                  {
+                                                    staticClass:
+                                                      "overlay-post-comment-right"
+                                                  },
+                                                  [
+                                                    _c(
+                                                      "div",
+                                                      {
+                                                        staticClass:
+                                                          "overlay-post-comment-top"
+                                                      },
+                                                      [
+                                                        _c(
+                                                          "div",
+                                                          {
+                                                            staticClass:
+                                                              "overlay-post-name"
+                                                          },
+                                                          [
+                                                            _vm._v(
+                                                              "\n                          " +
+                                                                _vm._s(
+                                                                  reply.user
+                                                                ) +
+                                                                "\n                        "
+                                                            )
+                                                          ]
+                                                        ),
+                                                        _vm._v(" "),
+                                                        _c(
+                                                          "div",
+                                                          {
+                                                            staticClass:
+                                                              "overlay-post-day"
+                                                          },
+                                                          [
+                                                            _vm._v(
+                                                              "\n                          " +
+                                                                _vm._s(
+                                                                  reply.day
+                                                                ) +
+                                                                "\n                        "
+                                                            )
+                                                          ]
+                                                        )
+                                                      ]
+                                                    ),
+                                                    _vm._v(" "),
+                                                    _c(
+                                                      "div",
+                                                      {
+                                                        staticClass:
+                                                          "overlay-post-comment"
+                                                      },
+                                                      [
+                                                        _vm._v(
+                                                          "\n                        うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。\n                      "
+                                                        )
+                                                      ]
+                                                    ),
+                                                    _vm._v(" "),
+                                                    _c(
+                                                      "div",
+                                                      {
+                                                        staticClass:
+                                                          "overlay-post-bottom"
+                                                      },
+                                                      [
+                                                        _c(
+                                                          "div",
+                                                          {
+                                                            staticClass:
+                                                              "overlay-post-good"
+                                                          },
+                                                          [
+                                                            _vm._v(
+                                                              "\n                          " +
+                                                                _vm._s(
+                                                                  reply.goodCount
+                                                                ) +
+                                                                "\n                          "
+                                                            ),
+                                                            !reply.good
+                                                              ? _c("img", {
+                                                                  attrs: {
+                                                                    src:
+                                                                      "../image/good.png"
+                                                                  },
+                                                                  on: {
+                                                                    click: function(
+                                                                      $event
+                                                                    ) {
+                                                                      return _vm.replyGood(
+                                                                        comment.id,
+                                                                        reply.id
+                                                                      )
+                                                                    }
+                                                                  }
+                                                                })
+                                                              : _vm._e(),
+                                                            _vm._v(" "),
+                                                            reply.good
+                                                              ? _c("img", {
+                                                                  attrs: {
+                                                                    src:
+                                                                      "../image/gooded.png"
+                                                                  },
+                                                                  on: {
+                                                                    click: function(
+                                                                      $event
+                                                                    ) {
+                                                                      return _vm.replyGood(
+                                                                        comment.id,
+                                                                        reply.id
+                                                                      )
+                                                                    }
+                                                                  }
+                                                                })
+                                                              : _vm._e()
+                                                          ]
+                                                        )
+                                                      ]
+                                                    )
+                                                  ]
+                                                )
+                                              ]
+                                            )
+                                          ]
+                                        )
+                                      }),
+                                      0
+                                    )
+                                  : _vm._e()
+                              ]
+                            )
+                          ]
+                        )
+                      })
+                    ],
+                    2
+                  )
+                ])
+              ])
+            ]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          directives: [
+            {
+              name: "show",
+              rawName: "v-show",
+              value: _vm.modalImageShow,
+              expression: "modalImageShow"
+            }
+          ],
+          staticClass: "overlay-image",
+          on: {
+            click: function($event) {
+              if ($event.target !== $event.currentTarget) {
+                return null
+              }
+              return _vm.closeImageModal($event)
+            }
+          }
+        },
+        [
+          _c("div", { staticClass: "overlay-image-box" }, [
+            _c("img", {
+              staticClass: "overlay-image-image",
+              attrs: { src: _vm.modalImage }
+            })
+          ])
+        ]
+      ),
+      _vm._v(" "),
+      _vm.modalDonmaiShow
+        ? _c(
+            "div",
+            {
+              staticClass: "overlay-post",
+              on: {
+                click: function($event) {
+                  if ($event.target !== $event.currentTarget) {
+                    return null
+                  }
+                  return _vm.closeModalDonmai($event)
+                }
+              }
+            },
+            [
+              _c("div", { staticClass: "overlay-donmai-content" }, [
+                _c("div", { staticClass: "overlay-donmai-title" }, [
+                  _vm._v("\n        どんまい！\n      ")
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "donmai-user-box" },
+                  _vm._l(_vm.modalDonmaiUsers, function(user, index) {
+                    return _c(
+                      "div",
+                      { key: user.id, staticClass: "donmai-user-list" },
+                      [
+                        _c("div", { staticClass: "overlay-donmai-left" }, [
+                          _c(
+                            "div",
+                            { staticClass: "overlay-donmai-user-icon" },
+                            [
+                              _c(
+                                "router-link",
+                                {
+                                  attrs: {
+                                    to: {
+                                      name: "user",
+                                      params: { id: user.id }
+                                    }
+                                  }
+                                },
+                                [_c("img", { attrs: { src: user.icon } })]
+                              )
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            { staticClass: "overlay-donmai-user-name" },
+                            [
+                              _c(
+                                "router-link",
+                                {
+                                  attrs: {
+                                    to: {
+                                      name: "user",
+                                      params: { id: user.id }
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                " +
+                                      _vm._s(user.name) +
+                                      "\n              "
+                                  )
+                                ]
+                              )
+                            ],
+                            1
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "overlay-donmai-right" }, [
+                          !user.followed
+                            ? _c(
+                                "div",
+                                {
+                                  staticClass: "overlay-donmai-follow",
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.donmaiFollowToggle(index)
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n              フォローする\n            "
+                                  )
+                                ]
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
+                          user.followed
+                            ? _c(
+                                "div",
+                                {
+                                  staticClass: "overlay-donmai-followed",
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.donmaiFollowToggle(index)
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n              フォロー中\n            "
+                                  )
+                                ]
+                              )
+                            : _vm._e()
+                        ])
+                      ]
+                    )
+                  }),
+                  0
+                )
+              ])
+            ]
+          )
+        : _vm._e()
+    ],
+    2
+  )
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "container" }, [
-      _c("div", { staticClass: "row justify-content-center" }, [
-        _c("div", { staticClass: "col-md-8" }, [
-          _c("div", { staticClass: "card" }, [
-            _c("div", { staticClass: "card-header" }, [
-              _vm._v("Example Component")
+    return _c("div", { staticClass: "input-tag" }, [
+      _c("input", {
+        attrs: { type: "text", placeholder: "タグ（例: #ああ #いい）" }
+      })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "submit" }, [
+      _c("div", { staticClass: "submit-btn" }, [_vm._v("投稿")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "post-body" }, [
+      _vm._v(
+        "\n        こんにちは。こんにちは。こんにちは。こんにちは。こんにちは。こんにちは。"
+      ),
+      _c("br"),
+      _vm._v("\n        こんにちは。こんにちは。"),
+      _c("br"),
+      _vm._v("\n        こんにちは。こんにちは。\n      ")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "post-body" }, [
+      _vm._v(
+        "\n            こんにちは。こんにちは。こんにちは。こんにちは。こんにちは。こんにちは。"
+      ),
+      _c("br"),
+      _vm._v("\n            こんにちは。こんにちは。"),
+      _c("br"),
+      _vm._v("\n            こんにちは。こんにちは。\n          ")
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/home/HomeGenre.vue?vue&type=template&id=53652b9f&":
+/*!*****************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/home/HomeGenre.vue?vue&type=template&id=53652b9f& ***!
+  \*****************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "main-home" },
+    [
+      _vm._l(_vm.posts, function(post, index) {
+        return _c("div", { key: post.id, staticClass: "posts" }, [
+          _c(
+            "div",
+            { staticClass: "logo-area" },
+            [
+              _c(
+                "router-link",
+                {
+                  attrs: { to: { name: "user", params: { id: post.userId } } }
+                },
+                [_c("img", { attrs: { src: "../image/unko.jpg" } })]
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "input-area" }, [
+            _c("div", { staticClass: "user-name-post" }, [
+              _vm._v(_vm._s(post.user))
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "card-body" }, [
-              _vm._v(
-                "\n                    I'm an example component.\n                "
+            _vm._m(0, true),
+            _vm._v(" "),
+            post.tags
+              ? _c(
+                  "div",
+                  { staticClass: "post-tags" },
+                  _vm._l(post.tags, function(tag, index) {
+                    return _c(
+                      "router-link",
+                      {
+                        key: index,
+                        attrs: {
+                          to: {
+                            name: "tags.new",
+                            params: { name: tag.replace("#", "") }
+                          }
+                        }
+                      },
+                      [_vm._v("\n          " + _vm._s(tag) + "\n        ")]
+                    )
+                  }),
+                  1
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            post.images.length > 0
+              ? _c(
+                  "div",
+                  { staticClass: "post-image-view" },
+                  _vm._l(post.images, function(image, index) {
+                    return _c(
+                      "div",
+                      {
+                        key: index,
+                        staticClass: "each-preview",
+                        class: {
+                          "one-image-pre": post.images.length == 1,
+                          "two-image-pre": post.images.length == 2,
+                          "three-image-pre": post.images.length == 3,
+                          "four-image-pre": post.images.length == 4,
+                          yokonaga: post.images.length == 3 && index == 0
+                        }
+                      },
+                      [
+                        _c(
+                          "div",
+                          {
+                            staticClass: "each-image-box",
+                            on: {
+                              click: function($event) {
+                                return _vm.openImageModal(image)
+                              }
+                            }
+                          },
+                          [
+                            _c("div", {
+                              staticClass: "each-image",
+                              class: {
+                                "one-each-image": post.images.length == 1,
+                                "two-each-image": post.images.length == 2,
+                                "three-each-image": post.images.length == 3,
+                                "four-each-image": post.images.length == 4,
+                                "yokonaga-image":
+                                  post.images.length == 3 && index == 0
+                              },
+                              style: { backgroundImage: "url(" + image + ")" }
+                            })
+                          ]
+                        )
+                      ]
+                    )
+                  }),
+                  0
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _c("div", { staticClass: "post-btns" }, [
+              _c(
+                "div",
+                {
+                  staticClass: "post-donmai post-action-icon",
+                  on: {
+                    click: function($event) {
+                      return _vm.donmai(index)
+                    }
+                  }
+                },
+                [
+                  !post.donmai
+                    ? _c("img", {
+                        attrs: { src: "../image/donmai.png", width: "30px" }
+                      })
+                    : _vm._e(),
+                  _vm._v(" "),
+                  post.donmai
+                    ? _c("img", {
+                        attrs: { src: "../image/donmaied.png", width: "30px" }
+                      })
+                    : _vm._e(),
+                  _vm._v(
+                    "\n          " + _vm._s(post.donmai_count) + "\n        "
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass: "post-comment-icon post-action-icon",
+                  on: {
+                    click: function($event) {
+                      return _vm.openModalPost(index)
+                    }
+                  }
+                },
+                [
+                  _c("img", { attrs: { src: "../image/comment.png" } }),
+                  _vm._v(
+                    "\n          " + _vm._s(post.comment_count) + "\n        "
+                  )
+                ]
               )
             ])
           ])
         ])
+      }),
+      _vm._v(" "),
+      _vm.modalPostShow
+        ? _c(
+            "div",
+            {
+              staticClass: "overlay-post",
+              on: {
+                click: function($event) {
+                  if ($event.target !== $event.currentTarget) {
+                    return null
+                  }
+                  return _vm.closeModalPost($event)
+                }
+              }
+            },
+            [
+              _c("div", { staticClass: "overlay-post-content" }, [
+                _c("div", { staticClass: "posts-overlay" }, [
+                  _c(
+                    "div",
+                    { staticClass: "logo-area" },
+                    [
+                      _c(
+                        "router-link",
+                        {
+                          attrs: {
+                            to: {
+                              name: "user",
+                              params: { id: _vm.modalPostUserId }
+                            }
+                          }
+                        },
+                        [_c("img", { attrs: { src: "../image/unko.jpg" } })]
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "input-area" },
+                    [
+                      _c("div", { staticClass: "user-name-post" }, [
+                        _vm._v(_vm._s(_vm.modalPostUser))
+                      ]),
+                      _vm._v(" "),
+                      _vm._m(1),
+                      _vm._v(" "),
+                      _vm.modalPostTags
+                        ? _c(
+                            "div",
+                            { staticClass: "post-tags" },
+                            _vm._l(_vm.modalPostTags, function(tag, index) {
+                              return _c(
+                                "router-link",
+                                {
+                                  key: index,
+                                  attrs: {
+                                    to: {
+                                      name: "tags.new",
+                                      params: { name: tag.replace("#", "") }
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n              " +
+                                      _vm._s(tag) +
+                                      "\n            "
+                                  )
+                                ]
+                              )
+                            }),
+                            1
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.modalPostImages.length > 0
+                        ? _c(
+                            "div",
+                            { staticClass: "post-image-view" },
+                            _vm._l(_vm.modalPostImages, function(image, index) {
+                              return _c(
+                                "div",
+                                {
+                                  key: index,
+                                  staticClass: "each-preview",
+                                  class: {
+                                    "one-image-pre":
+                                      _vm.modalPostImages.length == 1,
+                                    "two-image-pre":
+                                      _vm.modalPostImages.length == 2,
+                                    "three-image-pre":
+                                      _vm.modalPostImages.length == 3,
+                                    "four-image-pre":
+                                      _vm.modalPostImages.length == 4,
+                                    yokonaga:
+                                      _vm.modalPostImages.length == 3 &&
+                                      index == 0
+                                  }
+                                },
+                                [
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass: "each-image-box",
+                                      on: {
+                                        click: function($event) {
+                                          return _vm.openImageModal(image)
+                                        }
+                                      }
+                                    },
+                                    [
+                                      _c("div", {
+                                        staticClass: "each-image",
+                                        class: {
+                                          "one-each-image":
+                                            _vm.modalPostImages.length == 1,
+                                          "two-each-image":
+                                            _vm.modalPostImages.length == 2,
+                                          "three-each-image":
+                                            _vm.modalPostImages.length == 3,
+                                          "four-each-image":
+                                            _vm.modalPostImages.length == 4,
+                                          "yokonaga-image":
+                                            _vm.modalPostImages.length == 3 &&
+                                            index == 0
+                                        },
+                                        style: {
+                                          backgroundImage: "url(" + image + ")"
+                                        }
+                                      })
+                                    ]
+                                  )
+                                ]
+                              )
+                            }),
+                            0
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "post-btns-overlay" }, [
+                        _c(
+                          "div",
+                          {
+                            staticClass: "post-donmai-overlay post-action-icon",
+                            on: { click: _vm.openModalDonmai }
+                          },
+                          [
+                            _c("b", [_vm._v(_vm._s(_vm.modalPostDonmaiCount))]),
+                            _vm._v("件のどんまい\n            ")
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "post-comment-icon-overlay post-action-icon-comment-overlay"
+                          },
+                          [
+                            _c("b", [
+                              _vm._v(_vm._s(_vm.modalPostCommentCount))
+                            ]),
+                            _vm._v("件のコメント\n            ")
+                          ]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "comment-post-area" }, [
+                        _c("div", { staticClass: "comment-post-icon" }, [
+                          _c("img", { attrs: { src: "../image/unko.jpg" } })
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "input-3" }, [
+                          _c("textarea", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.commentInput,
+                                expression: "commentInput"
+                              }
+                            ],
+                            ref: "commentarea",
+                            staticClass: "flex-textarea-2",
+                            style: _vm.commentStyles,
+                            attrs: { placeholder: "コメントを入力" },
+                            domProps: { value: _vm.commentInput },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.commentInput = $event.target.value
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "comment-btn-main" }, [
+                            _vm._v("\n                コメント\n              ")
+                          ])
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _vm._l(_vm.modalPostComments, function(comment, index) {
+                        return _c(
+                          "div",
+                          {
+                            key: comment.id,
+                            staticClass: "overlay-post-comment-area"
+                          },
+                          [
+                            _c(
+                              "div",
+                              { staticClass: "overlay-post-comment-left" },
+                              [
+                                _c(
+                                  "router-link",
+                                  {
+                                    attrs: {
+                                      to: {
+                                        name: "user",
+                                        params: { id: comment.userId }
+                                      }
+                                    }
+                                  },
+                                  [_c("img", { attrs: { src: comment.icon } })]
+                                )
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              { staticClass: "overlay-post-comment-right" },
+                              [
+                                _c(
+                                  "div",
+                                  { staticClass: "overlay-post-comment-top" },
+                                  [
+                                    _c(
+                                      "div",
+                                      { staticClass: "overlay-post-name" },
+                                      [
+                                        _vm._v(
+                                          "\n                  " +
+                                            _vm._s(comment.user) +
+                                            "\n                "
+                                        )
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "div",
+                                      { staticClass: "overlay-post-day" },
+                                      [
+                                        _vm._v(
+                                          "\n                  " +
+                                            _vm._s(comment.day) +
+                                            "\n                "
+                                        )
+                                      ]
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  { staticClass: "overlay-post-comment" },
+                                  [
+                                    _vm._v(
+                                      "\n                うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。\n              "
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  { staticClass: "overlay-post-bottom" },
+                                  [
+                                    _c(
+                                      "div",
+                                      {
+                                        staticClass:
+                                          "overlay-post-comment-count"
+                                      },
+                                      [
+                                        comment.replyCount && !comment.replyShow
+                                          ? _c(
+                                              "div",
+                                              {
+                                                staticClass:
+                                                  "post-comment-count",
+                                                on: {
+                                                  click: function($event) {
+                                                    return _vm.openCommentReply(
+                                                      index
+                                                    )
+                                                  }
+                                                }
+                                              },
+                                              [
+                                                _vm._v(
+                                                  "\n                    ▼ " +
+                                                    _vm._s(comment.replyCount) +
+                                                    "件の返信を表示\n                  "
+                                                )
+                                              ]
+                                            )
+                                          : _vm._e(),
+                                        _vm._v(" "),
+                                        comment.replyCount && comment.replyShow
+                                          ? _c(
+                                              "div",
+                                              {
+                                                staticClass:
+                                                  "post-comment-count",
+                                                on: {
+                                                  click: function($event) {
+                                                    return _vm.closeCommentReply(
+                                                      index
+                                                    )
+                                                  }
+                                                }
+                                              },
+                                              [
+                                                _vm._v(
+                                                  "\n                    ▲ " +
+                                                    _vm._s(comment.replyCount) +
+                                                    "件の返信を非表示\n                  "
+                                                )
+                                              ]
+                                            )
+                                          : _vm._e(),
+                                        _vm._v(" "),
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass: "comment-replay-btn",
+                                            on: {
+                                              click: function($event) {
+                                                return _vm.openReplyForm(index)
+                                              }
+                                            }
+                                          },
+                                          [_vm._v("返信する")]
+                                        )
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "div",
+                                      { staticClass: "overlay-post-good" },
+                                      [
+                                        _vm._v(
+                                          "\n                  " +
+                                            _vm._s(comment.goodCount) +
+                                            "\n                  "
+                                        ),
+                                        !comment.good
+                                          ? _c("img", {
+                                              attrs: {
+                                                src: "../image/good.png"
+                                              },
+                                              on: {
+                                                click: function($event) {
+                                                  return _vm.commentGood(
+                                                    comment.id
+                                                  )
+                                                }
+                                              }
+                                            })
+                                          : _vm._e(),
+                                        _vm._v(" "),
+                                        comment.good
+                                          ? _c("img", {
+                                              attrs: {
+                                                src: "../image/gooded.png"
+                                              },
+                                              on: {
+                                                click: function($event) {
+                                                  return _vm.commentGood(
+                                                    comment.id
+                                                  )
+                                                }
+                                              }
+                                            })
+                                          : _vm._e()
+                                      ]
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                comment.replyFormOpened
+                                  ? _c("div", { staticClass: "input-3" }, [
+                                      _c("textarea", {
+                                        directives: [
+                                          {
+                                            name: "model",
+                                            rawName: "v-model",
+                                            value: comment.replyInput,
+                                            expression: "comment.replyInput"
+                                          }
+                                        ],
+                                        ref: "replyarea",
+                                        refInFor: true,
+                                        staticClass: "flex-textarea-2",
+                                        attrs: { placeholder: "返信を入力" },
+                                        domProps: { value: comment.replyInput },
+                                        on: {
+                                          input: function($event) {
+                                            if ($event.target.composing) {
+                                              return
+                                            }
+                                            _vm.$set(
+                                              comment,
+                                              "replyInput",
+                                              $event.target.value
+                                            )
+                                          }
+                                        }
+                                      }),
+                                      _vm._v(" "),
+                                      _c(
+                                        "div",
+                                        { staticClass: "comment-reply-btns" },
+                                        [
+                                          _c(
+                                            "div",
+                                            {
+                                              staticClass: "reply-cancel-btn",
+                                              on: {
+                                                click: function($event) {
+                                                  return _vm.closeReplyForm(
+                                                    index
+                                                  )
+                                                }
+                                              }
+                                            },
+                                            [
+                                              _vm._v(
+                                                "\n                    キャンセル\n                  "
+                                              )
+                                            ]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "div",
+                                            { staticClass: "comment-btn" },
+                                            [
+                                              _vm._v(
+                                                "\n                    コメント\n                  "
+                                              )
+                                            ]
+                                          )
+                                        ]
+                                      )
+                                    ])
+                                  : _vm._e(),
+                                _vm._v(" "),
+                                comment.replyShow
+                                  ? _c(
+                                      "div",
+                                      _vm._l(comment.replies, function(reply) {
+                                        return _c(
+                                          "div",
+                                          {
+                                            key: reply.id,
+                                            staticClass: "comment-reply-area"
+                                          },
+                                          [
+                                            _c(
+                                              "div",
+                                              {
+                                                staticClass:
+                                                  "overlay-post-comment-reply-area"
+                                              },
+                                              [
+                                                _c(
+                                                  "div",
+                                                  {
+                                                    staticClass:
+                                                      "overlay-post-comment-left"
+                                                  },
+                                                  [
+                                                    _c(
+                                                      "router-link",
+                                                      {
+                                                        attrs: {
+                                                          to: {
+                                                            name: "user",
+                                                            params: {
+                                                              id: reply.userId
+                                                            }
+                                                          }
+                                                        }
+                                                      },
+                                                      [
+                                                        _c("img", {
+                                                          attrs: {
+                                                            src: reply.icon
+                                                          }
+                                                        })
+                                                      ]
+                                                    )
+                                                  ],
+                                                  1
+                                                ),
+                                                _vm._v(" "),
+                                                _c(
+                                                  "div",
+                                                  {
+                                                    staticClass:
+                                                      "overlay-post-comment-right"
+                                                  },
+                                                  [
+                                                    _c(
+                                                      "div",
+                                                      {
+                                                        staticClass:
+                                                          "overlay-post-comment-top"
+                                                      },
+                                                      [
+                                                        _c(
+                                                          "div",
+                                                          {
+                                                            staticClass:
+                                                              "overlay-post-name"
+                                                          },
+                                                          [
+                                                            _vm._v(
+                                                              "\n                          " +
+                                                                _vm._s(
+                                                                  reply.user
+                                                                ) +
+                                                                "\n                        "
+                                                            )
+                                                          ]
+                                                        ),
+                                                        _vm._v(" "),
+                                                        _c(
+                                                          "div",
+                                                          {
+                                                            staticClass:
+                                                              "overlay-post-day"
+                                                          },
+                                                          [
+                                                            _vm._v(
+                                                              "\n                          " +
+                                                                _vm._s(
+                                                                  reply.day
+                                                                ) +
+                                                                "\n                        "
+                                                            )
+                                                          ]
+                                                        )
+                                                      ]
+                                                    ),
+                                                    _vm._v(" "),
+                                                    _c(
+                                                      "div",
+                                                      {
+                                                        staticClass:
+                                                          "overlay-post-comment"
+                                                      },
+                                                      [
+                                                        _vm._v(
+                                                          "\n                        うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。\n                      "
+                                                        )
+                                                      ]
+                                                    ),
+                                                    _vm._v(" "),
+                                                    _c(
+                                                      "div",
+                                                      {
+                                                        staticClass:
+                                                          "overlay-post-bottom"
+                                                      },
+                                                      [
+                                                        _c(
+                                                          "div",
+                                                          {
+                                                            staticClass:
+                                                              "overlay-post-good"
+                                                          },
+                                                          [
+                                                            _vm._v(
+                                                              "\n                          " +
+                                                                _vm._s(
+                                                                  reply.goodCount
+                                                                ) +
+                                                                "\n                          "
+                                                            ),
+                                                            !reply.good
+                                                              ? _c("img", {
+                                                                  attrs: {
+                                                                    src:
+                                                                      "../image/good.png"
+                                                                  },
+                                                                  on: {
+                                                                    click: function(
+                                                                      $event
+                                                                    ) {
+                                                                      return _vm.replyGood(
+                                                                        comment.id,
+                                                                        reply.id
+                                                                      )
+                                                                    }
+                                                                  }
+                                                                })
+                                                              : _vm._e(),
+                                                            _vm._v(" "),
+                                                            reply.good
+                                                              ? _c("img", {
+                                                                  attrs: {
+                                                                    src:
+                                                                      "../image/gooded.png"
+                                                                  },
+                                                                  on: {
+                                                                    click: function(
+                                                                      $event
+                                                                    ) {
+                                                                      return _vm.replyGood(
+                                                                        comment.id,
+                                                                        reply.id
+                                                                      )
+                                                                    }
+                                                                  }
+                                                                })
+                                                              : _vm._e()
+                                                          ]
+                                                        )
+                                                      ]
+                                                    )
+                                                  ]
+                                                )
+                                              ]
+                                            )
+                                          ]
+                                        )
+                                      }),
+                                      0
+                                    )
+                                  : _vm._e()
+                              ]
+                            )
+                          ]
+                        )
+                      })
+                    ],
+                    2
+                  )
+                ])
+              ])
+            ]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          directives: [
+            {
+              name: "show",
+              rawName: "v-show",
+              value: _vm.modalImageShow,
+              expression: "modalImageShow"
+            }
+          ],
+          staticClass: "overlay-image",
+          on: {
+            click: function($event) {
+              if ($event.target !== $event.currentTarget) {
+                return null
+              }
+              return _vm.closeImageModal($event)
+            }
+          }
+        },
+        [
+          _c("div", { staticClass: "overlay-image-box" }, [
+            _c("img", {
+              staticClass: "overlay-image-image",
+              attrs: { src: _vm.modalImage }
+            })
+          ])
+        ]
+      ),
+      _vm._v(" "),
+      _vm.modalDonmaiShow
+        ? _c(
+            "div",
+            {
+              staticClass: "overlay-post",
+              on: {
+                click: function($event) {
+                  if ($event.target !== $event.currentTarget) {
+                    return null
+                  }
+                  return _vm.closeModalDonmai($event)
+                }
+              }
+            },
+            [
+              _c("div", { staticClass: "overlay-donmai-content" }, [
+                _c("div", { staticClass: "overlay-donmai-title" }, [
+                  _vm._v("\n        どんまい！\n      ")
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "donmai-user-box" },
+                  _vm._l(_vm.modalDonmaiUsers, function(user, index) {
+                    return _c(
+                      "div",
+                      { key: user.id, staticClass: "donmai-user-list" },
+                      [
+                        _c("div", { staticClass: "overlay-donmai-left" }, [
+                          _c(
+                            "div",
+                            { staticClass: "overlay-donmai-user-icon" },
+                            [
+                              _c(
+                                "router-link",
+                                {
+                                  attrs: {
+                                    to: {
+                                      name: "user",
+                                      params: { id: user.id }
+                                    }
+                                  }
+                                },
+                                [_c("img", { attrs: { src: user.icon } })]
+                              )
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            { staticClass: "overlay-donmai-user-name" },
+                            [
+                              _c(
+                                "router-link",
+                                {
+                                  attrs: {
+                                    to: {
+                                      name: "user",
+                                      params: { id: user.id }
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                " +
+                                      _vm._s(user.name) +
+                                      "\n              "
+                                  )
+                                ]
+                              )
+                            ],
+                            1
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "overlay-donmai-right" }, [
+                          !user.followed
+                            ? _c(
+                                "div",
+                                {
+                                  staticClass: "overlay-donmai-follow",
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.donmaiFollowToggle(index)
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n              フォローする\n            "
+                                  )
+                                ]
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
+                          user.followed
+                            ? _c(
+                                "div",
+                                {
+                                  staticClass: "overlay-donmai-followed",
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.donmaiFollowToggle(index)
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n              フォロー中\n            "
+                                  )
+                                ]
+                              )
+                            : _vm._e()
+                        ])
+                      ]
+                    )
+                  }),
+                  0
+                )
+              ])
+            ]
+          )
+        : _vm._e()
+    ],
+    2
+  )
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "post-body" }, [
+      _vm._v("\n        うんちしたいな。"),
+      _c("br"),
+      _vm._v("\n        シッコもしたい。"),
+      _c("br"),
+      _vm._v("\n        もう我慢できない。\n      ")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "post-body" }, [
+      _vm._v(
+        "\n            こんにちは。こんにちは。こんにちは。こんにちは。こんにちは。こんにちは。"
+      ),
+      _c("br"),
+      _vm._v("\n            こんにちは。こんにちは。"),
+      _c("br"),
+      _vm._v("\n            こんにちは。こんにちは。\n          ")
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/hot/Hot.vue?vue&type=template&id=7a3a1920&":
+/*!**********************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/hot/Hot.vue?vue&type=template&id=7a3a1920& ***!
+  \**********************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "hot-page" }, [
+    _c(
+      "div",
+      { staticClass: "hot" },
+      _vm._l(_vm.posts, function(post, index) {
+        return _c("div", { key: post.id, staticClass: "posts" }, [
+          _c(
+            "div",
+            { staticClass: "logo-area" },
+            [
+              _c(
+                "router-link",
+                {
+                  attrs: { to: { name: "user", params: { id: post.user_id } } }
+                },
+                [_c("img", { attrs: { src: "../image/unko.jpg" } })]
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "input-area" }, [
+            _c("div", { staticClass: "user-name-post" }, [
+              _vm._v(_vm._s(post.user))
+            ]),
+            _vm._v(" "),
+            _vm._m(0, true),
+            _vm._v(" "),
+            post.tags
+              ? _c(
+                  "div",
+                  { staticClass: "post-tags" },
+                  _vm._l(post.tags, function(tag, index) {
+                    return _c(
+                      "router-link",
+                      {
+                        key: index,
+                        attrs: {
+                          to: {
+                            name: "tags.new",
+                            params: { name: tag.replace("#", "") }
+                          }
+                        }
+                      },
+                      [_vm._v("\n            " + _vm._s(tag) + "\n          ")]
+                    )
+                  }),
+                  1
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            post.images.length > 0
+              ? _c(
+                  "div",
+                  { staticClass: "post-image-view" },
+                  _vm._l(post.images, function(image, index) {
+                    return _c(
+                      "div",
+                      {
+                        key: index,
+                        staticClass: "each-preview",
+                        class: {
+                          "one-image-pre": post.images.length == 1,
+                          "two-image-pre": post.images.length == 2,
+                          "three-image-pre": post.images.length == 3,
+                          "four-image-pre": post.images.length == 4,
+                          yokonaga: post.images.length == 3 && index == 0
+                        }
+                      },
+                      [
+                        _c(
+                          "div",
+                          {
+                            staticClass: "each-image-box",
+                            on: {
+                              click: function($event) {
+                                return _vm.openImageModal(image)
+                              }
+                            }
+                          },
+                          [
+                            _c("div", {
+                              staticClass: "each-image",
+                              class: {
+                                "one-each-image": post.images.length == 1,
+                                "two-each-image": post.images.length == 2,
+                                "three-each-image": post.images.length == 3,
+                                "four-each-image": post.images.length == 4,
+                                "yokonaga-image":
+                                  post.images.length == 3 && index == 0
+                              },
+                              style: { backgroundImage: "url(" + image + ")" }
+                            })
+                          ]
+                        )
+                      ]
+                    )
+                  }),
+                  0
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _c("div", { staticClass: "post-btns" }, [
+              _c(
+                "div",
+                {
+                  staticClass: "post-donmai post-action-icon",
+                  on: {
+                    click: function($event) {
+                      return _vm.donmai(index)
+                    }
+                  }
+                },
+                [
+                  !post.donmai
+                    ? _c("img", {
+                        attrs: { src: "../image/donmai.png", width: "30px" }
+                      })
+                    : _vm._e(),
+                  _vm._v(" "),
+                  post.donmai
+                    ? _c("img", {
+                        attrs: { src: "../image/donmaied.png", width: "30px" }
+                      })
+                    : _vm._e(),
+                  _vm._v(
+                    "\n            " +
+                      _vm._s(post.donmai_count) +
+                      "\n          "
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass: "post-comment-icon post-action-icon",
+                  on: {
+                    click: function($event) {
+                      return _vm.openModalPost(index)
+                    }
+                  }
+                },
+                [
+                  _c("img", { attrs: { src: "../image/comment.png" } }),
+                  _vm._v(
+                    "\n            " +
+                      _vm._s(post.comment_count) +
+                      "\n          "
+                  )
+                ]
+              )
+            ])
+          ])
+        ])
+      }),
+      0
+    ),
+    _vm._v(" "),
+    _vm.modalPostShow
+      ? _c(
+          "div",
+          {
+            staticClass: "overlay-post",
+            on: {
+              click: function($event) {
+                if ($event.target !== $event.currentTarget) {
+                  return null
+                }
+                return _vm.closeModalPost($event)
+              }
+            }
+          },
+          [
+            _c("div", { staticClass: "overlay-post-content" }, [
+              _c("div", { staticClass: "posts-overlay" }, [
+                _c(
+                  "div",
+                  { staticClass: "logo-area" },
+                  [
+                    _c(
+                      "router-link",
+                      {
+                        attrs: {
+                          to: {
+                            name: "user",
+                            params: { id: _vm.modalPostUserId }
+                          }
+                        }
+                      },
+                      [_c("img", { attrs: { src: "../image/unko.jpg" } })]
+                    )
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "input-area" },
+                  [
+                    _c("div", { staticClass: "user-name-post" }, [
+                      _vm._v(_vm._s(_vm.modalPostUser))
+                    ]),
+                    _vm._v(" "),
+                    _vm._m(1),
+                    _vm._v(" "),
+                    _vm.modalPostTags
+                      ? _c(
+                          "div",
+                          { staticClass: "post-tags" },
+                          _vm._l(_vm.modalPostTags, function(tag, index) {
+                            return _c(
+                              "router-link",
+                              {
+                                key: index,
+                                attrs: {
+                                  to: {
+                                    name: "tags.new",
+                                    params: { name: tag.replace("#", "") }
+                                  }
+                                }
+                              },
+                              [
+                                _vm._v(
+                                  "\n              " +
+                                    _vm._s(tag) +
+                                    "\n            "
+                                )
+                              ]
+                            )
+                          }),
+                          1
+                        )
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _vm.modalPostImages.length > 0
+                      ? _c(
+                          "div",
+                          { staticClass: "post-image-view" },
+                          _vm._l(_vm.modalPostImages, function(image, index) {
+                            return _c(
+                              "div",
+                              {
+                                key: index,
+                                staticClass: "each-preview",
+                                class: {
+                                  "one-image-pre":
+                                    _vm.modalPostImages.length == 1,
+                                  "two-image-pre":
+                                    _vm.modalPostImages.length == 2,
+                                  "three-image-pre":
+                                    _vm.modalPostImages.length == 3,
+                                  "four-image-pre":
+                                    _vm.modalPostImages.length == 4,
+                                  yokonaga:
+                                    _vm.modalPostImages.length == 3 &&
+                                    index == 0
+                                }
+                              },
+                              [
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass: "each-image-box",
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.openImageModal(image)
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _c("div", {
+                                      staticClass: "each-image",
+                                      class: {
+                                        "one-each-image":
+                                          _vm.modalPostImages.length == 1,
+                                        "two-each-image":
+                                          _vm.modalPostImages.length == 2,
+                                        "three-each-image":
+                                          _vm.modalPostImages.length == 3,
+                                        "four-each-image":
+                                          _vm.modalPostImages.length == 4,
+                                        "yokonaga-image":
+                                          _vm.modalPostImages.length == 3 &&
+                                          index == 0
+                                      },
+                                      style: {
+                                        backgroundImage: "url(" + image + ")"
+                                      }
+                                    })
+                                  ]
+                                )
+                              ]
+                            )
+                          }),
+                          0
+                        )
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "post-btns-overlay" }, [
+                      _c(
+                        "div",
+                        {
+                          staticClass: "post-donmai-overlay post-action-icon",
+                          on: { click: _vm.openModalDonmai }
+                        },
+                        [
+                          _c("b", [_vm._v(_vm._s(_vm.modalPostDonmaiCount))]),
+                          _vm._v("件のどんまい\n            ")
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass:
+                            "post-comment-icon-overlay post-action-icon-comment-overlay"
+                        },
+                        [
+                          _c("b", [_vm._v(_vm._s(_vm.modalPostCommentCount))]),
+                          _vm._v("件のコメント\n            ")
+                        ]
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "comment-post-area" }, [
+                      _c("div", { staticClass: "comment-post-icon" }, [
+                        _c("img", { attrs: { src: "../image/unko.jpg" } })
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "input-3" }, [
+                        _c("textarea", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.commentInput,
+                              expression: "commentInput"
+                            }
+                          ],
+                          ref: "commentarea",
+                          staticClass: "flex-textarea-2",
+                          style: _vm.commentStyles,
+                          attrs: { placeholder: "コメントを入力" },
+                          domProps: { value: _vm.commentInput },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.commentInput = $event.target.value
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "comment-btn-main" }, [
+                          _vm._v("\n                コメント\n              ")
+                        ])
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _vm._l(_vm.modalPostComments, function(comment, index) {
+                      return _c(
+                        "div",
+                        {
+                          key: comment.id,
+                          staticClass: "overlay-post-comment-area"
+                        },
+                        [
+                          _c(
+                            "div",
+                            { staticClass: "overlay-post-comment-left" },
+                            [
+                              _c(
+                                "router-link",
+                                {
+                                  attrs: {
+                                    to: {
+                                      name: "user",
+                                      params: { id: comment.userId }
+                                    }
+                                  }
+                                },
+                                [_c("img", { attrs: { src: comment.icon } })]
+                              )
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            { staticClass: "overlay-post-comment-right" },
+                            [
+                              _c(
+                                "div",
+                                { staticClass: "overlay-post-comment-top" },
+                                [
+                                  _c(
+                                    "div",
+                                    { staticClass: "overlay-post-name" },
+                                    [
+                                      _vm._v(
+                                        "\n                  " +
+                                          _vm._s(comment.user) +
+                                          "\n                "
+                                      )
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "div",
+                                    { staticClass: "overlay-post-day" },
+                                    [
+                                      _vm._v(
+                                        "\n                  " +
+                                          _vm._s(comment.day) +
+                                          "\n                "
+                                      )
+                                    ]
+                                  )
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                { staticClass: "overlay-post-comment" },
+                                [
+                                  _vm._v(
+                                    "\n                うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。\n              "
+                                  )
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                { staticClass: "overlay-post-bottom" },
+                                [
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass: "overlay-post-comment-count"
+                                    },
+                                    [
+                                      comment.replyCount && !comment.replyShow
+                                        ? _c(
+                                            "div",
+                                            {
+                                              staticClass: "post-comment-count",
+                                              on: {
+                                                click: function($event) {
+                                                  return _vm.openCommentReply(
+                                                    index
+                                                  )
+                                                }
+                                              }
+                                            },
+                                            [
+                                              _vm._v(
+                                                "\n                    ▼ " +
+                                                  _vm._s(comment.replyCount) +
+                                                  "件の返信を表示\n                  "
+                                              )
+                                            ]
+                                          )
+                                        : _vm._e(),
+                                      _vm._v(" "),
+                                      comment.replyCount && comment.replyShow
+                                        ? _c(
+                                            "div",
+                                            {
+                                              staticClass: "post-comment-count",
+                                              on: {
+                                                click: function($event) {
+                                                  return _vm.closeCommentReply(
+                                                    index
+                                                  )
+                                                }
+                                              }
+                                            },
+                                            [
+                                              _vm._v(
+                                                "\n                    ▲ " +
+                                                  _vm._s(comment.replyCount) +
+                                                  "件の返信を非表示\n                  "
+                                              )
+                                            ]
+                                          )
+                                        : _vm._e(),
+                                      _vm._v(" "),
+                                      _c(
+                                        "div",
+                                        {
+                                          staticClass: "comment-replay-btn",
+                                          on: {
+                                            click: function($event) {
+                                              return _vm.openReplyForm(index)
+                                            }
+                                          }
+                                        },
+                                        [_vm._v("返信する")]
+                                      )
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "div",
+                                    { staticClass: "overlay-post-good" },
+                                    [
+                                      _vm._v(
+                                        "\n                  " +
+                                          _vm._s(comment.goodCount) +
+                                          "\n                  "
+                                      ),
+                                      !comment.good
+                                        ? _c("img", {
+                                            attrs: { src: "../image/good.png" },
+                                            on: {
+                                              click: function($event) {
+                                                return _vm.commentGood(
+                                                  comment.id
+                                                )
+                                              }
+                                            }
+                                          })
+                                        : _vm._e(),
+                                      _vm._v(" "),
+                                      comment.good
+                                        ? _c("img", {
+                                            attrs: {
+                                              src: "../image/gooded.png"
+                                            },
+                                            on: {
+                                              click: function($event) {
+                                                return _vm.commentGood(
+                                                  comment.id
+                                                )
+                                              }
+                                            }
+                                          })
+                                        : _vm._e()
+                                    ]
+                                  )
+                                ]
+                              ),
+                              _vm._v(" "),
+                              comment.replyFormOpened
+                                ? _c("div", { staticClass: "input-3" }, [
+                                    _c("textarea", {
+                                      directives: [
+                                        {
+                                          name: "model",
+                                          rawName: "v-model",
+                                          value: comment.replyInput,
+                                          expression: "comment.replyInput"
+                                        }
+                                      ],
+                                      ref: "replyarea",
+                                      refInFor: true,
+                                      staticClass: "flex-textarea-2",
+                                      attrs: { placeholder: "返信を入力" },
+                                      domProps: { value: comment.replyInput },
+                                      on: {
+                                        input: function($event) {
+                                          if ($event.target.composing) {
+                                            return
+                                          }
+                                          _vm.$set(
+                                            comment,
+                                            "replyInput",
+                                            $event.target.value
+                                          )
+                                        }
+                                      }
+                                    }),
+                                    _vm._v(" "),
+                                    _c(
+                                      "div",
+                                      { staticClass: "comment-reply-btns" },
+                                      [
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass: "reply-cancel-btn",
+                                            on: {
+                                              click: function($event) {
+                                                return _vm.closeReplyForm(index)
+                                              }
+                                            }
+                                          },
+                                          [
+                                            _vm._v(
+                                              "\n                    キャンセル\n                  "
+                                            )
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "div",
+                                          { staticClass: "comment-btn" },
+                                          [
+                                            _vm._v(
+                                              "\n                    コメント\n                  "
+                                            )
+                                          ]
+                                        )
+                                      ]
+                                    )
+                                  ])
+                                : _vm._e(),
+                              _vm._v(" "),
+                              comment.replyShow
+                                ? _c(
+                                    "div",
+                                    _vm._l(comment.replies, function(reply) {
+                                      return _c(
+                                        "div",
+                                        {
+                                          key: reply.id,
+                                          staticClass: "comment-reply-area"
+                                        },
+                                        [
+                                          _c(
+                                            "div",
+                                            {
+                                              staticClass:
+                                                "overlay-post-comment-reply-area"
+                                            },
+                                            [
+                                              _c(
+                                                "div",
+                                                {
+                                                  staticClass:
+                                                    "overlay-post-comment-left"
+                                                },
+                                                [
+                                                  _c(
+                                                    "router-link",
+                                                    {
+                                                      attrs: {
+                                                        to: {
+                                                          name: "user",
+                                                          params: {
+                                                            id: reply.userId
+                                                          }
+                                                        }
+                                                      }
+                                                    },
+                                                    [
+                                                      _c("img", {
+                                                        attrs: {
+                                                          src: reply.icon
+                                                        }
+                                                      })
+                                                    ]
+                                                  )
+                                                ],
+                                                1
+                                              ),
+                                              _vm._v(" "),
+                                              _c(
+                                                "div",
+                                                {
+                                                  staticClass:
+                                                    "overlay-post-comment-right"
+                                                },
+                                                [
+                                                  _c(
+                                                    "div",
+                                                    {
+                                                      staticClass:
+                                                        "overlay-post-comment-top"
+                                                    },
+                                                    [
+                                                      _c(
+                                                        "div",
+                                                        {
+                                                          staticClass:
+                                                            "overlay-post-name"
+                                                        },
+                                                        [
+                                                          _vm._v(
+                                                            "\n                          " +
+                                                              _vm._s(
+                                                                reply.user
+                                                              ) +
+                                                              "\n                        "
+                                                          )
+                                                        ]
+                                                      ),
+                                                      _vm._v(" "),
+                                                      _c(
+                                                        "div",
+                                                        {
+                                                          staticClass:
+                                                            "overlay-post-day"
+                                                        },
+                                                        [
+                                                          _vm._v(
+                                                            "\n                          " +
+                                                              _vm._s(
+                                                                reply.day
+                                                              ) +
+                                                              "\n                        "
+                                                          )
+                                                        ]
+                                                      )
+                                                    ]
+                                                  ),
+                                                  _vm._v(" "),
+                                                  _c(
+                                                    "div",
+                                                    {
+                                                      staticClass:
+                                                        "overlay-post-comment"
+                                                    },
+                                                    [
+                                                      _vm._v(
+                                                        "\n                        うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。\n                      "
+                                                      )
+                                                    ]
+                                                  ),
+                                                  _vm._v(" "),
+                                                  _c(
+                                                    "div",
+                                                    {
+                                                      staticClass:
+                                                        "overlay-post-bottom"
+                                                    },
+                                                    [
+                                                      _c(
+                                                        "div",
+                                                        {
+                                                          staticClass:
+                                                            "overlay-post-good"
+                                                        },
+                                                        [
+                                                          _vm._v(
+                                                            "\n                          " +
+                                                              _vm._s(
+                                                                reply.goodCount
+                                                              ) +
+                                                              "\n                          "
+                                                          ),
+                                                          !reply.good
+                                                            ? _c("img", {
+                                                                attrs: {
+                                                                  src:
+                                                                    "../image/good.png"
+                                                                },
+                                                                on: {
+                                                                  click: function(
+                                                                    $event
+                                                                  ) {
+                                                                    return _vm.replyGood(
+                                                                      comment.id,
+                                                                      reply.id
+                                                                    )
+                                                                  }
+                                                                }
+                                                              })
+                                                            : _vm._e(),
+                                                          _vm._v(" "),
+                                                          reply.good
+                                                            ? _c("img", {
+                                                                attrs: {
+                                                                  src:
+                                                                    "../image/gooded.png"
+                                                                },
+                                                                on: {
+                                                                  click: function(
+                                                                    $event
+                                                                  ) {
+                                                                    return _vm.replyGood(
+                                                                      comment.id,
+                                                                      reply.id
+                                                                    )
+                                                                  }
+                                                                }
+                                                              })
+                                                            : _vm._e()
+                                                        ]
+                                                      )
+                                                    ]
+                                                  )
+                                                ]
+                                              )
+                                            ]
+                                          )
+                                        ]
+                                      )
+                                    }),
+                                    0
+                                  )
+                                : _vm._e()
+                            ]
+                          )
+                        ]
+                      )
+                    })
+                  ],
+                  2
+                )
+              ])
+            ])
+          ]
+        )
+      : _vm._e(),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        directives: [
+          {
+            name: "show",
+            rawName: "v-show",
+            value: _vm.modalImageShow,
+            expression: "modalImageShow"
+          }
+        ],
+        staticClass: "overlay-image",
+        on: {
+          click: function($event) {
+            if ($event.target !== $event.currentTarget) {
+              return null
+            }
+            return _vm.closeImageModal($event)
+          }
+        }
+      },
+      [
+        _c("div", { staticClass: "overlay-image-box" }, [
+          _c("img", {
+            staticClass: "overlay-image-image",
+            attrs: { src: _vm.modalImage }
+          })
+        ])
+      ]
+    ),
+    _vm._v(" "),
+    _vm.modalDonmaiShow
+      ? _c(
+          "div",
+          {
+            staticClass: "overlay-post",
+            on: {
+              click: function($event) {
+                if ($event.target !== $event.currentTarget) {
+                  return null
+                }
+                return _vm.closeModalDonmai($event)
+              }
+            }
+          },
+          [
+            _c("div", { staticClass: "overlay-donmai-content" }, [
+              _c("div", { staticClass: "overlay-donmai-title" }, [
+                _vm._v("\n        どんまい！\n      ")
+              ]),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "donmai-user-box" },
+                _vm._l(_vm.modalDonmaiUsers, function(user, index) {
+                  return _c(
+                    "div",
+                    { key: user.id, staticClass: "donmai-user-list" },
+                    [
+                      _c("div", { staticClass: "overlay-donmai-left" }, [
+                        _c(
+                          "div",
+                          { staticClass: "overlay-donmai-user-icon" },
+                          [
+                            _c(
+                              "router-link",
+                              {
+                                attrs: {
+                                  to: { name: "user", params: { id: user.id } }
+                                }
+                              },
+                              [_c("img", { attrs: { src: user.icon } })]
+                            )
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "overlay-donmai-user-name" },
+                          [
+                            _c(
+                              "router-link",
+                              {
+                                attrs: {
+                                  to: { name: "user", params: { id: user.id } }
+                                }
+                              },
+                              [
+                                _vm._v(
+                                  "\n                " +
+                                    _vm._s(user.name) +
+                                    "\n              "
+                                )
+                              ]
+                            )
+                          ],
+                          1
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "overlay-donmai-right" }, [
+                        !user.followed
+                          ? _c(
+                              "div",
+                              {
+                                staticClass: "overlay-donmai-follow",
+                                on: {
+                                  click: function($event) {
+                                    return _vm.donmaiFollowToggle(index)
+                                  }
+                                }
+                              },
+                              [
+                                _vm._v(
+                                  "\n              フォローする\n            "
+                                )
+                              ]
+                            )
+                          : _vm._e(),
+                        _vm._v(" "),
+                        user.followed
+                          ? _c(
+                              "div",
+                              {
+                                staticClass: "overlay-donmai-followed",
+                                on: {
+                                  click: function($event) {
+                                    return _vm.donmaiFollowToggle(index)
+                                  }
+                                }
+                              },
+                              [
+                                _vm._v(
+                                  "\n              フォロー中\n            "
+                                )
+                              ]
+                            )
+                          : _vm._e()
+                      ])
+                    ]
+                  )
+                }),
+                0
+              )
+            ])
+          ]
+        )
+      : _vm._e()
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "post-body" }, [
+      _vm._v("\n          うんちしたいな。"),
+      _c("br"),
+      _vm._v("\n          シッコもしたい。"),
+      _c("br"),
+      _vm._v("\n          もう我慢できない。\n        ")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "post-body" }, [
+      _vm._v(
+        "\n            こんにちは。こんにちは。こんにちは。こんにちは。こんにちは。こんにちは。"
+      ),
+      _c("br"),
+      _vm._v("\n            こんにちは。こんにちは。"),
+      _c("br"),
+      _vm._v("\n            こんにちは。こんにちは。\n          ")
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/search/Search.vue?vue&type=template&id=3e164758&":
+/*!****************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/search/Search.vue?vue&type=template&id=3e164758& ***!
+  \****************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "search-page" }, [
+    _c("div", { staticClass: "search-view" }, [
+      _c(
+        "div",
+        { staticClass: "search-container" },
+        [
+          _c("div", { staticClass: "search-word-area" }, [
+            _c("img", { attrs: { src: "../../../image/search2.png" } }),
+            _vm._v(" "),
+            _c("div", { staticClass: "search-word" }, [
+              _vm._v(
+                "\n          ｢" + _vm._s(_vm.$route.params.word) + "｣\n        "
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "search-menu-area" },
+            [
+              _c(
+                "router-link",
+                {
+                  staticClass: "search-post search-menu",
+                  class: {
+                    selected:
+                      _vm.$route.path.endsWith("/post/new") ||
+                      _vm.$route.path.endsWith("/post/popular")
+                  },
+                  attrs: {
+                    to: {
+                      name: "search.post.new",
+                      params: { word: _vm.$route.params.word }
+                    }
+                  }
+                },
+                [_vm._v("\n          投稿\n        ")]
+              ),
+              _vm._v(" "),
+              _c(
+                "router-link",
+                {
+                  staticClass: "search-guchi search-menu",
+                  class: {
+                    selected:
+                      _vm.$route.path.endsWith("/guchi/new") ||
+                      _vm.$route.path.endsWith("/guchi/popular")
+                  },
+                  attrs: {
+                    to: {
+                      name: "search.guchi.new",
+                      params: { word: _vm.$route.params.word }
+                    }
+                  }
+                },
+                [_vm._v("\n          グチ\n        ")]
+              ),
+              _vm._v(" "),
+              _c(
+                "router-link",
+                {
+                  staticClass: "search-user search-menu",
+                  class: { selected: _vm.$route.path.endsWith("/user") },
+                  attrs: {
+                    to: {
+                      name: "search.user",
+                      params: { word: _vm.$route.params.word }
+                    }
+                  }
+                },
+                [_vm._v("\n          ユーザー\n        ")]
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "search-order-area" },
+            [
+              _vm.$route.path.endsWith("/post/new") ||
+              _vm.$route.path.endsWith("/post/popular")
+                ? _c(
+                    "router-link",
+                    {
+                      staticClass: "search-order-new",
+                      class: { selected: _vm.$route.path.endsWith("/new") },
+                      attrs: {
+                        to: {
+                          name: "search.post.new",
+                          params: { word: _vm.$route.params.word }
+                        }
+                      }
+                    },
+                    [_vm._v("\n          最新\n        ")]
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.$route.path.endsWith("/guchi/new") ||
+              _vm.$route.path.endsWith("/guchi/popular")
+                ? _c(
+                    "router-link",
+                    {
+                      staticClass: "search-order-new",
+                      class: { selected: _vm.$route.path.endsWith("/new") },
+                      attrs: {
+                        to: {
+                          name: "search.guchi.new",
+                          params: { word: _vm.$route.params.word }
+                        }
+                      }
+                    },
+                    [_vm._v("\n          最新\n        ")]
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.$route.path.endsWith("/post/new") ||
+              _vm.$route.path.endsWith("/post/popular")
+                ? _c(
+                    "router-link",
+                    {
+                      staticClass: "search-order-popular",
+                      class: { selected: _vm.$route.path.endsWith("/popular") },
+                      attrs: {
+                        to: {
+                          name: "search.post.popular",
+                          params: { word: _vm.$route.params.word }
+                        }
+                      }
+                    },
+                    [_vm._v("\n          人気\n        ")]
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.$route.path.endsWith("/guchi/new") ||
+              _vm.$route.path.endsWith("/guchi/popular")
+                ? _c(
+                    "router-link",
+                    {
+                      staticClass: "search-order-popular",
+                      class: { selected: _vm.$route.path.endsWith("/popular") },
+                      attrs: {
+                        to: {
+                          name: "search.guchi.popular",
+                          params: { word: _vm.$route.params.word }
+                        }
+                      }
+                    },
+                    [_vm._v("\n          人気\n        ")]
+                  )
+                : _vm._e()
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c("router-view")
+        ],
+        1
+      )
+    ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/search/SearchGuchiNew.vue?vue&type=template&id=4a63a03e&":
+/*!************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/search/SearchGuchiNew.vue?vue&type=template&id=4a63a03e& ***!
+  \************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "thread-box" },
+    _vm._l(_vm.threads, function(thread) {
+      return _c(
+        "router-link",
+        {
+          key: thread.id,
+          staticClass: "guchi-thread",
+          attrs: { to: { name: "guchi.detail" } }
+        },
+        [
+          _c("div", { staticClass: "thread-list-icon" }, [
+            !thread.icon
+              ? _c("div", {
+                  staticClass: "thread-left-icon-image none",
+                  style: { backgroundImage: "url(../../../image/no-image.png)" }
+                })
+              : _vm._e(),
+            _vm._v(" "),
+            thread.icon
+              ? _c("div", {
+                  staticClass: "thread-left-icon-image",
+                  style: { backgroundImage: "url(" + thread.icon + ")" }
+                })
+              : _vm._e()
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "thread-left" }, [
+            _c("div", { staticClass: "thread-left-top" }, [
+              _c("div", { staticClass: "genre-icon" }, [
+                _vm._v(_vm._s(thread.genre))
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "thread-time" }, [
+                _vm._v(_vm._s(thread.created_at))
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "thread-comment-count" }, [
+                _c("img", { attrs: { src: "../../../image/comment.png" } }),
+                _vm._v(
+                  "\n          " + _vm._s(thread.comment_count) + "\n        "
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "thread-title" }, [
+              _vm._v(_vm._s(thread.title))
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "bookmark" }, [
+            _c("img", { attrs: { src: "../../../image/bookmark.png" } })
+          ])
+        ]
+      )
+    }),
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/search/SearchGuchiPopular.vue?vue&type=template&id=76e831f7&":
+/*!****************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/search/SearchGuchiPopular.vue?vue&type=template&id=76e831f7& ***!
+  \****************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "thread-box" },
+    _vm._l(_vm.threads, function(thread) {
+      return _c(
+        "router-link",
+        {
+          key: thread.id,
+          staticClass: "guchi-thread",
+          attrs: { to: { name: "guchi.detail" } }
+        },
+        [
+          _c("div", { staticClass: "thread-list-icon" }, [
+            !thread.icon
+              ? _c("div", {
+                  staticClass: "thread-left-icon-image none",
+                  style: { backgroundImage: "url(../../../image/no-image.png)" }
+                })
+              : _vm._e(),
+            _vm._v(" "),
+            thread.icon
+              ? _c("div", {
+                  staticClass: "thread-left-icon-image",
+                  style: { backgroundImage: "url(" + thread.icon + ")" }
+                })
+              : _vm._e()
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "thread-left" }, [
+            _c("div", { staticClass: "thread-left-top" }, [
+              _c("div", { staticClass: "genre-icon" }, [
+                _vm._v(_vm._s(thread.genre))
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "thread-time" }, [
+                _vm._v(_vm._s(thread.created_at))
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "thread-comment-count" }, [
+                _c("img", { attrs: { src: "../../../image/comment.png" } }),
+                _vm._v(
+                  "\n          " + _vm._s(thread.comment_count) + "\n        "
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "thread-title" }, [
+              _vm._v(_vm._s(thread.title))
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "bookmark" }, [
+            _c("img", { attrs: { src: "../../../image/bookmark.png" } })
+          ])
+        ]
+      )
+    }),
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/search/SearchPostNew.vue?vue&type=template&id=5427ea1c&":
+/*!***********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/search/SearchPostNew.vue?vue&type=template&id=5427ea1c& ***!
+  \***********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "tags-posts" },
+    [
+      _vm._l(_vm.posts, function(post, index) {
+        return _c("div", { key: post.id, staticClass: "posts" }, [
+          _c(
+            "div",
+            { staticClass: "logo-area" },
+            [
+              _c(
+                "router-link",
+                {
+                  attrs: { to: { name: "user", params: { id: post.userId } } }
+                },
+                [_c("img", { attrs: { src: post.userIcon } })]
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "input-area" }, [
+            _c("div", { staticClass: "user-name-post" }, [
+              _vm._v(_vm._s(post.user))
+            ]),
+            _vm._v(" "),
+            _vm._m(0, true),
+            _vm._v(" "),
+            post.tags
+              ? _c(
+                  "div",
+                  { staticClass: "post-tags" },
+                  _vm._l(post.tags, function(tag, index) {
+                    return _c(
+                      "router-link",
+                      {
+                        key: index,
+                        attrs: {
+                          to: {
+                            name: "tags.new",
+                            params: { name: tag.replace("#", "") }
+                          }
+                        }
+                      },
+                      [_vm._v("\n          " + _vm._s(tag) + "\n        ")]
+                    )
+                  }),
+                  1
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            post.images.length > 0
+              ? _c(
+                  "div",
+                  { staticClass: "post-image-view" },
+                  _vm._l(post.images, function(image, index) {
+                    return _c(
+                      "div",
+                      {
+                        key: index,
+                        staticClass: "each-preview",
+                        class: {
+                          "one-image-pre": post.images.length == 1,
+                          "two-image-pre": post.images.length == 2,
+                          "three-image-pre": post.images.length == 3,
+                          "four-image-pre": post.images.length == 4,
+                          yokonaga: post.images.length == 3 && index == 0
+                        }
+                      },
+                      [
+                        _c(
+                          "div",
+                          {
+                            staticClass: "each-image-box",
+                            on: {
+                              click: function($event) {
+                                return _vm.openImageModal(image)
+                              }
+                            }
+                          },
+                          [
+                            _c("div", {
+                              staticClass: "each-image",
+                              class: {
+                                "one-each-image": post.images.length == 1,
+                                "two-each-image": post.images.length == 2,
+                                "three-each-image": post.images.length == 3,
+                                "four-each-image": post.images.length == 4,
+                                "yokonaga-image":
+                                  post.images.length == 3 && index == 0
+                              },
+                              style: { backgroundImage: "url(" + image + ")" }
+                            })
+                          ]
+                        )
+                      ]
+                    )
+                  }),
+                  0
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _c("div", { staticClass: "post-btns" }, [
+              _c(
+                "div",
+                {
+                  staticClass: "post-donmai post-action-icon",
+                  on: {
+                    click: function($event) {
+                      return _vm.donmai(index)
+                    }
+                  }
+                },
+                [
+                  !post.donmai
+                    ? _c("img", {
+                        attrs: {
+                          src: "../../../image/donmai.png",
+                          width: "30px"
+                        }
+                      })
+                    : _vm._e(),
+                  _vm._v(" "),
+                  post.donmai
+                    ? _c("img", {
+                        attrs: {
+                          src: "../../../image/donmaied.png",
+                          width: "30px"
+                        }
+                      })
+                    : _vm._e(),
+                  _vm._v(
+                    "\n          " + _vm._s(post.donmai_count) + "\n        "
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass: "post-comment-icon post-action-icon",
+                  on: {
+                    click: function($event) {
+                      return _vm.openModalPost(index)
+                    }
+                  }
+                },
+                [
+                  _c("img", { attrs: { src: "../../../image/comment.png" } }),
+                  _vm._v(
+                    "\n          " + _vm._s(post.comment_count) + "\n        "
+                  )
+                ]
+              )
+            ])
+          ])
+        ])
+      }),
+      _vm._v(" "),
+      _vm.modalPostShow
+        ? _c(
+            "div",
+            {
+              staticClass: "overlay-post",
+              on: {
+                click: function($event) {
+                  if ($event.target !== $event.currentTarget) {
+                    return null
+                  }
+                  return _vm.closeModalPost($event)
+                }
+              }
+            },
+            [
+              _c("div", { staticClass: "overlay-post-content" }, [
+                _c("div", { staticClass: "posts-overlay" }, [
+                  _c(
+                    "div",
+                    { staticClass: "logo-area" },
+                    [
+                      _c(
+                        "router-link",
+                        {
+                          attrs: {
+                            to: {
+                              name: "user",
+                              params: { id: _vm.modalPostUserId }
+                            }
+                          }
+                        },
+                        [_c("img", { attrs: { src: _vm.modalPostUserIcon } })]
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "input-area" },
+                    [
+                      _c("div", { staticClass: "user-name-post" }, [
+                        _vm._v(_vm._s(_vm.modalPostUser))
+                      ]),
+                      _vm._v(" "),
+                      _vm._m(1),
+                      _vm._v(" "),
+                      _vm.modalPostTags
+                        ? _c(
+                            "div",
+                            { staticClass: "post-tags" },
+                            _vm._l(_vm.modalPostTags, function(tag, index) {
+                              return _c(
+                                "router-link",
+                                {
+                                  key: index,
+                                  attrs: {
+                                    to: {
+                                      name: "tags.new",
+                                      params: { name: tag.replace("#", "") }
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n              " +
+                                      _vm._s(tag) +
+                                      "\n            "
+                                  )
+                                ]
+                              )
+                            }),
+                            1
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.modalPostImages.length > 0
+                        ? _c(
+                            "div",
+                            { staticClass: "post-image-view" },
+                            _vm._l(_vm.modalPostImages, function(image, index) {
+                              return _c(
+                                "div",
+                                {
+                                  key: index,
+                                  staticClass: "each-preview",
+                                  class: {
+                                    "one-image-pre":
+                                      _vm.modalPostImages.length == 1,
+                                    "two-image-pre":
+                                      _vm.modalPostImages.length == 2,
+                                    "three-image-pre":
+                                      _vm.modalPostImages.length == 3,
+                                    "four-image-pre":
+                                      _vm.modalPostImages.length == 4,
+                                    yokonaga:
+                                      _vm.modalPostImages.length == 3 &&
+                                      index == 0
+                                  }
+                                },
+                                [
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass: "each-image-box",
+                                      on: {
+                                        click: function($event) {
+                                          return _vm.openImageModal(image)
+                                        }
+                                      }
+                                    },
+                                    [
+                                      _c("div", {
+                                        staticClass: "each-image",
+                                        class: {
+                                          "one-each-image":
+                                            _vm.modalPostImages.length == 1,
+                                          "two-each-image":
+                                            _vm.modalPostImages.length == 2,
+                                          "three-each-image":
+                                            _vm.modalPostImages.length == 3,
+                                          "four-each-image":
+                                            _vm.modalPostImages.length == 4,
+                                          "yokonaga-image":
+                                            _vm.modalPostImages.length == 3 &&
+                                            index == 0
+                                        },
+                                        style: {
+                                          backgroundImage: "url(" + image + ")"
+                                        }
+                                      })
+                                    ]
+                                  )
+                                ]
+                              )
+                            }),
+                            0
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "post-btns-overlay" }, [
+                        _c(
+                          "div",
+                          {
+                            staticClass: "post-donmai-overlay post-action-icon",
+                            on: { click: _vm.openModalDonmai }
+                          },
+                          [
+                            _c("b", [_vm._v(_vm._s(_vm.modalPostDonmaiCount))]),
+                            _vm._v("件のどんまい\n            ")
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "post-comment-icon-overlay post-action-icon-comment-overlay"
+                          },
+                          [
+                            _c("b", [
+                              _vm._v(_vm._s(_vm.modalPostCommentCount))
+                            ]),
+                            _vm._v("件のコメント\n            ")
+                          ]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "comment-post-area" }, [
+                        _c("div", { staticClass: "comment-post-icon" }, [
+                          _c("img", {
+                            attrs: { src: "../../../image/unko.jpg" }
+                          })
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "input-3" }, [
+                          _c("textarea", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.commentInput,
+                                expression: "commentInput"
+                              }
+                            ],
+                            ref: "commentarea",
+                            staticClass: "flex-textarea-2",
+                            style: _vm.commentStyles,
+                            attrs: { placeholder: "コメントを入力" },
+                            domProps: { value: _vm.commentInput },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.commentInput = $event.target.value
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "comment-btn-main" }, [
+                            _vm._v("\n                コメント\n              ")
+                          ])
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _vm._l(_vm.modalPostComments, function(comment, index) {
+                        return _c(
+                          "div",
+                          {
+                            key: comment.id,
+                            staticClass: "overlay-post-comment-area"
+                          },
+                          [
+                            _c(
+                              "div",
+                              { staticClass: "overlay-post-comment-left" },
+                              [
+                                _c(
+                                  "router-link",
+                                  {
+                                    attrs: {
+                                      to: {
+                                        name: "user",
+                                        params: { id: comment.userId }
+                                      }
+                                    }
+                                  },
+                                  [_c("img", { attrs: { src: comment.icon } })]
+                                )
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              { staticClass: "overlay-post-comment-right" },
+                              [
+                                _c(
+                                  "div",
+                                  { staticClass: "overlay-post-comment-top" },
+                                  [
+                                    _c(
+                                      "div",
+                                      { staticClass: "overlay-post-name" },
+                                      [
+                                        _vm._v(
+                                          "\n                  " +
+                                            _vm._s(comment.user) +
+                                            "\n                "
+                                        )
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "div",
+                                      { staticClass: "overlay-post-day" },
+                                      [
+                                        _vm._v(
+                                          "\n                  " +
+                                            _vm._s(comment.day) +
+                                            "\n                "
+                                        )
+                                      ]
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  { staticClass: "overlay-post-comment" },
+                                  [
+                                    _vm._v(
+                                      "\n                うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。\n              "
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  { staticClass: "overlay-post-bottom" },
+                                  [
+                                    _c(
+                                      "div",
+                                      {
+                                        staticClass:
+                                          "overlay-post-comment-count"
+                                      },
+                                      [
+                                        comment.replyCount && !comment.replyShow
+                                          ? _c(
+                                              "div",
+                                              {
+                                                staticClass:
+                                                  "post-comment-count",
+                                                on: {
+                                                  click: function($event) {
+                                                    return _vm.openCommentReply(
+                                                      index
+                                                    )
+                                                  }
+                                                }
+                                              },
+                                              [
+                                                _vm._v(
+                                                  "\n                    ▼ " +
+                                                    _vm._s(comment.replyCount) +
+                                                    "件の返信を表示\n                  "
+                                                )
+                                              ]
+                                            )
+                                          : _vm._e(),
+                                        _vm._v(" "),
+                                        comment.replyCount && comment.replyShow
+                                          ? _c(
+                                              "div",
+                                              {
+                                                staticClass:
+                                                  "post-comment-count",
+                                                on: {
+                                                  click: function($event) {
+                                                    return _vm.closeCommentReply(
+                                                      index
+                                                    )
+                                                  }
+                                                }
+                                              },
+                                              [
+                                                _vm._v(
+                                                  "\n                    ▲ " +
+                                                    _vm._s(comment.replyCount) +
+                                                    "件の返信を非表示\n                  "
+                                                )
+                                              ]
+                                            )
+                                          : _vm._e(),
+                                        _vm._v(" "),
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass: "comment-replay-btn",
+                                            on: {
+                                              click: function($event) {
+                                                return _vm.openReplyForm(index)
+                                              }
+                                            }
+                                          },
+                                          [_vm._v("返信する")]
+                                        )
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "div",
+                                      { staticClass: "overlay-post-good" },
+                                      [
+                                        _vm._v(
+                                          "\n                  " +
+                                            _vm._s(comment.goodCount) +
+                                            "\n                  "
+                                        ),
+                                        !comment.good
+                                          ? _c("img", {
+                                              attrs: {
+                                                src: "../../../image/good.png"
+                                              },
+                                              on: {
+                                                click: function($event) {
+                                                  return _vm.commentGood(
+                                                    comment.id
+                                                  )
+                                                }
+                                              }
+                                            })
+                                          : _vm._e(),
+                                        _vm._v(" "),
+                                        comment.good
+                                          ? _c("img", {
+                                              attrs: {
+                                                src: "../../../image/gooded.png"
+                                              },
+                                              on: {
+                                                click: function($event) {
+                                                  return _vm.commentGood(
+                                                    comment.id
+                                                  )
+                                                }
+                                              }
+                                            })
+                                          : _vm._e()
+                                      ]
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                comment.replyFormOpened
+                                  ? _c("div", { staticClass: "input-3" }, [
+                                      _c("textarea", {
+                                        directives: [
+                                          {
+                                            name: "model",
+                                            rawName: "v-model",
+                                            value: comment.replyInput,
+                                            expression: "comment.replyInput"
+                                          }
+                                        ],
+                                        ref: "replyarea",
+                                        refInFor: true,
+                                        staticClass: "flex-textarea-2",
+                                        attrs: { placeholder: "返信を入力" },
+                                        domProps: { value: comment.replyInput },
+                                        on: {
+                                          input: function($event) {
+                                            if ($event.target.composing) {
+                                              return
+                                            }
+                                            _vm.$set(
+                                              comment,
+                                              "replyInput",
+                                              $event.target.value
+                                            )
+                                          }
+                                        }
+                                      }),
+                                      _vm._v(" "),
+                                      _c(
+                                        "div",
+                                        { staticClass: "comment-reply-btns" },
+                                        [
+                                          _c(
+                                            "div",
+                                            {
+                                              staticClass: "reply-cancel-btn",
+                                              on: {
+                                                click: function($event) {
+                                                  return _vm.closeReplyForm(
+                                                    index
+                                                  )
+                                                }
+                                              }
+                                            },
+                                            [
+                                              _vm._v(
+                                                "\n                    キャンセル\n                  "
+                                              )
+                                            ]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "div",
+                                            { staticClass: "comment-btn" },
+                                            [
+                                              _vm._v(
+                                                "\n                    コメント\n                  "
+                                              )
+                                            ]
+                                          )
+                                        ]
+                                      )
+                                    ])
+                                  : _vm._e(),
+                                _vm._v(" "),
+                                comment.replyShow
+                                  ? _c(
+                                      "div",
+                                      _vm._l(comment.replies, function(reply) {
+                                        return _c(
+                                          "div",
+                                          {
+                                            key: reply.id,
+                                            staticClass: "comment-reply-area"
+                                          },
+                                          [
+                                            _c(
+                                              "div",
+                                              {
+                                                staticClass:
+                                                  "overlay-post-comment-reply-area"
+                                              },
+                                              [
+                                                _c(
+                                                  "div",
+                                                  {
+                                                    staticClass:
+                                                      "overlay-post-comment-left"
+                                                  },
+                                                  [
+                                                    _c(
+                                                      "router-link",
+                                                      {
+                                                        attrs: {
+                                                          to: {
+                                                            name: "user",
+                                                            params: {
+                                                              id: reply.userId
+                                                            }
+                                                          }
+                                                        }
+                                                      },
+                                                      [
+                                                        _c("img", {
+                                                          attrs: {
+                                                            src: reply.icon
+                                                          }
+                                                        })
+                                                      ]
+                                                    )
+                                                  ],
+                                                  1
+                                                ),
+                                                _vm._v(" "),
+                                                _c(
+                                                  "div",
+                                                  {
+                                                    staticClass:
+                                                      "overlay-post-comment-right"
+                                                  },
+                                                  [
+                                                    _c(
+                                                      "div",
+                                                      {
+                                                        staticClass:
+                                                          "overlay-post-comment-top"
+                                                      },
+                                                      [
+                                                        _c(
+                                                          "div",
+                                                          {
+                                                            staticClass:
+                                                              "overlay-post-name"
+                                                          },
+                                                          [
+                                                            _vm._v(
+                                                              "\n                          " +
+                                                                _vm._s(
+                                                                  reply.user
+                                                                ) +
+                                                                "\n                        "
+                                                            )
+                                                          ]
+                                                        ),
+                                                        _vm._v(" "),
+                                                        _c(
+                                                          "div",
+                                                          {
+                                                            staticClass:
+                                                              "overlay-post-day"
+                                                          },
+                                                          [
+                                                            _vm._v(
+                                                              "\n                          " +
+                                                                _vm._s(
+                                                                  reply.day
+                                                                ) +
+                                                                "\n                        "
+                                                            )
+                                                          ]
+                                                        )
+                                                      ]
+                                                    ),
+                                                    _vm._v(" "),
+                                                    _c(
+                                                      "div",
+                                                      {
+                                                        staticClass:
+                                                          "overlay-post-comment"
+                                                      },
+                                                      [
+                                                        _vm._v(
+                                                          "\n                        うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。\n                      "
+                                                        )
+                                                      ]
+                                                    ),
+                                                    _vm._v(" "),
+                                                    _c(
+                                                      "div",
+                                                      {
+                                                        staticClass:
+                                                          "overlay-post-bottom"
+                                                      },
+                                                      [
+                                                        _c(
+                                                          "div",
+                                                          {
+                                                            staticClass:
+                                                              "overlay-post-good"
+                                                          },
+                                                          [
+                                                            _vm._v(
+                                                              "\n                          " +
+                                                                _vm._s(
+                                                                  reply.goodCount
+                                                                ) +
+                                                                "\n                          "
+                                                            ),
+                                                            !reply.good
+                                                              ? _c("img", {
+                                                                  attrs: {
+                                                                    src:
+                                                                      "../../../image/good.png"
+                                                                  },
+                                                                  on: {
+                                                                    click: function(
+                                                                      $event
+                                                                    ) {
+                                                                      return _vm.replyGood(
+                                                                        comment.id,
+                                                                        reply.id
+                                                                      )
+                                                                    }
+                                                                  }
+                                                                })
+                                                              : _vm._e(),
+                                                            _vm._v(" "),
+                                                            reply.good
+                                                              ? _c("img", {
+                                                                  attrs: {
+                                                                    src:
+                                                                      "../../../image/gooded.png"
+                                                                  },
+                                                                  on: {
+                                                                    click: function(
+                                                                      $event
+                                                                    ) {
+                                                                      return _vm.replyGood(
+                                                                        comment.id,
+                                                                        reply.id
+                                                                      )
+                                                                    }
+                                                                  }
+                                                                })
+                                                              : _vm._e()
+                                                          ]
+                                                        )
+                                                      ]
+                                                    )
+                                                  ]
+                                                )
+                                              ]
+                                            )
+                                          ]
+                                        )
+                                      }),
+                                      0
+                                    )
+                                  : _vm._e()
+                              ]
+                            )
+                          ]
+                        )
+                      })
+                    ],
+                    2
+                  )
+                ])
+              ])
+            ]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          directives: [
+            {
+              name: "show",
+              rawName: "v-show",
+              value: _vm.modalImageShow,
+              expression: "modalImageShow"
+            }
+          ],
+          staticClass: "overlay-image",
+          on: {
+            click: function($event) {
+              if ($event.target !== $event.currentTarget) {
+                return null
+              }
+              return _vm.closeImageModal($event)
+            }
+          }
+        },
+        [
+          _c("div", { staticClass: "overlay-image-box" }, [
+            _c("img", {
+              staticClass: "overlay-image-image",
+              attrs: { src: _vm.modalImage }
+            })
+          ])
+        ]
+      ),
+      _vm._v(" "),
+      _vm.modalDonmaiShow
+        ? _c(
+            "div",
+            {
+              staticClass: "overlay-post",
+              on: {
+                click: function($event) {
+                  if ($event.target !== $event.currentTarget) {
+                    return null
+                  }
+                  return _vm.closeModalDonmai($event)
+                }
+              }
+            },
+            [
+              _c("div", { staticClass: "overlay-donmai-content" }, [
+                _c("div", { staticClass: "overlay-donmai-title" }, [
+                  _vm._v("\n        どんまい！\n      ")
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "donmai-user-box" },
+                  _vm._l(_vm.modalDonmaiUsers, function(user, index) {
+                    return _c(
+                      "div",
+                      { key: user.id, staticClass: "donmai-user-list" },
+                      [
+                        _c("div", { staticClass: "overlay-donmai-left" }, [
+                          _c(
+                            "div",
+                            { staticClass: "overlay-donmai-user-icon" },
+                            [
+                              _c(
+                                "router-link",
+                                {
+                                  attrs: {
+                                    to: {
+                                      name: "user",
+                                      params: { id: user.id }
+                                    }
+                                  }
+                                },
+                                [_c("img", { attrs: { src: user.icon } })]
+                              )
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            { staticClass: "overlay-donmai-user-name" },
+                            [
+                              _c(
+                                "router-link",
+                                {
+                                  attrs: {
+                                    to: {
+                                      name: "user",
+                                      params: { id: user.id }
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                " +
+                                      _vm._s(user.name) +
+                                      "\n              "
+                                  )
+                                ]
+                              )
+                            ],
+                            1
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "overlay-donmai-right" }, [
+                          !user.followed
+                            ? _c(
+                                "div",
+                                {
+                                  staticClass: "overlay-donmai-follow",
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.donmaiFollowToggle(index)
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n              フォローする\n            "
+                                  )
+                                ]
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
+                          user.followed
+                            ? _c(
+                                "div",
+                                {
+                                  staticClass: "overlay-donmai-followed",
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.donmaiFollowToggle(index)
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n              フォロー中\n            "
+                                  )
+                                ]
+                              )
+                            : _vm._e()
+                        ])
+                      ]
+                    )
+                  }),
+                  0
+                )
+              ])
+            ]
+          )
+        : _vm._e()
+    ],
+    2
+  )
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "post-body" }, [
+      _vm._v("\n        うんちしたいな。"),
+      _c("br"),
+      _vm._v("\n        シッコもしたい。"),
+      _c("br"),
+      _vm._v("\n        もう我慢できない。\n      ")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "post-body" }, [
+      _vm._v(
+        "\n            こんにちは。こんにちは。こんにちは。こんにちは。こんにちは。こんにちは。"
+      ),
+      _c("br"),
+      _vm._v("\n            こんにちは。こんにちは。"),
+      _c("br"),
+      _vm._v("\n            こんにちは。こんにちは。\n          ")
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/search/SearchPostPopular.vue?vue&type=template&id=0f985cd5&":
+/*!***************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/search/SearchPostPopular.vue?vue&type=template&id=0f985cd5& ***!
+  \***************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "tags-posts" },
+    [
+      _vm._l(_vm.posts, function(post, index) {
+        return _c("div", { key: post.id, staticClass: "posts" }, [
+          _c(
+            "div",
+            { staticClass: "logo-area" },
+            [
+              _c(
+                "router-link",
+                {
+                  attrs: { to: { name: "user", params: { id: post.userId } } }
+                },
+                [_c("img", { attrs: { src: post.userIcon } })]
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "input-area" }, [
+            _c("div", { staticClass: "user-name-post" }, [
+              _vm._v(_vm._s(post.user))
+            ]),
+            _vm._v(" "),
+            _vm._m(0, true),
+            _vm._v(" "),
+            post.tags
+              ? _c(
+                  "div",
+                  { staticClass: "post-tags" },
+                  _vm._l(post.tags, function(tag, index) {
+                    return _c(
+                      "router-link",
+                      {
+                        key: index,
+                        attrs: {
+                          to: {
+                            name: "tags.new",
+                            params: { name: tag.replace("#", "") }
+                          }
+                        }
+                      },
+                      [_vm._v("\n          " + _vm._s(tag) + "\n        ")]
+                    )
+                  }),
+                  1
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            post.images.length > 0
+              ? _c(
+                  "div",
+                  { staticClass: "post-image-view" },
+                  _vm._l(post.images, function(image, index) {
+                    return _c(
+                      "div",
+                      {
+                        key: index,
+                        staticClass: "each-preview",
+                        class: {
+                          "one-image-pre": post.images.length == 1,
+                          "two-image-pre": post.images.length == 2,
+                          "three-image-pre": post.images.length == 3,
+                          "four-image-pre": post.images.length == 4,
+                          yokonaga: post.images.length == 3 && index == 0
+                        }
+                      },
+                      [
+                        _c(
+                          "div",
+                          {
+                            staticClass: "each-image-box",
+                            on: {
+                              click: function($event) {
+                                return _vm.openImageModal(image)
+                              }
+                            }
+                          },
+                          [
+                            _c("div", {
+                              staticClass: "each-image",
+                              class: {
+                                "one-each-image": post.images.length == 1,
+                                "two-each-image": post.images.length == 2,
+                                "three-each-image": post.images.length == 3,
+                                "four-each-image": post.images.length == 4,
+                                "yokonaga-image":
+                                  post.images.length == 3 && index == 0
+                              },
+                              style: { backgroundImage: "url(" + image + ")" }
+                            })
+                          ]
+                        )
+                      ]
+                    )
+                  }),
+                  0
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _c("div", { staticClass: "post-btns" }, [
+              _c(
+                "div",
+                {
+                  staticClass: "post-donmai post-action-icon",
+                  on: {
+                    click: function($event) {
+                      return _vm.donmai(index)
+                    }
+                  }
+                },
+                [
+                  !post.donmai
+                    ? _c("img", {
+                        attrs: {
+                          src: "../../../image/donmai.png",
+                          width: "30px"
+                        }
+                      })
+                    : _vm._e(),
+                  _vm._v(" "),
+                  post.donmai
+                    ? _c("img", {
+                        attrs: {
+                          src: "../../../image/donmaied.png",
+                          width: "30px"
+                        }
+                      })
+                    : _vm._e(),
+                  _vm._v(
+                    "\n          " + _vm._s(post.donmai_count) + "\n        "
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass: "post-comment-icon post-action-icon",
+                  on: {
+                    click: function($event) {
+                      return _vm.openModalPost(index)
+                    }
+                  }
+                },
+                [
+                  _c("img", { attrs: { src: "../../../image/comment.png" } }),
+                  _vm._v(
+                    "\n          " + _vm._s(post.comment_count) + "\n        "
+                  )
+                ]
+              )
+            ])
+          ])
+        ])
+      }),
+      _vm._v(" "),
+      _vm.modalPostShow
+        ? _c(
+            "div",
+            {
+              staticClass: "overlay-post",
+              on: {
+                click: function($event) {
+                  if ($event.target !== $event.currentTarget) {
+                    return null
+                  }
+                  return _vm.closeModalPost($event)
+                }
+              }
+            },
+            [
+              _c("div", { staticClass: "overlay-post-content" }, [
+                _c("div", { staticClass: "posts-overlay" }, [
+                  _c(
+                    "div",
+                    { staticClass: "logo-area" },
+                    [
+                      _c(
+                        "router-link",
+                        {
+                          attrs: {
+                            to: {
+                              name: "user",
+                              params: { id: _vm.modalPostUserId }
+                            }
+                          }
+                        },
+                        [_c("img", { attrs: { src: _vm.modalPostUserIcon } })]
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "input-area" },
+                    [
+                      _c("div", { staticClass: "user-name-post" }, [
+                        _vm._v(_vm._s(_vm.modalPostUser))
+                      ]),
+                      _vm._v(" "),
+                      _vm._m(1),
+                      _vm._v(" "),
+                      _vm.modalPostTags
+                        ? _c(
+                            "div",
+                            { staticClass: "post-tags" },
+                            _vm._l(_vm.modalPostTags, function(tag, index) {
+                              return _c(
+                                "router-link",
+                                {
+                                  key: index,
+                                  attrs: {
+                                    to: {
+                                      name: "tags.new",
+                                      params: { name: tag.replace("#", "") }
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n              " +
+                                      _vm._s(tag) +
+                                      "\n            "
+                                  )
+                                ]
+                              )
+                            }),
+                            1
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.modalPostImages.length > 0
+                        ? _c(
+                            "div",
+                            { staticClass: "post-image-view" },
+                            _vm._l(_vm.modalPostImages, function(image, index) {
+                              return _c(
+                                "div",
+                                {
+                                  key: index,
+                                  staticClass: "each-preview",
+                                  class: {
+                                    "one-image-pre":
+                                      _vm.modalPostImages.length == 1,
+                                    "two-image-pre":
+                                      _vm.modalPostImages.length == 2,
+                                    "three-image-pre":
+                                      _vm.modalPostImages.length == 3,
+                                    "four-image-pre":
+                                      _vm.modalPostImages.length == 4,
+                                    yokonaga:
+                                      _vm.modalPostImages.length == 3 &&
+                                      index == 0
+                                  }
+                                },
+                                [
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass: "each-image-box",
+                                      on: {
+                                        click: function($event) {
+                                          return _vm.openImageModal(image)
+                                        }
+                                      }
+                                    },
+                                    [
+                                      _c("div", {
+                                        staticClass: "each-image",
+                                        class: {
+                                          "one-each-image":
+                                            _vm.modalPostImages.length == 1,
+                                          "two-each-image":
+                                            _vm.modalPostImages.length == 2,
+                                          "three-each-image":
+                                            _vm.modalPostImages.length == 3,
+                                          "four-each-image":
+                                            _vm.modalPostImages.length == 4,
+                                          "yokonaga-image":
+                                            _vm.modalPostImages.length == 3 &&
+                                            index == 0
+                                        },
+                                        style: {
+                                          backgroundImage: "url(" + image + ")"
+                                        }
+                                      })
+                                    ]
+                                  )
+                                ]
+                              )
+                            }),
+                            0
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "post-btns-overlay" }, [
+                        _c(
+                          "div",
+                          {
+                            staticClass: "post-donmai-overlay post-action-icon",
+                            on: { click: _vm.openModalDonmai }
+                          },
+                          [
+                            _c("b", [_vm._v(_vm._s(_vm.modalPostDonmaiCount))]),
+                            _vm._v("件のどんまい\n            ")
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "post-comment-icon-overlay post-action-icon-comment-overlay"
+                          },
+                          [
+                            _c("b", [
+                              _vm._v(_vm._s(_vm.modalPostCommentCount))
+                            ]),
+                            _vm._v("件のコメント\n            ")
+                          ]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "comment-post-area" }, [
+                        _c("div", { staticClass: "comment-post-icon" }, [
+                          _c("img", {
+                            attrs: { src: "../../../image/unko.jpg" }
+                          })
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "input-3" }, [
+                          _c("textarea", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.commentInput,
+                                expression: "commentInput"
+                              }
+                            ],
+                            ref: "commentarea",
+                            staticClass: "flex-textarea-2",
+                            style: _vm.commentStyles,
+                            attrs: { placeholder: "コメントを入力" },
+                            domProps: { value: _vm.commentInput },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.commentInput = $event.target.value
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "comment-btn-main" }, [
+                            _vm._v("\n                コメント\n              ")
+                          ])
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _vm._l(_vm.modalPostComments, function(comment, index) {
+                        return _c(
+                          "div",
+                          {
+                            key: comment.id,
+                            staticClass: "overlay-post-comment-area"
+                          },
+                          [
+                            _c(
+                              "div",
+                              { staticClass: "overlay-post-comment-left" },
+                              [
+                                _c(
+                                  "router-link",
+                                  {
+                                    attrs: {
+                                      to: {
+                                        name: "user",
+                                        params: { id: comment.userId }
+                                      }
+                                    }
+                                  },
+                                  [_c("img", { attrs: { src: comment.icon } })]
+                                )
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              { staticClass: "overlay-post-comment-right" },
+                              [
+                                _c(
+                                  "div",
+                                  { staticClass: "overlay-post-comment-top" },
+                                  [
+                                    _c(
+                                      "div",
+                                      { staticClass: "overlay-post-name" },
+                                      [
+                                        _vm._v(
+                                          "\n                  " +
+                                            _vm._s(comment.user) +
+                                            "\n                "
+                                        )
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "div",
+                                      { staticClass: "overlay-post-day" },
+                                      [
+                                        _vm._v(
+                                          "\n                  " +
+                                            _vm._s(comment.day) +
+                                            "\n                "
+                                        )
+                                      ]
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  { staticClass: "overlay-post-comment" },
+                                  [
+                                    _vm._v(
+                                      "\n                うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。\n              "
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  { staticClass: "overlay-post-bottom" },
+                                  [
+                                    _c(
+                                      "div",
+                                      {
+                                        staticClass:
+                                          "overlay-post-comment-count"
+                                      },
+                                      [
+                                        comment.replyCount && !comment.replyShow
+                                          ? _c(
+                                              "div",
+                                              {
+                                                staticClass:
+                                                  "post-comment-count",
+                                                on: {
+                                                  click: function($event) {
+                                                    return _vm.openCommentReply(
+                                                      index
+                                                    )
+                                                  }
+                                                }
+                                              },
+                                              [
+                                                _vm._v(
+                                                  "\n                    ▼ " +
+                                                    _vm._s(comment.replyCount) +
+                                                    "件の返信を表示\n                  "
+                                                )
+                                              ]
+                                            )
+                                          : _vm._e(),
+                                        _vm._v(" "),
+                                        comment.replyCount && comment.replyShow
+                                          ? _c(
+                                              "div",
+                                              {
+                                                staticClass:
+                                                  "post-comment-count",
+                                                on: {
+                                                  click: function($event) {
+                                                    return _vm.closeCommentReply(
+                                                      index
+                                                    )
+                                                  }
+                                                }
+                                              },
+                                              [
+                                                _vm._v(
+                                                  "\n                    ▲ " +
+                                                    _vm._s(comment.replyCount) +
+                                                    "件の返信を非表示\n                  "
+                                                )
+                                              ]
+                                            )
+                                          : _vm._e(),
+                                        _vm._v(" "),
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass: "comment-replay-btn",
+                                            on: {
+                                              click: function($event) {
+                                                return _vm.openReplyForm(index)
+                                              }
+                                            }
+                                          },
+                                          [_vm._v("返信する")]
+                                        )
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "div",
+                                      { staticClass: "overlay-post-good" },
+                                      [
+                                        _vm._v(
+                                          "\n                  " +
+                                            _vm._s(comment.goodCount) +
+                                            "\n                  "
+                                        ),
+                                        !comment.good
+                                          ? _c("img", {
+                                              attrs: {
+                                                src: "../../../image/good.png"
+                                              },
+                                              on: {
+                                                click: function($event) {
+                                                  return _vm.commentGood(
+                                                    comment.id
+                                                  )
+                                                }
+                                              }
+                                            })
+                                          : _vm._e(),
+                                        _vm._v(" "),
+                                        comment.good
+                                          ? _c("img", {
+                                              attrs: {
+                                                src: "../../../image/gooded.png"
+                                              },
+                                              on: {
+                                                click: function($event) {
+                                                  return _vm.commentGood(
+                                                    comment.id
+                                                  )
+                                                }
+                                              }
+                                            })
+                                          : _vm._e()
+                                      ]
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                comment.replyFormOpened
+                                  ? _c("div", { staticClass: "input-3" }, [
+                                      _c("textarea", {
+                                        directives: [
+                                          {
+                                            name: "model",
+                                            rawName: "v-model",
+                                            value: comment.replyInput,
+                                            expression: "comment.replyInput"
+                                          }
+                                        ],
+                                        ref: "replyarea",
+                                        refInFor: true,
+                                        staticClass: "flex-textarea-2",
+                                        attrs: { placeholder: "返信を入力" },
+                                        domProps: { value: comment.replyInput },
+                                        on: {
+                                          input: function($event) {
+                                            if ($event.target.composing) {
+                                              return
+                                            }
+                                            _vm.$set(
+                                              comment,
+                                              "replyInput",
+                                              $event.target.value
+                                            )
+                                          }
+                                        }
+                                      }),
+                                      _vm._v(" "),
+                                      _c(
+                                        "div",
+                                        { staticClass: "comment-reply-btns" },
+                                        [
+                                          _c(
+                                            "div",
+                                            {
+                                              staticClass: "reply-cancel-btn",
+                                              on: {
+                                                click: function($event) {
+                                                  return _vm.closeReplyForm(
+                                                    index
+                                                  )
+                                                }
+                                              }
+                                            },
+                                            [
+                                              _vm._v(
+                                                "\n                    キャンセル\n                  "
+                                              )
+                                            ]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "div",
+                                            { staticClass: "comment-btn" },
+                                            [
+                                              _vm._v(
+                                                "\n                    コメント\n                  "
+                                              )
+                                            ]
+                                          )
+                                        ]
+                                      )
+                                    ])
+                                  : _vm._e(),
+                                _vm._v(" "),
+                                comment.replyShow
+                                  ? _c(
+                                      "div",
+                                      _vm._l(comment.replies, function(reply) {
+                                        return _c(
+                                          "div",
+                                          {
+                                            key: reply.id,
+                                            staticClass: "comment-reply-area"
+                                          },
+                                          [
+                                            _c(
+                                              "div",
+                                              {
+                                                staticClass:
+                                                  "overlay-post-comment-reply-area"
+                                              },
+                                              [
+                                                _c(
+                                                  "div",
+                                                  {
+                                                    staticClass:
+                                                      "overlay-post-comment-left"
+                                                  },
+                                                  [
+                                                    _c(
+                                                      "router-link",
+                                                      {
+                                                        attrs: {
+                                                          to: {
+                                                            name: "user",
+                                                            params: {
+                                                              id: reply.userId
+                                                            }
+                                                          }
+                                                        }
+                                                      },
+                                                      [
+                                                        _c("img", {
+                                                          attrs: {
+                                                            src: reply.icon
+                                                          }
+                                                        })
+                                                      ]
+                                                    )
+                                                  ],
+                                                  1
+                                                ),
+                                                _vm._v(" "),
+                                                _c(
+                                                  "div",
+                                                  {
+                                                    staticClass:
+                                                      "overlay-post-comment-right"
+                                                  },
+                                                  [
+                                                    _c(
+                                                      "div",
+                                                      {
+                                                        staticClass:
+                                                          "overlay-post-comment-top"
+                                                      },
+                                                      [
+                                                        _c(
+                                                          "div",
+                                                          {
+                                                            staticClass:
+                                                              "overlay-post-name"
+                                                          },
+                                                          [
+                                                            _vm._v(
+                                                              "\n                          " +
+                                                                _vm._s(
+                                                                  reply.user
+                                                                ) +
+                                                                "\n                        "
+                                                            )
+                                                          ]
+                                                        ),
+                                                        _vm._v(" "),
+                                                        _c(
+                                                          "div",
+                                                          {
+                                                            staticClass:
+                                                              "overlay-post-day"
+                                                          },
+                                                          [
+                                                            _vm._v(
+                                                              "\n                          " +
+                                                                _vm._s(
+                                                                  reply.day
+                                                                ) +
+                                                                "\n                        "
+                                                            )
+                                                          ]
+                                                        )
+                                                      ]
+                                                    ),
+                                                    _vm._v(" "),
+                                                    _c(
+                                                      "div",
+                                                      {
+                                                        staticClass:
+                                                          "overlay-post-comment"
+                                                      },
+                                                      [
+                                                        _vm._v(
+                                                          "\n                        うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。\n                      "
+                                                        )
+                                                      ]
+                                                    ),
+                                                    _vm._v(" "),
+                                                    _c(
+                                                      "div",
+                                                      {
+                                                        staticClass:
+                                                          "overlay-post-bottom"
+                                                      },
+                                                      [
+                                                        _c(
+                                                          "div",
+                                                          {
+                                                            staticClass:
+                                                              "overlay-post-good"
+                                                          },
+                                                          [
+                                                            _vm._v(
+                                                              "\n                          " +
+                                                                _vm._s(
+                                                                  reply.goodCount
+                                                                ) +
+                                                                "\n                          "
+                                                            ),
+                                                            !reply.good
+                                                              ? _c("img", {
+                                                                  attrs: {
+                                                                    src:
+                                                                      "../../../image/good.png"
+                                                                  },
+                                                                  on: {
+                                                                    click: function(
+                                                                      $event
+                                                                    ) {
+                                                                      return _vm.replyGood(
+                                                                        comment.id,
+                                                                        reply.id
+                                                                      )
+                                                                    }
+                                                                  }
+                                                                })
+                                                              : _vm._e(),
+                                                            _vm._v(" "),
+                                                            reply.good
+                                                              ? _c("img", {
+                                                                  attrs: {
+                                                                    src:
+                                                                      "../../../image/gooded.png"
+                                                                  },
+                                                                  on: {
+                                                                    click: function(
+                                                                      $event
+                                                                    ) {
+                                                                      return _vm.replyGood(
+                                                                        comment.id,
+                                                                        reply.id
+                                                                      )
+                                                                    }
+                                                                  }
+                                                                })
+                                                              : _vm._e()
+                                                          ]
+                                                        )
+                                                      ]
+                                                    )
+                                                  ]
+                                                )
+                                              ]
+                                            )
+                                          ]
+                                        )
+                                      }),
+                                      0
+                                    )
+                                  : _vm._e()
+                              ]
+                            )
+                          ]
+                        )
+                      })
+                    ],
+                    2
+                  )
+                ])
+              ])
+            ]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          directives: [
+            {
+              name: "show",
+              rawName: "v-show",
+              value: _vm.modalImageShow,
+              expression: "modalImageShow"
+            }
+          ],
+          staticClass: "overlay-image",
+          on: {
+            click: function($event) {
+              if ($event.target !== $event.currentTarget) {
+                return null
+              }
+              return _vm.closeImageModal($event)
+            }
+          }
+        },
+        [
+          _c("div", { staticClass: "overlay-image-box" }, [
+            _c("img", {
+              staticClass: "overlay-image-image",
+              attrs: { src: _vm.modalImage }
+            })
+          ])
+        ]
+      ),
+      _vm._v(" "),
+      _vm.modalDonmaiShow
+        ? _c(
+            "div",
+            {
+              staticClass: "overlay-post",
+              on: {
+                click: function($event) {
+                  if ($event.target !== $event.currentTarget) {
+                    return null
+                  }
+                  return _vm.closeModalDonmai($event)
+                }
+              }
+            },
+            [
+              _c("div", { staticClass: "overlay-donmai-content" }, [
+                _c("div", { staticClass: "overlay-donmai-title" }, [
+                  _vm._v("\n        どんまい！\n      ")
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "donmai-user-box" },
+                  _vm._l(_vm.modalDonmaiUsers, function(user, index) {
+                    return _c(
+                      "div",
+                      { key: user.id, staticClass: "donmai-user-list" },
+                      [
+                        _c("div", { staticClass: "overlay-donmai-left" }, [
+                          _c(
+                            "div",
+                            { staticClass: "overlay-donmai-user-icon" },
+                            [
+                              _c(
+                                "router-link",
+                                {
+                                  attrs: {
+                                    to: {
+                                      name: "user",
+                                      params: { id: user.id }
+                                    }
+                                  }
+                                },
+                                [_c("img", { attrs: { src: user.icon } })]
+                              )
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            { staticClass: "overlay-donmai-user-name" },
+                            [
+                              _c(
+                                "router-link",
+                                {
+                                  attrs: {
+                                    to: {
+                                      name: "user",
+                                      params: { id: user.id }
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                " +
+                                      _vm._s(user.name) +
+                                      "\n              "
+                                  )
+                                ]
+                              )
+                            ],
+                            1
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "overlay-donmai-right" }, [
+                          !user.followed
+                            ? _c(
+                                "div",
+                                {
+                                  staticClass: "overlay-donmai-follow",
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.donmaiFollowToggle(index)
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n              フォローする\n            "
+                                  )
+                                ]
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
+                          user.followed
+                            ? _c(
+                                "div",
+                                {
+                                  staticClass: "overlay-donmai-followed",
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.donmaiFollowToggle(index)
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n              フォロー中\n            "
+                                  )
+                                ]
+                              )
+                            : _vm._e()
+                        ])
+                      ]
+                    )
+                  }),
+                  0
+                )
+              ])
+            ]
+          )
+        : _vm._e()
+    ],
+    2
+  )
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "post-body" }, [
+      _vm._v("\n        うんちしたいな。"),
+      _c("br"),
+      _vm._v("\n        シッコもしたい。"),
+      _c("br"),
+      _vm._v("\n        もう我慢できない。\n      ")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "post-body" }, [
+      _vm._v(
+        "\n            こんにちは。こんにちは。こんにちは。こんにちは。こんにちは。こんにちは。"
+      ),
+      _c("br"),
+      _vm._v("\n            こんにちは。こんにちは。"),
+      _c("br"),
+      _vm._v("\n            こんにちは。こんにちは。\n          ")
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/search/SearchUser.vue?vue&type=template&id=fc3bde82&":
+/*!********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/search/SearchUser.vue?vue&type=template&id=fc3bde82& ***!
+  \********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    _vm._l(_vm.users, function(user, index) {
+      return _c(
+        "div",
+        {
+          key: index,
+          staticClass: "search-user-box",
+          on: {
+            click: function($event) {
+              if ($event.target !== $event.currentTarget) {
+                return null
+              }
+              return _vm.toUserPage(user.id)
+            }
+          }
+        },
+        [
+          _c(
+            "div",
+            {
+              staticClass: "search-user-left",
+              on: {
+                click: function($event) {
+                  return _vm.toUserPage(user.id)
+                }
+              }
+            },
+            [
+              _c("img", {
+                staticClass: "search-user-icon",
+                attrs: { src: user.icon }
+              })
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass: "search-user-right",
+              on: {
+                click: function($event) {
+                  if ($event.target !== $event.currentTarget) {
+                    return null
+                  }
+                  return _vm.toUserPage(user.id)
+                }
+              }
+            },
+            [
+              _c(
+                "div",
+                {
+                  staticClass: "search-user-right-top",
+                  on: {
+                    click: function($event) {
+                      if ($event.target !== $event.currentTarget) {
+                        return null
+                      }
+                      return _vm.toUserPage(user.id)
+                    }
+                  }
+                },
+                [
+                  _c(
+                    "div",
+                    {
+                      staticClass: "search-user-name",
+                      on: {
+                        click: function($event) {
+                          if ($event.target !== $event.currentTarget) {
+                            return null
+                          }
+                          return _vm.toUserPage(user.id)
+                        }
+                      }
+                    },
+                    [_vm._v("\n          " + _vm._s(user.name) + "\n        ")]
+                  ),
+                  _vm._v(" "),
+                  !user.followed
+                    ? _c(
+                        "div",
+                        {
+                          staticClass: "search-user-follow-btn",
+                          on: {
+                            click: function($event) {
+                              return _vm.toggleFollow(user)
+                            }
+                          }
+                        },
+                        [_vm._v("\n          フォローする\n        ")]
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  user.followed
+                    ? _c(
+                        "div",
+                        {
+                          staticClass: "search-user-followed-btn",
+                          on: {
+                            click: function($event) {
+                              return _vm.toggleFollow(user)
+                            }
+                          }
+                        },
+                        [_vm._v("\n          フォロー中\n        ")]
+                      )
+                    : _vm._e()
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass: "search-user-pr",
+                  on: {
+                    click: function($event) {
+                      return _vm.toUserPage(user.id)
+                    }
+                  }
+                },
+                [_vm._v("\n        " + _vm._s(user.pr) + "\n      ")]
+              )
+            ]
+          )
+        ]
+      )
+    }),
+    0
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/tags/Tags.vue?vue&type=template&id=9e89d198&":
+/*!************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/tags/Tags.vue?vue&type=template&id=9e89d198& ***!
+  \************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "tags-page" }, [
+    _c(
+      "div",
+      { staticClass: "tags" },
+      [
+        _c("div", { staticClass: "tags-top" }, [
+          _c("div", { staticClass: "tag-name" }, [
+            _vm._v("\n        #" + _vm._s(_vm.$route.params.name) + "\n      ")
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "tag-posts-count" }, [
+            _vm._v("\n        投稿4000万件\n      ")
+          ])
+        ]),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "tags-btns-area" },
+          [
+            _c(
+              "router-link",
+              {
+                staticClass: "tags-new-btn tags-btn",
+                class: {
+                  current:
+                    _vm.$route.path ==
+                    _vm.$router.resolve({ name: "tags.new" }).href
+                },
+                attrs: { to: { name: "tags.new" } }
+              },
+              [_vm._v("\n       最新の投稿\n      ")]
+            ),
+            _vm._v(" "),
+            _c(
+              "router-link",
+              {
+                staticClass: "tags-popular-btn tags-btn",
+                class: {
+                  current:
+                    _vm.$route.path ==
+                    _vm.$router.resolve({ name: "tags.popular" }).href
+                },
+                attrs: { to: { name: "tags.popular" } }
+              },
+              [_vm._v("\n        人気の投稿\n      ")]
+            )
+          ],
+          1
+        ),
+        _vm._v(" "),
+        _c("router-view")
+      ],
+      1
+    )
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/tags/TagsNew.vue?vue&type=template&id=4889ac08&":
+/*!***************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/tags/TagsNew.vue?vue&type=template&id=4889ac08& ***!
+  \***************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "tags-posts" },
+    [
+      _vm._l(_vm.posts, function(post, index) {
+        return _c("div", { key: post.id, staticClass: "posts" }, [
+          _c(
+            "div",
+            { staticClass: "logo-area" },
+            [
+              _c(
+                "router-link",
+                {
+                  attrs: { to: { name: "user", params: { id: post.userId } } }
+                },
+                [_c("img", { attrs: { src: post.userIcon } })]
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "input-area" }, [
+            _c("div", { staticClass: "user-name-post" }, [
+              _vm._v(_vm._s(post.user))
+            ]),
+            _vm._v(" "),
+            _vm._m(0, true),
+            _vm._v(" "),
+            post.tags
+              ? _c(
+                  "div",
+                  { staticClass: "post-tags" },
+                  _vm._l(post.tags, function(tag, index) {
+                    return _c(
+                      "router-link",
+                      {
+                        key: index,
+                        attrs: {
+                          to: {
+                            name: "tags.new",
+                            params: { name: tag.replace("#", "") }
+                          }
+                        }
+                      },
+                      [_vm._v("\n          " + _vm._s(tag) + "\n        ")]
+                    )
+                  }),
+                  1
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            post.images.length > 0
+              ? _c(
+                  "div",
+                  { staticClass: "post-image-view" },
+                  _vm._l(post.images, function(image, index) {
+                    return _c(
+                      "div",
+                      {
+                        key: index,
+                        staticClass: "each-preview",
+                        class: {
+                          "one-image-pre": post.images.length == 1,
+                          "two-image-pre": post.images.length == 2,
+                          "three-image-pre": post.images.length == 3,
+                          "four-image-pre": post.images.length == 4,
+                          yokonaga: post.images.length == 3 && index == 0
+                        }
+                      },
+                      [
+                        _c(
+                          "div",
+                          {
+                            staticClass: "each-image-box",
+                            on: {
+                              click: function($event) {
+                                return _vm.openImageModal(image)
+                              }
+                            }
+                          },
+                          [
+                            _c("div", {
+                              staticClass: "each-image",
+                              class: {
+                                "one-each-image": post.images.length == 1,
+                                "two-each-image": post.images.length == 2,
+                                "three-each-image": post.images.length == 3,
+                                "four-each-image": post.images.length == 4,
+                                "yokonaga-image":
+                                  post.images.length == 3 && index == 0
+                              },
+                              style: { backgroundImage: "url(" + image + ")" }
+                            })
+                          ]
+                        )
+                      ]
+                    )
+                  }),
+                  0
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _c("div", { staticClass: "post-btns" }, [
+              _c(
+                "div",
+                {
+                  staticClass: "post-donmai post-action-icon",
+                  on: {
+                    click: function($event) {
+                      return _vm.donmai(index)
+                    }
+                  }
+                },
+                [
+                  !post.donmai
+                    ? _c("img", {
+                        attrs: { src: "../../image/donmai.png", width: "30px" }
+                      })
+                    : _vm._e(),
+                  _vm._v(" "),
+                  post.donmai
+                    ? _c("img", {
+                        attrs: {
+                          src: "../../image/donmaied.png",
+                          width: "30px"
+                        }
+                      })
+                    : _vm._e(),
+                  _vm._v(
+                    "\n          " + _vm._s(post.donmai_count) + "\n        "
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass: "post-comment-icon post-action-icon",
+                  on: {
+                    click: function($event) {
+                      return _vm.openModalPost(index)
+                    }
+                  }
+                },
+                [
+                  _c("img", { attrs: { src: "../../image/comment.png" } }),
+                  _vm._v(
+                    "\n          " + _vm._s(post.comment_count) + "\n        "
+                  )
+                ]
+              )
+            ])
+          ])
+        ])
+      }),
+      _vm._v(" "),
+      _vm.modalPostShow
+        ? _c(
+            "div",
+            {
+              staticClass: "overlay-post",
+              on: {
+                click: function($event) {
+                  if ($event.target !== $event.currentTarget) {
+                    return null
+                  }
+                  return _vm.closeModalPost($event)
+                }
+              }
+            },
+            [
+              _c("div", { staticClass: "overlay-post-content" }, [
+                _c("div", { staticClass: "posts-overlay" }, [
+                  _c(
+                    "div",
+                    { staticClass: "logo-area" },
+                    [
+                      _c(
+                        "router-link",
+                        {
+                          attrs: {
+                            to: {
+                              name: "user",
+                              params: { id: _vm.modalPostUserId }
+                            }
+                          }
+                        },
+                        [_c("img", { attrs: { src: _vm.modalPostUserIcon } })]
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "input-area" },
+                    [
+                      _c("div", { staticClass: "user-name-post" }, [
+                        _vm._v(_vm._s(_vm.modalPostUser))
+                      ]),
+                      _vm._v(" "),
+                      _vm._m(1),
+                      _vm._v(" "),
+                      _vm.modalPostTags
+                        ? _c(
+                            "div",
+                            { staticClass: "post-tags" },
+                            _vm._l(_vm.modalPostTags, function(tag, index) {
+                              return _c(
+                                "router-link",
+                                {
+                                  key: index,
+                                  attrs: {
+                                    to: {
+                                      name: "tags.new",
+                                      params: { name: tag.replace("#", "") }
+                                    }
+                                  },
+                                  nativeOn: {
+                                    click: function($event) {
+                                      return _vm.fromModalTagToTag($event)
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n              " +
+                                      _vm._s(tag) +
+                                      "\n            "
+                                  )
+                                ]
+                              )
+                            }),
+                            1
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.modalPostImages.length > 0
+                        ? _c(
+                            "div",
+                            { staticClass: "post-image-view" },
+                            _vm._l(_vm.modalPostImages, function(image, index) {
+                              return _c(
+                                "div",
+                                {
+                                  key: index,
+                                  staticClass: "each-preview",
+                                  class: {
+                                    "one-image-pre":
+                                      _vm.modalPostImages.length == 1,
+                                    "two-image-pre":
+                                      _vm.modalPostImages.length == 2,
+                                    "three-image-pre":
+                                      _vm.modalPostImages.length == 3,
+                                    "four-image-pre":
+                                      _vm.modalPostImages.length == 4,
+                                    yokonaga:
+                                      _vm.modalPostImages.length == 3 &&
+                                      index == 0
+                                  }
+                                },
+                                [
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass: "each-image-box",
+                                      on: {
+                                        click: function($event) {
+                                          return _vm.openImageModal(image)
+                                        }
+                                      }
+                                    },
+                                    [
+                                      _c("div", {
+                                        staticClass: "each-image",
+                                        class: {
+                                          "one-each-image":
+                                            _vm.modalPostImages.length == 1,
+                                          "two-each-image":
+                                            _vm.modalPostImages.length == 2,
+                                          "three-each-image":
+                                            _vm.modalPostImages.length == 3,
+                                          "four-each-image":
+                                            _vm.modalPostImages.length == 4,
+                                          "yokonaga-image":
+                                            _vm.modalPostImages.length == 3 &&
+                                            index == 0
+                                        },
+                                        style: {
+                                          backgroundImage: "url(" + image + ")"
+                                        }
+                                      })
+                                    ]
+                                  )
+                                ]
+                              )
+                            }),
+                            0
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "post-btns-overlay" }, [
+                        _c(
+                          "div",
+                          {
+                            staticClass: "post-donmai-overlay post-action-icon",
+                            on: { click: _vm.openModalDonmai }
+                          },
+                          [
+                            _c("b", [_vm._v(_vm._s(_vm.modalPostDonmaiCount))]),
+                            _vm._v("件のどんまい\n            ")
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "post-comment-icon-overlay post-action-icon-comment-overlay"
+                          },
+                          [
+                            _c("b", [
+                              _vm._v(_vm._s(_vm.modalPostCommentCount))
+                            ]),
+                            _vm._v("件のコメント\n            ")
+                          ]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "comment-post-area" }, [
+                        _c("div", { staticClass: "comment-post-icon" }, [
+                          _c("img", { attrs: { src: "../../image/unko.jpg" } })
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "input-3" }, [
+                          _c("textarea", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.commentInput,
+                                expression: "commentInput"
+                              }
+                            ],
+                            ref: "commentarea",
+                            staticClass: "flex-textarea-2",
+                            style: _vm.commentStyles,
+                            attrs: { placeholder: "コメントを入力" },
+                            domProps: { value: _vm.commentInput },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.commentInput = $event.target.value
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "comment-btn-main" }, [
+                            _vm._v("\n                コメント\n              ")
+                          ])
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _vm._l(_vm.modalPostComments, function(comment, index) {
+                        return _c(
+                          "div",
+                          {
+                            key: comment.id,
+                            staticClass: "overlay-post-comment-area"
+                          },
+                          [
+                            _c(
+                              "div",
+                              { staticClass: "overlay-post-comment-left" },
+                              [
+                                _c(
+                                  "router-link",
+                                  {
+                                    attrs: {
+                                      to: {
+                                        name: "user",
+                                        params: { id: comment.userId }
+                                      }
+                                    }
+                                  },
+                                  [_c("img", { attrs: { src: comment.icon } })]
+                                )
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              { staticClass: "overlay-post-comment-right" },
+                              [
+                                _c(
+                                  "div",
+                                  { staticClass: "overlay-post-comment-top" },
+                                  [
+                                    _c(
+                                      "div",
+                                      { staticClass: "overlay-post-name" },
+                                      [
+                                        _vm._v(
+                                          "\n                  " +
+                                            _vm._s(comment.user) +
+                                            "\n                "
+                                        )
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "div",
+                                      { staticClass: "overlay-post-day" },
+                                      [
+                                        _vm._v(
+                                          "\n                  " +
+                                            _vm._s(comment.day) +
+                                            "\n                "
+                                        )
+                                      ]
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  { staticClass: "overlay-post-comment" },
+                                  [
+                                    _vm._v(
+                                      "\n                うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。\n              "
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  { staticClass: "overlay-post-bottom" },
+                                  [
+                                    _c(
+                                      "div",
+                                      {
+                                        staticClass:
+                                          "overlay-post-comment-count"
+                                      },
+                                      [
+                                        comment.replyCount && !comment.replyShow
+                                          ? _c(
+                                              "div",
+                                              {
+                                                staticClass:
+                                                  "post-comment-count",
+                                                on: {
+                                                  click: function($event) {
+                                                    return _vm.openCommentReply(
+                                                      index
+                                                    )
+                                                  }
+                                                }
+                                              },
+                                              [
+                                                _vm._v(
+                                                  "\n                    ▼ " +
+                                                    _vm._s(comment.replyCount) +
+                                                    "件の返信を表示\n                  "
+                                                )
+                                              ]
+                                            )
+                                          : _vm._e(),
+                                        _vm._v(" "),
+                                        comment.replyCount && comment.replyShow
+                                          ? _c(
+                                              "div",
+                                              {
+                                                staticClass:
+                                                  "post-comment-count",
+                                                on: {
+                                                  click: function($event) {
+                                                    return _vm.closeCommentReply(
+                                                      index
+                                                    )
+                                                  }
+                                                }
+                                              },
+                                              [
+                                                _vm._v(
+                                                  "\n                    ▲ " +
+                                                    _vm._s(comment.replyCount) +
+                                                    "件の返信を非表示\n                  "
+                                                )
+                                              ]
+                                            )
+                                          : _vm._e(),
+                                        _vm._v(" "),
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass: "comment-replay-btn",
+                                            on: {
+                                              click: function($event) {
+                                                return _vm.openReplyForm(index)
+                                              }
+                                            }
+                                          },
+                                          [_vm._v("返信する")]
+                                        )
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "div",
+                                      { staticClass: "overlay-post-good" },
+                                      [
+                                        _vm._v(
+                                          "\n                  " +
+                                            _vm._s(comment.goodCount) +
+                                            "\n                  "
+                                        ),
+                                        !comment.good
+                                          ? _c("img", {
+                                              attrs: {
+                                                src: "../../image/good.png"
+                                              },
+                                              on: {
+                                                click: function($event) {
+                                                  return _vm.commentGood(
+                                                    comment.id
+                                                  )
+                                                }
+                                              }
+                                            })
+                                          : _vm._e(),
+                                        _vm._v(" "),
+                                        comment.good
+                                          ? _c("img", {
+                                              attrs: {
+                                                src: "../../image/gooded.png"
+                                              },
+                                              on: {
+                                                click: function($event) {
+                                                  return _vm.commentGood(
+                                                    comment.id
+                                                  )
+                                                }
+                                              }
+                                            })
+                                          : _vm._e()
+                                      ]
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                comment.replyFormOpened
+                                  ? _c("div", { staticClass: "input-3" }, [
+                                      _c("textarea", {
+                                        directives: [
+                                          {
+                                            name: "model",
+                                            rawName: "v-model",
+                                            value: comment.replyInput,
+                                            expression: "comment.replyInput"
+                                          }
+                                        ],
+                                        ref: "replyarea",
+                                        refInFor: true,
+                                        staticClass: "flex-textarea-2",
+                                        attrs: { placeholder: "返信を入力" },
+                                        domProps: { value: comment.replyInput },
+                                        on: {
+                                          input: function($event) {
+                                            if ($event.target.composing) {
+                                              return
+                                            }
+                                            _vm.$set(
+                                              comment,
+                                              "replyInput",
+                                              $event.target.value
+                                            )
+                                          }
+                                        }
+                                      }),
+                                      _vm._v(" "),
+                                      _c(
+                                        "div",
+                                        { staticClass: "comment-reply-btns" },
+                                        [
+                                          _c(
+                                            "div",
+                                            {
+                                              staticClass: "reply-cancel-btn",
+                                              on: {
+                                                click: function($event) {
+                                                  return _vm.closeReplyForm(
+                                                    index
+                                                  )
+                                                }
+                                              }
+                                            },
+                                            [
+                                              _vm._v(
+                                                "\n                    キャンセル\n                  "
+                                              )
+                                            ]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "div",
+                                            { staticClass: "comment-btn" },
+                                            [
+                                              _vm._v(
+                                                "\n                    コメント\n                  "
+                                              )
+                                            ]
+                                          )
+                                        ]
+                                      )
+                                    ])
+                                  : _vm._e(),
+                                _vm._v(" "),
+                                comment.replyShow
+                                  ? _c(
+                                      "div",
+                                      _vm._l(comment.replies, function(reply) {
+                                        return _c(
+                                          "div",
+                                          {
+                                            key: reply.id,
+                                            staticClass: "comment-reply-area"
+                                          },
+                                          [
+                                            _c(
+                                              "div",
+                                              {
+                                                staticClass:
+                                                  "overlay-post-comment-reply-area"
+                                              },
+                                              [
+                                                _c(
+                                                  "div",
+                                                  {
+                                                    staticClass:
+                                                      "overlay-post-comment-left"
+                                                  },
+                                                  [
+                                                    _c(
+                                                      "router-link",
+                                                      {
+                                                        attrs: {
+                                                          to: {
+                                                            name: "user",
+                                                            params: {
+                                                              id: reply.userId
+                                                            }
+                                                          }
+                                                        }
+                                                      },
+                                                      [
+                                                        _c("img", {
+                                                          attrs: {
+                                                            src: reply.icon
+                                                          }
+                                                        })
+                                                      ]
+                                                    )
+                                                  ],
+                                                  1
+                                                ),
+                                                _vm._v(" "),
+                                                _c(
+                                                  "div",
+                                                  {
+                                                    staticClass:
+                                                      "overlay-post-comment-right"
+                                                  },
+                                                  [
+                                                    _c(
+                                                      "div",
+                                                      {
+                                                        staticClass:
+                                                          "overlay-post-comment-top"
+                                                      },
+                                                      [
+                                                        _c(
+                                                          "div",
+                                                          {
+                                                            staticClass:
+                                                              "overlay-post-name"
+                                                          },
+                                                          [
+                                                            _vm._v(
+                                                              "\n                          " +
+                                                                _vm._s(
+                                                                  reply.user
+                                                                ) +
+                                                                "\n                        "
+                                                            )
+                                                          ]
+                                                        ),
+                                                        _vm._v(" "),
+                                                        _c(
+                                                          "div",
+                                                          {
+                                                            staticClass:
+                                                              "overlay-post-day"
+                                                          },
+                                                          [
+                                                            _vm._v(
+                                                              "\n                          " +
+                                                                _vm._s(
+                                                                  reply.day
+                                                                ) +
+                                                                "\n                        "
+                                                            )
+                                                          ]
+                                                        )
+                                                      ]
+                                                    ),
+                                                    _vm._v(" "),
+                                                    _c(
+                                                      "div",
+                                                      {
+                                                        staticClass:
+                                                          "overlay-post-comment"
+                                                      },
+                                                      [
+                                                        _vm._v(
+                                                          "\n                        うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。\n                      "
+                                                        )
+                                                      ]
+                                                    ),
+                                                    _vm._v(" "),
+                                                    _c(
+                                                      "div",
+                                                      {
+                                                        staticClass:
+                                                          "overlay-post-bottom"
+                                                      },
+                                                      [
+                                                        _c(
+                                                          "div",
+                                                          {
+                                                            staticClass:
+                                                              "overlay-post-good"
+                                                          },
+                                                          [
+                                                            _vm._v(
+                                                              "\n                          " +
+                                                                _vm._s(
+                                                                  reply.goodCount
+                                                                ) +
+                                                                "\n                          "
+                                                            ),
+                                                            !reply.good
+                                                              ? _c("img", {
+                                                                  attrs: {
+                                                                    src:
+                                                                      "../../image/good.png"
+                                                                  },
+                                                                  on: {
+                                                                    click: function(
+                                                                      $event
+                                                                    ) {
+                                                                      return _vm.replyGood(
+                                                                        comment.id,
+                                                                        reply.id
+                                                                      )
+                                                                    }
+                                                                  }
+                                                                })
+                                                              : _vm._e(),
+                                                            _vm._v(" "),
+                                                            reply.good
+                                                              ? _c("img", {
+                                                                  attrs: {
+                                                                    src:
+                                                                      "../../image/gooded.png"
+                                                                  },
+                                                                  on: {
+                                                                    click: function(
+                                                                      $event
+                                                                    ) {
+                                                                      return _vm.replyGood(
+                                                                        comment.id,
+                                                                        reply.id
+                                                                      )
+                                                                    }
+                                                                  }
+                                                                })
+                                                              : _vm._e()
+                                                          ]
+                                                        )
+                                                      ]
+                                                    )
+                                                  ]
+                                                )
+                                              ]
+                                            )
+                                          ]
+                                        )
+                                      }),
+                                      0
+                                    )
+                                  : _vm._e()
+                              ]
+                            )
+                          ]
+                        )
+                      })
+                    ],
+                    2
+                  )
+                ])
+              ])
+            ]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          directives: [
+            {
+              name: "show",
+              rawName: "v-show",
+              value: _vm.modalImageShow,
+              expression: "modalImageShow"
+            }
+          ],
+          staticClass: "overlay-image",
+          on: {
+            click: function($event) {
+              if ($event.target !== $event.currentTarget) {
+                return null
+              }
+              return _vm.closeImageModal($event)
+            }
+          }
+        },
+        [
+          _c("div", { staticClass: "overlay-image-box" }, [
+            _c("img", {
+              staticClass: "overlay-image-image",
+              attrs: { src: _vm.modalImage }
+            })
+          ])
+        ]
+      ),
+      _vm._v(" "),
+      _vm.modalDonmaiShow
+        ? _c(
+            "div",
+            {
+              staticClass: "overlay-post",
+              on: {
+                click: function($event) {
+                  if ($event.target !== $event.currentTarget) {
+                    return null
+                  }
+                  return _vm.closeModalDonmai($event)
+                }
+              }
+            },
+            [
+              _c("div", { staticClass: "overlay-donmai-content" }, [
+                _c("div", { staticClass: "overlay-donmai-title" }, [
+                  _vm._v("\n        どんまい！\n      ")
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "donmai-user-box" },
+                  _vm._l(_vm.modalDonmaiUsers, function(user, index) {
+                    return _c(
+                      "div",
+                      { key: user.id, staticClass: "donmai-user-list" },
+                      [
+                        _c("div", { staticClass: "overlay-donmai-left" }, [
+                          _c(
+                            "div",
+                            { staticClass: "overlay-donmai-user-icon" },
+                            [
+                              _c(
+                                "router-link",
+                                {
+                                  attrs: {
+                                    to: {
+                                      name: "user",
+                                      params: { id: user.id }
+                                    }
+                                  }
+                                },
+                                [_c("img", { attrs: { src: user.icon } })]
+                              )
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            { staticClass: "overlay-donmai-user-name" },
+                            [
+                              _c(
+                                "router-link",
+                                {
+                                  attrs: {
+                                    to: {
+                                      name: "user",
+                                      params: { id: user.id }
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                " +
+                                      _vm._s(user.name) +
+                                      "\n              "
+                                  )
+                                ]
+                              )
+                            ],
+                            1
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "overlay-donmai-right" }, [
+                          !user.followed
+                            ? _c(
+                                "div",
+                                {
+                                  staticClass: "overlay-donmai-follow",
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.donmaiFollowToggle(index)
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n              フォローする\n            "
+                                  )
+                                ]
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
+                          user.followed
+                            ? _c(
+                                "div",
+                                {
+                                  staticClass: "overlay-donmai-followed",
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.donmaiFollowToggle(index)
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n              フォロー中\n            "
+                                  )
+                                ]
+                              )
+                            : _vm._e()
+                        ])
+                      ]
+                    )
+                  }),
+                  0
+                )
+              ])
+            ]
+          )
+        : _vm._e()
+    ],
+    2
+  )
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "post-body" }, [
+      _vm._v("\n        うんちしたいな。"),
+      _c("br"),
+      _vm._v("\n        シッコもしたい。"),
+      _c("br"),
+      _vm._v("\n        もう我慢できない。\n      ")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "post-body" }, [
+      _vm._v(
+        "\n            こんにちは。こんにちは。こんにちは。こんにちは。こんにちは。こんにちは。"
+      ),
+      _c("br"),
+      _vm._v("\n            こんにちは。こんにちは。"),
+      _c("br"),
+      _vm._v("\n            こんにちは。こんにちは。\n          ")
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/tags/TagsPopular.vue?vue&type=template&id=19c8acb5&":
+/*!*******************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/tags/TagsPopular.vue?vue&type=template&id=19c8acb5& ***!
+  \*******************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "tags-posts" },
+    [
+      _vm._l(_vm.posts, function(post, index) {
+        return _c("div", { key: post.id, staticClass: "posts" }, [
+          _c(
+            "div",
+            { staticClass: "logo-area" },
+            [
+              _c(
+                "router-link",
+                {
+                  attrs: { to: { name: "user", params: { id: post.userId } } }
+                },
+                [_c("img", { attrs: { src: post.userIcon } })]
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "input-area" }, [
+            _c("div", { staticClass: "user-name-post" }, [
+              _vm._v(_vm._s(post.user))
+            ]),
+            _vm._v(" "),
+            _vm._m(0, true),
+            _vm._v(" "),
+            post.tags
+              ? _c(
+                  "div",
+                  { staticClass: "post-tags" },
+                  _vm._l(post.tags, function(tag, index) {
+                    return _c(
+                      "router-link",
+                      {
+                        key: index,
+                        attrs: {
+                          to: {
+                            name: "tags.new",
+                            params: { name: tag.replace("#", "") }
+                          }
+                        }
+                      },
+                      [_vm._v("\n          " + _vm._s(tag) + "\n        ")]
+                    )
+                  }),
+                  1
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            post.images.length > 0
+              ? _c(
+                  "div",
+                  { staticClass: "post-image-view" },
+                  _vm._l(post.images, function(image, index) {
+                    return _c(
+                      "div",
+                      {
+                        key: index,
+                        staticClass: "each-preview",
+                        class: {
+                          "one-image-pre": post.images.length == 1,
+                          "two-image-pre": post.images.length == 2,
+                          "three-image-pre": post.images.length == 3,
+                          "four-image-pre": post.images.length == 4,
+                          yokonaga: post.images.length == 3 && index == 0
+                        }
+                      },
+                      [
+                        _c(
+                          "div",
+                          {
+                            staticClass: "each-image-box",
+                            on: {
+                              click: function($event) {
+                                return _vm.openImageModal(image)
+                              }
+                            }
+                          },
+                          [
+                            _c("div", {
+                              staticClass: "each-image",
+                              class: {
+                                "one-each-image": post.images.length == 1,
+                                "two-each-image": post.images.length == 2,
+                                "three-each-image": post.images.length == 3,
+                                "four-each-image": post.images.length == 4,
+                                "yokonaga-image":
+                                  post.images.length == 3 && index == 0
+                              },
+                              style: { backgroundImage: "url(" + image + ")" }
+                            })
+                          ]
+                        )
+                      ]
+                    )
+                  }),
+                  0
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _c("div", { staticClass: "post-btns" }, [
+              _c(
+                "div",
+                {
+                  staticClass: "post-donmai post-action-icon",
+                  on: {
+                    click: function($event) {
+                      return _vm.donmai(index)
+                    }
+                  }
+                },
+                [
+                  !post.donmai
+                    ? _c("img", {
+                        attrs: { src: "../../image/donmai.png", width: "30px" }
+                      })
+                    : _vm._e(),
+                  _vm._v(" "),
+                  post.donmai
+                    ? _c("img", {
+                        attrs: {
+                          src: "../../image/donmaied.png",
+                          width: "30px"
+                        }
+                      })
+                    : _vm._e(),
+                  _vm._v(
+                    "\n          " + _vm._s(post.donmai_count) + "\n        "
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass: "post-comment-icon post-action-icon",
+                  on: {
+                    click: function($event) {
+                      return _vm.openModalPost(index)
+                    }
+                  }
+                },
+                [
+                  _c("img", { attrs: { src: "../../image/comment.png" } }),
+                  _vm._v(
+                    "\n          " + _vm._s(post.comment_count) + "\n        "
+                  )
+                ]
+              )
+            ])
+          ])
+        ])
+      }),
+      _vm._v(" "),
+      _vm.modalPostShow
+        ? _c(
+            "div",
+            {
+              staticClass: "overlay-post",
+              on: {
+                click: function($event) {
+                  if ($event.target !== $event.currentTarget) {
+                    return null
+                  }
+                  return _vm.closeModalPost($event)
+                }
+              }
+            },
+            [
+              _c("div", { staticClass: "overlay-post-content" }, [
+                _c("div", { staticClass: "posts-overlay" }, [
+                  _c(
+                    "div",
+                    { staticClass: "logo-area" },
+                    [
+                      _c(
+                        "router-link",
+                        {
+                          attrs: {
+                            to: {
+                              name: "user",
+                              params: { id: _vm.modalPostUserId }
+                            }
+                          }
+                        },
+                        [_c("img", { attrs: { src: _vm.modalPostUserIcon } })]
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "input-area" },
+                    [
+                      _c("div", { staticClass: "user-name-post" }, [
+                        _vm._v(_vm._s(_vm.modalPostUser))
+                      ]),
+                      _vm._v(" "),
+                      _vm._m(1),
+                      _vm._v(" "),
+                      _vm.modalPostTags
+                        ? _c(
+                            "div",
+                            { staticClass: "post-tags" },
+                            _vm._l(_vm.modalPostTags, function(tag, index) {
+                              return _c(
+                                "router-link",
+                                {
+                                  key: index,
+                                  attrs: {
+                                    to: {
+                                      name: "tags.new",
+                                      params: { name: tag.replace("#", "") }
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n              " +
+                                      _vm._s(tag) +
+                                      "\n            "
+                                  )
+                                ]
+                              )
+                            }),
+                            1
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.modalPostImages.length > 0
+                        ? _c(
+                            "div",
+                            { staticClass: "post-image-view" },
+                            _vm._l(_vm.modalPostImages, function(image, index) {
+                              return _c(
+                                "div",
+                                {
+                                  key: index,
+                                  staticClass: "each-preview",
+                                  class: {
+                                    "one-image-pre":
+                                      _vm.modalPostImages.length == 1,
+                                    "two-image-pre":
+                                      _vm.modalPostImages.length == 2,
+                                    "three-image-pre":
+                                      _vm.modalPostImages.length == 3,
+                                    "four-image-pre":
+                                      _vm.modalPostImages.length == 4,
+                                    yokonaga:
+                                      _vm.modalPostImages.length == 3 &&
+                                      index == 0
+                                  }
+                                },
+                                [
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass: "each-image-box",
+                                      on: {
+                                        click: function($event) {
+                                          return _vm.openImageModal(image)
+                                        }
+                                      }
+                                    },
+                                    [
+                                      _c("div", {
+                                        staticClass: "each-image",
+                                        class: {
+                                          "one-each-image":
+                                            _vm.modalPostImages.length == 1,
+                                          "two-each-image":
+                                            _vm.modalPostImages.length == 2,
+                                          "three-each-image":
+                                            _vm.modalPostImages.length == 3,
+                                          "four-each-image":
+                                            _vm.modalPostImages.length == 4,
+                                          "yokonaga-image":
+                                            _vm.modalPostImages.length == 3 &&
+                                            index == 0
+                                        },
+                                        style: {
+                                          backgroundImage: "url(" + image + ")"
+                                        }
+                                      })
+                                    ]
+                                  )
+                                ]
+                              )
+                            }),
+                            0
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "post-btns-overlay" }, [
+                        _c(
+                          "div",
+                          {
+                            staticClass: "post-donmai-overlay post-action-icon",
+                            on: { click: _vm.openModalDonmai }
+                          },
+                          [
+                            _c("b", [_vm._v(_vm._s(_vm.modalPostDonmaiCount))]),
+                            _vm._v("件のどんまい\n            ")
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "post-comment-icon-overlay post-action-icon-comment-overlay"
+                          },
+                          [
+                            _c("b", [
+                              _vm._v(_vm._s(_vm.modalPostCommentCount))
+                            ]),
+                            _vm._v("件のコメント\n            ")
+                          ]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "comment-post-area" }, [
+                        _c("div", { staticClass: "comment-post-icon" }, [
+                          _c("img", { attrs: { src: "../../image/unko.jpg" } })
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "input-3" }, [
+                          _c("textarea", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.commentInput,
+                                expression: "commentInput"
+                              }
+                            ],
+                            ref: "commentarea",
+                            staticClass: "flex-textarea-2",
+                            style: _vm.commentStyles,
+                            attrs: { placeholder: "コメントを入力" },
+                            domProps: { value: _vm.commentInput },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.commentInput = $event.target.value
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "comment-btn-main" }, [
+                            _vm._v("\n                コメント\n              ")
+                          ])
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _vm._l(_vm.modalPostComments, function(comment, index) {
+                        return _c(
+                          "div",
+                          {
+                            key: comment.id,
+                            staticClass: "overlay-post-comment-area"
+                          },
+                          [
+                            _c(
+                              "div",
+                              { staticClass: "overlay-post-comment-left" },
+                              [
+                                _c(
+                                  "router-link",
+                                  {
+                                    attrs: {
+                                      to: {
+                                        name: "user",
+                                        params: { id: comment.userId }
+                                      }
+                                    }
+                                  },
+                                  [_c("img", { attrs: { src: comment.icon } })]
+                                )
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              { staticClass: "overlay-post-comment-right" },
+                              [
+                                _c(
+                                  "div",
+                                  { staticClass: "overlay-post-comment-top" },
+                                  [
+                                    _c(
+                                      "div",
+                                      { staticClass: "overlay-post-name" },
+                                      [
+                                        _vm._v(
+                                          "\n                  " +
+                                            _vm._s(comment.user) +
+                                            "\n                "
+                                        )
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "div",
+                                      { staticClass: "overlay-post-day" },
+                                      [
+                                        _vm._v(
+                                          "\n                  " +
+                                            _vm._s(comment.day) +
+                                            "\n                "
+                                        )
+                                      ]
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  { staticClass: "overlay-post-comment" },
+                                  [
+                                    _vm._v(
+                                      "\n                うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。\n              "
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  { staticClass: "overlay-post-bottom" },
+                                  [
+                                    _c(
+                                      "div",
+                                      {
+                                        staticClass:
+                                          "overlay-post-comment-count"
+                                      },
+                                      [
+                                        comment.replyCount && !comment.replyShow
+                                          ? _c(
+                                              "div",
+                                              {
+                                                staticClass:
+                                                  "post-comment-count",
+                                                on: {
+                                                  click: function($event) {
+                                                    return _vm.openCommentReply(
+                                                      index
+                                                    )
+                                                  }
+                                                }
+                                              },
+                                              [
+                                                _vm._v(
+                                                  "\n                    ▼ " +
+                                                    _vm._s(comment.replyCount) +
+                                                    "件の返信を表示\n                  "
+                                                )
+                                              ]
+                                            )
+                                          : _vm._e(),
+                                        _vm._v(" "),
+                                        comment.replyCount && comment.replyShow
+                                          ? _c(
+                                              "div",
+                                              {
+                                                staticClass:
+                                                  "post-comment-count",
+                                                on: {
+                                                  click: function($event) {
+                                                    return _vm.closeCommentReply(
+                                                      index
+                                                    )
+                                                  }
+                                                }
+                                              },
+                                              [
+                                                _vm._v(
+                                                  "\n                    ▲ " +
+                                                    _vm._s(comment.replyCount) +
+                                                    "件の返信を非表示\n                  "
+                                                )
+                                              ]
+                                            )
+                                          : _vm._e(),
+                                        _vm._v(" "),
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass: "comment-replay-btn",
+                                            on: {
+                                              click: function($event) {
+                                                return _vm.openReplyForm(index)
+                                              }
+                                            }
+                                          },
+                                          [_vm._v("返信する")]
+                                        )
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "div",
+                                      { staticClass: "overlay-post-good" },
+                                      [
+                                        _vm._v(
+                                          "\n                  " +
+                                            _vm._s(comment.goodCount) +
+                                            "\n                  "
+                                        ),
+                                        !comment.good
+                                          ? _c("img", {
+                                              attrs: {
+                                                src: "../../image/good.png"
+                                              },
+                                              on: {
+                                                click: function($event) {
+                                                  return _vm.commentGood(
+                                                    comment.id
+                                                  )
+                                                }
+                                              }
+                                            })
+                                          : _vm._e(),
+                                        _vm._v(" "),
+                                        comment.good
+                                          ? _c("img", {
+                                              attrs: {
+                                                src: "../../image/gooded.png"
+                                              },
+                                              on: {
+                                                click: function($event) {
+                                                  return _vm.commentGood(
+                                                    comment.id
+                                                  )
+                                                }
+                                              }
+                                            })
+                                          : _vm._e()
+                                      ]
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                comment.replyFormOpened
+                                  ? _c("div", { staticClass: "input-3" }, [
+                                      _c("textarea", {
+                                        directives: [
+                                          {
+                                            name: "model",
+                                            rawName: "v-model",
+                                            value: comment.replyInput,
+                                            expression: "comment.replyInput"
+                                          }
+                                        ],
+                                        ref: "replyarea",
+                                        refInFor: true,
+                                        staticClass: "flex-textarea-2",
+                                        attrs: { placeholder: "返信を入力" },
+                                        domProps: { value: comment.replyInput },
+                                        on: {
+                                          input: function($event) {
+                                            if ($event.target.composing) {
+                                              return
+                                            }
+                                            _vm.$set(
+                                              comment,
+                                              "replyInput",
+                                              $event.target.value
+                                            )
+                                          }
+                                        }
+                                      }),
+                                      _vm._v(" "),
+                                      _c(
+                                        "div",
+                                        { staticClass: "comment-reply-btns" },
+                                        [
+                                          _c(
+                                            "div",
+                                            {
+                                              staticClass: "reply-cancel-btn",
+                                              on: {
+                                                click: function($event) {
+                                                  return _vm.closeReplyForm(
+                                                    index
+                                                  )
+                                                }
+                                              }
+                                            },
+                                            [
+                                              _vm._v(
+                                                "\n                    キャンセル\n                  "
+                                              )
+                                            ]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "div",
+                                            { staticClass: "comment-btn" },
+                                            [
+                                              _vm._v(
+                                                "\n                    コメント\n                  "
+                                              )
+                                            ]
+                                          )
+                                        ]
+                                      )
+                                    ])
+                                  : _vm._e(),
+                                _vm._v(" "),
+                                comment.replyShow
+                                  ? _c(
+                                      "div",
+                                      _vm._l(comment.replies, function(reply) {
+                                        return _c(
+                                          "div",
+                                          {
+                                            key: reply.id,
+                                            staticClass: "comment-reply-area"
+                                          },
+                                          [
+                                            _c(
+                                              "div",
+                                              {
+                                                staticClass:
+                                                  "overlay-post-comment-reply-area"
+                                              },
+                                              [
+                                                _c(
+                                                  "div",
+                                                  {
+                                                    staticClass:
+                                                      "overlay-post-comment-left"
+                                                  },
+                                                  [
+                                                    _c(
+                                                      "router-link",
+                                                      {
+                                                        attrs: {
+                                                          to: {
+                                                            name: "user",
+                                                            params: {
+                                                              id: reply.userId
+                                                            }
+                                                          }
+                                                        }
+                                                      },
+                                                      [
+                                                        _c("img", {
+                                                          attrs: {
+                                                            src: reply.icon
+                                                          }
+                                                        })
+                                                      ]
+                                                    )
+                                                  ],
+                                                  1
+                                                ),
+                                                _vm._v(" "),
+                                                _c(
+                                                  "div",
+                                                  {
+                                                    staticClass:
+                                                      "overlay-post-comment-right"
+                                                  },
+                                                  [
+                                                    _c(
+                                                      "div",
+                                                      {
+                                                        staticClass:
+                                                          "overlay-post-comment-top"
+                                                      },
+                                                      [
+                                                        _c(
+                                                          "div",
+                                                          {
+                                                            staticClass:
+                                                              "overlay-post-name"
+                                                          },
+                                                          [
+                                                            _vm._v(
+                                                              "\n                          " +
+                                                                _vm._s(
+                                                                  reply.user
+                                                                ) +
+                                                                "\n                        "
+                                                            )
+                                                          ]
+                                                        ),
+                                                        _vm._v(" "),
+                                                        _c(
+                                                          "div",
+                                                          {
+                                                            staticClass:
+                                                              "overlay-post-day"
+                                                          },
+                                                          [
+                                                            _vm._v(
+                                                              "\n                          " +
+                                                                _vm._s(
+                                                                  reply.day
+                                                                ) +
+                                                                "\n                        "
+                                                            )
+                                                          ]
+                                                        )
+                                                      ]
+                                                    ),
+                                                    _vm._v(" "),
+                                                    _c(
+                                                      "div",
+                                                      {
+                                                        staticClass:
+                                                          "overlay-post-comment"
+                                                      },
+                                                      [
+                                                        _vm._v(
+                                                          "\n                        うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。\n                      "
+                                                        )
+                                                      ]
+                                                    ),
+                                                    _vm._v(" "),
+                                                    _c(
+                                                      "div",
+                                                      {
+                                                        staticClass:
+                                                          "overlay-post-bottom"
+                                                      },
+                                                      [
+                                                        _c(
+                                                          "div",
+                                                          {
+                                                            staticClass:
+                                                              "overlay-post-good"
+                                                          },
+                                                          [
+                                                            _vm._v(
+                                                              "\n                          " +
+                                                                _vm._s(
+                                                                  reply.goodCount
+                                                                ) +
+                                                                "\n                          "
+                                                            ),
+                                                            !reply.good
+                                                              ? _c("img", {
+                                                                  attrs: {
+                                                                    src:
+                                                                      "../../image/good.png"
+                                                                  },
+                                                                  on: {
+                                                                    click: function(
+                                                                      $event
+                                                                    ) {
+                                                                      return _vm.replyGood(
+                                                                        comment.id,
+                                                                        reply.id
+                                                                      )
+                                                                    }
+                                                                  }
+                                                                })
+                                                              : _vm._e(),
+                                                            _vm._v(" "),
+                                                            reply.good
+                                                              ? _c("img", {
+                                                                  attrs: {
+                                                                    src:
+                                                                      "../../image/gooded.png"
+                                                                  },
+                                                                  on: {
+                                                                    click: function(
+                                                                      $event
+                                                                    ) {
+                                                                      return _vm.replyGood(
+                                                                        comment.id,
+                                                                        reply.id
+                                                                      )
+                                                                    }
+                                                                  }
+                                                                })
+                                                              : _vm._e()
+                                                          ]
+                                                        )
+                                                      ]
+                                                    )
+                                                  ]
+                                                )
+                                              ]
+                                            )
+                                          ]
+                                        )
+                                      }),
+                                      0
+                                    )
+                                  : _vm._e()
+                              ]
+                            )
+                          ]
+                        )
+                      })
+                    ],
+                    2
+                  )
+                ])
+              ])
+            ]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          directives: [
+            {
+              name: "show",
+              rawName: "v-show",
+              value: _vm.modalImageShow,
+              expression: "modalImageShow"
+            }
+          ],
+          staticClass: "overlay-image",
+          on: {
+            click: function($event) {
+              if ($event.target !== $event.currentTarget) {
+                return null
+              }
+              return _vm.closeImageModal($event)
+            }
+          }
+        },
+        [
+          _c("div", { staticClass: "overlay-image-box" }, [
+            _c("img", {
+              staticClass: "overlay-image-image",
+              attrs: { src: _vm.modalImage }
+            })
+          ])
+        ]
+      ),
+      _vm._v(" "),
+      _vm.modalDonmaiShow
+        ? _c(
+            "div",
+            {
+              staticClass: "overlay-post",
+              on: {
+                click: function($event) {
+                  if ($event.target !== $event.currentTarget) {
+                    return null
+                  }
+                  return _vm.closeModalDonmai($event)
+                }
+              }
+            },
+            [
+              _c("div", { staticClass: "overlay-donmai-content" }, [
+                _c("div", { staticClass: "overlay-donmai-title" }, [
+                  _vm._v("\n        どんまい！\n      ")
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "donmai-user-box" },
+                  _vm._l(_vm.modalDonmaiUsers, function(user, index) {
+                    return _c(
+                      "div",
+                      { key: user.id, staticClass: "donmai-user-list" },
+                      [
+                        _c("div", { staticClass: "overlay-donmai-left" }, [
+                          _c(
+                            "div",
+                            { staticClass: "overlay-donmai-user-icon" },
+                            [
+                              _c(
+                                "router-link",
+                                {
+                                  attrs: {
+                                    to: {
+                                      name: "user",
+                                      params: { id: user.id }
+                                    }
+                                  }
+                                },
+                                [_c("img", { attrs: { src: user.icon } })]
+                              )
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            { staticClass: "overlay-donmai-user-name" },
+                            [
+                              _c(
+                                "router-link",
+                                {
+                                  attrs: {
+                                    to: {
+                                      name: "user",
+                                      params: { id: user.id }
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                " +
+                                      _vm._s(user.name) +
+                                      "\n              "
+                                  )
+                                ]
+                              )
+                            ],
+                            1
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "overlay-donmai-right" }, [
+                          !user.followed
+                            ? _c(
+                                "div",
+                                {
+                                  staticClass: "overlay-donmai-follow",
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.donmaiFollowToggle(index)
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n              フォローする\n            "
+                                  )
+                                ]
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
+                          user.followed
+                            ? _c(
+                                "div",
+                                {
+                                  staticClass: "overlay-donmai-followed",
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.donmaiFollowToggle(index)
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n              フォロー中\n            "
+                                  )
+                                ]
+                              )
+                            : _vm._e()
+                        ])
+                      ]
+                    )
+                  }),
+                  0
+                )
+              ])
+            ]
+          )
+        : _vm._e()
+    ],
+    2
+  )
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "post-body" }, [
+      _vm._v("\n        うんちしたいな。"),
+      _c("br"),
+      _vm._v("\n        シッコもしたい。"),
+      _c("br"),
+      _vm._v("\n        もう我慢できない。\n      ")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "post-body" }, [
+      _vm._v(
+        "\n            こんにちは。こんにちは。こんにちは。こんにちは。こんにちは。こんにちは。"
+      ),
+      _c("br"),
+      _vm._v("\n            こんにちは。こんにちは。"),
+      _c("br"),
+      _vm._v("\n            こんにちは。こんにちは。\n          ")
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/trend/Trend.vue?vue&type=template&id=65fe7410&":
+/*!**************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/trend/Trend.vue?vue&type=template&id=65fe7410& ***!
+  \**************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "trend-page" }, [
+    _c("div", { staticClass: "trend" }, [
+      _c("div", { staticClass: "trend-container" }, [
+        _c("div", { staticClass: "trend-title" }, [
+          _vm._v("\n        トレンド\n      ")
+        ]),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "trend-box" },
+          _vm._l(_vm.trends, function(trend, index) {
+            return _c(
+              "router-link",
+              {
+                key: index,
+                staticClass: "trend-each",
+                attrs: {
+                  to: {
+                    name: "tags.new",
+                    params: { name: trend.tag.replace("#", "") }
+                  }
+                }
+              },
+              [
+                _c("div", { staticClass: "trend-rank" }, [
+                  _vm._v(
+                    "\n            " + _vm._s(index + 1) + "位\n          "
+                  )
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "trend-tag" }, [
+                  _vm._v("\n            " + _vm._s(trend.tag) + "\n          ")
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "trend-bar-area" }, [
+                  _c("div", { staticClass: "trend-bar" })
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "trend-post-count" }, [
+                  _vm._v(
+                    "\n            " +
+                      _vm._s(trend.postCountShow) +
+                      "件\n          "
+                  )
+                ])
+              ]
+            )
+          }),
+          1
+        )
       ])
+    ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/user/User.vue?vue&type=template&id=28427674&":
+/*!************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/user/User.vue?vue&type=template&id=28427674& ***!
+  \************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "user-page" }, [
+    _c(
+      "div",
+      { staticClass: "user-container" },
+      [
+        _c("div", { staticClass: "user-info" }, [
+          _c("div", { staticClass: "user-info-top" }, [
+            _c("div", { staticClass: "userpage-icon" }, [
+              _c("img", { attrs: { src: _vm.icon } })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "user-info-top-right" }, [
+              _c("div", { staticClass: "userinfo-name-area" }, [
+                _c("div", [_vm._v(_vm._s(_vm.name))])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "userinfo-btn-area" }, [
+                !_vm.followed
+                  ? _c(
+                      "div",
+                      {
+                        staticClass: "userinfo-follow-btn",
+                        on: { click: _vm.toggleFollow }
+                      },
+                      [_vm._v("フォローする")]
+                    )
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.followed
+                  ? _c(
+                      "div",
+                      {
+                        staticClass: "userinfo-follow-btn-followed",
+                        on: { click: _vm.toggleFollow }
+                      },
+                      [_vm._v("フォロー中")]
+                    )
+                  : _vm._e()
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "userinfo-data-area" }, [
+                _c("div", { staticClass: "each-data1" }, [
+                  _vm._v("投稿"),
+                  _c("span", { staticClass: "num" }, [
+                    _vm._v(_vm._s(_vm.postCount))
+                  ]),
+                  _vm._v("件")
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "each-data2",
+                    on: {
+                      click: function($event) {
+                        return _vm.opneModalFollow(1)
+                      }
+                    }
+                  },
+                  [
+                    _vm._v("フォロワー"),
+                    _c("span", { staticClass: "num" }, [
+                      _vm._v(_vm._s(_vm.follower))
+                    ]),
+                    _vm._v("人")
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "each-data3",
+                    on: {
+                      click: function($event) {
+                        return _vm.opneModalFollow(2)
+                      }
+                    }
+                  },
+                  [
+                    _vm._v("フォロー中"),
+                    _c("span", { staticClass: "num" }, [
+                      _vm._v(_vm._s(_vm.follow))
+                    ]),
+                    _vm._v("人")
+                  ]
+                )
+              ])
+            ])
+          ]),
+          _vm._v(" "),
+          _vm._m(0),
+          _vm._v(" "),
+          _c("div", { staticClass: "user-info-nums" }, [
+            _c("div", { staticClass: "userinfo-nums-each" }, [
+              _c("div", [_vm._v("投稿")]),
+              _vm._v(" "),
+              _c("div", { staticClass: "userinfo-number" }, [
+                _vm._v(_vm._s(_vm.postCount))
+              ]),
+              _vm._v(" "),
+              _c("div", [_vm._v("件")])
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass: "userinfo-nums-each clickable",
+                on: {
+                  click: function($event) {
+                    return _vm.opneModalFollow(1)
+                  }
+                }
+              },
+              [
+                _c("div", [_vm._v("フォロワー")]),
+                _vm._v(" "),
+                _c("div", { staticClass: "userinfo-number" }, [
+                  _vm._v(_vm._s(_vm.follower))
+                ]),
+                _vm._v(" "),
+                _c("div", [_vm._v("人")])
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass: "userinfo-nums-each clickable",
+                on: {
+                  click: function($event) {
+                    return _vm.opneModalFollow(2)
+                  }
+                }
+              },
+              [
+                _c("div", [_vm._v("フォロー中")]),
+                _vm._v(" "),
+                _c("div", { staticClass: "userinfo-number" }, [
+                  _vm._v(_vm._s(_vm.follow))
+                ]),
+                _vm._v(" "),
+                _c("div", [_vm._v("人")])
+              ]
+            )
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "user-info-menubtn" },
+            [
+              _c(
+                "router-link",
+                {
+                  staticClass: "each-btn",
+                  class: {
+                    selected:
+                      _vm.$route.path ==
+                      _vm.$router.resolve({
+                        name: "user",
+                        params: { id: _vm.$route.params.id }
+                      }).href
+                  },
+                  attrs: {
+                    to: { name: "user", params: { id: _vm.$route.params.id } }
+                  }
+                },
+                [_vm._v("\n          投稿\n        ")]
+              ),
+              _vm._v(" "),
+              _c(
+                "router-link",
+                {
+                  staticClass: "each-btn",
+                  class: {
+                    selected:
+                      _vm.$route.path ==
+                      _vm.$router.resolve({
+                        name: "user.donmai",
+                        params: { id: _vm.$route.params.id }
+                      }).href
+                  },
+                  attrs: {
+                    to: {
+                      name: "user.donmai",
+                      params: { id: _vm.$route.params.id }
+                    }
+                  }
+                },
+                [_vm._v("\n          どんまい\n        ")]
+              ),
+              _vm._v(" "),
+              _c(
+                "router-link",
+                {
+                  staticClass: "each-btn",
+                  class: {
+                    selected:
+                      _vm.$route.path ==
+                      _vm.$router.resolve({
+                        name: "user.guchi",
+                        params: { id: _vm.$route.params.id }
+                      }).href
+                  },
+                  attrs: {
+                    to: {
+                      name: "user.guchi",
+                      params: { id: _vm.$route.params.id }
+                    }
+                  }
+                },
+                [_vm._v("\n          みんなでグチ\n        ")]
+              )
+            ],
+            1
+          )
+        ]),
+        _vm._v(" "),
+        _c("router-view")
+      ],
+      1
+    ),
+    _vm._v(" "),
+    _vm.modalFollowShow
+      ? _c(
+          "div",
+          {
+            staticClass: "overlay-post",
+            on: {
+              click: function($event) {
+                if ($event.target !== $event.currentTarget) {
+                  return null
+                }
+                return _vm.closeModalFollow($event)
+              }
+            }
+          },
+          [
+            _c("div", { staticClass: "overlay-donmai-content" }, [
+              !_vm.isFollowModal
+                ? _c("div", { staticClass: "overlay-donmai-title" }, [
+                    _vm._v("\n        フォロワー\n      ")
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.isFollowModal
+                ? _c("div", { staticClass: "overlay-donmai-title" }, [
+                    _vm._v("\n        フォロー中\n      ")
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              !_vm.isFollowModal
+                ? _c(
+                    "div",
+                    { staticClass: "donmai-user-box" },
+                    _vm._l(_vm.modalFollowers, function(user, index) {
+                      return _c(
+                        "div",
+                        { key: user.id, staticClass: "donmai-user-list" },
+                        [
+                          _c("div", { staticClass: "overlay-donmai-left" }, [
+                            _c(
+                              "div",
+                              { staticClass: "overlay-donmai-user-icon" },
+                              [
+                                _c(
+                                  "router-link",
+                                  {
+                                    attrs: {
+                                      to: {
+                                        name: "user",
+                                        params: { id: user.id }
+                                      }
+                                    }
+                                  },
+                                  [_c("img", { attrs: { src: user.icon } })]
+                                )
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              { staticClass: "overlay-donmai-user-name" },
+                              [
+                                _c(
+                                  "router-link",
+                                  {
+                                    attrs: {
+                                      to: {
+                                        name: "user",
+                                        params: { id: user.id }
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _vm._v(
+                                      "\n                " +
+                                        _vm._s(user.name) +
+                                        "\n              "
+                                    )
+                                  ]
+                                )
+                              ],
+                              1
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "overlay-donmai-right" }, [
+                            !user.followed
+                              ? _c(
+                                  "div",
+                                  {
+                                    staticClass: "overlay-donmai-follow",
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.followToggle(index)
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _vm._v(
+                                      "\n              フォローする\n            "
+                                    )
+                                  ]
+                                )
+                              : _vm._e(),
+                            _vm._v(" "),
+                            user.followed
+                              ? _c(
+                                  "div",
+                                  {
+                                    staticClass: "overlay-donmai-followed",
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.followToggle(index)
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _vm._v(
+                                      "\n              フォロー中\n            "
+                                    )
+                                  ]
+                                )
+                              : _vm._e()
+                          ])
+                        ]
+                      )
+                    }),
+                    0
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.isFollowModal
+                ? _c(
+                    "div",
+                    { staticClass: "donmai-user-box" },
+                    _vm._l(_vm.modalFollows, function(user, index) {
+                      return _c(
+                        "div",
+                        { key: user.id, staticClass: "donmai-user-list" },
+                        [
+                          _c("div", { staticClass: "overlay-donmai-left" }, [
+                            _c(
+                              "div",
+                              { staticClass: "overlay-donmai-user-icon" },
+                              [
+                                _c(
+                                  "router-link",
+                                  {
+                                    attrs: {
+                                      to: {
+                                        name: "user",
+                                        params: { id: user.id }
+                                      }
+                                    }
+                                  },
+                                  [_c("img", { attrs: { src: user.icon } })]
+                                )
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              { staticClass: "overlay-donmai-user-name" },
+                              [
+                                _c(
+                                  "router-link",
+                                  {
+                                    attrs: {
+                                      to: {
+                                        name: "user",
+                                        params: { id: user.id }
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _vm._v(
+                                      "\n                " +
+                                        _vm._s(user.name) +
+                                        "\n              "
+                                    )
+                                  ]
+                                )
+                              ],
+                              1
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "overlay-donmai-right" }, [
+                            !user.followed
+                              ? _c(
+                                  "div",
+                                  {
+                                    staticClass: "overlay-donmai-follow",
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.followToggle(index)
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _vm._v(
+                                      "\n              フォローする\n            "
+                                    )
+                                  ]
+                                )
+                              : _vm._e(),
+                            _vm._v(" "),
+                            user.followed
+                              ? _c(
+                                  "div",
+                                  {
+                                    staticClass: "overlay-donmai-followed",
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.followToggle(index)
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _vm._v(
+                                      "\n              フォロー中\n            "
+                                    )
+                                  ]
+                                )
+                              : _vm._e()
+                          ])
+                        ]
+                      )
+                    }),
+                    0
+                  )
+                : _vm._e()
+            ])
+          ]
+        )
+      : _vm._e()
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "user-info-pr" }, [
+      _c("div", { staticClass: "pr-text" }, [
+        _vm._v("\n          ただの死にたがりです。"),
+        _c("br"),
+        _vm._v("\n          人生リタイアしたい。"),
+        _c("br"),
+        _vm._v("\n          でも死ぬのって怖いよね。"),
+        _c("br"),
+        _vm._v("\n          じゃあどうしろってんだよ。\n        ")
+      ])
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/user/UserDonmai.vue?vue&type=template&id=1b78ec74&":
+/*!******************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/user/UserDonmai.vue?vue&type=template&id=1b78ec74& ***!
+  \******************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "user-posts" },
+    [
+      _vm._l(_vm.posts, function(post, index) {
+        return _c("div", { key: post.id, staticClass: "posts" }, [
+          _c(
+            "div",
+            { staticClass: "logo-area" },
+            [
+              _c(
+                "router-link",
+                {
+                  attrs: { to: { name: "user", params: { id: post.user_id } } }
+                },
+                [_c("img", { attrs: { src: post.userIcon } })]
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "input-area" }, [
+            _c("div", { staticClass: "user-name-post" }, [
+              _vm._v(_vm._s(post.user))
+            ]),
+            _vm._v(" "),
+            _vm._m(0, true),
+            _vm._v(" "),
+            post.tags
+              ? _c(
+                  "div",
+                  { staticClass: "post-tags" },
+                  _vm._l(post.tags, function(tag, index) {
+                    return _c(
+                      "router-link",
+                      {
+                        key: index,
+                        attrs: {
+                          to: {
+                            name: "tags.new",
+                            params: { name: tag.replace("#", "") }
+                          }
+                        }
+                      },
+                      [_vm._v("\n          " + _vm._s(tag) + "\n        ")]
+                    )
+                  }),
+                  1
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            post.images.length > 0
+              ? _c(
+                  "div",
+                  { staticClass: "post-image-view" },
+                  _vm._l(post.images, function(image, index) {
+                    return _c(
+                      "div",
+                      {
+                        key: index,
+                        staticClass: "each-preview",
+                        class: {
+                          "one-image-pre": post.images.length == 1,
+                          "two-image-pre": post.images.length == 2,
+                          "three-image-pre": post.images.length == 3,
+                          "four-image-pre": post.images.length == 4,
+                          yokonaga: post.images.length == 3 && index == 0
+                        }
+                      },
+                      [
+                        _c(
+                          "div",
+                          {
+                            staticClass: "each-image-box",
+                            on: {
+                              click: function($event) {
+                                return _vm.openImageModal(image)
+                              }
+                            }
+                          },
+                          [
+                            _c("div", {
+                              staticClass: "each-image",
+                              class: {
+                                "one-each-image": post.images.length == 1,
+                                "two-each-image": post.images.length == 2,
+                                "three-each-image": post.images.length == 3,
+                                "four-each-image": post.images.length == 4,
+                                "yokonaga-image":
+                                  post.images.length == 3 && index == 0
+                              },
+                              style: { backgroundImage: "url(" + image + ")" }
+                            })
+                          ]
+                        )
+                      ]
+                    )
+                  }),
+                  0
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _c("div", { staticClass: "post-btns" }, [
+              _c(
+                "div",
+                {
+                  staticClass: "post-donmai post-action-icon",
+                  on: {
+                    click: function($event) {
+                      return _vm.donmai(index)
+                    }
+                  }
+                },
+                [
+                  !post.donmai
+                    ? _c("img", {
+                        attrs: { src: "../../image/donmai.png", width: "30px" }
+                      })
+                    : _vm._e(),
+                  _vm._v(" "),
+                  post.donmai
+                    ? _c("img", {
+                        attrs: {
+                          src: "../../image/donmaied.png",
+                          width: "30px"
+                        }
+                      })
+                    : _vm._e(),
+                  _vm._v(
+                    "\n          " + _vm._s(post.donmai_count) + "\n        "
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass: "post-comment-icon post-action-icon",
+                  on: {
+                    click: function($event) {
+                      return _vm.openModalPost(index)
+                    }
+                  }
+                },
+                [
+                  _c("img", { attrs: { src: "../../image/comment.png" } }),
+                  _vm._v(
+                    "\n          " + _vm._s(post.comment_count) + "\n        "
+                  )
+                ]
+              )
+            ])
+          ])
+        ])
+      }),
+      _vm._v(" "),
+      _vm.modalPostShow
+        ? _c(
+            "div",
+            {
+              staticClass: "overlay-post",
+              on: {
+                click: function($event) {
+                  if ($event.target !== $event.currentTarget) {
+                    return null
+                  }
+                  return _vm.closeModalPost($event)
+                }
+              }
+            },
+            [
+              _c("div", { staticClass: "overlay-post-content" }, [
+                _c("div", { staticClass: "posts-overlay" }, [
+                  _c(
+                    "div",
+                    { staticClass: "logo-area" },
+                    [
+                      _c(
+                        "router-link",
+                        {
+                          attrs: {
+                            to: {
+                              name: "user",
+                              params: { id: _vm.modalPostUserId }
+                            }
+                          }
+                        },
+                        [_c("img", { attrs: { src: _vm.modalPostUserIcon } })]
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "input-area" },
+                    [
+                      _c("div", { staticClass: "user-name-post" }, [
+                        _vm._v(_vm._s(_vm.modalPostUser))
+                      ]),
+                      _vm._v(" "),
+                      _vm._m(1),
+                      _vm._v(" "),
+                      _vm.modalPostTags
+                        ? _c(
+                            "div",
+                            { staticClass: "post-tags" },
+                            _vm._l(_vm.modalPostTags, function(tag, index) {
+                              return _c(
+                                "router-link",
+                                {
+                                  key: index,
+                                  attrs: {
+                                    to: {
+                                      name: "tags.new",
+                                      params: { name: tag.replace("#", "") }
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n              " +
+                                      _vm._s(tag) +
+                                      "\n            "
+                                  )
+                                ]
+                              )
+                            }),
+                            1
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.modalPostImages.length > 0
+                        ? _c(
+                            "div",
+                            { staticClass: "post-image-view" },
+                            _vm._l(_vm.modalPostImages, function(image, index) {
+                              return _c(
+                                "div",
+                                {
+                                  key: index,
+                                  staticClass: "each-preview",
+                                  class: {
+                                    "one-image-pre":
+                                      _vm.modalPostImages.length == 1,
+                                    "two-image-pre":
+                                      _vm.modalPostImages.length == 2,
+                                    "three-image-pre":
+                                      _vm.modalPostImages.length == 3,
+                                    "four-image-pre":
+                                      _vm.modalPostImages.length == 4,
+                                    yokonaga:
+                                      _vm.modalPostImages.length == 3 &&
+                                      index == 0
+                                  }
+                                },
+                                [
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass: "each-image-box",
+                                      on: {
+                                        click: function($event) {
+                                          return _vm.openImageModal(image)
+                                        }
+                                      }
+                                    },
+                                    [
+                                      _c("div", {
+                                        staticClass: "each-image",
+                                        class: {
+                                          "one-each-image":
+                                            _vm.modalPostImages.length == 1,
+                                          "two-each-image":
+                                            _vm.modalPostImages.length == 2,
+                                          "three-each-image":
+                                            _vm.modalPostImages.length == 3,
+                                          "four-each-image":
+                                            _vm.modalPostImages.length == 4,
+                                          "yokonaga-image":
+                                            _vm.modalPostImages.length == 3 &&
+                                            index == 0
+                                        },
+                                        style: {
+                                          backgroundImage: "url(" + image + ")"
+                                        }
+                                      })
+                                    ]
+                                  )
+                                ]
+                              )
+                            }),
+                            0
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "post-btns-overlay" }, [
+                        _c(
+                          "div",
+                          {
+                            staticClass: "post-donmai-overlay post-action-icon",
+                            on: { click: _vm.openModalDonmai }
+                          },
+                          [
+                            _c("b", [_vm._v(_vm._s(_vm.modalPostDonmaiCount))]),
+                            _vm._v("件のどんまい\n            ")
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "post-comment-icon-overlay post-action-icon-comment-overlay"
+                          },
+                          [
+                            _c("b", [
+                              _vm._v(_vm._s(_vm.modalPostCommentCount))
+                            ]),
+                            _vm._v("件のコメント\n            ")
+                          ]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "comment-post-area" }, [
+                        _c("div", { staticClass: "comment-post-icon" }, [
+                          _c("img", { attrs: { src: "../../image/unko.jpg" } })
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "input-3" }, [
+                          _c("textarea", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.commentInput,
+                                expression: "commentInput"
+                              }
+                            ],
+                            ref: "commentarea",
+                            staticClass: "flex-textarea-2",
+                            style: _vm.commentStyles,
+                            attrs: { placeholder: "コメントを入力" },
+                            domProps: { value: _vm.commentInput },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.commentInput = $event.target.value
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "comment-btn-main" }, [
+                            _vm._v("\n                コメント\n              ")
+                          ])
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _vm._l(_vm.modalPostComments, function(comment, index) {
+                        return _c(
+                          "div",
+                          {
+                            key: comment.id,
+                            staticClass: "overlay-post-comment-area"
+                          },
+                          [
+                            _c(
+                              "div",
+                              { staticClass: "overlay-post-comment-left" },
+                              [
+                                _c(
+                                  "router-link",
+                                  {
+                                    attrs: {
+                                      to: {
+                                        name: "user",
+                                        params: { id: comment.userId }
+                                      }
+                                    }
+                                  },
+                                  [_c("img", { attrs: { src: comment.icon } })]
+                                )
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              { staticClass: "overlay-post-comment-right" },
+                              [
+                                _c(
+                                  "div",
+                                  { staticClass: "overlay-post-comment-top" },
+                                  [
+                                    _c(
+                                      "div",
+                                      { staticClass: "overlay-post-name" },
+                                      [
+                                        _vm._v(
+                                          "\n                  " +
+                                            _vm._s(comment.user) +
+                                            "\n                "
+                                        )
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "div",
+                                      { staticClass: "overlay-post-day" },
+                                      [
+                                        _vm._v(
+                                          "\n                  " +
+                                            _vm._s(comment.day) +
+                                            "\n                "
+                                        )
+                                      ]
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  { staticClass: "overlay-post-comment" },
+                                  [
+                                    _vm._v(
+                                      "\n                うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。\n              "
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  { staticClass: "overlay-post-bottom" },
+                                  [
+                                    _c(
+                                      "div",
+                                      {
+                                        staticClass:
+                                          "overlay-post-comment-count"
+                                      },
+                                      [
+                                        comment.replyCount && !comment.replyShow
+                                          ? _c(
+                                              "div",
+                                              {
+                                                staticClass:
+                                                  "post-comment-count",
+                                                on: {
+                                                  click: function($event) {
+                                                    return _vm.openCommentReply(
+                                                      index
+                                                    )
+                                                  }
+                                                }
+                                              },
+                                              [
+                                                _vm._v(
+                                                  "\n                    ▼ " +
+                                                    _vm._s(comment.replyCount) +
+                                                    "件の返信を表示\n                  "
+                                                )
+                                              ]
+                                            )
+                                          : _vm._e(),
+                                        _vm._v(" "),
+                                        comment.replyCount && comment.replyShow
+                                          ? _c(
+                                              "div",
+                                              {
+                                                staticClass:
+                                                  "post-comment-count",
+                                                on: {
+                                                  click: function($event) {
+                                                    return _vm.closeCommentReply(
+                                                      index
+                                                    )
+                                                  }
+                                                }
+                                              },
+                                              [
+                                                _vm._v(
+                                                  "\n                    ▲ " +
+                                                    _vm._s(comment.replyCount) +
+                                                    "件の返信を非表示\n                  "
+                                                )
+                                              ]
+                                            )
+                                          : _vm._e(),
+                                        _vm._v(" "),
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass: "comment-replay-btn",
+                                            on: {
+                                              click: function($event) {
+                                                return _vm.openReplyForm(index)
+                                              }
+                                            }
+                                          },
+                                          [_vm._v("返信する")]
+                                        )
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "div",
+                                      { staticClass: "overlay-post-good" },
+                                      [
+                                        _vm._v(
+                                          "\n                  " +
+                                            _vm._s(comment.goodCount) +
+                                            "\n                  "
+                                        ),
+                                        !comment.good
+                                          ? _c("img", {
+                                              attrs: {
+                                                src: "../../image/good.png"
+                                              },
+                                              on: {
+                                                click: function($event) {
+                                                  return _vm.commentGood(
+                                                    comment.id
+                                                  )
+                                                }
+                                              }
+                                            })
+                                          : _vm._e(),
+                                        _vm._v(" "),
+                                        comment.good
+                                          ? _c("img", {
+                                              attrs: {
+                                                src: "../../image/gooded.png"
+                                              },
+                                              on: {
+                                                click: function($event) {
+                                                  return _vm.commentGood(
+                                                    comment.id
+                                                  )
+                                                }
+                                              }
+                                            })
+                                          : _vm._e()
+                                      ]
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                comment.replyFormOpened
+                                  ? _c("div", { staticClass: "input-3" }, [
+                                      _c("textarea", {
+                                        directives: [
+                                          {
+                                            name: "model",
+                                            rawName: "v-model",
+                                            value: comment.replyInput,
+                                            expression: "comment.replyInput"
+                                          }
+                                        ],
+                                        ref: "replyarea",
+                                        refInFor: true,
+                                        staticClass: "flex-textarea-2",
+                                        attrs: { placeholder: "返信を入力" },
+                                        domProps: { value: comment.replyInput },
+                                        on: {
+                                          input: function($event) {
+                                            if ($event.target.composing) {
+                                              return
+                                            }
+                                            _vm.$set(
+                                              comment,
+                                              "replyInput",
+                                              $event.target.value
+                                            )
+                                          }
+                                        }
+                                      }),
+                                      _vm._v(" "),
+                                      _c(
+                                        "div",
+                                        { staticClass: "comment-reply-btns" },
+                                        [
+                                          _c(
+                                            "div",
+                                            {
+                                              staticClass: "reply-cancel-btn",
+                                              on: {
+                                                click: function($event) {
+                                                  return _vm.closeReplyForm(
+                                                    index
+                                                  )
+                                                }
+                                              }
+                                            },
+                                            [
+                                              _vm._v(
+                                                "\n                    キャンセル\n                  "
+                                              )
+                                            ]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "div",
+                                            { staticClass: "comment-btn" },
+                                            [
+                                              _vm._v(
+                                                "\n                    コメント\n                  "
+                                              )
+                                            ]
+                                          )
+                                        ]
+                                      )
+                                    ])
+                                  : _vm._e(),
+                                _vm._v(" "),
+                                comment.replyShow
+                                  ? _c(
+                                      "div",
+                                      _vm._l(comment.replies, function(reply) {
+                                        return _c(
+                                          "div",
+                                          {
+                                            key: reply.id,
+                                            staticClass: "comment-reply-area"
+                                          },
+                                          [
+                                            _c(
+                                              "div",
+                                              {
+                                                staticClass:
+                                                  "overlay-post-comment-reply-area"
+                                              },
+                                              [
+                                                _c(
+                                                  "div",
+                                                  {
+                                                    staticClass:
+                                                      "overlay-post-comment-left"
+                                                  },
+                                                  [
+                                                    _c(
+                                                      "router-link",
+                                                      {
+                                                        attrs: {
+                                                          to: {
+                                                            name: "user",
+                                                            params: {
+                                                              id: reply.userId
+                                                            }
+                                                          }
+                                                        }
+                                                      },
+                                                      [
+                                                        _c("img", {
+                                                          attrs: {
+                                                            src: reply.icon
+                                                          }
+                                                        })
+                                                      ]
+                                                    )
+                                                  ],
+                                                  1
+                                                ),
+                                                _vm._v(" "),
+                                                _c(
+                                                  "div",
+                                                  {
+                                                    staticClass:
+                                                      "overlay-post-comment-right"
+                                                  },
+                                                  [
+                                                    _c(
+                                                      "div",
+                                                      {
+                                                        staticClass:
+                                                          "overlay-post-comment-top"
+                                                      },
+                                                      [
+                                                        _c(
+                                                          "div",
+                                                          {
+                                                            staticClass:
+                                                              "overlay-post-name"
+                                                          },
+                                                          [
+                                                            _vm._v(
+                                                              "\n                          " +
+                                                                _vm._s(
+                                                                  reply.user
+                                                                ) +
+                                                                "\n                        "
+                                                            )
+                                                          ]
+                                                        ),
+                                                        _vm._v(" "),
+                                                        _c(
+                                                          "div",
+                                                          {
+                                                            staticClass:
+                                                              "overlay-post-day"
+                                                          },
+                                                          [
+                                                            _vm._v(
+                                                              "\n                          " +
+                                                                _vm._s(
+                                                                  reply.day
+                                                                ) +
+                                                                "\n                        "
+                                                            )
+                                                          ]
+                                                        )
+                                                      ]
+                                                    ),
+                                                    _vm._v(" "),
+                                                    _c(
+                                                      "div",
+                                                      {
+                                                        staticClass:
+                                                          "overlay-post-comment"
+                                                      },
+                                                      [
+                                                        _vm._v(
+                                                          "\n                        うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。\n                      "
+                                                        )
+                                                      ]
+                                                    ),
+                                                    _vm._v(" "),
+                                                    _c(
+                                                      "div",
+                                                      {
+                                                        staticClass:
+                                                          "overlay-post-bottom"
+                                                      },
+                                                      [
+                                                        _c(
+                                                          "div",
+                                                          {
+                                                            staticClass:
+                                                              "overlay-post-good"
+                                                          },
+                                                          [
+                                                            _vm._v(
+                                                              "\n                          " +
+                                                                _vm._s(
+                                                                  reply.goodCount
+                                                                ) +
+                                                                "\n                          "
+                                                            ),
+                                                            !reply.good
+                                                              ? _c("img", {
+                                                                  attrs: {
+                                                                    src:
+                                                                      "../image/good.png"
+                                                                  },
+                                                                  on: {
+                                                                    click: function(
+                                                                      $event
+                                                                    ) {
+                                                                      return _vm.replyGood(
+                                                                        comment.id,
+                                                                        reply.id
+                                                                      )
+                                                                    }
+                                                                  }
+                                                                })
+                                                              : _vm._e(),
+                                                            _vm._v(" "),
+                                                            reply.good
+                                                              ? _c("img", {
+                                                                  attrs: {
+                                                                    src:
+                                                                      "../image/gooded.png"
+                                                                  },
+                                                                  on: {
+                                                                    click: function(
+                                                                      $event
+                                                                    ) {
+                                                                      return _vm.replyGood(
+                                                                        comment.id,
+                                                                        reply.id
+                                                                      )
+                                                                    }
+                                                                  }
+                                                                })
+                                                              : _vm._e()
+                                                          ]
+                                                        )
+                                                      ]
+                                                    )
+                                                  ]
+                                                )
+                                              ]
+                                            )
+                                          ]
+                                        )
+                                      }),
+                                      0
+                                    )
+                                  : _vm._e()
+                              ]
+                            )
+                          ]
+                        )
+                      })
+                    ],
+                    2
+                  )
+                ])
+              ])
+            ]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          directives: [
+            {
+              name: "show",
+              rawName: "v-show",
+              value: _vm.modalImageShow,
+              expression: "modalImageShow"
+            }
+          ],
+          staticClass: "overlay-image",
+          on: {
+            click: function($event) {
+              if ($event.target !== $event.currentTarget) {
+                return null
+              }
+              return _vm.closeImageModal($event)
+            }
+          }
+        },
+        [
+          _c("div", { staticClass: "overlay-image-box" }, [
+            _c("img", {
+              staticClass: "overlay-image-image",
+              attrs: { src: _vm.modalImage }
+            })
+          ])
+        ]
+      ),
+      _vm._v(" "),
+      _vm.modalDonmaiShow
+        ? _c(
+            "div",
+            {
+              staticClass: "overlay-post",
+              on: {
+                click: function($event) {
+                  if ($event.target !== $event.currentTarget) {
+                    return null
+                  }
+                  return _vm.closeModalDonmai($event)
+                }
+              }
+            },
+            [
+              _c("div", { staticClass: "overlay-donmai-content" }, [
+                _c("div", { staticClass: "overlay-donmai-title" }, [
+                  _vm._v("\n        どんまい！\n      ")
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "donmai-user-box" },
+                  _vm._l(_vm.modalDonmaiUsers, function(user, index) {
+                    return _c(
+                      "div",
+                      { key: user.id, staticClass: "donmai-user-list" },
+                      [
+                        _c("div", { staticClass: "overlay-donmai-left" }, [
+                          _c(
+                            "div",
+                            { staticClass: "overlay-donmai-user-icon" },
+                            [
+                              _c(
+                                "router-link",
+                                {
+                                  attrs: {
+                                    to: {
+                                      name: "user",
+                                      params: { id: user.id }
+                                    }
+                                  }
+                                },
+                                [_c("img", { attrs: { src: user.icon } })]
+                              )
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            { staticClass: "overlay-donmai-user-name" },
+                            [
+                              _c(
+                                "router-link",
+                                {
+                                  attrs: {
+                                    to: {
+                                      name: "user",
+                                      params: { id: user.id }
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                " +
+                                      _vm._s(user.name) +
+                                      "\n              "
+                                  )
+                                ]
+                              )
+                            ],
+                            1
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "overlay-donmai-right" }, [
+                          !user.followed
+                            ? _c(
+                                "div",
+                                {
+                                  staticClass: "overlay-donmai-follow",
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.donmaiFollowToggle(index)
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n              フォローする\n            "
+                                  )
+                                ]
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
+                          user.followed
+                            ? _c(
+                                "div",
+                                {
+                                  staticClass: "overlay-donmai-followed",
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.donmaiFollowToggle(index)
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n              フォロー中\n            "
+                                  )
+                                ]
+                              )
+                            : _vm._e()
+                        ])
+                      ]
+                    )
+                  }),
+                  0
+                )
+              ])
+            ]
+          )
+        : _vm._e()
+    ],
+    2
+  )
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "post-body" }, [
+      _vm._v("\n        うんち臭いですね。"),
+      _c("br"),
+      _vm._v("\n        だってうんち漏らしたんだもん。"),
+      _c("br"),
+      _vm._v("\n        ついでにおしっこしていいですか？\n      ")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "post-body" }, [
+      _vm._v(
+        "\n            こんにちは。こんにちは。こんにちは。こんにちは。こんにちは。こんにちは。"
+      ),
+      _c("br"),
+      _vm._v("\n            こんにちは。こんにちは。"),
+      _c("br"),
+      _vm._v("\n            こんにちは。こんにちは。\n          ")
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/user/UserGuchi.vue?vue&type=template&id=3863d212&":
+/*!*****************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/user/UserGuchi.vue?vue&type=template&id=3863d212& ***!
+  \*****************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "user-thread-box" },
+    _vm._l(_vm.threads, function(thread) {
+      return _c(
+        "router-link",
+        {
+          key: thread.id,
+          staticClass: "guchi-thread",
+          attrs: { to: { name: "guchi.detail" } }
+        },
+        [
+          _c("div", { staticClass: "thread-list-icon" }, [
+            !thread.icon
+              ? _c("div", {
+                  staticClass: "thread-left-icon-image none",
+                  style: { backgroundImage: "url(../../image/no-image.png)" }
+                })
+              : _vm._e(),
+            _vm._v(" "),
+            thread.icon
+              ? _c("div", {
+                  staticClass: "thread-left-icon-image",
+                  style: { backgroundImage: "url(" + thread.icon + ")" }
+                })
+              : _vm._e()
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "thread-left" }, [
+            _c("div", { staticClass: "thread-left-top" }, [
+              _c("div", { staticClass: "genre-icon" }, [
+                _vm._v(_vm._s(thread.genre))
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "thread-time" }, [
+                _vm._v(_vm._s(thread.created_at))
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "thread-title" }, [
+              _vm._v(_vm._s(thread.title))
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "bookmark" }, [
+            _c("img", { attrs: { src: "../../image/bookmark.png" } })
+          ])
+        ]
+      )
+    }),
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/user/UserPosts.vue?vue&type=template&id=62ef726f&":
+/*!*****************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/user/UserPosts.vue?vue&type=template&id=62ef726f& ***!
+  \*****************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "user-posts" },
+    [
+      _vm._l(_vm.posts, function(post, index) {
+        return _c("div", { key: post.id, staticClass: "posts" }, [
+          _c(
+            "div",
+            { staticClass: "logo-area" },
+            [
+              _c(
+                "router-link",
+                {
+                  attrs: {
+                    to: { name: "user", params: { id: _vm.$route.params.id } }
+                  }
+                },
+                [_c("img", { attrs: { src: "../../image/unko.jpg" } })]
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "input-area" }, [
+            _c("div", { staticClass: "user-name-post" }, [
+              _vm._v("ユーザー" + _vm._s(_vm.$route.params.id))
+            ]),
+            _vm._v(" "),
+            _vm._m(0, true),
+            _vm._v(" "),
+            post.tags
+              ? _c(
+                  "div",
+                  { staticClass: "post-tags" },
+                  _vm._l(post.tags, function(tag, index) {
+                    return _c(
+                      "router-link",
+                      {
+                        key: index,
+                        attrs: {
+                          to: {
+                            name: "tags.new",
+                            params: { name: tag.replace("#", "") }
+                          }
+                        }
+                      },
+                      [_vm._v("\n          " + _vm._s(tag) + "\n        ")]
+                    )
+                  }),
+                  1
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            post.images.length > 0
+              ? _c(
+                  "div",
+                  { staticClass: "post-image-view" },
+                  _vm._l(post.images, function(image, index) {
+                    return _c(
+                      "div",
+                      {
+                        key: index,
+                        staticClass: "each-preview",
+                        class: {
+                          "one-image-pre": post.images.length == 1,
+                          "two-image-pre": post.images.length == 2,
+                          "three-image-pre": post.images.length == 3,
+                          "four-image-pre": post.images.length == 4,
+                          yokonaga: post.images.length == 3 && index == 0
+                        }
+                      },
+                      [
+                        _c(
+                          "div",
+                          {
+                            staticClass: "each-image-box",
+                            on: {
+                              click: function($event) {
+                                return _vm.openImageModal(image)
+                              }
+                            }
+                          },
+                          [
+                            _c("div", {
+                              staticClass: "each-image",
+                              class: {
+                                "one-each-image": post.images.length == 1,
+                                "two-each-image": post.images.length == 2,
+                                "three-each-image": post.images.length == 3,
+                                "four-each-image": post.images.length == 4,
+                                "yokonaga-image":
+                                  post.images.length == 3 && index == 0
+                              },
+                              style: { backgroundImage: "url(" + image + ")" }
+                            })
+                          ]
+                        )
+                      ]
+                    )
+                  }),
+                  0
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _c("div", { staticClass: "post-btns" }, [
+              _c(
+                "div",
+                {
+                  staticClass: "post-donmai post-action-icon",
+                  on: {
+                    click: function($event) {
+                      return _vm.donmai(index)
+                    }
+                  }
+                },
+                [
+                  !post.donmai
+                    ? _c("img", {
+                        attrs: { src: "../../image/donmai.png", width: "30px" }
+                      })
+                    : _vm._e(),
+                  _vm._v(" "),
+                  post.donmai
+                    ? _c("img", {
+                        attrs: {
+                          src: "../../image/donmaied.png",
+                          width: "30px"
+                        }
+                      })
+                    : _vm._e(),
+                  _vm._v(
+                    "\n          " + _vm._s(post.donmai_count) + "\n        "
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass: "post-comment-icon post-action-icon",
+                  on: {
+                    click: function($event) {
+                      return _vm.openModalPost(index)
+                    }
+                  }
+                },
+                [
+                  _c("img", { attrs: { src: "../../image/comment.png" } }),
+                  _vm._v(
+                    "\n          " + _vm._s(post.comment_count) + "\n        "
+                  )
+                ]
+              )
+            ])
+          ])
+        ])
+      }),
+      _vm._v(" "),
+      _vm.modalPostShow
+        ? _c(
+            "div",
+            {
+              staticClass: "overlay-post",
+              on: {
+                click: function($event) {
+                  if ($event.target !== $event.currentTarget) {
+                    return null
+                  }
+                  return _vm.closeModalPost($event)
+                }
+              }
+            },
+            [
+              _c("div", { staticClass: "overlay-post-content" }, [
+                _c("div", { staticClass: "posts-overlay" }, [
+                  _c(
+                    "div",
+                    { staticClass: "logo-area" },
+                    [
+                      _c(
+                        "router-link",
+                        {
+                          attrs: {
+                            to: {
+                              name: "user",
+                              params: { id: _vm.$route.params.id }
+                            }
+                          }
+                        },
+                        [_c("img", { attrs: { src: "../../image/unko.jpg" } })]
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "input-area" },
+                    [
+                      _c("div", { staticClass: "user-name-post" }, [
+                        _vm._v(_vm._s(_vm.modalPostUser))
+                      ]),
+                      _vm._v(" "),
+                      _vm._m(1),
+                      _vm._v(" "),
+                      _vm.modalPostTags
+                        ? _c(
+                            "div",
+                            { staticClass: "post-tags" },
+                            _vm._l(_vm.modalPostTags, function(tag, index) {
+                              return _c(
+                                "router-link",
+                                {
+                                  key: index,
+                                  attrs: {
+                                    to: {
+                                      name: "tags.new",
+                                      params: { name: tag.replace("#", "") }
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n              " +
+                                      _vm._s(tag) +
+                                      "\n            "
+                                  )
+                                ]
+                              )
+                            }),
+                            1
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.modalPostImages.length > 0
+                        ? _c(
+                            "div",
+                            { staticClass: "post-image-view" },
+                            _vm._l(_vm.modalPostImages, function(image, index) {
+                              return _c(
+                                "div",
+                                {
+                                  key: index,
+                                  staticClass: "each-preview",
+                                  class: {
+                                    "one-image-pre":
+                                      _vm.modalPostImages.length == 1,
+                                    "two-image-pre":
+                                      _vm.modalPostImages.length == 2,
+                                    "three-image-pre":
+                                      _vm.modalPostImages.length == 3,
+                                    "four-image-pre":
+                                      _vm.modalPostImages.length == 4,
+                                    yokonaga:
+                                      _vm.modalPostImages.length == 3 &&
+                                      index == 0
+                                  }
+                                },
+                                [
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass: "each-image-box",
+                                      on: {
+                                        click: function($event) {
+                                          return _vm.openImageModal(image)
+                                        }
+                                      }
+                                    },
+                                    [
+                                      _c("div", {
+                                        staticClass: "each-image",
+                                        class: {
+                                          "one-each-image":
+                                            _vm.modalPostImages.length == 1,
+                                          "two-each-image":
+                                            _vm.modalPostImages.length == 2,
+                                          "three-each-image":
+                                            _vm.modalPostImages.length == 3,
+                                          "four-each-image":
+                                            _vm.modalPostImages.length == 4,
+                                          "yokonaga-image":
+                                            _vm.modalPostImages.length == 3 &&
+                                            index == 0
+                                        },
+                                        style: {
+                                          backgroundImage: "url(" + image + ")"
+                                        }
+                                      })
+                                    ]
+                                  )
+                                ]
+                              )
+                            }),
+                            0
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "post-btns-overlay" }, [
+                        _c(
+                          "div",
+                          {
+                            staticClass: "post-donmai-overlay post-action-icon",
+                            on: { click: _vm.openModalDonmai }
+                          },
+                          [
+                            _c("b", [_vm._v(_vm._s(_vm.modalPostDonmaiCount))]),
+                            _vm._v("件のどんまい\n            ")
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "post-comment-icon-overlay post-action-icon-comment-overlay"
+                          },
+                          [
+                            _c("b", [
+                              _vm._v(_vm._s(_vm.modalPostCommentCount))
+                            ]),
+                            _vm._v("件のコメント\n            ")
+                          ]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "comment-post-area" }, [
+                        _c("div", { staticClass: "comment-post-icon" }, [
+                          _c("img", { attrs: { src: "../../image/unko.jpg" } })
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "input-3" }, [
+                          _c("textarea", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.commentInput,
+                                expression: "commentInput"
+                              }
+                            ],
+                            ref: "commentarea",
+                            staticClass: "flex-textarea-2",
+                            style: _vm.commentStyles,
+                            attrs: { placeholder: "コメントを入力" },
+                            domProps: { value: _vm.commentInput },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.commentInput = $event.target.value
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "comment-btn-main" }, [
+                            _vm._v("\n                コメント\n              ")
+                          ])
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _vm._l(_vm.modalPostComments, function(comment, index) {
+                        return _c(
+                          "div",
+                          {
+                            key: comment.id,
+                            staticClass: "overlay-post-comment-area"
+                          },
+                          [
+                            _c(
+                              "div",
+                              { staticClass: "overlay-post-comment-left" },
+                              [
+                                _c(
+                                  "router-link",
+                                  {
+                                    attrs: {
+                                      to: {
+                                        name: "user",
+                                        params: { id: comment.userId }
+                                      }
+                                    }
+                                  },
+                                  [_c("img", { attrs: { src: comment.icon } })]
+                                )
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              { staticClass: "overlay-post-comment-right" },
+                              [
+                                _c(
+                                  "div",
+                                  { staticClass: "overlay-post-comment-top" },
+                                  [
+                                    _c(
+                                      "div",
+                                      { staticClass: "overlay-post-name" },
+                                      [
+                                        _vm._v(
+                                          "\n                  " +
+                                            _vm._s(comment.user) +
+                                            "\n                "
+                                        )
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "div",
+                                      { staticClass: "overlay-post-day" },
+                                      [
+                                        _vm._v(
+                                          "\n                  " +
+                                            _vm._s(comment.day) +
+                                            "\n                "
+                                        )
+                                      ]
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  { staticClass: "overlay-post-comment" },
+                                  [
+                                    _vm._v(
+                                      "\n                うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。\n              "
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  { staticClass: "overlay-post-bottom" },
+                                  [
+                                    _c(
+                                      "div",
+                                      {
+                                        staticClass:
+                                          "overlay-post-comment-count"
+                                      },
+                                      [
+                                        comment.replyCount && !comment.replyShow
+                                          ? _c(
+                                              "div",
+                                              {
+                                                staticClass:
+                                                  "post-comment-count",
+                                                on: {
+                                                  click: function($event) {
+                                                    return _vm.openCommentReply(
+                                                      index
+                                                    )
+                                                  }
+                                                }
+                                              },
+                                              [
+                                                _vm._v(
+                                                  "\n                    ▼ " +
+                                                    _vm._s(comment.replyCount) +
+                                                    "件の返信を表示\n                  "
+                                                )
+                                              ]
+                                            )
+                                          : _vm._e(),
+                                        _vm._v(" "),
+                                        comment.replyCount && comment.replyShow
+                                          ? _c(
+                                              "div",
+                                              {
+                                                staticClass:
+                                                  "post-comment-count",
+                                                on: {
+                                                  click: function($event) {
+                                                    return _vm.closeCommentReply(
+                                                      index
+                                                    )
+                                                  }
+                                                }
+                                              },
+                                              [
+                                                _vm._v(
+                                                  "\n                    ▲ " +
+                                                    _vm._s(comment.replyCount) +
+                                                    "件の返信を非表示\n                  "
+                                                )
+                                              ]
+                                            )
+                                          : _vm._e(),
+                                        _vm._v(" "),
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass: "comment-replay-btn",
+                                            on: {
+                                              click: function($event) {
+                                                return _vm.openReplyForm(index)
+                                              }
+                                            }
+                                          },
+                                          [_vm._v("返信する")]
+                                        )
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "div",
+                                      { staticClass: "overlay-post-good" },
+                                      [
+                                        _vm._v(
+                                          "\n                  " +
+                                            _vm._s(comment.goodCount) +
+                                            "\n                  "
+                                        ),
+                                        !comment.good
+                                          ? _c("img", {
+                                              attrs: {
+                                                src: "../../image/good.png"
+                                              },
+                                              on: {
+                                                click: function($event) {
+                                                  return _vm.commentGood(
+                                                    comment.id
+                                                  )
+                                                }
+                                              }
+                                            })
+                                          : _vm._e(),
+                                        _vm._v(" "),
+                                        comment.good
+                                          ? _c("img", {
+                                              attrs: {
+                                                src: "../../image/gooded.png"
+                                              },
+                                              on: {
+                                                click: function($event) {
+                                                  return _vm.commentGood(
+                                                    comment.id
+                                                  )
+                                                }
+                                              }
+                                            })
+                                          : _vm._e()
+                                      ]
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                comment.replyFormOpened
+                                  ? _c("div", { staticClass: "input-3" }, [
+                                      _c("textarea", {
+                                        directives: [
+                                          {
+                                            name: "model",
+                                            rawName: "v-model",
+                                            value: comment.replyInput,
+                                            expression: "comment.replyInput"
+                                          }
+                                        ],
+                                        ref: "replyarea",
+                                        refInFor: true,
+                                        staticClass: "flex-textarea-2",
+                                        attrs: { placeholder: "返信を入力" },
+                                        domProps: { value: comment.replyInput },
+                                        on: {
+                                          input: function($event) {
+                                            if ($event.target.composing) {
+                                              return
+                                            }
+                                            _vm.$set(
+                                              comment,
+                                              "replyInput",
+                                              $event.target.value
+                                            )
+                                          }
+                                        }
+                                      }),
+                                      _vm._v(" "),
+                                      _c(
+                                        "div",
+                                        { staticClass: "comment-reply-btns" },
+                                        [
+                                          _c(
+                                            "div",
+                                            {
+                                              staticClass: "reply-cancel-btn",
+                                              on: {
+                                                click: function($event) {
+                                                  return _vm.closeReplyForm(
+                                                    index
+                                                  )
+                                                }
+                                              }
+                                            },
+                                            [
+                                              _vm._v(
+                                                "\n                    キャンセル\n                  "
+                                              )
+                                            ]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "div",
+                                            { staticClass: "comment-btn" },
+                                            [
+                                              _vm._v(
+                                                "\n                    コメント\n                  "
+                                              )
+                                            ]
+                                          )
+                                        ]
+                                      )
+                                    ])
+                                  : _vm._e(),
+                                _vm._v(" "),
+                                comment.replyShow
+                                  ? _c(
+                                      "div",
+                                      _vm._l(comment.replies, function(reply) {
+                                        return _c(
+                                          "div",
+                                          {
+                                            key: reply.id,
+                                            staticClass: "comment-reply-area"
+                                          },
+                                          [
+                                            _c(
+                                              "div",
+                                              {
+                                                staticClass:
+                                                  "overlay-post-comment-reply-area"
+                                              },
+                                              [
+                                                _c(
+                                                  "div",
+                                                  {
+                                                    staticClass:
+                                                      "overlay-post-comment-left"
+                                                  },
+                                                  [
+                                                    _c(
+                                                      "router-link",
+                                                      {
+                                                        attrs: {
+                                                          to: {
+                                                            name: "user",
+                                                            params: {
+                                                              id: reply.userId
+                                                            }
+                                                          }
+                                                        }
+                                                      },
+                                                      [
+                                                        _c("img", {
+                                                          attrs: {
+                                                            src: reply.icon
+                                                          }
+                                                        })
+                                                      ]
+                                                    )
+                                                  ],
+                                                  1
+                                                ),
+                                                _vm._v(" "),
+                                                _c(
+                                                  "div",
+                                                  {
+                                                    staticClass:
+                                                      "overlay-post-comment-right"
+                                                  },
+                                                  [
+                                                    _c(
+                                                      "div",
+                                                      {
+                                                        staticClass:
+                                                          "overlay-post-comment-top"
+                                                      },
+                                                      [
+                                                        _c(
+                                                          "div",
+                                                          {
+                                                            staticClass:
+                                                              "overlay-post-name"
+                                                          },
+                                                          [
+                                                            _vm._v(
+                                                              "\n                          " +
+                                                                _vm._s(
+                                                                  reply.user
+                                                                ) +
+                                                                "\n                        "
+                                                            )
+                                                          ]
+                                                        ),
+                                                        _vm._v(" "),
+                                                        _c(
+                                                          "div",
+                                                          {
+                                                            staticClass:
+                                                              "overlay-post-day"
+                                                          },
+                                                          [
+                                                            _vm._v(
+                                                              "\n                          " +
+                                                                _vm._s(
+                                                                  reply.day
+                                                                ) +
+                                                                "\n                        "
+                                                            )
+                                                          ]
+                                                        )
+                                                      ]
+                                                    ),
+                                                    _vm._v(" "),
+                                                    _c(
+                                                      "div",
+                                                      {
+                                                        staticClass:
+                                                          "overlay-post-comment"
+                                                      },
+                                                      [
+                                                        _vm._v(
+                                                          "\n                        うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。\n                      "
+                                                        )
+                                                      ]
+                                                    ),
+                                                    _vm._v(" "),
+                                                    _c(
+                                                      "div",
+                                                      {
+                                                        staticClass:
+                                                          "overlay-post-bottom"
+                                                      },
+                                                      [
+                                                        _c(
+                                                          "div",
+                                                          {
+                                                            staticClass:
+                                                              "overlay-post-good"
+                                                          },
+                                                          [
+                                                            _vm._v(
+                                                              "\n                          " +
+                                                                _vm._s(
+                                                                  reply.goodCount
+                                                                ) +
+                                                                "\n                          "
+                                                            ),
+                                                            !reply.good
+                                                              ? _c("img", {
+                                                                  attrs: {
+                                                                    src:
+                                                                      "../image/good.png"
+                                                                  },
+                                                                  on: {
+                                                                    click: function(
+                                                                      $event
+                                                                    ) {
+                                                                      return _vm.replyGood(
+                                                                        comment.id,
+                                                                        reply.id
+                                                                      )
+                                                                    }
+                                                                  }
+                                                                })
+                                                              : _vm._e(),
+                                                            _vm._v(" "),
+                                                            reply.good
+                                                              ? _c("img", {
+                                                                  attrs: {
+                                                                    src:
+                                                                      "../image/gooded.png"
+                                                                  },
+                                                                  on: {
+                                                                    click: function(
+                                                                      $event
+                                                                    ) {
+                                                                      return _vm.replyGood(
+                                                                        comment.id,
+                                                                        reply.id
+                                                                      )
+                                                                    }
+                                                                  }
+                                                                })
+                                                              : _vm._e()
+                                                          ]
+                                                        )
+                                                      ]
+                                                    )
+                                                  ]
+                                                )
+                                              ]
+                                            )
+                                          ]
+                                        )
+                                      }),
+                                      0
+                                    )
+                                  : _vm._e()
+                              ]
+                            )
+                          ]
+                        )
+                      })
+                    ],
+                    2
+                  )
+                ])
+              ])
+            ]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          directives: [
+            {
+              name: "show",
+              rawName: "v-show",
+              value: _vm.modalImageShow,
+              expression: "modalImageShow"
+            }
+          ],
+          staticClass: "overlay-image",
+          on: {
+            click: function($event) {
+              if ($event.target !== $event.currentTarget) {
+                return null
+              }
+              return _vm.closeImageModal($event)
+            }
+          }
+        },
+        [
+          _c("div", { staticClass: "overlay-image-box" }, [
+            _c("img", {
+              staticClass: "overlay-image-image",
+              attrs: { src: _vm.modalImage }
+            })
+          ])
+        ]
+      ),
+      _vm._v(" "),
+      _vm.modalDonmaiShow
+        ? _c(
+            "div",
+            {
+              staticClass: "overlay-post",
+              on: {
+                click: function($event) {
+                  if ($event.target !== $event.currentTarget) {
+                    return null
+                  }
+                  return _vm.closeModalDonmai($event)
+                }
+              }
+            },
+            [
+              _c("div", { staticClass: "overlay-donmai-content" }, [
+                _c("div", { staticClass: "overlay-donmai-title" }, [
+                  _vm._v("\n        どんまい！\n      ")
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "donmai-user-box" },
+                  _vm._l(_vm.modalDonmaiUsers, function(user, index) {
+                    return _c(
+                      "div",
+                      { key: user.id, staticClass: "donmai-user-list" },
+                      [
+                        _c("div", { staticClass: "overlay-donmai-left" }, [
+                          _c(
+                            "div",
+                            { staticClass: "overlay-donmai-user-icon" },
+                            [
+                              _c(
+                                "router-link",
+                                {
+                                  attrs: {
+                                    to: {
+                                      name: "user",
+                                      params: { id: user.id }
+                                    }
+                                  }
+                                },
+                                [_c("img", { attrs: { src: user.icon } })]
+                              )
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            { staticClass: "overlay-donmai-user-name" },
+                            [
+                              _c(
+                                "router-link",
+                                {
+                                  attrs: {
+                                    to: {
+                                      name: "user",
+                                      params: { id: user.id }
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                " +
+                                      _vm._s(user.name) +
+                                      "\n              "
+                                  )
+                                ]
+                              )
+                            ],
+                            1
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "overlay-donmai-right" }, [
+                          !user.followed
+                            ? _c(
+                                "div",
+                                {
+                                  staticClass: "overlay-donmai-follow",
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.donmaiFollowToggle(index)
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n              フォローする\n            "
+                                  )
+                                ]
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
+                          user.followed
+                            ? _c(
+                                "div",
+                                {
+                                  staticClass: "overlay-donmai-followed",
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.donmaiFollowToggle(index)
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n              フォロー中\n            "
+                                  )
+                                ]
+                              )
+                            : _vm._e()
+                        ])
+                      ]
+                    )
+                  }),
+                  0
+                )
+              ])
+            ]
+          )
+        : _vm._e()
+    ],
+    2
+  )
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "post-body" }, [
+      _vm._v(
+        "\n        こんにちは。こんにちは。こんにちは。こんにちは。こんにちは。こんにちは。"
+      ),
+      _c("br"),
+      _vm._v("\n        こんにちは。こんにちは。"),
+      _c("br"),
+      _vm._v("\n        こんにちは。こんにちは。\n      ")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "post-body" }, [
+      _vm._v(
+        "\n            こんにちは。こんにちは。こんにちは。こんにちは。こんにちは。こんにちは。"
+      ),
+      _c("br"),
+      _vm._v("\n            こんにちは。こんにちは。"),
+      _c("br"),
+      _vm._v("\n            こんにちは。こんにちは。\n          ")
     ])
   }
 ]
@@ -37723,6 +59690,3085 @@ function normalizeComponent (
     options: options
   }
 }
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-router/dist/vue-router.esm.js":
+/*!********************************************************!*\
+  !*** ./node_modules/vue-router/dist/vue-router.esm.js ***!
+  \********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/*!
+  * vue-router v3.4.9
+  * (c) 2020 Evan You
+  * @license MIT
+  */
+/*  */
+
+function assert (condition, message) {
+  if (!condition) {
+    throw new Error(("[vue-router] " + message))
+  }
+}
+
+function warn (condition, message) {
+  if ( true && !condition) {
+    typeof console !== 'undefined' && console.warn(("[vue-router] " + message));
+  }
+}
+
+function extend (a, b) {
+  for (var key in b) {
+    a[key] = b[key];
+  }
+  return a
+}
+
+/*  */
+
+var encodeReserveRE = /[!'()*]/g;
+var encodeReserveReplacer = function (c) { return '%' + c.charCodeAt(0).toString(16); };
+var commaRE = /%2C/g;
+
+// fixed encodeURIComponent which is more conformant to RFC3986:
+// - escapes [!'()*]
+// - preserve commas
+var encode = function (str) { return encodeURIComponent(str)
+    .replace(encodeReserveRE, encodeReserveReplacer)
+    .replace(commaRE, ','); };
+
+function decode (str) {
+  try {
+    return decodeURIComponent(str)
+  } catch (err) {
+    if (true) {
+      warn(false, ("Error decoding \"" + str + "\". Leaving it intact."));
+    }
+  }
+  return str
+}
+
+function resolveQuery (
+  query,
+  extraQuery,
+  _parseQuery
+) {
+  if ( extraQuery === void 0 ) extraQuery = {};
+
+  var parse = _parseQuery || parseQuery;
+  var parsedQuery;
+  try {
+    parsedQuery = parse(query || '');
+  } catch (e) {
+     true && warn(false, e.message);
+    parsedQuery = {};
+  }
+  for (var key in extraQuery) {
+    var value = extraQuery[key];
+    parsedQuery[key] = Array.isArray(value)
+      ? value.map(castQueryParamValue)
+      : castQueryParamValue(value);
+  }
+  return parsedQuery
+}
+
+var castQueryParamValue = function (value) { return (value == null || typeof value === 'object' ? value : String(value)); };
+
+function parseQuery (query) {
+  var res = {};
+
+  query = query.trim().replace(/^(\?|#|&)/, '');
+
+  if (!query) {
+    return res
+  }
+
+  query.split('&').forEach(function (param) {
+    var parts = param.replace(/\+/g, ' ').split('=');
+    var key = decode(parts.shift());
+    var val = parts.length > 0 ? decode(parts.join('=')) : null;
+
+    if (res[key] === undefined) {
+      res[key] = val;
+    } else if (Array.isArray(res[key])) {
+      res[key].push(val);
+    } else {
+      res[key] = [res[key], val];
+    }
+  });
+
+  return res
+}
+
+function stringifyQuery (obj) {
+  var res = obj
+    ? Object.keys(obj)
+      .map(function (key) {
+        var val = obj[key];
+
+        if (val === undefined) {
+          return ''
+        }
+
+        if (val === null) {
+          return encode(key)
+        }
+
+        if (Array.isArray(val)) {
+          var result = [];
+          val.forEach(function (val2) {
+            if (val2 === undefined) {
+              return
+            }
+            if (val2 === null) {
+              result.push(encode(key));
+            } else {
+              result.push(encode(key) + '=' + encode(val2));
+            }
+          });
+          return result.join('&')
+        }
+
+        return encode(key) + '=' + encode(val)
+      })
+      .filter(function (x) { return x.length > 0; })
+      .join('&')
+    : null;
+  return res ? ("?" + res) : ''
+}
+
+/*  */
+
+var trailingSlashRE = /\/?$/;
+
+function createRoute (
+  record,
+  location,
+  redirectedFrom,
+  router
+) {
+  var stringifyQuery = router && router.options.stringifyQuery;
+
+  var query = location.query || {};
+  try {
+    query = clone(query);
+  } catch (e) {}
+
+  var route = {
+    name: location.name || (record && record.name),
+    meta: (record && record.meta) || {},
+    path: location.path || '/',
+    hash: location.hash || '',
+    query: query,
+    params: location.params || {},
+    fullPath: getFullPath(location, stringifyQuery),
+    matched: record ? formatMatch(record) : []
+  };
+  if (redirectedFrom) {
+    route.redirectedFrom = getFullPath(redirectedFrom, stringifyQuery);
+  }
+  return Object.freeze(route)
+}
+
+function clone (value) {
+  if (Array.isArray(value)) {
+    return value.map(clone)
+  } else if (value && typeof value === 'object') {
+    var res = {};
+    for (var key in value) {
+      res[key] = clone(value[key]);
+    }
+    return res
+  } else {
+    return value
+  }
+}
+
+// the starting route that represents the initial state
+var START = createRoute(null, {
+  path: '/'
+});
+
+function formatMatch (record) {
+  var res = [];
+  while (record) {
+    res.unshift(record);
+    record = record.parent;
+  }
+  return res
+}
+
+function getFullPath (
+  ref,
+  _stringifyQuery
+) {
+  var path = ref.path;
+  var query = ref.query; if ( query === void 0 ) query = {};
+  var hash = ref.hash; if ( hash === void 0 ) hash = '';
+
+  var stringify = _stringifyQuery || stringifyQuery;
+  return (path || '/') + stringify(query) + hash
+}
+
+function isSameRoute (a, b) {
+  if (b === START) {
+    return a === b
+  } else if (!b) {
+    return false
+  } else if (a.path && b.path) {
+    return (
+      a.path.replace(trailingSlashRE, '') === b.path.replace(trailingSlashRE, '') &&
+      a.hash === b.hash &&
+      isObjectEqual(a.query, b.query)
+    )
+  } else if (a.name && b.name) {
+    return (
+      a.name === b.name &&
+      a.hash === b.hash &&
+      isObjectEqual(a.query, b.query) &&
+      isObjectEqual(a.params, b.params)
+    )
+  } else {
+    return false
+  }
+}
+
+function isObjectEqual (a, b) {
+  if ( a === void 0 ) a = {};
+  if ( b === void 0 ) b = {};
+
+  // handle null value #1566
+  if (!a || !b) { return a === b }
+  var aKeys = Object.keys(a).sort();
+  var bKeys = Object.keys(b).sort();
+  if (aKeys.length !== bKeys.length) {
+    return false
+  }
+  return aKeys.every(function (key, i) {
+    var aVal = a[key];
+    var bKey = bKeys[i];
+    if (bKey !== key) { return false }
+    var bVal = b[key];
+    // query values can be null and undefined
+    if (aVal == null || bVal == null) { return aVal === bVal }
+    // check nested equality
+    if (typeof aVal === 'object' && typeof bVal === 'object') {
+      return isObjectEqual(aVal, bVal)
+    }
+    return String(aVal) === String(bVal)
+  })
+}
+
+function isIncludedRoute (current, target) {
+  return (
+    current.path.replace(trailingSlashRE, '/').indexOf(
+      target.path.replace(trailingSlashRE, '/')
+    ) === 0 &&
+    (!target.hash || current.hash === target.hash) &&
+    queryIncludes(current.query, target.query)
+  )
+}
+
+function queryIncludes (current, target) {
+  for (var key in target) {
+    if (!(key in current)) {
+      return false
+    }
+  }
+  return true
+}
+
+function handleRouteEntered (route) {
+  for (var i = 0; i < route.matched.length; i++) {
+    var record = route.matched[i];
+    for (var name in record.instances) {
+      var instance = record.instances[name];
+      var cbs = record.enteredCbs[name];
+      if (!instance || !cbs) { continue }
+      delete record.enteredCbs[name];
+      for (var i$1 = 0; i$1 < cbs.length; i$1++) {
+        if (!instance._isBeingDestroyed) { cbs[i$1](instance); }
+      }
+    }
+  }
+}
+
+var View = {
+  name: 'RouterView',
+  functional: true,
+  props: {
+    name: {
+      type: String,
+      default: 'default'
+    }
+  },
+  render: function render (_, ref) {
+    var props = ref.props;
+    var children = ref.children;
+    var parent = ref.parent;
+    var data = ref.data;
+
+    // used by devtools to display a router-view badge
+    data.routerView = true;
+
+    // directly use parent context's createElement() function
+    // so that components rendered by router-view can resolve named slots
+    var h = parent.$createElement;
+    var name = props.name;
+    var route = parent.$route;
+    var cache = parent._routerViewCache || (parent._routerViewCache = {});
+
+    // determine current view depth, also check to see if the tree
+    // has been toggled inactive but kept-alive.
+    var depth = 0;
+    var inactive = false;
+    while (parent && parent._routerRoot !== parent) {
+      var vnodeData = parent.$vnode ? parent.$vnode.data : {};
+      if (vnodeData.routerView) {
+        depth++;
+      }
+      if (vnodeData.keepAlive && parent._directInactive && parent._inactive) {
+        inactive = true;
+      }
+      parent = parent.$parent;
+    }
+    data.routerViewDepth = depth;
+
+    // render previous view if the tree is inactive and kept-alive
+    if (inactive) {
+      var cachedData = cache[name];
+      var cachedComponent = cachedData && cachedData.component;
+      if (cachedComponent) {
+        // #2301
+        // pass props
+        if (cachedData.configProps) {
+          fillPropsinData(cachedComponent, data, cachedData.route, cachedData.configProps);
+        }
+        return h(cachedComponent, data, children)
+      } else {
+        // render previous empty view
+        return h()
+      }
+    }
+
+    var matched = route.matched[depth];
+    var component = matched && matched.components[name];
+
+    // render empty node if no matched route or no config component
+    if (!matched || !component) {
+      cache[name] = null;
+      return h()
+    }
+
+    // cache component
+    cache[name] = { component: component };
+
+    // attach instance registration hook
+    // this will be called in the instance's injected lifecycle hooks
+    data.registerRouteInstance = function (vm, val) {
+      // val could be undefined for unregistration
+      var current = matched.instances[name];
+      if (
+        (val && current !== vm) ||
+        (!val && current === vm)
+      ) {
+        matched.instances[name] = val;
+      }
+    }
+
+    // also register instance in prepatch hook
+    // in case the same component instance is reused across different routes
+    ;(data.hook || (data.hook = {})).prepatch = function (_, vnode) {
+      matched.instances[name] = vnode.componentInstance;
+    };
+
+    // register instance in init hook
+    // in case kept-alive component be actived when routes changed
+    data.hook.init = function (vnode) {
+      if (vnode.data.keepAlive &&
+        vnode.componentInstance &&
+        vnode.componentInstance !== matched.instances[name]
+      ) {
+        matched.instances[name] = vnode.componentInstance;
+      }
+
+      // if the route transition has already been confirmed then we weren't
+      // able to call the cbs during confirmation as the component was not
+      // registered yet, so we call it here.
+      handleRouteEntered(route);
+    };
+
+    var configProps = matched.props && matched.props[name];
+    // save route and configProps in cache
+    if (configProps) {
+      extend(cache[name], {
+        route: route,
+        configProps: configProps
+      });
+      fillPropsinData(component, data, route, configProps);
+    }
+
+    return h(component, data, children)
+  }
+};
+
+function fillPropsinData (component, data, route, configProps) {
+  // resolve props
+  var propsToPass = data.props = resolveProps(route, configProps);
+  if (propsToPass) {
+    // clone to prevent mutation
+    propsToPass = data.props = extend({}, propsToPass);
+    // pass non-declared props as attrs
+    var attrs = data.attrs = data.attrs || {};
+    for (var key in propsToPass) {
+      if (!component.props || !(key in component.props)) {
+        attrs[key] = propsToPass[key];
+        delete propsToPass[key];
+      }
+    }
+  }
+}
+
+function resolveProps (route, config) {
+  switch (typeof config) {
+    case 'undefined':
+      return
+    case 'object':
+      return config
+    case 'function':
+      return config(route)
+    case 'boolean':
+      return config ? route.params : undefined
+    default:
+      if (true) {
+        warn(
+          false,
+          "props in \"" + (route.path) + "\" is a " + (typeof config) + ", " +
+          "expecting an object, function or boolean."
+        );
+      }
+  }
+}
+
+/*  */
+
+function resolvePath (
+  relative,
+  base,
+  append
+) {
+  var firstChar = relative.charAt(0);
+  if (firstChar === '/') {
+    return relative
+  }
+
+  if (firstChar === '?' || firstChar === '#') {
+    return base + relative
+  }
+
+  var stack = base.split('/');
+
+  // remove trailing segment if:
+  // - not appending
+  // - appending to trailing slash (last segment is empty)
+  if (!append || !stack[stack.length - 1]) {
+    stack.pop();
+  }
+
+  // resolve relative path
+  var segments = relative.replace(/^\//, '').split('/');
+  for (var i = 0; i < segments.length; i++) {
+    var segment = segments[i];
+    if (segment === '..') {
+      stack.pop();
+    } else if (segment !== '.') {
+      stack.push(segment);
+    }
+  }
+
+  // ensure leading slash
+  if (stack[0] !== '') {
+    stack.unshift('');
+  }
+
+  return stack.join('/')
+}
+
+function parsePath (path) {
+  var hash = '';
+  var query = '';
+
+  var hashIndex = path.indexOf('#');
+  if (hashIndex >= 0) {
+    hash = path.slice(hashIndex);
+    path = path.slice(0, hashIndex);
+  }
+
+  var queryIndex = path.indexOf('?');
+  if (queryIndex >= 0) {
+    query = path.slice(queryIndex + 1);
+    path = path.slice(0, queryIndex);
+  }
+
+  return {
+    path: path,
+    query: query,
+    hash: hash
+  }
+}
+
+function cleanPath (path) {
+  return path.replace(/\/\//g, '/')
+}
+
+var isarray = Array.isArray || function (arr) {
+  return Object.prototype.toString.call(arr) == '[object Array]';
+};
+
+/**
+ * Expose `pathToRegexp`.
+ */
+var pathToRegexp_1 = pathToRegexp;
+var parse_1 = parse;
+var compile_1 = compile;
+var tokensToFunction_1 = tokensToFunction;
+var tokensToRegExp_1 = tokensToRegExp;
+
+/**
+ * The main path matching regexp utility.
+ *
+ * @type {RegExp}
+ */
+var PATH_REGEXP = new RegExp([
+  // Match escaped characters that would otherwise appear in future matches.
+  // This allows the user to escape special characters that won't transform.
+  '(\\\\.)',
+  // Match Express-style parameters and un-named parameters with a prefix
+  // and optional suffixes. Matches appear as:
+  //
+  // "/:test(\\d+)?" => ["/", "test", "\d+", undefined, "?", undefined]
+  // "/route(\\d+)"  => [undefined, undefined, undefined, "\d+", undefined, undefined]
+  // "/*"            => ["/", undefined, undefined, undefined, undefined, "*"]
+  '([\\/.])?(?:(?:\\:(\\w+)(?:\\(((?:\\\\.|[^\\\\()])+)\\))?|\\(((?:\\\\.|[^\\\\()])+)\\))([+*?])?|(\\*))'
+].join('|'), 'g');
+
+/**
+ * Parse a string for the raw tokens.
+ *
+ * @param  {string}  str
+ * @param  {Object=} options
+ * @return {!Array}
+ */
+function parse (str, options) {
+  var tokens = [];
+  var key = 0;
+  var index = 0;
+  var path = '';
+  var defaultDelimiter = options && options.delimiter || '/';
+  var res;
+
+  while ((res = PATH_REGEXP.exec(str)) != null) {
+    var m = res[0];
+    var escaped = res[1];
+    var offset = res.index;
+    path += str.slice(index, offset);
+    index = offset + m.length;
+
+    // Ignore already escaped sequences.
+    if (escaped) {
+      path += escaped[1];
+      continue
+    }
+
+    var next = str[index];
+    var prefix = res[2];
+    var name = res[3];
+    var capture = res[4];
+    var group = res[5];
+    var modifier = res[6];
+    var asterisk = res[7];
+
+    // Push the current path onto the tokens.
+    if (path) {
+      tokens.push(path);
+      path = '';
+    }
+
+    var partial = prefix != null && next != null && next !== prefix;
+    var repeat = modifier === '+' || modifier === '*';
+    var optional = modifier === '?' || modifier === '*';
+    var delimiter = res[2] || defaultDelimiter;
+    var pattern = capture || group;
+
+    tokens.push({
+      name: name || key++,
+      prefix: prefix || '',
+      delimiter: delimiter,
+      optional: optional,
+      repeat: repeat,
+      partial: partial,
+      asterisk: !!asterisk,
+      pattern: pattern ? escapeGroup(pattern) : (asterisk ? '.*' : '[^' + escapeString(delimiter) + ']+?')
+    });
+  }
+
+  // Match any characters still remaining.
+  if (index < str.length) {
+    path += str.substr(index);
+  }
+
+  // If the path exists, push it onto the end.
+  if (path) {
+    tokens.push(path);
+  }
+
+  return tokens
+}
+
+/**
+ * Compile a string to a template function for the path.
+ *
+ * @param  {string}             str
+ * @param  {Object=}            options
+ * @return {!function(Object=, Object=)}
+ */
+function compile (str, options) {
+  return tokensToFunction(parse(str, options), options)
+}
+
+/**
+ * Prettier encoding of URI path segments.
+ *
+ * @param  {string}
+ * @return {string}
+ */
+function encodeURIComponentPretty (str) {
+  return encodeURI(str).replace(/[\/?#]/g, function (c) {
+    return '%' + c.charCodeAt(0).toString(16).toUpperCase()
+  })
+}
+
+/**
+ * Encode the asterisk parameter. Similar to `pretty`, but allows slashes.
+ *
+ * @param  {string}
+ * @return {string}
+ */
+function encodeAsterisk (str) {
+  return encodeURI(str).replace(/[?#]/g, function (c) {
+    return '%' + c.charCodeAt(0).toString(16).toUpperCase()
+  })
+}
+
+/**
+ * Expose a method for transforming tokens into the path function.
+ */
+function tokensToFunction (tokens, options) {
+  // Compile all the tokens into regexps.
+  var matches = new Array(tokens.length);
+
+  // Compile all the patterns before compilation.
+  for (var i = 0; i < tokens.length; i++) {
+    if (typeof tokens[i] === 'object') {
+      matches[i] = new RegExp('^(?:' + tokens[i].pattern + ')$', flags(options));
+    }
+  }
+
+  return function (obj, opts) {
+    var path = '';
+    var data = obj || {};
+    var options = opts || {};
+    var encode = options.pretty ? encodeURIComponentPretty : encodeURIComponent;
+
+    for (var i = 0; i < tokens.length; i++) {
+      var token = tokens[i];
+
+      if (typeof token === 'string') {
+        path += token;
+
+        continue
+      }
+
+      var value = data[token.name];
+      var segment;
+
+      if (value == null) {
+        if (token.optional) {
+          // Prepend partial segment prefixes.
+          if (token.partial) {
+            path += token.prefix;
+          }
+
+          continue
+        } else {
+          throw new TypeError('Expected "' + token.name + '" to be defined')
+        }
+      }
+
+      if (isarray(value)) {
+        if (!token.repeat) {
+          throw new TypeError('Expected "' + token.name + '" to not repeat, but received `' + JSON.stringify(value) + '`')
+        }
+
+        if (value.length === 0) {
+          if (token.optional) {
+            continue
+          } else {
+            throw new TypeError('Expected "' + token.name + '" to not be empty')
+          }
+        }
+
+        for (var j = 0; j < value.length; j++) {
+          segment = encode(value[j]);
+
+          if (!matches[i].test(segment)) {
+            throw new TypeError('Expected all "' + token.name + '" to match "' + token.pattern + '", but received `' + JSON.stringify(segment) + '`')
+          }
+
+          path += (j === 0 ? token.prefix : token.delimiter) + segment;
+        }
+
+        continue
+      }
+
+      segment = token.asterisk ? encodeAsterisk(value) : encode(value);
+
+      if (!matches[i].test(segment)) {
+        throw new TypeError('Expected "' + token.name + '" to match "' + token.pattern + '", but received "' + segment + '"')
+      }
+
+      path += token.prefix + segment;
+    }
+
+    return path
+  }
+}
+
+/**
+ * Escape a regular expression string.
+ *
+ * @param  {string} str
+ * @return {string}
+ */
+function escapeString (str) {
+  return str.replace(/([.+*?=^!:${}()[\]|\/\\])/g, '\\$1')
+}
+
+/**
+ * Escape the capturing group by escaping special characters and meaning.
+ *
+ * @param  {string} group
+ * @return {string}
+ */
+function escapeGroup (group) {
+  return group.replace(/([=!:$\/()])/g, '\\$1')
+}
+
+/**
+ * Attach the keys as a property of the regexp.
+ *
+ * @param  {!RegExp} re
+ * @param  {Array}   keys
+ * @return {!RegExp}
+ */
+function attachKeys (re, keys) {
+  re.keys = keys;
+  return re
+}
+
+/**
+ * Get the flags for a regexp from the options.
+ *
+ * @param  {Object} options
+ * @return {string}
+ */
+function flags (options) {
+  return options && options.sensitive ? '' : 'i'
+}
+
+/**
+ * Pull out keys from a regexp.
+ *
+ * @param  {!RegExp} path
+ * @param  {!Array}  keys
+ * @return {!RegExp}
+ */
+function regexpToRegexp (path, keys) {
+  // Use a negative lookahead to match only capturing groups.
+  var groups = path.source.match(/\((?!\?)/g);
+
+  if (groups) {
+    for (var i = 0; i < groups.length; i++) {
+      keys.push({
+        name: i,
+        prefix: null,
+        delimiter: null,
+        optional: false,
+        repeat: false,
+        partial: false,
+        asterisk: false,
+        pattern: null
+      });
+    }
+  }
+
+  return attachKeys(path, keys)
+}
+
+/**
+ * Transform an array into a regexp.
+ *
+ * @param  {!Array}  path
+ * @param  {Array}   keys
+ * @param  {!Object} options
+ * @return {!RegExp}
+ */
+function arrayToRegexp (path, keys, options) {
+  var parts = [];
+
+  for (var i = 0; i < path.length; i++) {
+    parts.push(pathToRegexp(path[i], keys, options).source);
+  }
+
+  var regexp = new RegExp('(?:' + parts.join('|') + ')', flags(options));
+
+  return attachKeys(regexp, keys)
+}
+
+/**
+ * Create a path regexp from string input.
+ *
+ * @param  {string}  path
+ * @param  {!Array}  keys
+ * @param  {!Object} options
+ * @return {!RegExp}
+ */
+function stringToRegexp (path, keys, options) {
+  return tokensToRegExp(parse(path, options), keys, options)
+}
+
+/**
+ * Expose a function for taking tokens and returning a RegExp.
+ *
+ * @param  {!Array}          tokens
+ * @param  {(Array|Object)=} keys
+ * @param  {Object=}         options
+ * @return {!RegExp}
+ */
+function tokensToRegExp (tokens, keys, options) {
+  if (!isarray(keys)) {
+    options = /** @type {!Object} */ (keys || options);
+    keys = [];
+  }
+
+  options = options || {};
+
+  var strict = options.strict;
+  var end = options.end !== false;
+  var route = '';
+
+  // Iterate over the tokens and create our regexp string.
+  for (var i = 0; i < tokens.length; i++) {
+    var token = tokens[i];
+
+    if (typeof token === 'string') {
+      route += escapeString(token);
+    } else {
+      var prefix = escapeString(token.prefix);
+      var capture = '(?:' + token.pattern + ')';
+
+      keys.push(token);
+
+      if (token.repeat) {
+        capture += '(?:' + prefix + capture + ')*';
+      }
+
+      if (token.optional) {
+        if (!token.partial) {
+          capture = '(?:' + prefix + '(' + capture + '))?';
+        } else {
+          capture = prefix + '(' + capture + ')?';
+        }
+      } else {
+        capture = prefix + '(' + capture + ')';
+      }
+
+      route += capture;
+    }
+  }
+
+  var delimiter = escapeString(options.delimiter || '/');
+  var endsWithDelimiter = route.slice(-delimiter.length) === delimiter;
+
+  // In non-strict mode we allow a slash at the end of match. If the path to
+  // match already ends with a slash, we remove it for consistency. The slash
+  // is valid at the end of a path match, not in the middle. This is important
+  // in non-ending mode, where "/test/" shouldn't match "/test//route".
+  if (!strict) {
+    route = (endsWithDelimiter ? route.slice(0, -delimiter.length) : route) + '(?:' + delimiter + '(?=$))?';
+  }
+
+  if (end) {
+    route += '$';
+  } else {
+    // In non-ending mode, we need the capturing groups to match as much as
+    // possible by using a positive lookahead to the end or next path segment.
+    route += strict && endsWithDelimiter ? '' : '(?=' + delimiter + '|$)';
+  }
+
+  return attachKeys(new RegExp('^' + route, flags(options)), keys)
+}
+
+/**
+ * Normalize the given path string, returning a regular expression.
+ *
+ * An empty array can be passed in for the keys, which will hold the
+ * placeholder key descriptions. For example, using `/user/:id`, `keys` will
+ * contain `[{ name: 'id', delimiter: '/', optional: false, repeat: false }]`.
+ *
+ * @param  {(string|RegExp|Array)} path
+ * @param  {(Array|Object)=}       keys
+ * @param  {Object=}               options
+ * @return {!RegExp}
+ */
+function pathToRegexp (path, keys, options) {
+  if (!isarray(keys)) {
+    options = /** @type {!Object} */ (keys || options);
+    keys = [];
+  }
+
+  options = options || {};
+
+  if (path instanceof RegExp) {
+    return regexpToRegexp(path, /** @type {!Array} */ (keys))
+  }
+
+  if (isarray(path)) {
+    return arrayToRegexp(/** @type {!Array} */ (path), /** @type {!Array} */ (keys), options)
+  }
+
+  return stringToRegexp(/** @type {string} */ (path), /** @type {!Array} */ (keys), options)
+}
+pathToRegexp_1.parse = parse_1;
+pathToRegexp_1.compile = compile_1;
+pathToRegexp_1.tokensToFunction = tokensToFunction_1;
+pathToRegexp_1.tokensToRegExp = tokensToRegExp_1;
+
+/*  */
+
+// $flow-disable-line
+var regexpCompileCache = Object.create(null);
+
+function fillParams (
+  path,
+  params,
+  routeMsg
+) {
+  params = params || {};
+  try {
+    var filler =
+      regexpCompileCache[path] ||
+      (regexpCompileCache[path] = pathToRegexp_1.compile(path));
+
+    // Fix #2505 resolving asterisk routes { name: 'not-found', params: { pathMatch: '/not-found' }}
+    // and fix #3106 so that you can work with location descriptor object having params.pathMatch equal to empty string
+    if (typeof params.pathMatch === 'string') { params[0] = params.pathMatch; }
+
+    return filler(params, { pretty: true })
+  } catch (e) {
+    if (true) {
+      // Fix #3072 no warn if `pathMatch` is string
+      warn(typeof params.pathMatch === 'string', ("missing param for " + routeMsg + ": " + (e.message)));
+    }
+    return ''
+  } finally {
+    // delete the 0 if it was added
+    delete params[0];
+  }
+}
+
+/*  */
+
+function normalizeLocation (
+  raw,
+  current,
+  append,
+  router
+) {
+  var next = typeof raw === 'string' ? { path: raw } : raw;
+  // named target
+  if (next._normalized) {
+    return next
+  } else if (next.name) {
+    next = extend({}, raw);
+    var params = next.params;
+    if (params && typeof params === 'object') {
+      next.params = extend({}, params);
+    }
+    return next
+  }
+
+  // relative params
+  if (!next.path && next.params && current) {
+    next = extend({}, next);
+    next._normalized = true;
+    var params$1 = extend(extend({}, current.params), next.params);
+    if (current.name) {
+      next.name = current.name;
+      next.params = params$1;
+    } else if (current.matched.length) {
+      var rawPath = current.matched[current.matched.length - 1].path;
+      next.path = fillParams(rawPath, params$1, ("path " + (current.path)));
+    } else if (true) {
+      warn(false, "relative params navigation requires a current route.");
+    }
+    return next
+  }
+
+  var parsedPath = parsePath(next.path || '');
+  var basePath = (current && current.path) || '/';
+  var path = parsedPath.path
+    ? resolvePath(parsedPath.path, basePath, append || next.append)
+    : basePath;
+
+  var query = resolveQuery(
+    parsedPath.query,
+    next.query,
+    router && router.options.parseQuery
+  );
+
+  var hash = next.hash || parsedPath.hash;
+  if (hash && hash.charAt(0) !== '#') {
+    hash = "#" + hash;
+  }
+
+  return {
+    _normalized: true,
+    path: path,
+    query: query,
+    hash: hash
+  }
+}
+
+/*  */
+
+// work around weird flow bug
+var toTypes = [String, Object];
+var eventTypes = [String, Array];
+
+var noop = function () {};
+
+var Link = {
+  name: 'RouterLink',
+  props: {
+    to: {
+      type: toTypes,
+      required: true
+    },
+    tag: {
+      type: String,
+      default: 'a'
+    },
+    exact: Boolean,
+    append: Boolean,
+    replace: Boolean,
+    activeClass: String,
+    exactActiveClass: String,
+    ariaCurrentValue: {
+      type: String,
+      default: 'page'
+    },
+    event: {
+      type: eventTypes,
+      default: 'click'
+    }
+  },
+  render: function render (h) {
+    var this$1 = this;
+
+    var router = this.$router;
+    var current = this.$route;
+    var ref = router.resolve(
+      this.to,
+      current,
+      this.append
+    );
+    var location = ref.location;
+    var route = ref.route;
+    var href = ref.href;
+
+    var classes = {};
+    var globalActiveClass = router.options.linkActiveClass;
+    var globalExactActiveClass = router.options.linkExactActiveClass;
+    // Support global empty active class
+    var activeClassFallback =
+      globalActiveClass == null ? 'router-link-active' : globalActiveClass;
+    var exactActiveClassFallback =
+      globalExactActiveClass == null
+        ? 'router-link-exact-active'
+        : globalExactActiveClass;
+    var activeClass =
+      this.activeClass == null ? activeClassFallback : this.activeClass;
+    var exactActiveClass =
+      this.exactActiveClass == null
+        ? exactActiveClassFallback
+        : this.exactActiveClass;
+
+    var compareTarget = route.redirectedFrom
+      ? createRoute(null, normalizeLocation(route.redirectedFrom), null, router)
+      : route;
+
+    classes[exactActiveClass] = isSameRoute(current, compareTarget);
+    classes[activeClass] = this.exact
+      ? classes[exactActiveClass]
+      : isIncludedRoute(current, compareTarget);
+
+    var ariaCurrentValue = classes[exactActiveClass] ? this.ariaCurrentValue : null;
+
+    var handler = function (e) {
+      if (guardEvent(e)) {
+        if (this$1.replace) {
+          router.replace(location, noop);
+        } else {
+          router.push(location, noop);
+        }
+      }
+    };
+
+    var on = { click: guardEvent };
+    if (Array.isArray(this.event)) {
+      this.event.forEach(function (e) {
+        on[e] = handler;
+      });
+    } else {
+      on[this.event] = handler;
+    }
+
+    var data = { class: classes };
+
+    var scopedSlot =
+      !this.$scopedSlots.$hasNormal &&
+      this.$scopedSlots.default &&
+      this.$scopedSlots.default({
+        href: href,
+        route: route,
+        navigate: handler,
+        isActive: classes[activeClass],
+        isExactActive: classes[exactActiveClass]
+      });
+
+    if (scopedSlot) {
+      if (scopedSlot.length === 1) {
+        return scopedSlot[0]
+      } else if (scopedSlot.length > 1 || !scopedSlot.length) {
+        if (true) {
+          warn(
+            false,
+            ("RouterLink with to=\"" + (this.to) + "\" is trying to use a scoped slot but it didn't provide exactly one child. Wrapping the content with a span element.")
+          );
+        }
+        return scopedSlot.length === 0 ? h() : h('span', {}, scopedSlot)
+      }
+    }
+
+    if (this.tag === 'a') {
+      data.on = on;
+      data.attrs = { href: href, 'aria-current': ariaCurrentValue };
+    } else {
+      // find the first <a> child and apply listener and href
+      var a = findAnchor(this.$slots.default);
+      if (a) {
+        // in case the <a> is a static node
+        a.isStatic = false;
+        var aData = (a.data = extend({}, a.data));
+        aData.on = aData.on || {};
+        // transform existing events in both objects into arrays so we can push later
+        for (var event in aData.on) {
+          var handler$1 = aData.on[event];
+          if (event in on) {
+            aData.on[event] = Array.isArray(handler$1) ? handler$1 : [handler$1];
+          }
+        }
+        // append new listeners for router-link
+        for (var event$1 in on) {
+          if (event$1 in aData.on) {
+            // on[event] is always a function
+            aData.on[event$1].push(on[event$1]);
+          } else {
+            aData.on[event$1] = handler;
+          }
+        }
+
+        var aAttrs = (a.data.attrs = extend({}, a.data.attrs));
+        aAttrs.href = href;
+        aAttrs['aria-current'] = ariaCurrentValue;
+      } else {
+        // doesn't have <a> child, apply listener to self
+        data.on = on;
+      }
+    }
+
+    return h(this.tag, data, this.$slots.default)
+  }
+};
+
+function guardEvent (e) {
+  // don't redirect with control keys
+  if (e.metaKey || e.altKey || e.ctrlKey || e.shiftKey) { return }
+  // don't redirect when preventDefault called
+  if (e.defaultPrevented) { return }
+  // don't redirect on right click
+  if (e.button !== undefined && e.button !== 0) { return }
+  // don't redirect if `target="_blank"`
+  if (e.currentTarget && e.currentTarget.getAttribute) {
+    var target = e.currentTarget.getAttribute('target');
+    if (/\b_blank\b/i.test(target)) { return }
+  }
+  // this may be a Weex event which doesn't have this method
+  if (e.preventDefault) {
+    e.preventDefault();
+  }
+  return true
+}
+
+function findAnchor (children) {
+  if (children) {
+    var child;
+    for (var i = 0; i < children.length; i++) {
+      child = children[i];
+      if (child.tag === 'a') {
+        return child
+      }
+      if (child.children && (child = findAnchor(child.children))) {
+        return child
+      }
+    }
+  }
+}
+
+var _Vue;
+
+function install (Vue) {
+  if (install.installed && _Vue === Vue) { return }
+  install.installed = true;
+
+  _Vue = Vue;
+
+  var isDef = function (v) { return v !== undefined; };
+
+  var registerInstance = function (vm, callVal) {
+    var i = vm.$options._parentVnode;
+    if (isDef(i) && isDef(i = i.data) && isDef(i = i.registerRouteInstance)) {
+      i(vm, callVal);
+    }
+  };
+
+  Vue.mixin({
+    beforeCreate: function beforeCreate () {
+      if (isDef(this.$options.router)) {
+        this._routerRoot = this;
+        this._router = this.$options.router;
+        this._router.init(this);
+        Vue.util.defineReactive(this, '_route', this._router.history.current);
+      } else {
+        this._routerRoot = (this.$parent && this.$parent._routerRoot) || this;
+      }
+      registerInstance(this, this);
+    },
+    destroyed: function destroyed () {
+      registerInstance(this);
+    }
+  });
+
+  Object.defineProperty(Vue.prototype, '$router', {
+    get: function get () { return this._routerRoot._router }
+  });
+
+  Object.defineProperty(Vue.prototype, '$route', {
+    get: function get () { return this._routerRoot._route }
+  });
+
+  Vue.component('RouterView', View);
+  Vue.component('RouterLink', Link);
+
+  var strats = Vue.config.optionMergeStrategies;
+  // use the same hook merging strategy for route hooks
+  strats.beforeRouteEnter = strats.beforeRouteLeave = strats.beforeRouteUpdate = strats.created;
+}
+
+/*  */
+
+var inBrowser = typeof window !== 'undefined';
+
+/*  */
+
+function createRouteMap (
+  routes,
+  oldPathList,
+  oldPathMap,
+  oldNameMap
+) {
+  // the path list is used to control path matching priority
+  var pathList = oldPathList || [];
+  // $flow-disable-line
+  var pathMap = oldPathMap || Object.create(null);
+  // $flow-disable-line
+  var nameMap = oldNameMap || Object.create(null);
+
+  routes.forEach(function (route) {
+    addRouteRecord(pathList, pathMap, nameMap, route);
+  });
+
+  // ensure wildcard routes are always at the end
+  for (var i = 0, l = pathList.length; i < l; i++) {
+    if (pathList[i] === '*') {
+      pathList.push(pathList.splice(i, 1)[0]);
+      l--;
+      i--;
+    }
+  }
+
+  if (true) {
+    // warn if routes do not include leading slashes
+    var found = pathList
+    // check for missing leading slash
+      .filter(function (path) { return path && path.charAt(0) !== '*' && path.charAt(0) !== '/'; });
+
+    if (found.length > 0) {
+      var pathNames = found.map(function (path) { return ("- " + path); }).join('\n');
+      warn(false, ("Non-nested routes must include a leading slash character. Fix the following routes: \n" + pathNames));
+    }
+  }
+
+  return {
+    pathList: pathList,
+    pathMap: pathMap,
+    nameMap: nameMap
+  }
+}
+
+function addRouteRecord (
+  pathList,
+  pathMap,
+  nameMap,
+  route,
+  parent,
+  matchAs
+) {
+  var path = route.path;
+  var name = route.name;
+  if (true) {
+    assert(path != null, "\"path\" is required in a route configuration.");
+    assert(
+      typeof route.component !== 'string',
+      "route config \"component\" for path: " + (String(
+        path || name
+      )) + " cannot be a " + "string id. Use an actual component instead."
+    );
+
+    warn(
+      // eslint-disable-next-line no-control-regex
+      !/[^\u0000-\u007F]+/.test(path),
+      "Route with path \"" + path + "\" contains unencoded characters, make sure " +
+        "your path is correctly encoded before passing it to the router. Use " +
+        "encodeURI to encode static segments of your path."
+    );
+  }
+
+  var pathToRegexpOptions =
+    route.pathToRegexpOptions || {};
+  var normalizedPath = normalizePath(path, parent, pathToRegexpOptions.strict);
+
+  if (typeof route.caseSensitive === 'boolean') {
+    pathToRegexpOptions.sensitive = route.caseSensitive;
+  }
+
+  var record = {
+    path: normalizedPath,
+    regex: compileRouteRegex(normalizedPath, pathToRegexpOptions),
+    components: route.components || { default: route.component },
+    instances: {},
+    enteredCbs: {},
+    name: name,
+    parent: parent,
+    matchAs: matchAs,
+    redirect: route.redirect,
+    beforeEnter: route.beforeEnter,
+    meta: route.meta || {},
+    props:
+      route.props == null
+        ? {}
+        : route.components
+          ? route.props
+          : { default: route.props }
+  };
+
+  if (route.children) {
+    // Warn if route is named, does not redirect and has a default child route.
+    // If users navigate to this route by name, the default child will
+    // not be rendered (GH Issue #629)
+    if (true) {
+      if (
+        route.name &&
+        !route.redirect &&
+        route.children.some(function (child) { return /^\/?$/.test(child.path); })
+      ) {
+        warn(
+          false,
+          "Named Route '" + (route.name) + "' has a default child route. " +
+            "When navigating to this named route (:to=\"{name: '" + (route.name) + "'\"), " +
+            "the default child route will not be rendered. Remove the name from " +
+            "this route and use the name of the default child route for named " +
+            "links instead."
+        );
+      }
+    }
+    route.children.forEach(function (child) {
+      var childMatchAs = matchAs
+        ? cleanPath((matchAs + "/" + (child.path)))
+        : undefined;
+      addRouteRecord(pathList, pathMap, nameMap, child, record, childMatchAs);
+    });
+  }
+
+  if (!pathMap[record.path]) {
+    pathList.push(record.path);
+    pathMap[record.path] = record;
+  }
+
+  if (route.alias !== undefined) {
+    var aliases = Array.isArray(route.alias) ? route.alias : [route.alias];
+    for (var i = 0; i < aliases.length; ++i) {
+      var alias = aliases[i];
+      if ( true && alias === path) {
+        warn(
+          false,
+          ("Found an alias with the same value as the path: \"" + path + "\". You have to remove that alias. It will be ignored in development.")
+        );
+        // skip in dev to make it work
+        continue
+      }
+
+      var aliasRoute = {
+        path: alias,
+        children: route.children
+      };
+      addRouteRecord(
+        pathList,
+        pathMap,
+        nameMap,
+        aliasRoute,
+        parent,
+        record.path || '/' // matchAs
+      );
+    }
+  }
+
+  if (name) {
+    if (!nameMap[name]) {
+      nameMap[name] = record;
+    } else if ( true && !matchAs) {
+      warn(
+        false,
+        "Duplicate named routes definition: " +
+          "{ name: \"" + name + "\", path: \"" + (record.path) + "\" }"
+      );
+    }
+  }
+}
+
+function compileRouteRegex (
+  path,
+  pathToRegexpOptions
+) {
+  var regex = pathToRegexp_1(path, [], pathToRegexpOptions);
+  if (true) {
+    var keys = Object.create(null);
+    regex.keys.forEach(function (key) {
+      warn(
+        !keys[key.name],
+        ("Duplicate param keys in route with path: \"" + path + "\"")
+      );
+      keys[key.name] = true;
+    });
+  }
+  return regex
+}
+
+function normalizePath (
+  path,
+  parent,
+  strict
+) {
+  if (!strict) { path = path.replace(/\/$/, ''); }
+  if (path[0] === '/') { return path }
+  if (parent == null) { return path }
+  return cleanPath(((parent.path) + "/" + path))
+}
+
+/*  */
+
+
+
+function createMatcher (
+  routes,
+  router
+) {
+  var ref = createRouteMap(routes);
+  var pathList = ref.pathList;
+  var pathMap = ref.pathMap;
+  var nameMap = ref.nameMap;
+
+  function addRoutes (routes) {
+    createRouteMap(routes, pathList, pathMap, nameMap);
+  }
+
+  function match (
+    raw,
+    currentRoute,
+    redirectedFrom
+  ) {
+    var location = normalizeLocation(raw, currentRoute, false, router);
+    var name = location.name;
+
+    if (name) {
+      var record = nameMap[name];
+      if (true) {
+        warn(record, ("Route with name '" + name + "' does not exist"));
+      }
+      if (!record) { return _createRoute(null, location) }
+      var paramNames = record.regex.keys
+        .filter(function (key) { return !key.optional; })
+        .map(function (key) { return key.name; });
+
+      if (typeof location.params !== 'object') {
+        location.params = {};
+      }
+
+      if (currentRoute && typeof currentRoute.params === 'object') {
+        for (var key in currentRoute.params) {
+          if (!(key in location.params) && paramNames.indexOf(key) > -1) {
+            location.params[key] = currentRoute.params[key];
+          }
+        }
+      }
+
+      location.path = fillParams(record.path, location.params, ("named route \"" + name + "\""));
+      return _createRoute(record, location, redirectedFrom)
+    } else if (location.path) {
+      location.params = {};
+      for (var i = 0; i < pathList.length; i++) {
+        var path = pathList[i];
+        var record$1 = pathMap[path];
+        if (matchRoute(record$1.regex, location.path, location.params)) {
+          return _createRoute(record$1, location, redirectedFrom)
+        }
+      }
+    }
+    // no match
+    return _createRoute(null, location)
+  }
+
+  function redirect (
+    record,
+    location
+  ) {
+    var originalRedirect = record.redirect;
+    var redirect = typeof originalRedirect === 'function'
+      ? originalRedirect(createRoute(record, location, null, router))
+      : originalRedirect;
+
+    if (typeof redirect === 'string') {
+      redirect = { path: redirect };
+    }
+
+    if (!redirect || typeof redirect !== 'object') {
+      if (true) {
+        warn(
+          false, ("invalid redirect option: " + (JSON.stringify(redirect)))
+        );
+      }
+      return _createRoute(null, location)
+    }
+
+    var re = redirect;
+    var name = re.name;
+    var path = re.path;
+    var query = location.query;
+    var hash = location.hash;
+    var params = location.params;
+    query = re.hasOwnProperty('query') ? re.query : query;
+    hash = re.hasOwnProperty('hash') ? re.hash : hash;
+    params = re.hasOwnProperty('params') ? re.params : params;
+
+    if (name) {
+      // resolved named direct
+      var targetRecord = nameMap[name];
+      if (true) {
+        assert(targetRecord, ("redirect failed: named route \"" + name + "\" not found."));
+      }
+      return match({
+        _normalized: true,
+        name: name,
+        query: query,
+        hash: hash,
+        params: params
+      }, undefined, location)
+    } else if (path) {
+      // 1. resolve relative redirect
+      var rawPath = resolveRecordPath(path, record);
+      // 2. resolve params
+      var resolvedPath = fillParams(rawPath, params, ("redirect route with path \"" + rawPath + "\""));
+      // 3. rematch with existing query and hash
+      return match({
+        _normalized: true,
+        path: resolvedPath,
+        query: query,
+        hash: hash
+      }, undefined, location)
+    } else {
+      if (true) {
+        warn(false, ("invalid redirect option: " + (JSON.stringify(redirect))));
+      }
+      return _createRoute(null, location)
+    }
+  }
+
+  function alias (
+    record,
+    location,
+    matchAs
+  ) {
+    var aliasedPath = fillParams(matchAs, location.params, ("aliased route with path \"" + matchAs + "\""));
+    var aliasedMatch = match({
+      _normalized: true,
+      path: aliasedPath
+    });
+    if (aliasedMatch) {
+      var matched = aliasedMatch.matched;
+      var aliasedRecord = matched[matched.length - 1];
+      location.params = aliasedMatch.params;
+      return _createRoute(aliasedRecord, location)
+    }
+    return _createRoute(null, location)
+  }
+
+  function _createRoute (
+    record,
+    location,
+    redirectedFrom
+  ) {
+    if (record && record.redirect) {
+      return redirect(record, redirectedFrom || location)
+    }
+    if (record && record.matchAs) {
+      return alias(record, location, record.matchAs)
+    }
+    return createRoute(record, location, redirectedFrom, router)
+  }
+
+  return {
+    match: match,
+    addRoutes: addRoutes
+  }
+}
+
+function matchRoute (
+  regex,
+  path,
+  params
+) {
+  var m = path.match(regex);
+
+  if (!m) {
+    return false
+  } else if (!params) {
+    return true
+  }
+
+  for (var i = 1, len = m.length; i < len; ++i) {
+    var key = regex.keys[i - 1];
+    if (key) {
+      // Fix #1994: using * with props: true generates a param named 0
+      params[key.name || 'pathMatch'] = typeof m[i] === 'string' ? decode(m[i]) : m[i];
+    }
+  }
+
+  return true
+}
+
+function resolveRecordPath (path, record) {
+  return resolvePath(path, record.parent ? record.parent.path : '/', true)
+}
+
+/*  */
+
+// use User Timing api (if present) for more accurate key precision
+var Time =
+  inBrowser && window.performance && window.performance.now
+    ? window.performance
+    : Date;
+
+function genStateKey () {
+  return Time.now().toFixed(3)
+}
+
+var _key = genStateKey();
+
+function getStateKey () {
+  return _key
+}
+
+function setStateKey (key) {
+  return (_key = key)
+}
+
+/*  */
+
+var positionStore = Object.create(null);
+
+function setupScroll () {
+  // Prevent browser scroll behavior on History popstate
+  if ('scrollRestoration' in window.history) {
+    window.history.scrollRestoration = 'manual';
+  }
+  // Fix for #1585 for Firefox
+  // Fix for #2195 Add optional third attribute to workaround a bug in safari https://bugs.webkit.org/show_bug.cgi?id=182678
+  // Fix for #2774 Support for apps loaded from Windows file shares not mapped to network drives: replaced location.origin with
+  // window.location.protocol + '//' + window.location.host
+  // location.host contains the port and location.hostname doesn't
+  var protocolAndPath = window.location.protocol + '//' + window.location.host;
+  var absolutePath = window.location.href.replace(protocolAndPath, '');
+  // preserve existing history state as it could be overriden by the user
+  var stateCopy = extend({}, window.history.state);
+  stateCopy.key = getStateKey();
+  window.history.replaceState(stateCopy, '', absolutePath);
+  window.addEventListener('popstate', handlePopState);
+  return function () {
+    window.removeEventListener('popstate', handlePopState);
+  }
+}
+
+function handleScroll (
+  router,
+  to,
+  from,
+  isPop
+) {
+  if (!router.app) {
+    return
+  }
+
+  var behavior = router.options.scrollBehavior;
+  if (!behavior) {
+    return
+  }
+
+  if (true) {
+    assert(typeof behavior === 'function', "scrollBehavior must be a function");
+  }
+
+  // wait until re-render finishes before scrolling
+  router.app.$nextTick(function () {
+    var position = getScrollPosition();
+    var shouldScroll = behavior.call(
+      router,
+      to,
+      from,
+      isPop ? position : null
+    );
+
+    if (!shouldScroll) {
+      return
+    }
+
+    if (typeof shouldScroll.then === 'function') {
+      shouldScroll
+        .then(function (shouldScroll) {
+          scrollToPosition((shouldScroll), position);
+        })
+        .catch(function (err) {
+          if (true) {
+            assert(false, err.toString());
+          }
+        });
+    } else {
+      scrollToPosition(shouldScroll, position);
+    }
+  });
+}
+
+function saveScrollPosition () {
+  var key = getStateKey();
+  if (key) {
+    positionStore[key] = {
+      x: window.pageXOffset,
+      y: window.pageYOffset
+    };
+  }
+}
+
+function handlePopState (e) {
+  saveScrollPosition();
+  if (e.state && e.state.key) {
+    setStateKey(e.state.key);
+  }
+}
+
+function getScrollPosition () {
+  var key = getStateKey();
+  if (key) {
+    return positionStore[key]
+  }
+}
+
+function getElementPosition (el, offset) {
+  var docEl = document.documentElement;
+  var docRect = docEl.getBoundingClientRect();
+  var elRect = el.getBoundingClientRect();
+  return {
+    x: elRect.left - docRect.left - offset.x,
+    y: elRect.top - docRect.top - offset.y
+  }
+}
+
+function isValidPosition (obj) {
+  return isNumber(obj.x) || isNumber(obj.y)
+}
+
+function normalizePosition (obj) {
+  return {
+    x: isNumber(obj.x) ? obj.x : window.pageXOffset,
+    y: isNumber(obj.y) ? obj.y : window.pageYOffset
+  }
+}
+
+function normalizeOffset (obj) {
+  return {
+    x: isNumber(obj.x) ? obj.x : 0,
+    y: isNumber(obj.y) ? obj.y : 0
+  }
+}
+
+function isNumber (v) {
+  return typeof v === 'number'
+}
+
+var hashStartsWithNumberRE = /^#\d/;
+
+function scrollToPosition (shouldScroll, position) {
+  var isObject = typeof shouldScroll === 'object';
+  if (isObject && typeof shouldScroll.selector === 'string') {
+    // getElementById would still fail if the selector contains a more complicated query like #main[data-attr]
+    // but at the same time, it doesn't make much sense to select an element with an id and an extra selector
+    var el = hashStartsWithNumberRE.test(shouldScroll.selector) // $flow-disable-line
+      ? document.getElementById(shouldScroll.selector.slice(1)) // $flow-disable-line
+      : document.querySelector(shouldScroll.selector);
+
+    if (el) {
+      var offset =
+        shouldScroll.offset && typeof shouldScroll.offset === 'object'
+          ? shouldScroll.offset
+          : {};
+      offset = normalizeOffset(offset);
+      position = getElementPosition(el, offset);
+    } else if (isValidPosition(shouldScroll)) {
+      position = normalizePosition(shouldScroll);
+    }
+  } else if (isObject && isValidPosition(shouldScroll)) {
+    position = normalizePosition(shouldScroll);
+  }
+
+  if (position) {
+    // $flow-disable-line
+    if ('scrollBehavior' in document.documentElement.style) {
+      window.scrollTo({
+        left: position.x,
+        top: position.y,
+        // $flow-disable-line
+        behavior: shouldScroll.behavior
+      });
+    } else {
+      window.scrollTo(position.x, position.y);
+    }
+  }
+}
+
+/*  */
+
+var supportsPushState =
+  inBrowser &&
+  (function () {
+    var ua = window.navigator.userAgent;
+
+    if (
+      (ua.indexOf('Android 2.') !== -1 || ua.indexOf('Android 4.0') !== -1) &&
+      ua.indexOf('Mobile Safari') !== -1 &&
+      ua.indexOf('Chrome') === -1 &&
+      ua.indexOf('Windows Phone') === -1
+    ) {
+      return false
+    }
+
+    return window.history && typeof window.history.pushState === 'function'
+  })();
+
+function pushState (url, replace) {
+  saveScrollPosition();
+  // try...catch the pushState call to get around Safari
+  // DOM Exception 18 where it limits to 100 pushState calls
+  var history = window.history;
+  try {
+    if (replace) {
+      // preserve existing history state as it could be overriden by the user
+      var stateCopy = extend({}, history.state);
+      stateCopy.key = getStateKey();
+      history.replaceState(stateCopy, '', url);
+    } else {
+      history.pushState({ key: setStateKey(genStateKey()) }, '', url);
+    }
+  } catch (e) {
+    window.location[replace ? 'replace' : 'assign'](url);
+  }
+}
+
+function replaceState (url) {
+  pushState(url, true);
+}
+
+/*  */
+
+function runQueue (queue, fn, cb) {
+  var step = function (index) {
+    if (index >= queue.length) {
+      cb();
+    } else {
+      if (queue[index]) {
+        fn(queue[index], function () {
+          step(index + 1);
+        });
+      } else {
+        step(index + 1);
+      }
+    }
+  };
+  step(0);
+}
+
+// When changing thing, also edit router.d.ts
+var NavigationFailureType = {
+  redirected: 2,
+  aborted: 4,
+  cancelled: 8,
+  duplicated: 16
+};
+
+function createNavigationRedirectedError (from, to) {
+  return createRouterError(
+    from,
+    to,
+    NavigationFailureType.redirected,
+    ("Redirected when going from \"" + (from.fullPath) + "\" to \"" + (stringifyRoute(
+      to
+    )) + "\" via a navigation guard.")
+  )
+}
+
+function createNavigationDuplicatedError (from, to) {
+  var error = createRouterError(
+    from,
+    to,
+    NavigationFailureType.duplicated,
+    ("Avoided redundant navigation to current location: \"" + (from.fullPath) + "\".")
+  );
+  // backwards compatible with the first introduction of Errors
+  error.name = 'NavigationDuplicated';
+  return error
+}
+
+function createNavigationCancelledError (from, to) {
+  return createRouterError(
+    from,
+    to,
+    NavigationFailureType.cancelled,
+    ("Navigation cancelled from \"" + (from.fullPath) + "\" to \"" + (to.fullPath) + "\" with a new navigation.")
+  )
+}
+
+function createNavigationAbortedError (from, to) {
+  return createRouterError(
+    from,
+    to,
+    NavigationFailureType.aborted,
+    ("Navigation aborted from \"" + (from.fullPath) + "\" to \"" + (to.fullPath) + "\" via a navigation guard.")
+  )
+}
+
+function createRouterError (from, to, type, message) {
+  var error = new Error(message);
+  error._isRouter = true;
+  error.from = from;
+  error.to = to;
+  error.type = type;
+
+  return error
+}
+
+var propertiesToLog = ['params', 'query', 'hash'];
+
+function stringifyRoute (to) {
+  if (typeof to === 'string') { return to }
+  if ('path' in to) { return to.path }
+  var location = {};
+  propertiesToLog.forEach(function (key) {
+    if (key in to) { location[key] = to[key]; }
+  });
+  return JSON.stringify(location, null, 2)
+}
+
+function isError (err) {
+  return Object.prototype.toString.call(err).indexOf('Error') > -1
+}
+
+function isNavigationFailure (err, errorType) {
+  return (
+    isError(err) &&
+    err._isRouter &&
+    (errorType == null || err.type === errorType)
+  )
+}
+
+/*  */
+
+function resolveAsyncComponents (matched) {
+  return function (to, from, next) {
+    var hasAsync = false;
+    var pending = 0;
+    var error = null;
+
+    flatMapComponents(matched, function (def, _, match, key) {
+      // if it's a function and doesn't have cid attached,
+      // assume it's an async component resolve function.
+      // we are not using Vue's default async resolving mechanism because
+      // we want to halt the navigation until the incoming component has been
+      // resolved.
+      if (typeof def === 'function' && def.cid === undefined) {
+        hasAsync = true;
+        pending++;
+
+        var resolve = once(function (resolvedDef) {
+          if (isESModule(resolvedDef)) {
+            resolvedDef = resolvedDef.default;
+          }
+          // save resolved on async factory in case it's used elsewhere
+          def.resolved = typeof resolvedDef === 'function'
+            ? resolvedDef
+            : _Vue.extend(resolvedDef);
+          match.components[key] = resolvedDef;
+          pending--;
+          if (pending <= 0) {
+            next();
+          }
+        });
+
+        var reject = once(function (reason) {
+          var msg = "Failed to resolve async component " + key + ": " + reason;
+           true && warn(false, msg);
+          if (!error) {
+            error = isError(reason)
+              ? reason
+              : new Error(msg);
+            next(error);
+          }
+        });
+
+        var res;
+        try {
+          res = def(resolve, reject);
+        } catch (e) {
+          reject(e);
+        }
+        if (res) {
+          if (typeof res.then === 'function') {
+            res.then(resolve, reject);
+          } else {
+            // new syntax in Vue 2.3
+            var comp = res.component;
+            if (comp && typeof comp.then === 'function') {
+              comp.then(resolve, reject);
+            }
+          }
+        }
+      }
+    });
+
+    if (!hasAsync) { next(); }
+  }
+}
+
+function flatMapComponents (
+  matched,
+  fn
+) {
+  return flatten(matched.map(function (m) {
+    return Object.keys(m.components).map(function (key) { return fn(
+      m.components[key],
+      m.instances[key],
+      m, key
+    ); })
+  }))
+}
+
+function flatten (arr) {
+  return Array.prototype.concat.apply([], arr)
+}
+
+var hasSymbol =
+  typeof Symbol === 'function' &&
+  typeof Symbol.toStringTag === 'symbol';
+
+function isESModule (obj) {
+  return obj.__esModule || (hasSymbol && obj[Symbol.toStringTag] === 'Module')
+}
+
+// in Webpack 2, require.ensure now also returns a Promise
+// so the resolve/reject functions may get called an extra time
+// if the user uses an arrow function shorthand that happens to
+// return that Promise.
+function once (fn) {
+  var called = false;
+  return function () {
+    var args = [], len = arguments.length;
+    while ( len-- ) args[ len ] = arguments[ len ];
+
+    if (called) { return }
+    called = true;
+    return fn.apply(this, args)
+  }
+}
+
+/*  */
+
+var History = function History (router, base) {
+  this.router = router;
+  this.base = normalizeBase(base);
+  // start with a route object that stands for "nowhere"
+  this.current = START;
+  this.pending = null;
+  this.ready = false;
+  this.readyCbs = [];
+  this.readyErrorCbs = [];
+  this.errorCbs = [];
+  this.listeners = [];
+};
+
+History.prototype.listen = function listen (cb) {
+  this.cb = cb;
+};
+
+History.prototype.onReady = function onReady (cb, errorCb) {
+  if (this.ready) {
+    cb();
+  } else {
+    this.readyCbs.push(cb);
+    if (errorCb) {
+      this.readyErrorCbs.push(errorCb);
+    }
+  }
+};
+
+History.prototype.onError = function onError (errorCb) {
+  this.errorCbs.push(errorCb);
+};
+
+History.prototype.transitionTo = function transitionTo (
+  location,
+  onComplete,
+  onAbort
+) {
+    var this$1 = this;
+
+  var route;
+  // catch redirect option https://github.com/vuejs/vue-router/issues/3201
+  try {
+    route = this.router.match(location, this.current);
+  } catch (e) {
+    this.errorCbs.forEach(function (cb) {
+      cb(e);
+    });
+    // Exception should still be thrown
+    throw e
+  }
+  var prev = this.current;
+  this.confirmTransition(
+    route,
+    function () {
+      this$1.updateRoute(route);
+      onComplete && onComplete(route);
+      this$1.ensureURL();
+      this$1.router.afterHooks.forEach(function (hook) {
+        hook && hook(route, prev);
+      });
+
+      // fire ready cbs once
+      if (!this$1.ready) {
+        this$1.ready = true;
+        this$1.readyCbs.forEach(function (cb) {
+          cb(route);
+        });
+      }
+    },
+    function (err) {
+      if (onAbort) {
+        onAbort(err);
+      }
+      if (err && !this$1.ready) {
+        // Initial redirection should not mark the history as ready yet
+        // because it's triggered by the redirection instead
+        // https://github.com/vuejs/vue-router/issues/3225
+        // https://github.com/vuejs/vue-router/issues/3331
+        if (!isNavigationFailure(err, NavigationFailureType.redirected) || prev !== START) {
+          this$1.ready = true;
+          this$1.readyErrorCbs.forEach(function (cb) {
+            cb(err);
+          });
+        }
+      }
+    }
+  );
+};
+
+History.prototype.confirmTransition = function confirmTransition (route, onComplete, onAbort) {
+    var this$1 = this;
+
+  var current = this.current;
+  this.pending = route;
+  var abort = function (err) {
+    // changed after adding errors with
+    // https://github.com/vuejs/vue-router/pull/3047 before that change,
+    // redirect and aborted navigation would produce an err == null
+    if (!isNavigationFailure(err) && isError(err)) {
+      if (this$1.errorCbs.length) {
+        this$1.errorCbs.forEach(function (cb) {
+          cb(err);
+        });
+      } else {
+        warn(false, 'uncaught error during route navigation:');
+        console.error(err);
+      }
+    }
+    onAbort && onAbort(err);
+  };
+  var lastRouteIndex = route.matched.length - 1;
+  var lastCurrentIndex = current.matched.length - 1;
+  if (
+    isSameRoute(route, current) &&
+    // in the case the route map has been dynamically appended to
+    lastRouteIndex === lastCurrentIndex &&
+    route.matched[lastRouteIndex] === current.matched[lastCurrentIndex]
+  ) {
+    this.ensureURL();
+    return abort(createNavigationDuplicatedError(current, route))
+  }
+
+  var ref = resolveQueue(
+    this.current.matched,
+    route.matched
+  );
+    var updated = ref.updated;
+    var deactivated = ref.deactivated;
+    var activated = ref.activated;
+
+  var queue = [].concat(
+    // in-component leave guards
+    extractLeaveGuards(deactivated),
+    // global before hooks
+    this.router.beforeHooks,
+    // in-component update hooks
+    extractUpdateHooks(updated),
+    // in-config enter guards
+    activated.map(function (m) { return m.beforeEnter; }),
+    // async components
+    resolveAsyncComponents(activated)
+  );
+
+  var iterator = function (hook, next) {
+    if (this$1.pending !== route) {
+      return abort(createNavigationCancelledError(current, route))
+    }
+    try {
+      hook(route, current, function (to) {
+        if (to === false) {
+          // next(false) -> abort navigation, ensure current URL
+          this$1.ensureURL(true);
+          abort(createNavigationAbortedError(current, route));
+        } else if (isError(to)) {
+          this$1.ensureURL(true);
+          abort(to);
+        } else if (
+          typeof to === 'string' ||
+          (typeof to === 'object' &&
+            (typeof to.path === 'string' || typeof to.name === 'string'))
+        ) {
+          // next('/') or next({ path: '/' }) -> redirect
+          abort(createNavigationRedirectedError(current, route));
+          if (typeof to === 'object' && to.replace) {
+            this$1.replace(to);
+          } else {
+            this$1.push(to);
+          }
+        } else {
+          // confirm transition and pass on the value
+          next(to);
+        }
+      });
+    } catch (e) {
+      abort(e);
+    }
+  };
+
+  runQueue(queue, iterator, function () {
+    // wait until async components are resolved before
+    // extracting in-component enter guards
+    var enterGuards = extractEnterGuards(activated);
+    var queue = enterGuards.concat(this$1.router.resolveHooks);
+    runQueue(queue, iterator, function () {
+      if (this$1.pending !== route) {
+        return abort(createNavigationCancelledError(current, route))
+      }
+      this$1.pending = null;
+      onComplete(route);
+      if (this$1.router.app) {
+        this$1.router.app.$nextTick(function () {
+          handleRouteEntered(route);
+        });
+      }
+    });
+  });
+};
+
+History.prototype.updateRoute = function updateRoute (route) {
+  this.current = route;
+  this.cb && this.cb(route);
+};
+
+History.prototype.setupListeners = function setupListeners () {
+  // Default implementation is empty
+};
+
+History.prototype.teardown = function teardown () {
+  // clean up event listeners
+  // https://github.com/vuejs/vue-router/issues/2341
+  this.listeners.forEach(function (cleanupListener) {
+    cleanupListener();
+  });
+  this.listeners = [];
+
+  // reset current history route
+  // https://github.com/vuejs/vue-router/issues/3294
+  this.current = START;
+  this.pending = null;
+};
+
+function normalizeBase (base) {
+  if (!base) {
+    if (inBrowser) {
+      // respect <base> tag
+      var baseEl = document.querySelector('base');
+      base = (baseEl && baseEl.getAttribute('href')) || '/';
+      // strip full URL origin
+      base = base.replace(/^https?:\/\/[^\/]+/, '');
+    } else {
+      base = '/';
+    }
+  }
+  // make sure there's the starting slash
+  if (base.charAt(0) !== '/') {
+    base = '/' + base;
+  }
+  // remove trailing slash
+  return base.replace(/\/$/, '')
+}
+
+function resolveQueue (
+  current,
+  next
+) {
+  var i;
+  var max = Math.max(current.length, next.length);
+  for (i = 0; i < max; i++) {
+    if (current[i] !== next[i]) {
+      break
+    }
+  }
+  return {
+    updated: next.slice(0, i),
+    activated: next.slice(i),
+    deactivated: current.slice(i)
+  }
+}
+
+function extractGuards (
+  records,
+  name,
+  bind,
+  reverse
+) {
+  var guards = flatMapComponents(records, function (def, instance, match, key) {
+    var guard = extractGuard(def, name);
+    if (guard) {
+      return Array.isArray(guard)
+        ? guard.map(function (guard) { return bind(guard, instance, match, key); })
+        : bind(guard, instance, match, key)
+    }
+  });
+  return flatten(reverse ? guards.reverse() : guards)
+}
+
+function extractGuard (
+  def,
+  key
+) {
+  if (typeof def !== 'function') {
+    // extend now so that global mixins are applied.
+    def = _Vue.extend(def);
+  }
+  return def.options[key]
+}
+
+function extractLeaveGuards (deactivated) {
+  return extractGuards(deactivated, 'beforeRouteLeave', bindGuard, true)
+}
+
+function extractUpdateHooks (updated) {
+  return extractGuards(updated, 'beforeRouteUpdate', bindGuard)
+}
+
+function bindGuard (guard, instance) {
+  if (instance) {
+    return function boundRouteGuard () {
+      return guard.apply(instance, arguments)
+    }
+  }
+}
+
+function extractEnterGuards (
+  activated
+) {
+  return extractGuards(
+    activated,
+    'beforeRouteEnter',
+    function (guard, _, match, key) {
+      return bindEnterGuard(guard, match, key)
+    }
+  )
+}
+
+function bindEnterGuard (
+  guard,
+  match,
+  key
+) {
+  return function routeEnterGuard (to, from, next) {
+    return guard(to, from, function (cb) {
+      if (typeof cb === 'function') {
+        if (!match.enteredCbs[key]) {
+          match.enteredCbs[key] = [];
+        }
+        match.enteredCbs[key].push(cb);
+      }
+      next(cb);
+    })
+  }
+}
+
+/*  */
+
+var HTML5History = /*@__PURE__*/(function (History) {
+  function HTML5History (router, base) {
+    History.call(this, router, base);
+
+    this._startLocation = getLocation(this.base);
+  }
+
+  if ( History ) HTML5History.__proto__ = History;
+  HTML5History.prototype = Object.create( History && History.prototype );
+  HTML5History.prototype.constructor = HTML5History;
+
+  HTML5History.prototype.setupListeners = function setupListeners () {
+    var this$1 = this;
+
+    if (this.listeners.length > 0) {
+      return
+    }
+
+    var router = this.router;
+    var expectScroll = router.options.scrollBehavior;
+    var supportsScroll = supportsPushState && expectScroll;
+
+    if (supportsScroll) {
+      this.listeners.push(setupScroll());
+    }
+
+    var handleRoutingEvent = function () {
+      var current = this$1.current;
+
+      // Avoiding first `popstate` event dispatched in some browsers but first
+      // history route not updated since async guard at the same time.
+      var location = getLocation(this$1.base);
+      if (this$1.current === START && location === this$1._startLocation) {
+        return
+      }
+
+      this$1.transitionTo(location, function (route) {
+        if (supportsScroll) {
+          handleScroll(router, route, current, true);
+        }
+      });
+    };
+    window.addEventListener('popstate', handleRoutingEvent);
+    this.listeners.push(function () {
+      window.removeEventListener('popstate', handleRoutingEvent);
+    });
+  };
+
+  HTML5History.prototype.go = function go (n) {
+    window.history.go(n);
+  };
+
+  HTML5History.prototype.push = function push (location, onComplete, onAbort) {
+    var this$1 = this;
+
+    var ref = this;
+    var fromRoute = ref.current;
+    this.transitionTo(location, function (route) {
+      pushState(cleanPath(this$1.base + route.fullPath));
+      handleScroll(this$1.router, route, fromRoute, false);
+      onComplete && onComplete(route);
+    }, onAbort);
+  };
+
+  HTML5History.prototype.replace = function replace (location, onComplete, onAbort) {
+    var this$1 = this;
+
+    var ref = this;
+    var fromRoute = ref.current;
+    this.transitionTo(location, function (route) {
+      replaceState(cleanPath(this$1.base + route.fullPath));
+      handleScroll(this$1.router, route, fromRoute, false);
+      onComplete && onComplete(route);
+    }, onAbort);
+  };
+
+  HTML5History.prototype.ensureURL = function ensureURL (push) {
+    if (getLocation(this.base) !== this.current.fullPath) {
+      var current = cleanPath(this.base + this.current.fullPath);
+      push ? pushState(current) : replaceState(current);
+    }
+  };
+
+  HTML5History.prototype.getCurrentLocation = function getCurrentLocation () {
+    return getLocation(this.base)
+  };
+
+  return HTML5History;
+}(History));
+
+function getLocation (base) {
+  var path = window.location.pathname;
+  if (base && path.toLowerCase().indexOf(base.toLowerCase()) === 0) {
+    path = path.slice(base.length);
+  }
+  return (path || '/') + window.location.search + window.location.hash
+}
+
+/*  */
+
+var HashHistory = /*@__PURE__*/(function (History) {
+  function HashHistory (router, base, fallback) {
+    History.call(this, router, base);
+    // check history fallback deeplinking
+    if (fallback && checkFallback(this.base)) {
+      return
+    }
+    ensureSlash();
+  }
+
+  if ( History ) HashHistory.__proto__ = History;
+  HashHistory.prototype = Object.create( History && History.prototype );
+  HashHistory.prototype.constructor = HashHistory;
+
+  // this is delayed until the app mounts
+  // to avoid the hashchange listener being fired too early
+  HashHistory.prototype.setupListeners = function setupListeners () {
+    var this$1 = this;
+
+    if (this.listeners.length > 0) {
+      return
+    }
+
+    var router = this.router;
+    var expectScroll = router.options.scrollBehavior;
+    var supportsScroll = supportsPushState && expectScroll;
+
+    if (supportsScroll) {
+      this.listeners.push(setupScroll());
+    }
+
+    var handleRoutingEvent = function () {
+      var current = this$1.current;
+      if (!ensureSlash()) {
+        return
+      }
+      this$1.transitionTo(getHash(), function (route) {
+        if (supportsScroll) {
+          handleScroll(this$1.router, route, current, true);
+        }
+        if (!supportsPushState) {
+          replaceHash(route.fullPath);
+        }
+      });
+    };
+    var eventType = supportsPushState ? 'popstate' : 'hashchange';
+    window.addEventListener(
+      eventType,
+      handleRoutingEvent
+    );
+    this.listeners.push(function () {
+      window.removeEventListener(eventType, handleRoutingEvent);
+    });
+  };
+
+  HashHistory.prototype.push = function push (location, onComplete, onAbort) {
+    var this$1 = this;
+
+    var ref = this;
+    var fromRoute = ref.current;
+    this.transitionTo(
+      location,
+      function (route) {
+        pushHash(route.fullPath);
+        handleScroll(this$1.router, route, fromRoute, false);
+        onComplete && onComplete(route);
+      },
+      onAbort
+    );
+  };
+
+  HashHistory.prototype.replace = function replace (location, onComplete, onAbort) {
+    var this$1 = this;
+
+    var ref = this;
+    var fromRoute = ref.current;
+    this.transitionTo(
+      location,
+      function (route) {
+        replaceHash(route.fullPath);
+        handleScroll(this$1.router, route, fromRoute, false);
+        onComplete && onComplete(route);
+      },
+      onAbort
+    );
+  };
+
+  HashHistory.prototype.go = function go (n) {
+    window.history.go(n);
+  };
+
+  HashHistory.prototype.ensureURL = function ensureURL (push) {
+    var current = this.current.fullPath;
+    if (getHash() !== current) {
+      push ? pushHash(current) : replaceHash(current);
+    }
+  };
+
+  HashHistory.prototype.getCurrentLocation = function getCurrentLocation () {
+    return getHash()
+  };
+
+  return HashHistory;
+}(History));
+
+function checkFallback (base) {
+  var location = getLocation(base);
+  if (!/^\/#/.test(location)) {
+    window.location.replace(cleanPath(base + '/#' + location));
+    return true
+  }
+}
+
+function ensureSlash () {
+  var path = getHash();
+  if (path.charAt(0) === '/') {
+    return true
+  }
+  replaceHash('/' + path);
+  return false
+}
+
+function getHash () {
+  // We can't use window.location.hash here because it's not
+  // consistent across browsers - Firefox will pre-decode it!
+  var href = window.location.href;
+  var index = href.indexOf('#');
+  // empty path
+  if (index < 0) { return '' }
+
+  href = href.slice(index + 1);
+
+  return href
+}
+
+function getUrl (path) {
+  var href = window.location.href;
+  var i = href.indexOf('#');
+  var base = i >= 0 ? href.slice(0, i) : href;
+  return (base + "#" + path)
+}
+
+function pushHash (path) {
+  if (supportsPushState) {
+    pushState(getUrl(path));
+  } else {
+    window.location.hash = path;
+  }
+}
+
+function replaceHash (path) {
+  if (supportsPushState) {
+    replaceState(getUrl(path));
+  } else {
+    window.location.replace(getUrl(path));
+  }
+}
+
+/*  */
+
+var AbstractHistory = /*@__PURE__*/(function (History) {
+  function AbstractHistory (router, base) {
+    History.call(this, router, base);
+    this.stack = [];
+    this.index = -1;
+  }
+
+  if ( History ) AbstractHistory.__proto__ = History;
+  AbstractHistory.prototype = Object.create( History && History.prototype );
+  AbstractHistory.prototype.constructor = AbstractHistory;
+
+  AbstractHistory.prototype.push = function push (location, onComplete, onAbort) {
+    var this$1 = this;
+
+    this.transitionTo(
+      location,
+      function (route) {
+        this$1.stack = this$1.stack.slice(0, this$1.index + 1).concat(route);
+        this$1.index++;
+        onComplete && onComplete(route);
+      },
+      onAbort
+    );
+  };
+
+  AbstractHistory.prototype.replace = function replace (location, onComplete, onAbort) {
+    var this$1 = this;
+
+    this.transitionTo(
+      location,
+      function (route) {
+        this$1.stack = this$1.stack.slice(0, this$1.index).concat(route);
+        onComplete && onComplete(route);
+      },
+      onAbort
+    );
+  };
+
+  AbstractHistory.prototype.go = function go (n) {
+    var this$1 = this;
+
+    var targetIndex = this.index + n;
+    if (targetIndex < 0 || targetIndex >= this.stack.length) {
+      return
+    }
+    var route = this.stack[targetIndex];
+    this.confirmTransition(
+      route,
+      function () {
+        var prev = this$1.current;
+        this$1.index = targetIndex;
+        this$1.updateRoute(route);
+        this$1.router.afterHooks.forEach(function (hook) {
+          hook && hook(route, prev);
+        });
+      },
+      function (err) {
+        if (isNavigationFailure(err, NavigationFailureType.duplicated)) {
+          this$1.index = targetIndex;
+        }
+      }
+    );
+  };
+
+  AbstractHistory.prototype.getCurrentLocation = function getCurrentLocation () {
+    var current = this.stack[this.stack.length - 1];
+    return current ? current.fullPath : '/'
+  };
+
+  AbstractHistory.prototype.ensureURL = function ensureURL () {
+    // noop
+  };
+
+  return AbstractHistory;
+}(History));
+
+/*  */
+
+var VueRouter = function VueRouter (options) {
+  if ( options === void 0 ) options = {};
+
+  this.app = null;
+  this.apps = [];
+  this.options = options;
+  this.beforeHooks = [];
+  this.resolveHooks = [];
+  this.afterHooks = [];
+  this.matcher = createMatcher(options.routes || [], this);
+
+  var mode = options.mode || 'hash';
+  this.fallback =
+    mode === 'history' && !supportsPushState && options.fallback !== false;
+  if (this.fallback) {
+    mode = 'hash';
+  }
+  if (!inBrowser) {
+    mode = 'abstract';
+  }
+  this.mode = mode;
+
+  switch (mode) {
+    case 'history':
+      this.history = new HTML5History(this, options.base);
+      break
+    case 'hash':
+      this.history = new HashHistory(this, options.base, this.fallback);
+      break
+    case 'abstract':
+      this.history = new AbstractHistory(this, options.base);
+      break
+    default:
+      if (true) {
+        assert(false, ("invalid mode: " + mode));
+      }
+  }
+};
+
+var prototypeAccessors = { currentRoute: { configurable: true } };
+
+VueRouter.prototype.match = function match (raw, current, redirectedFrom) {
+  return this.matcher.match(raw, current, redirectedFrom)
+};
+
+prototypeAccessors.currentRoute.get = function () {
+  return this.history && this.history.current
+};
+
+VueRouter.prototype.init = function init (app /* Vue component instance */) {
+    var this$1 = this;
+
+   true &&
+    assert(
+      install.installed,
+      "not installed. Make sure to call `Vue.use(VueRouter)` " +
+        "before creating root instance."
+    );
+
+  this.apps.push(app);
+
+  // set up app destroyed handler
+  // https://github.com/vuejs/vue-router/issues/2639
+  app.$once('hook:destroyed', function () {
+    // clean out app from this.apps array once destroyed
+    var index = this$1.apps.indexOf(app);
+    if (index > -1) { this$1.apps.splice(index, 1); }
+    // ensure we still have a main app or null if no apps
+    // we do not release the router so it can be reused
+    if (this$1.app === app) { this$1.app = this$1.apps[0] || null; }
+
+    if (!this$1.app) { this$1.history.teardown(); }
+  });
+
+  // main app previously initialized
+  // return as we don't need to set up new history listener
+  if (this.app) {
+    return
+  }
+
+  this.app = app;
+
+  var history = this.history;
+
+  if (history instanceof HTML5History || history instanceof HashHistory) {
+    var handleInitialScroll = function (routeOrError) {
+      var from = history.current;
+      var expectScroll = this$1.options.scrollBehavior;
+      var supportsScroll = supportsPushState && expectScroll;
+
+      if (supportsScroll && 'fullPath' in routeOrError) {
+        handleScroll(this$1, routeOrError, from, false);
+      }
+    };
+    var setupListeners = function (routeOrError) {
+      history.setupListeners();
+      handleInitialScroll(routeOrError);
+    };
+    history.transitionTo(
+      history.getCurrentLocation(),
+      setupListeners,
+      setupListeners
+    );
+  }
+
+  history.listen(function (route) {
+    this$1.apps.forEach(function (app) {
+      app._route = route;
+    });
+  });
+};
+
+VueRouter.prototype.beforeEach = function beforeEach (fn) {
+  return registerHook(this.beforeHooks, fn)
+};
+
+VueRouter.prototype.beforeResolve = function beforeResolve (fn) {
+  return registerHook(this.resolveHooks, fn)
+};
+
+VueRouter.prototype.afterEach = function afterEach (fn) {
+  return registerHook(this.afterHooks, fn)
+};
+
+VueRouter.prototype.onReady = function onReady (cb, errorCb) {
+  this.history.onReady(cb, errorCb);
+};
+
+VueRouter.prototype.onError = function onError (errorCb) {
+  this.history.onError(errorCb);
+};
+
+VueRouter.prototype.push = function push (location, onComplete, onAbort) {
+    var this$1 = this;
+
+  // $flow-disable-line
+  if (!onComplete && !onAbort && typeof Promise !== 'undefined') {
+    return new Promise(function (resolve, reject) {
+      this$1.history.push(location, resolve, reject);
+    })
+  } else {
+    this.history.push(location, onComplete, onAbort);
+  }
+};
+
+VueRouter.prototype.replace = function replace (location, onComplete, onAbort) {
+    var this$1 = this;
+
+  // $flow-disable-line
+  if (!onComplete && !onAbort && typeof Promise !== 'undefined') {
+    return new Promise(function (resolve, reject) {
+      this$1.history.replace(location, resolve, reject);
+    })
+  } else {
+    this.history.replace(location, onComplete, onAbort);
+  }
+};
+
+VueRouter.prototype.go = function go (n) {
+  this.history.go(n);
+};
+
+VueRouter.prototype.back = function back () {
+  this.go(-1);
+};
+
+VueRouter.prototype.forward = function forward () {
+  this.go(1);
+};
+
+VueRouter.prototype.getMatchedComponents = function getMatchedComponents (to) {
+  var route = to
+    ? to.matched
+      ? to
+      : this.resolve(to).route
+    : this.currentRoute;
+  if (!route) {
+    return []
+  }
+  return [].concat.apply(
+    [],
+    route.matched.map(function (m) {
+      return Object.keys(m.components).map(function (key) {
+        return m.components[key]
+      })
+    })
+  )
+};
+
+VueRouter.prototype.resolve = function resolve (
+  to,
+  current,
+  append
+) {
+  current = current || this.history.current;
+  var location = normalizeLocation(to, current, append, this);
+  var route = this.match(location, current);
+  var fullPath = route.redirectedFrom || route.fullPath;
+  var base = this.history.base;
+  var href = createHref(base, fullPath, this.mode);
+  return {
+    location: location,
+    route: route,
+    href: href,
+    // for backwards compat
+    normalizedTo: location,
+    resolved: route
+  }
+};
+
+VueRouter.prototype.addRoutes = function addRoutes (routes) {
+  this.matcher.addRoutes(routes);
+  if (this.history.current !== START) {
+    this.history.transitionTo(this.history.getCurrentLocation());
+  }
+};
+
+Object.defineProperties( VueRouter.prototype, prototypeAccessors );
+
+function registerHook (list, fn) {
+  list.push(fn);
+  return function () {
+    var i = list.indexOf(fn);
+    if (i > -1) { list.splice(i, 1); }
+  }
+}
+
+function createHref (base, fullPath, mode) {
+  var path = mode === 'hash' ? '#' + fullPath : fullPath;
+  return base ? cleanPath(base + '/' + path) : path
+}
+
+VueRouter.install = install;
+VueRouter.version = '3.4.9';
+VueRouter.isNavigationFailure = isNavigationFailure;
+VueRouter.NavigationFailureType = NavigationFailureType;
+
+if (inBrowser && window.Vue) {
+  window.Vue.use(VueRouter);
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (VueRouter);
 
 
 /***/ }),
@@ -49781,17 +74827,184 @@ module.exports = function(module) {
 /*!*****************************!*\
   !*** ./resources/js/app.js ***!
   \*****************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
+/* harmony import */ var _components_Header__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/Header */ "./resources/js/components/Header.vue");
+/* harmony import */ var _components_home_Home__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/home/Home */ "./resources/js/components/home/Home.vue");
+/* harmony import */ var _components_home_HomeDefault__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/home/HomeDefault */ "./resources/js/components/home/HomeDefault.vue");
+/* harmony import */ var _components_home_HomeGenre__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/home/HomeGenre */ "./resources/js/components/home/HomeGenre.vue");
+/* harmony import */ var _components_user_User__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/user/User */ "./resources/js/components/user/User.vue");
+/* harmony import */ var _components_user_UserPosts__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/user/UserPosts */ "./resources/js/components/user/UserPosts.vue");
+/* harmony import */ var _components_user_UserDonmai__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/user/UserDonmai */ "./resources/js/components/user/UserDonmai.vue");
+/* harmony import */ var _components_user_UserGuchi__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/user/UserGuchi */ "./resources/js/components/user/UserGuchi.vue");
+/* harmony import */ var _components_guchi_Guchi__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/guchi/Guchi */ "./resources/js/components/guchi/Guchi.vue");
+/* harmony import */ var _components_guchi_GuchiAll__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/guchi/GuchiAll */ "./resources/js/components/guchi/GuchiAll.vue");
+/* harmony import */ var _components_guchi_GuchiAllTrend__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/guchi/GuchiAllTrend */ "./resources/js/components/guchi/GuchiAllTrend.vue");
+/* harmony import */ var _components_guchi_GuchiGenre__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./components/guchi/GuchiGenre */ "./resources/js/components/guchi/GuchiGenre.vue");
+/* harmony import */ var _components_guchi_GuchiGenreTrend__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./components/guchi/GuchiGenreTrend */ "./resources/js/components/guchi/GuchiGenreTrend.vue");
+/* harmony import */ var _components_guchi_GuchiDetail__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./components/guchi/GuchiDetail */ "./resources/js/components/guchi/GuchiDetail.vue");
+/* harmony import */ var _components_hot_Hot__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./components/hot/Hot */ "./resources/js/components/hot/Hot.vue");
+/* harmony import */ var _components_tags_Tags__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./components/tags/Tags */ "./resources/js/components/tags/Tags.vue");
+/* harmony import */ var _components_tags_TagsNew__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./components/tags/TagsNew */ "./resources/js/components/tags/TagsNew.vue");
+/* harmony import */ var _components_tags_TagsPopular__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./components/tags/TagsPopular */ "./resources/js/components/tags/TagsPopular.vue");
+/* harmony import */ var _components_trend_Trend__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./components/trend/Trend */ "./resources/js/components/trend/Trend.vue");
+/* harmony import */ var _components_search_Search__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./components/search/Search */ "./resources/js/components/search/Search.vue");
+/* harmony import */ var _components_search_SearchPostNew__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./components/search/SearchPostNew */ "./resources/js/components/search/SearchPostNew.vue");
+/* harmony import */ var _components_search_SearchPostPopular__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./components/search/SearchPostPopular */ "./resources/js/components/search/SearchPostPopular.vue");
+/* harmony import */ var _components_search_SearchGuchiNew__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./components/search/SearchGuchiNew */ "./resources/js/components/search/SearchGuchiNew.vue");
+/* harmony import */ var _components_search_SearchGuchiPopular__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./components/search/SearchGuchiPopular */ "./resources/js/components/search/SearchGuchiPopular.vue");
+/* harmony import */ var _components_search_SearchUser__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./components/search/SearchUser */ "./resources/js/components/search/SearchUser.vue");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
  * building robust, powerful web applications using Vue and Laravel.
  */
+
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+Vue.use(vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]);
+var router = new vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]({
+  mode: 'history',
+  // 画面遷移時のスクロール位置の制御
+  scrollBehavior: function scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition;
+    } else {
+      return {
+        x: 0,
+        y: 0
+      };
+    }
+  },
+  routes: [{
+    path: '/',
+    component: _components_home_Home__WEBPACK_IMPORTED_MODULE_2__["default"],
+    children: [{
+      path: '',
+      name: 'home',
+      component: _components_home_HomeDefault__WEBPACK_IMPORTED_MODULE_3__["default"]
+    }, {
+      path: 'genre/:name',
+      name: 'home.genre',
+      component: _components_home_HomeGenre__WEBPACK_IMPORTED_MODULE_4__["default"]
+    }]
+  }, {
+    path: '/user/:id',
+    component: _components_user_User__WEBPACK_IMPORTED_MODULE_5__["default"],
+    children: [{
+      path: '',
+      name: 'user',
+      component: _components_user_UserPosts__WEBPACK_IMPORTED_MODULE_6__["default"]
+    }, {
+      path: 'donmai',
+      name: 'user.donmai',
+      component: _components_user_UserDonmai__WEBPACK_IMPORTED_MODULE_7__["default"]
+    }, {
+      path: 'guchi',
+      name: 'user.guchi',
+      component: _components_user_UserGuchi__WEBPACK_IMPORTED_MODULE_8__["default"]
+    }]
+  }, {
+    path: '/guchi',
+    component: _components_guchi_Guchi__WEBPACK_IMPORTED_MODULE_9__["default"],
+    children: [{
+      path: 'all',
+      name: 'guchi.all',
+      component: _components_guchi_GuchiAll__WEBPACK_IMPORTED_MODULE_10__["default"]
+    }, {
+      path: 'all/trend',
+      name: 'guchi.all.trend',
+      component: _components_guchi_GuchiAllTrend__WEBPACK_IMPORTED_MODULE_11__["default"]
+    }, {
+      path: 'room/1',
+      name: 'guchi.detail',
+      component: _components_guchi_GuchiDetail__WEBPACK_IMPORTED_MODULE_14__["default"]
+    }, {
+      path: ':name',
+      name: 'guchi.genre',
+      component: _components_guchi_GuchiGenre__WEBPACK_IMPORTED_MODULE_12__["default"]
+    }, {
+      path: ':name/trend',
+      name: 'guchi.genre.trend',
+      component: _components_guchi_GuchiGenreTrend__WEBPACK_IMPORTED_MODULE_13__["default"]
+    }]
+  }, {
+    path: '/hot',
+    name: 'hot',
+    component: _components_hot_Hot__WEBPACK_IMPORTED_MODULE_15__["default"]
+  }, {
+    path: '/tags/:name',
+    component: _components_tags_Tags__WEBPACK_IMPORTED_MODULE_16__["default"],
+    children: [{
+      path: '',
+      name: 'tags.new',
+      component: _components_tags_TagsNew__WEBPACK_IMPORTED_MODULE_17__["default"]
+    }, {
+      path: 'popular',
+      name: 'tags.popular',
+      component: _components_tags_TagsPopular__WEBPACK_IMPORTED_MODULE_18__["default"]
+    }]
+  }, {
+    path: '/trend',
+    name: 'trend',
+    component: _components_trend_Trend__WEBPACK_IMPORTED_MODULE_19__["default"]
+  }, {
+    path: '/search/:word',
+    component: _components_search_Search__WEBPACK_IMPORTED_MODULE_20__["default"],
+    children: [{
+      path: 'post/new',
+      name: 'search.post.new',
+      component: _components_search_SearchPostNew__WEBPACK_IMPORTED_MODULE_21__["default"]
+    }, {
+      path: 'post/popular',
+      name: 'search.post.popular',
+      component: _components_search_SearchPostPopular__WEBPACK_IMPORTED_MODULE_22__["default"]
+    }, {
+      path: 'guchi/new',
+      name: 'search.guchi.new',
+      component: _components_search_SearchGuchiNew__WEBPACK_IMPORTED_MODULE_23__["default"]
+    }, {
+      path: 'guchi/popular',
+      name: 'search.guchi.popular',
+      component: _components_search_SearchGuchiPopular__WEBPACK_IMPORTED_MODULE_24__["default"]
+    }, {
+      path: 'user/',
+      name: 'search.user',
+      component: _components_search_SearchUser__WEBPACK_IMPORTED_MODULE_25__["default"]
+    }]
+  }]
+});
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -49802,7 +75015,7 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-Vue.component('example-component', __webpack_require__(/*! ./components/ExampleComponent.vue */ "./resources/js/components/ExampleComponent.vue")["default"]);
+Vue.component('header-component', _components_Header__WEBPACK_IMPORTED_MODULE_1__["default"]);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -49810,7 +75023,8 @@ Vue.component('example-component', __webpack_require__(/*! ./components/ExampleC
  */
 
 var app = new Vue({
-  el: '#app'
+  el: '#app',
+  router: router
 });
 
 /***/ }),
@@ -49860,17 +75074,17 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 /***/ }),
 
-/***/ "./resources/js/components/ExampleComponent.vue":
-/*!******************************************************!*\
-  !*** ./resources/js/components/ExampleComponent.vue ***!
-  \******************************************************/
+/***/ "./resources/js/components/Header.vue":
+/*!********************************************!*\
+  !*** ./resources/js/components/Header.vue ***!
+  \********************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _ExampleComponent_vue_vue_type_template_id_299e239e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ExampleComponent.vue?vue&type=template&id=299e239e& */ "./resources/js/components/ExampleComponent.vue?vue&type=template&id=299e239e&");
-/* harmony import */ var _ExampleComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ExampleComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/ExampleComponent.vue?vue&type=script&lang=js&");
+/* harmony import */ var _Header_vue_vue_type_template_id_1f42fb90___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Header.vue?vue&type=template&id=1f42fb90& */ "./resources/js/components/Header.vue?vue&type=template&id=1f42fb90&");
+/* harmony import */ var _Header_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Header.vue?vue&type=script&lang=js& */ "./resources/js/components/Header.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
@@ -49880,9 +75094,9 @@ __webpack_require__.r(__webpack_exports__);
 /* normalize component */
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _ExampleComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _ExampleComponent_vue_vue_type_template_id_299e239e___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _ExampleComponent_vue_vue_type_template_id_299e239e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  _Header_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Header_vue_vue_type_template_id_1f42fb90___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Header_vue_vue_type_template_id_1f42fb90___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
   null,
   null,
@@ -49892,63 +75106,1707 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
 
 /* hot reload */
 if (false) { var api; }
-component.options.__file = "resources/js/components/ExampleComponent.vue"
+component.options.__file = "resources/js/components/Header.vue"
 /* harmony default export */ __webpack_exports__["default"] = (component.exports);
 
 /***/ }),
 
-/***/ "./resources/js/components/ExampleComponent.vue?vue&type=script&lang=js&":
+/***/ "./resources/js/components/Header.vue?vue&type=script&lang=js&":
+/*!*********************************************************************!*\
+  !*** ./resources/js/components/Header.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Header_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./Header.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Header.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Header_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Header.vue?vue&type=template&id=1f42fb90&":
+/*!***************************************************************************!*\
+  !*** ./resources/js/components/Header.vue?vue&type=template&id=1f42fb90& ***!
+  \***************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Header_vue_vue_type_template_id_1f42fb90___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./Header.vue?vue&type=template&id=1f42fb90& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Header.vue?vue&type=template&id=1f42fb90&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Header_vue_vue_type_template_id_1f42fb90___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Header_vue_vue_type_template_id_1f42fb90___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/guchi/Guchi.vue":
+/*!*************************************************!*\
+  !*** ./resources/js/components/guchi/Guchi.vue ***!
+  \*************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Guchi_vue_vue_type_template_id_d5bc69fc___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Guchi.vue?vue&type=template&id=d5bc69fc& */ "./resources/js/components/guchi/Guchi.vue?vue&type=template&id=d5bc69fc&");
+/* harmony import */ var _Guchi_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Guchi.vue?vue&type=script&lang=js& */ "./resources/js/components/guchi/Guchi.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Guchi_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Guchi_vue_vue_type_template_id_d5bc69fc___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Guchi_vue_vue_type_template_id_d5bc69fc___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/guchi/Guchi.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/guchi/Guchi.vue?vue&type=script&lang=js&":
+/*!**************************************************************************!*\
+  !*** ./resources/js/components/guchi/Guchi.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Guchi_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./Guchi.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/guchi/Guchi.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Guchi_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/guchi/Guchi.vue?vue&type=template&id=d5bc69fc&":
+/*!********************************************************************************!*\
+  !*** ./resources/js/components/guchi/Guchi.vue?vue&type=template&id=d5bc69fc& ***!
+  \********************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Guchi_vue_vue_type_template_id_d5bc69fc___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./Guchi.vue?vue&type=template&id=d5bc69fc& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/guchi/Guchi.vue?vue&type=template&id=d5bc69fc&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Guchi_vue_vue_type_template_id_d5bc69fc___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Guchi_vue_vue_type_template_id_d5bc69fc___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/guchi/GuchiAll.vue":
+/*!****************************************************!*\
+  !*** ./resources/js/components/guchi/GuchiAll.vue ***!
+  \****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _GuchiAll_vue_vue_type_template_id_fa11ba22___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./GuchiAll.vue?vue&type=template&id=fa11ba22& */ "./resources/js/components/guchi/GuchiAll.vue?vue&type=template&id=fa11ba22&");
+/* harmony import */ var _GuchiAll_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./GuchiAll.vue?vue&type=script&lang=js& */ "./resources/js/components/guchi/GuchiAll.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _GuchiAll_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _GuchiAll_vue_vue_type_template_id_fa11ba22___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _GuchiAll_vue_vue_type_template_id_fa11ba22___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/guchi/GuchiAll.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/guchi/GuchiAll.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************!*\
+  !*** ./resources/js/components/guchi/GuchiAll.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_GuchiAll_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./GuchiAll.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/guchi/GuchiAll.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_GuchiAll_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/guchi/GuchiAll.vue?vue&type=template&id=fa11ba22&":
+/*!***********************************************************************************!*\
+  !*** ./resources/js/components/guchi/GuchiAll.vue?vue&type=template&id=fa11ba22& ***!
+  \***********************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_GuchiAll_vue_vue_type_template_id_fa11ba22___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./GuchiAll.vue?vue&type=template&id=fa11ba22& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/guchi/GuchiAll.vue?vue&type=template&id=fa11ba22&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_GuchiAll_vue_vue_type_template_id_fa11ba22___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_GuchiAll_vue_vue_type_template_id_fa11ba22___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/guchi/GuchiAllTrend.vue":
+/*!*********************************************************!*\
+  !*** ./resources/js/components/guchi/GuchiAllTrend.vue ***!
+  \*********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _GuchiAllTrend_vue_vue_type_template_id_f59028c4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./GuchiAllTrend.vue?vue&type=template&id=f59028c4& */ "./resources/js/components/guchi/GuchiAllTrend.vue?vue&type=template&id=f59028c4&");
+/* harmony import */ var _GuchiAllTrend_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./GuchiAllTrend.vue?vue&type=script&lang=js& */ "./resources/js/components/guchi/GuchiAllTrend.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _GuchiAllTrend_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _GuchiAllTrend_vue_vue_type_template_id_f59028c4___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _GuchiAllTrend_vue_vue_type_template_id_f59028c4___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/guchi/GuchiAllTrend.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/guchi/GuchiAllTrend.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************!*\
+  !*** ./resources/js/components/guchi/GuchiAllTrend.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_GuchiAllTrend_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./GuchiAllTrend.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/guchi/GuchiAllTrend.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_GuchiAllTrend_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/guchi/GuchiAllTrend.vue?vue&type=template&id=f59028c4&":
+/*!****************************************************************************************!*\
+  !*** ./resources/js/components/guchi/GuchiAllTrend.vue?vue&type=template&id=f59028c4& ***!
+  \****************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_GuchiAllTrend_vue_vue_type_template_id_f59028c4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./GuchiAllTrend.vue?vue&type=template&id=f59028c4& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/guchi/GuchiAllTrend.vue?vue&type=template&id=f59028c4&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_GuchiAllTrend_vue_vue_type_template_id_f59028c4___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_GuchiAllTrend_vue_vue_type_template_id_f59028c4___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/guchi/GuchiDetail.vue":
+/*!*******************************************************!*\
+  !*** ./resources/js/components/guchi/GuchiDetail.vue ***!
+  \*******************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _GuchiDetail_vue_vue_type_template_id_16a9b773___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./GuchiDetail.vue?vue&type=template&id=16a9b773& */ "./resources/js/components/guchi/GuchiDetail.vue?vue&type=template&id=16a9b773&");
+/* harmony import */ var _GuchiDetail_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./GuchiDetail.vue?vue&type=script&lang=js& */ "./resources/js/components/guchi/GuchiDetail.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _GuchiDetail_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _GuchiDetail_vue_vue_type_template_id_16a9b773___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _GuchiDetail_vue_vue_type_template_id_16a9b773___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/guchi/GuchiDetail.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/guchi/GuchiDetail.vue?vue&type=script&lang=js&":
+/*!********************************************************************************!*\
+  !*** ./resources/js/components/guchi/GuchiDetail.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_GuchiDetail_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./GuchiDetail.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/guchi/GuchiDetail.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_GuchiDetail_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/guchi/GuchiDetail.vue?vue&type=template&id=16a9b773&":
+/*!**************************************************************************************!*\
+  !*** ./resources/js/components/guchi/GuchiDetail.vue?vue&type=template&id=16a9b773& ***!
+  \**************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_GuchiDetail_vue_vue_type_template_id_16a9b773___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./GuchiDetail.vue?vue&type=template&id=16a9b773& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/guchi/GuchiDetail.vue?vue&type=template&id=16a9b773&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_GuchiDetail_vue_vue_type_template_id_16a9b773___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_GuchiDetail_vue_vue_type_template_id_16a9b773___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/guchi/GuchiGenre.vue":
+/*!******************************************************!*\
+  !*** ./resources/js/components/guchi/GuchiGenre.vue ***!
+  \******************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _GuchiGenre_vue_vue_type_template_id_20f2fc51___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./GuchiGenre.vue?vue&type=template&id=20f2fc51& */ "./resources/js/components/guchi/GuchiGenre.vue?vue&type=template&id=20f2fc51&");
+/* harmony import */ var _GuchiGenre_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./GuchiGenre.vue?vue&type=script&lang=js& */ "./resources/js/components/guchi/GuchiGenre.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _GuchiGenre_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _GuchiGenre_vue_vue_type_template_id_20f2fc51___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _GuchiGenre_vue_vue_type_template_id_20f2fc51___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/guchi/GuchiGenre.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/guchi/GuchiGenre.vue?vue&type=script&lang=js&":
 /*!*******************************************************************************!*\
-  !*** ./resources/js/components/ExampleComponent.vue?vue&type=script&lang=js& ***!
+  !*** ./resources/js/components/guchi/GuchiGenre.vue?vue&type=script&lang=js& ***!
   \*******************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ExampleComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./ExampleComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ExampleComponent.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ExampleComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_GuchiGenre_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./GuchiGenre.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/guchi/GuchiGenre.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_GuchiGenre_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
-/***/ "./resources/js/components/ExampleComponent.vue?vue&type=template&id=299e239e&":
+/***/ "./resources/js/components/guchi/GuchiGenre.vue?vue&type=template&id=20f2fc51&":
 /*!*************************************************************************************!*\
-  !*** ./resources/js/components/ExampleComponent.vue?vue&type=template&id=299e239e& ***!
+  !*** ./resources/js/components/guchi/GuchiGenre.vue?vue&type=template&id=20f2fc51& ***!
   \*************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ExampleComponent_vue_vue_type_template_id_299e239e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./ExampleComponent.vue?vue&type=template&id=299e239e& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ExampleComponent.vue?vue&type=template&id=299e239e&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ExampleComponent_vue_vue_type_template_id_299e239e___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_GuchiGenre_vue_vue_type_template_id_20f2fc51___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./GuchiGenre.vue?vue&type=template&id=20f2fc51& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/guchi/GuchiGenre.vue?vue&type=template&id=20f2fc51&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_GuchiGenre_vue_vue_type_template_id_20f2fc51___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ExampleComponent_vue_vue_type_template_id_299e239e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_GuchiGenre_vue_vue_type_template_id_20f2fc51___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
 /***/ }),
 
-/***/ "./resources/sass/app.scss":
-/*!*********************************!*\
-  !*** ./resources/sass/app.scss ***!
-  \*********************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
+/***/ "./resources/js/components/guchi/GuchiGenreTrend.vue":
+/*!***********************************************************!*\
+  !*** ./resources/js/components/guchi/GuchiGenreTrend.vue ***!
+  \***********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-// removed by extract-text-webpack-plugin
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _GuchiGenreTrend_vue_vue_type_template_id_5ef69f7c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./GuchiGenreTrend.vue?vue&type=template&id=5ef69f7c& */ "./resources/js/components/guchi/GuchiGenreTrend.vue?vue&type=template&id=5ef69f7c&");
+/* harmony import */ var _GuchiGenreTrend_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./GuchiGenreTrend.vue?vue&type=script&lang=js& */ "./resources/js/components/guchi/GuchiGenreTrend.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _GuchiGenreTrend_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _GuchiGenreTrend_vue_vue_type_template_id_5ef69f7c___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _GuchiGenreTrend_vue_vue_type_template_id_5ef69f7c___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/guchi/GuchiGenreTrend.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/guchi/GuchiGenreTrend.vue?vue&type=script&lang=js&":
+/*!************************************************************************************!*\
+  !*** ./resources/js/components/guchi/GuchiGenreTrend.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_GuchiGenreTrend_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./GuchiGenreTrend.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/guchi/GuchiGenreTrend.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_GuchiGenreTrend_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/guchi/GuchiGenreTrend.vue?vue&type=template&id=5ef69f7c&":
+/*!******************************************************************************************!*\
+  !*** ./resources/js/components/guchi/GuchiGenreTrend.vue?vue&type=template&id=5ef69f7c& ***!
+  \******************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_GuchiGenreTrend_vue_vue_type_template_id_5ef69f7c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./GuchiGenreTrend.vue?vue&type=template&id=5ef69f7c& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/guchi/GuchiGenreTrend.vue?vue&type=template&id=5ef69f7c&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_GuchiGenreTrend_vue_vue_type_template_id_5ef69f7c___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_GuchiGenreTrend_vue_vue_type_template_id_5ef69f7c___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/home/Home.vue":
+/*!***********************************************!*\
+  !*** ./resources/js/components/home/Home.vue ***!
+  \***********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Home_vue_vue_type_template_id_1f26c2f4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Home.vue?vue&type=template&id=1f26c2f4& */ "./resources/js/components/home/Home.vue?vue&type=template&id=1f26c2f4&");
+/* harmony import */ var _Home_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Home.vue?vue&type=script&lang=js& */ "./resources/js/components/home/Home.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Home_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Home_vue_vue_type_template_id_1f26c2f4___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Home_vue_vue_type_template_id_1f26c2f4___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/home/Home.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/home/Home.vue?vue&type=script&lang=js&":
+/*!************************************************************************!*\
+  !*** ./resources/js/components/home/Home.vue?vue&type=script&lang=js& ***!
+  \************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Home_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./Home.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/home/Home.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Home_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/home/Home.vue?vue&type=template&id=1f26c2f4&":
+/*!******************************************************************************!*\
+  !*** ./resources/js/components/home/Home.vue?vue&type=template&id=1f26c2f4& ***!
+  \******************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Home_vue_vue_type_template_id_1f26c2f4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./Home.vue?vue&type=template&id=1f26c2f4& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/home/Home.vue?vue&type=template&id=1f26c2f4&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Home_vue_vue_type_template_id_1f26c2f4___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Home_vue_vue_type_template_id_1f26c2f4___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/home/HomeDefault.vue":
+/*!******************************************************!*\
+  !*** ./resources/js/components/home/HomeDefault.vue ***!
+  \******************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _HomeDefault_vue_vue_type_template_id_7ff7385d___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./HomeDefault.vue?vue&type=template&id=7ff7385d& */ "./resources/js/components/home/HomeDefault.vue?vue&type=template&id=7ff7385d&");
+/* harmony import */ var _HomeDefault_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./HomeDefault.vue?vue&type=script&lang=js& */ "./resources/js/components/home/HomeDefault.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _HomeDefault_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _HomeDefault_vue_vue_type_template_id_7ff7385d___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _HomeDefault_vue_vue_type_template_id_7ff7385d___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/home/HomeDefault.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/home/HomeDefault.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************!*\
+  !*** ./resources/js/components/home/HomeDefault.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_HomeDefault_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./HomeDefault.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/home/HomeDefault.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_HomeDefault_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/home/HomeDefault.vue?vue&type=template&id=7ff7385d&":
+/*!*************************************************************************************!*\
+  !*** ./resources/js/components/home/HomeDefault.vue?vue&type=template&id=7ff7385d& ***!
+  \*************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_HomeDefault_vue_vue_type_template_id_7ff7385d___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./HomeDefault.vue?vue&type=template&id=7ff7385d& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/home/HomeDefault.vue?vue&type=template&id=7ff7385d&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_HomeDefault_vue_vue_type_template_id_7ff7385d___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_HomeDefault_vue_vue_type_template_id_7ff7385d___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/home/HomeGenre.vue":
+/*!****************************************************!*\
+  !*** ./resources/js/components/home/HomeGenre.vue ***!
+  \****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _HomeGenre_vue_vue_type_template_id_53652b9f___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./HomeGenre.vue?vue&type=template&id=53652b9f& */ "./resources/js/components/home/HomeGenre.vue?vue&type=template&id=53652b9f&");
+/* harmony import */ var _HomeGenre_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./HomeGenre.vue?vue&type=script&lang=js& */ "./resources/js/components/home/HomeGenre.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _HomeGenre_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _HomeGenre_vue_vue_type_template_id_53652b9f___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _HomeGenre_vue_vue_type_template_id_53652b9f___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/home/HomeGenre.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/home/HomeGenre.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************!*\
+  !*** ./resources/js/components/home/HomeGenre.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_HomeGenre_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./HomeGenre.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/home/HomeGenre.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_HomeGenre_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/home/HomeGenre.vue?vue&type=template&id=53652b9f&":
+/*!***********************************************************************************!*\
+  !*** ./resources/js/components/home/HomeGenre.vue?vue&type=template&id=53652b9f& ***!
+  \***********************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_HomeGenre_vue_vue_type_template_id_53652b9f___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./HomeGenre.vue?vue&type=template&id=53652b9f& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/home/HomeGenre.vue?vue&type=template&id=53652b9f&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_HomeGenre_vue_vue_type_template_id_53652b9f___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_HomeGenre_vue_vue_type_template_id_53652b9f___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/hot/Hot.vue":
+/*!*********************************************!*\
+  !*** ./resources/js/components/hot/Hot.vue ***!
+  \*********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Hot_vue_vue_type_template_id_7a3a1920___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Hot.vue?vue&type=template&id=7a3a1920& */ "./resources/js/components/hot/Hot.vue?vue&type=template&id=7a3a1920&");
+/* harmony import */ var _Hot_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Hot.vue?vue&type=script&lang=js& */ "./resources/js/components/hot/Hot.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Hot_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Hot_vue_vue_type_template_id_7a3a1920___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Hot_vue_vue_type_template_id_7a3a1920___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/hot/Hot.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/hot/Hot.vue?vue&type=script&lang=js&":
+/*!**********************************************************************!*\
+  !*** ./resources/js/components/hot/Hot.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Hot_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./Hot.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/hot/Hot.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Hot_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/hot/Hot.vue?vue&type=template&id=7a3a1920&":
+/*!****************************************************************************!*\
+  !*** ./resources/js/components/hot/Hot.vue?vue&type=template&id=7a3a1920& ***!
+  \****************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Hot_vue_vue_type_template_id_7a3a1920___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./Hot.vue?vue&type=template&id=7a3a1920& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/hot/Hot.vue?vue&type=template&id=7a3a1920&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Hot_vue_vue_type_template_id_7a3a1920___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Hot_vue_vue_type_template_id_7a3a1920___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/search/Search.vue":
+/*!***************************************************!*\
+  !*** ./resources/js/components/search/Search.vue ***!
+  \***************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Search_vue_vue_type_template_id_3e164758___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Search.vue?vue&type=template&id=3e164758& */ "./resources/js/components/search/Search.vue?vue&type=template&id=3e164758&");
+/* harmony import */ var _Search_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Search.vue?vue&type=script&lang=js& */ "./resources/js/components/search/Search.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Search_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Search_vue_vue_type_template_id_3e164758___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Search_vue_vue_type_template_id_3e164758___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/search/Search.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/search/Search.vue?vue&type=script&lang=js&":
+/*!****************************************************************************!*\
+  !*** ./resources/js/components/search/Search.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Search_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./Search.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/search/Search.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Search_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/search/Search.vue?vue&type=template&id=3e164758&":
+/*!**********************************************************************************!*\
+  !*** ./resources/js/components/search/Search.vue?vue&type=template&id=3e164758& ***!
+  \**********************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Search_vue_vue_type_template_id_3e164758___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./Search.vue?vue&type=template&id=3e164758& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/search/Search.vue?vue&type=template&id=3e164758&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Search_vue_vue_type_template_id_3e164758___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Search_vue_vue_type_template_id_3e164758___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/search/SearchGuchiNew.vue":
+/*!***********************************************************!*\
+  !*** ./resources/js/components/search/SearchGuchiNew.vue ***!
+  \***********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _SearchGuchiNew_vue_vue_type_template_id_4a63a03e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SearchGuchiNew.vue?vue&type=template&id=4a63a03e& */ "./resources/js/components/search/SearchGuchiNew.vue?vue&type=template&id=4a63a03e&");
+/* harmony import */ var _SearchGuchiNew_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./SearchGuchiNew.vue?vue&type=script&lang=js& */ "./resources/js/components/search/SearchGuchiNew.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _SearchGuchiNew_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _SearchGuchiNew_vue_vue_type_template_id_4a63a03e___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _SearchGuchiNew_vue_vue_type_template_id_4a63a03e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/search/SearchGuchiNew.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/search/SearchGuchiNew.vue?vue&type=script&lang=js&":
+/*!************************************************************************************!*\
+  !*** ./resources/js/components/search/SearchGuchiNew.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SearchGuchiNew_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./SearchGuchiNew.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/search/SearchGuchiNew.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SearchGuchiNew_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/search/SearchGuchiNew.vue?vue&type=template&id=4a63a03e&":
+/*!******************************************************************************************!*\
+  !*** ./resources/js/components/search/SearchGuchiNew.vue?vue&type=template&id=4a63a03e& ***!
+  \******************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SearchGuchiNew_vue_vue_type_template_id_4a63a03e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./SearchGuchiNew.vue?vue&type=template&id=4a63a03e& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/search/SearchGuchiNew.vue?vue&type=template&id=4a63a03e&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SearchGuchiNew_vue_vue_type_template_id_4a63a03e___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SearchGuchiNew_vue_vue_type_template_id_4a63a03e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/search/SearchGuchiPopular.vue":
+/*!***************************************************************!*\
+  !*** ./resources/js/components/search/SearchGuchiPopular.vue ***!
+  \***************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _SearchGuchiPopular_vue_vue_type_template_id_76e831f7___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SearchGuchiPopular.vue?vue&type=template&id=76e831f7& */ "./resources/js/components/search/SearchGuchiPopular.vue?vue&type=template&id=76e831f7&");
+/* harmony import */ var _SearchGuchiPopular_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./SearchGuchiPopular.vue?vue&type=script&lang=js& */ "./resources/js/components/search/SearchGuchiPopular.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _SearchGuchiPopular_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _SearchGuchiPopular_vue_vue_type_template_id_76e831f7___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _SearchGuchiPopular_vue_vue_type_template_id_76e831f7___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/search/SearchGuchiPopular.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/search/SearchGuchiPopular.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************!*\
+  !*** ./resources/js/components/search/SearchGuchiPopular.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SearchGuchiPopular_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./SearchGuchiPopular.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/search/SearchGuchiPopular.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SearchGuchiPopular_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/search/SearchGuchiPopular.vue?vue&type=template&id=76e831f7&":
+/*!**********************************************************************************************!*\
+  !*** ./resources/js/components/search/SearchGuchiPopular.vue?vue&type=template&id=76e831f7& ***!
+  \**********************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SearchGuchiPopular_vue_vue_type_template_id_76e831f7___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./SearchGuchiPopular.vue?vue&type=template&id=76e831f7& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/search/SearchGuchiPopular.vue?vue&type=template&id=76e831f7&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SearchGuchiPopular_vue_vue_type_template_id_76e831f7___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SearchGuchiPopular_vue_vue_type_template_id_76e831f7___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/search/SearchPostNew.vue":
+/*!**********************************************************!*\
+  !*** ./resources/js/components/search/SearchPostNew.vue ***!
+  \**********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _SearchPostNew_vue_vue_type_template_id_5427ea1c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SearchPostNew.vue?vue&type=template&id=5427ea1c& */ "./resources/js/components/search/SearchPostNew.vue?vue&type=template&id=5427ea1c&");
+/* harmony import */ var _SearchPostNew_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./SearchPostNew.vue?vue&type=script&lang=js& */ "./resources/js/components/search/SearchPostNew.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _SearchPostNew_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _SearchPostNew_vue_vue_type_template_id_5427ea1c___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _SearchPostNew_vue_vue_type_template_id_5427ea1c___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/search/SearchPostNew.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/search/SearchPostNew.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************!*\
+  !*** ./resources/js/components/search/SearchPostNew.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SearchPostNew_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./SearchPostNew.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/search/SearchPostNew.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SearchPostNew_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/search/SearchPostNew.vue?vue&type=template&id=5427ea1c&":
+/*!*****************************************************************************************!*\
+  !*** ./resources/js/components/search/SearchPostNew.vue?vue&type=template&id=5427ea1c& ***!
+  \*****************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SearchPostNew_vue_vue_type_template_id_5427ea1c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./SearchPostNew.vue?vue&type=template&id=5427ea1c& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/search/SearchPostNew.vue?vue&type=template&id=5427ea1c&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SearchPostNew_vue_vue_type_template_id_5427ea1c___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SearchPostNew_vue_vue_type_template_id_5427ea1c___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/search/SearchPostPopular.vue":
+/*!**************************************************************!*\
+  !*** ./resources/js/components/search/SearchPostPopular.vue ***!
+  \**************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _SearchPostPopular_vue_vue_type_template_id_0f985cd5___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SearchPostPopular.vue?vue&type=template&id=0f985cd5& */ "./resources/js/components/search/SearchPostPopular.vue?vue&type=template&id=0f985cd5&");
+/* harmony import */ var _SearchPostPopular_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./SearchPostPopular.vue?vue&type=script&lang=js& */ "./resources/js/components/search/SearchPostPopular.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _SearchPostPopular_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _SearchPostPopular_vue_vue_type_template_id_0f985cd5___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _SearchPostPopular_vue_vue_type_template_id_0f985cd5___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/search/SearchPostPopular.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/search/SearchPostPopular.vue?vue&type=script&lang=js&":
+/*!***************************************************************************************!*\
+  !*** ./resources/js/components/search/SearchPostPopular.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SearchPostPopular_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./SearchPostPopular.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/search/SearchPostPopular.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SearchPostPopular_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/search/SearchPostPopular.vue?vue&type=template&id=0f985cd5&":
+/*!*********************************************************************************************!*\
+  !*** ./resources/js/components/search/SearchPostPopular.vue?vue&type=template&id=0f985cd5& ***!
+  \*********************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SearchPostPopular_vue_vue_type_template_id_0f985cd5___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./SearchPostPopular.vue?vue&type=template&id=0f985cd5& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/search/SearchPostPopular.vue?vue&type=template&id=0f985cd5&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SearchPostPopular_vue_vue_type_template_id_0f985cd5___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SearchPostPopular_vue_vue_type_template_id_0f985cd5___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/search/SearchUser.vue":
+/*!*******************************************************!*\
+  !*** ./resources/js/components/search/SearchUser.vue ***!
+  \*******************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _SearchUser_vue_vue_type_template_id_fc3bde82___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SearchUser.vue?vue&type=template&id=fc3bde82& */ "./resources/js/components/search/SearchUser.vue?vue&type=template&id=fc3bde82&");
+/* harmony import */ var _SearchUser_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./SearchUser.vue?vue&type=script&lang=js& */ "./resources/js/components/search/SearchUser.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _SearchUser_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _SearchUser_vue_vue_type_template_id_fc3bde82___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _SearchUser_vue_vue_type_template_id_fc3bde82___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/search/SearchUser.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/search/SearchUser.vue?vue&type=script&lang=js&":
+/*!********************************************************************************!*\
+  !*** ./resources/js/components/search/SearchUser.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SearchUser_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./SearchUser.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/search/SearchUser.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SearchUser_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/search/SearchUser.vue?vue&type=template&id=fc3bde82&":
+/*!**************************************************************************************!*\
+  !*** ./resources/js/components/search/SearchUser.vue?vue&type=template&id=fc3bde82& ***!
+  \**************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SearchUser_vue_vue_type_template_id_fc3bde82___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./SearchUser.vue?vue&type=template&id=fc3bde82& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/search/SearchUser.vue?vue&type=template&id=fc3bde82&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SearchUser_vue_vue_type_template_id_fc3bde82___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SearchUser_vue_vue_type_template_id_fc3bde82___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/tags/Tags.vue":
+/*!***********************************************!*\
+  !*** ./resources/js/components/tags/Tags.vue ***!
+  \***********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Tags_vue_vue_type_template_id_9e89d198___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Tags.vue?vue&type=template&id=9e89d198& */ "./resources/js/components/tags/Tags.vue?vue&type=template&id=9e89d198&");
+/* harmony import */ var _Tags_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Tags.vue?vue&type=script&lang=js& */ "./resources/js/components/tags/Tags.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Tags_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Tags_vue_vue_type_template_id_9e89d198___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Tags_vue_vue_type_template_id_9e89d198___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/tags/Tags.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/tags/Tags.vue?vue&type=script&lang=js&":
+/*!************************************************************************!*\
+  !*** ./resources/js/components/tags/Tags.vue?vue&type=script&lang=js& ***!
+  \************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Tags_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./Tags.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/tags/Tags.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Tags_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/tags/Tags.vue?vue&type=template&id=9e89d198&":
+/*!******************************************************************************!*\
+  !*** ./resources/js/components/tags/Tags.vue?vue&type=template&id=9e89d198& ***!
+  \******************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Tags_vue_vue_type_template_id_9e89d198___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./Tags.vue?vue&type=template&id=9e89d198& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/tags/Tags.vue?vue&type=template&id=9e89d198&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Tags_vue_vue_type_template_id_9e89d198___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Tags_vue_vue_type_template_id_9e89d198___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/tags/TagsNew.vue":
+/*!**************************************************!*\
+  !*** ./resources/js/components/tags/TagsNew.vue ***!
+  \**************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _TagsNew_vue_vue_type_template_id_4889ac08___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TagsNew.vue?vue&type=template&id=4889ac08& */ "./resources/js/components/tags/TagsNew.vue?vue&type=template&id=4889ac08&");
+/* harmony import */ var _TagsNew_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TagsNew.vue?vue&type=script&lang=js& */ "./resources/js/components/tags/TagsNew.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _TagsNew_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _TagsNew_vue_vue_type_template_id_4889ac08___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _TagsNew_vue_vue_type_template_id_4889ac08___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/tags/TagsNew.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/tags/TagsNew.vue?vue&type=script&lang=js&":
+/*!***************************************************************************!*\
+  !*** ./resources/js/components/tags/TagsNew.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_TagsNew_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./TagsNew.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/tags/TagsNew.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_TagsNew_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/tags/TagsNew.vue?vue&type=template&id=4889ac08&":
+/*!*********************************************************************************!*\
+  !*** ./resources/js/components/tags/TagsNew.vue?vue&type=template&id=4889ac08& ***!
+  \*********************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TagsNew_vue_vue_type_template_id_4889ac08___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./TagsNew.vue?vue&type=template&id=4889ac08& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/tags/TagsNew.vue?vue&type=template&id=4889ac08&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TagsNew_vue_vue_type_template_id_4889ac08___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TagsNew_vue_vue_type_template_id_4889ac08___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/tags/TagsPopular.vue":
+/*!******************************************************!*\
+  !*** ./resources/js/components/tags/TagsPopular.vue ***!
+  \******************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _TagsPopular_vue_vue_type_template_id_19c8acb5___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TagsPopular.vue?vue&type=template&id=19c8acb5& */ "./resources/js/components/tags/TagsPopular.vue?vue&type=template&id=19c8acb5&");
+/* harmony import */ var _TagsPopular_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TagsPopular.vue?vue&type=script&lang=js& */ "./resources/js/components/tags/TagsPopular.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _TagsPopular_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _TagsPopular_vue_vue_type_template_id_19c8acb5___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _TagsPopular_vue_vue_type_template_id_19c8acb5___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/tags/TagsPopular.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/tags/TagsPopular.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************!*\
+  !*** ./resources/js/components/tags/TagsPopular.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_TagsPopular_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./TagsPopular.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/tags/TagsPopular.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_TagsPopular_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/tags/TagsPopular.vue?vue&type=template&id=19c8acb5&":
+/*!*************************************************************************************!*\
+  !*** ./resources/js/components/tags/TagsPopular.vue?vue&type=template&id=19c8acb5& ***!
+  \*************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TagsPopular_vue_vue_type_template_id_19c8acb5___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./TagsPopular.vue?vue&type=template&id=19c8acb5& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/tags/TagsPopular.vue?vue&type=template&id=19c8acb5&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TagsPopular_vue_vue_type_template_id_19c8acb5___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TagsPopular_vue_vue_type_template_id_19c8acb5___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/trend/Trend.vue":
+/*!*************************************************!*\
+  !*** ./resources/js/components/trend/Trend.vue ***!
+  \*************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Trend_vue_vue_type_template_id_65fe7410___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Trend.vue?vue&type=template&id=65fe7410& */ "./resources/js/components/trend/Trend.vue?vue&type=template&id=65fe7410&");
+/* harmony import */ var _Trend_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Trend.vue?vue&type=script&lang=js& */ "./resources/js/components/trend/Trend.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Trend_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Trend_vue_vue_type_template_id_65fe7410___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Trend_vue_vue_type_template_id_65fe7410___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/trend/Trend.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/trend/Trend.vue?vue&type=script&lang=js&":
+/*!**************************************************************************!*\
+  !*** ./resources/js/components/trend/Trend.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Trend_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./Trend.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/trend/Trend.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Trend_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/trend/Trend.vue?vue&type=template&id=65fe7410&":
+/*!********************************************************************************!*\
+  !*** ./resources/js/components/trend/Trend.vue?vue&type=template&id=65fe7410& ***!
+  \********************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Trend_vue_vue_type_template_id_65fe7410___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./Trend.vue?vue&type=template&id=65fe7410& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/trend/Trend.vue?vue&type=template&id=65fe7410&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Trend_vue_vue_type_template_id_65fe7410___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Trend_vue_vue_type_template_id_65fe7410___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/user/User.vue":
+/*!***********************************************!*\
+  !*** ./resources/js/components/user/User.vue ***!
+  \***********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _User_vue_vue_type_template_id_28427674___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./User.vue?vue&type=template&id=28427674& */ "./resources/js/components/user/User.vue?vue&type=template&id=28427674&");
+/* harmony import */ var _User_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./User.vue?vue&type=script&lang=js& */ "./resources/js/components/user/User.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _User_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _User_vue_vue_type_template_id_28427674___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _User_vue_vue_type_template_id_28427674___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/user/User.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/user/User.vue?vue&type=script&lang=js&":
+/*!************************************************************************!*\
+  !*** ./resources/js/components/user/User.vue?vue&type=script&lang=js& ***!
+  \************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_User_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./User.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/user/User.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_User_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/user/User.vue?vue&type=template&id=28427674&":
+/*!******************************************************************************!*\
+  !*** ./resources/js/components/user/User.vue?vue&type=template&id=28427674& ***!
+  \******************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_User_vue_vue_type_template_id_28427674___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./User.vue?vue&type=template&id=28427674& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/user/User.vue?vue&type=template&id=28427674&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_User_vue_vue_type_template_id_28427674___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_User_vue_vue_type_template_id_28427674___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/user/UserDonmai.vue":
+/*!*****************************************************!*\
+  !*** ./resources/js/components/user/UserDonmai.vue ***!
+  \*****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _UserDonmai_vue_vue_type_template_id_1b78ec74___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./UserDonmai.vue?vue&type=template&id=1b78ec74& */ "./resources/js/components/user/UserDonmai.vue?vue&type=template&id=1b78ec74&");
+/* harmony import */ var _UserDonmai_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./UserDonmai.vue?vue&type=script&lang=js& */ "./resources/js/components/user/UserDonmai.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _UserDonmai_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _UserDonmai_vue_vue_type_template_id_1b78ec74___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _UserDonmai_vue_vue_type_template_id_1b78ec74___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/user/UserDonmai.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/user/UserDonmai.vue?vue&type=script&lang=js&":
+/*!******************************************************************************!*\
+  !*** ./resources/js/components/user/UserDonmai.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_UserDonmai_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./UserDonmai.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/user/UserDonmai.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_UserDonmai_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/user/UserDonmai.vue?vue&type=template&id=1b78ec74&":
+/*!************************************************************************************!*\
+  !*** ./resources/js/components/user/UserDonmai.vue?vue&type=template&id=1b78ec74& ***!
+  \************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_UserDonmai_vue_vue_type_template_id_1b78ec74___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./UserDonmai.vue?vue&type=template&id=1b78ec74& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/user/UserDonmai.vue?vue&type=template&id=1b78ec74&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_UserDonmai_vue_vue_type_template_id_1b78ec74___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_UserDonmai_vue_vue_type_template_id_1b78ec74___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/user/UserGuchi.vue":
+/*!****************************************************!*\
+  !*** ./resources/js/components/user/UserGuchi.vue ***!
+  \****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _UserGuchi_vue_vue_type_template_id_3863d212___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./UserGuchi.vue?vue&type=template&id=3863d212& */ "./resources/js/components/user/UserGuchi.vue?vue&type=template&id=3863d212&");
+/* harmony import */ var _UserGuchi_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./UserGuchi.vue?vue&type=script&lang=js& */ "./resources/js/components/user/UserGuchi.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _UserGuchi_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _UserGuchi_vue_vue_type_template_id_3863d212___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _UserGuchi_vue_vue_type_template_id_3863d212___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/user/UserGuchi.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/user/UserGuchi.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************!*\
+  !*** ./resources/js/components/user/UserGuchi.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_UserGuchi_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./UserGuchi.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/user/UserGuchi.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_UserGuchi_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/user/UserGuchi.vue?vue&type=template&id=3863d212&":
+/*!***********************************************************************************!*\
+  !*** ./resources/js/components/user/UserGuchi.vue?vue&type=template&id=3863d212& ***!
+  \***********************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_UserGuchi_vue_vue_type_template_id_3863d212___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./UserGuchi.vue?vue&type=template&id=3863d212& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/user/UserGuchi.vue?vue&type=template&id=3863d212&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_UserGuchi_vue_vue_type_template_id_3863d212___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_UserGuchi_vue_vue_type_template_id_3863d212___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/user/UserPosts.vue":
+/*!****************************************************!*\
+  !*** ./resources/js/components/user/UserPosts.vue ***!
+  \****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _UserPosts_vue_vue_type_template_id_62ef726f___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./UserPosts.vue?vue&type=template&id=62ef726f& */ "./resources/js/components/user/UserPosts.vue?vue&type=template&id=62ef726f&");
+/* harmony import */ var _UserPosts_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./UserPosts.vue?vue&type=script&lang=js& */ "./resources/js/components/user/UserPosts.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _UserPosts_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _UserPosts_vue_vue_type_template_id_62ef726f___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _UserPosts_vue_vue_type_template_id_62ef726f___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/user/UserPosts.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/user/UserPosts.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************!*\
+  !*** ./resources/js/components/user/UserPosts.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_UserPosts_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./UserPosts.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/user/UserPosts.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_UserPosts_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/user/UserPosts.vue?vue&type=template&id=62ef726f&":
+/*!***********************************************************************************!*\
+  !*** ./resources/js/components/user/UserPosts.vue?vue&type=template&id=62ef726f& ***!
+  \***********************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_UserPosts_vue_vue_type_template_id_62ef726f___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./UserPosts.vue?vue&type=template&id=62ef726f& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/user/UserPosts.vue?vue&type=template&id=62ef726f&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_UserPosts_vue_vue_type_template_id_62ef726f___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_UserPosts_vue_vue_type_template_id_62ef726f___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
 
 /***/ }),
 
 /***/ 0:
-/*!*************************************************************!*\
-  !*** multi ./resources/js/app.js ./resources/sass/app.scss ***!
-  \*************************************************************/
+/*!***********************************!*\
+  !*** multi ./resources/js/app.js ***!
+  \***********************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /Users/naotoyoshimura/Desktop/DONMAI/donmai_app/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /Users/naotoyoshimura/Desktop/DONMAI/donmai_app/resources/sass/app.scss */"./resources/sass/app.scss");
+module.exports = __webpack_require__(/*! /Users/naotoyoshimura/Desktop/DONMAI/donmai_app/resources/js/app.js */"./resources/js/app.js");
 
 
 /***/ })

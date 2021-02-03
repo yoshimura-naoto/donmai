@@ -24,6 +24,8 @@
         "vue-template-compiler": "^2.6.10"
     },
     "dependencies": {
-        "vue-router": "^3.4.9"
+        "vue-click-outside": "^1.1.0",
+        "vue-router": "^3.4.9",
+        "vue-textarea-autosize": "^1.1.1"
     }
 }

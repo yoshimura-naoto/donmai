@@ -1,0 +1,67 @@
+<template>
+  
+  <div class="user-thread-box">
+    <!-- スレッド一覧の各々 -->
+    <router-link :to="{ name: 'guchi.detail' }" v-for="thread in threads" :key="thread.id" class="guchi-thread">
+
+      <div class="thread-list-icon">
+        <div v-if="!thread.icon" class="thread-left-icon-image none" :style="{ backgroundImage: 'url(../../image/no-image.png)' }"></div>
+        <div v-if="thread.icon" class="thread-left-icon-image" :style="{ backgroundImage: 'url(' + thread.icon + ')' }"></div>
+      </div>
+
+      <div class="thread-left">
+
+        <div class="thread-left-top">
+          <div class="genre-icon">{{ thread.genre }}</div>
+          <div class="thread-time">{{ thread.created_at }}</div>
+        </div>
+
+        <div class="thread-title">{{ thread.title }}</div>
+
+      </div>
+
+      <div class="bookmark">
+        <img :src="'../../image/bookmark.png'">
+      </div>
+
+    </router-link>
+  
+  </div>
+
+</template>
+
+
+<script>
+export default {
+  data: function () {
+    return {
+      threads: [
+        {
+          id: 3,
+          genre: '仕事',
+          created_at: '2021/1/27 19:07',
+          title: '上司がうざすぎる！',
+        },
+        {
+          id: 6,
+          genre: '学校',
+          created_at: '2021/1/27 19:07',
+          title: '夏休みの宿題多過ぎない？？',
+        },
+        {
+          id: 9,
+          genre: '仕事',
+          created_at: '2021/1/27 19:07',
+          title: '上司がうざすぎる！',
+        },
+        {
+          id: 12,
+          genre: '学校',
+          created_at: '2021/1/27 19:07',
+          title: '夏休みの宿題多過ぎない？？',
+        },
+      ]
+    }
+  }
+}
+</script>

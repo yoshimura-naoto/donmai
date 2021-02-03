@@ -1,0 +1,92 @@
+.trend-page {
+  padding-top: 60px;
+}
+
+.trend {
+  padding: 10px 10px 0 10px;
+}
+
+.trend-container {
+  background: #ffb7a0;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 12px;
+  color: #525252;
+}
+
+.trend-title {
+  font-size: 24px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #848484;
+}
+
+.trend-each {
+  display: block;
+  padding: 5px 3px;
+  border-bottom: 1px solid #848484;
+  text-decoration: none;
+  color: #5a5a5a;
+  position: relative;
+}
+
+.trend-each:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.trend-each:hover {
+  opacity: 0.7;
+  cursor: pointer;
+}
+
+.trend-rank {
+  font-size: 17px;
+}
+
+.trend-tag {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.trend-bar {
+  background: #ff796f;
+  height: 18px;
+  border: 1px solid #ababab;
+  width: 100%;
+  animation: graphStretch linear 1s;
+}
+
+.trend-post-count {
+  font-size: 13px;
+  font-weight: bold;
+  color: #795548;
+  width: 100%;
+  height: 17px;
+  line-height: 21px;
+  position: absolute;
+  bottom: 7px;
+  left: 7px;
+}
+
+.trend-each:last-child .trend-post-count {
+  bottom: 2px;
+}
+
+@keyframes graphStretch {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+
+
+@media (min-width: 620px) {
+
+  .trend {
+    width: 600px;
+    margin: 0 auto;
+  }
+}

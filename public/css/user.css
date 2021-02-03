@@ -1,0 +1,232 @@
+.user-page {
+  padding-top: 60px;
+  height: 100%;
+}
+
+.user-page-when-overlay {
+  position: relative;
+}
+
+.user-container {
+  /* background: pink; */
+  height: 100%;
+  padding: 10px 10px 0 10px;
+}
+
+/* ユーザー情報エリア */
+.user-info {
+  /* background: skyblue; */
+  width: 100%;
+}
+
+/* ユーザー情報トップ */
+.user-info-top {
+  height: 100px;
+  display: flex;
+}
+
+.userpage-icon {
+  width: 100px;
+  height: 100px;
+  margin-right: 20px;
+}
+
+.userpage-icon img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+}
+
+.user-info-top-right {
+  width: 560px;
+}
+
+.userinfo-name-area {
+  /* background: springgreen; */
+  height: 50px;
+  line-height: 50px;
+  font-size: 24px;
+  font-weight: bold;
+  letter-spacing: 0px;
+}
+
+.userinfo-btn-area {
+  height: 50px;
+  display: flex;
+  align-items: center;
+}
+
+.userinfo-follow-btn {
+  height: 36px;
+  width: 108px;
+  color: #3e3c3e;
+  line-height: 36px;
+  text-align: center;
+  border: 1px solid #5e5a5a;
+  border-radius: 18px;
+  user-select: none;
+}
+
+.userinfo-follow-btn:hover {
+  cursor: pointer;
+  background: #b7b3b3;
+  color: #6d6969;
+}
+
+.userinfo-follow-btn-followed {
+  background: #beeef5;
+  height: 36px;
+  width: 108px;
+  color: #3e3c3e;
+  line-height: 36px;
+  text-align: center;
+  border: 1px solid #5e5a5a;
+  border-radius: 18px;
+  user-select: none;
+}
+
+.userinfo-follow-btn-followed:hover {
+  cursor: pointer;
+  background: #add4f3;
+  color: #6d6969;
+}
+
+
+.userinfo-data-area {
+  display: none;
+}
+
+/* ユーザー情報の自己紹介文エリア */
+.user-info-pr {
+  /* background: orange; */
+  border-bottom: 1px solid #ada7a7;
+}
+
+.pr-text {
+  padding: 10px 0;
+  color: #3e3d3d;
+  width: 300px;
+}
+
+/* ユーザー情報の投稿数、フォロワー数、フォロー数表示エリア */
+.user-info-nums {
+  font-size: 14px;
+  color: #2f2f2f;
+  display: flex;
+  justify-content: space-around;
+  padding: 10px 0;
+  border-bottom: 1px solid #ada7a7;
+}
+
+.userinfo-nums-each {
+  text-align: center;
+  padding: 3px;
+  border-radius: 10px;
+}
+
+.user-info-nums .clickable {
+  transition: 0.3s;
+}
+
+.user-info-nums .clickable:hover {
+  cursor: pointer;
+  background: #b7b3b3;
+}
+
+.userinfo-number {
+  font-weight: bold;
+}
+
+/* 投稿、どんまいメニューボタン */
+.user-info-menubtn {
+  /* background: orange; */
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.user-info-menubtn .each-btn {
+  display: block;
+  width: 50%;
+  flex-grow: 1;
+  padding: 10px 0;
+  text-align: center;
+  color: #524e4e;
+  font-weight: bold;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.user-info-menubtn .each-btn:hover {
+  cursor: pointer;
+  background: #aba9a9;
+  color: #6d6969;
+}
+
+.user-info-menubtn .selected {
+  background: #b7b3b3;
+  color: #6d6969;
+}
+
+
+
+@media (min-width: 620px) {
+
+  .user-posts {
+    width: 600px;
+    margin: 0 auto;
+  }
+}
+
+
+@media (min-width: 750px) {
+
+  .user-container {
+    width: 730px;
+    margin: 0 auto;
+  }
+
+  .user-info-top {
+    height: 150px;
+  }
+
+  .userpage-icon {
+    width: 150px;
+    height: 150px;
+  }
+
+  .userpage-icon img {
+    width: 150px;
+    height: 150px;
+  }
+
+  .userinfo-data-area {
+    display: flex;
+    align-items: center;
+    height: 50px;
+    color: #2f2f2f;
+  }
+
+  .userinfo-data-area .each-data1,
+  .userinfo-data-area .each-data2 {
+    margin-right: 30px;
+  }
+
+  .userinfo-data-area .each-data2,
+  .userinfo-data-area .each-data3 {
+    cursor: pointer;
+  }
+
+  .userinfo-data-area .each-data2:hover,
+  .userinfo-data-area .each-data3:hover {
+    opacity: 0.6;
+  }
+
+  .userinfo-data-area .num {
+    font-weight: bold;
+  }
+
+  .user-info-nums {
+    display: none;
+  }
+
+}

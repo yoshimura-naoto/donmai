@@ -1,0 +1,50 @@
+.hot-page {
+  padding-top: 60px;
+}
+
+.hot-page-when-overlay {
+  position: relative;
+}
+
+.hot {
+  padding: 10px 10px 0 10px;
+}
+
+.hot .posts {
+  background: #ffe973;
+}
+
+.hot .post-action-icon:hover {
+  background: yellow;
+}
+
+.hot-page .posts-overlay {
+  background: #ffe973;
+}
+
+.hot-page .flex-textarea-2 {
+  background: #f5dc00;
+}
+
+.hot-page .flex-textarea-2:focus {
+  background: #efd600;
+}
+
+.hot-page .comment-btn-main {
+  background: #f1dc26;
+}
+
+.hot-page .reply-cancel-btn,
+.hot-page .comment-btn {
+  background: #f1dc2a;
+}
+
+
+
+@media (min-width: 620px) {
+  
+  .hot {
+    width: 600px;
+    margin: 0 auto;
+  }
+}
