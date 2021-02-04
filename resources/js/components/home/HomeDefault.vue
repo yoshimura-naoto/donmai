@@ -17,9 +17,17 @@
           <textarea v-model="text" ref="area" :style="styles" class="flex-textarea" placeholder="なんかあった？"></textarea>
         </div>
 
+        <!-- ジャンル選択エリア -->
+        <div class="select-genre">
+          <select name="genre" v-model="genre">
+            <option value="" selected>ジャンルを選択してください</option>
+            <option v-for="(genre, index) in genres" :key="index" :value="genre.route">{{ genre.name }}</option>
+          </select>
+        </div>
+
         <!-- タグ入力エリア -->
         <div class="input-tag">
-          <input type="text" placeholder="タグ（例: #ああ #いい）">
+          <input type="text" placeholder="タグ（例: #ああ #いい）" v-model="tags">
         </div>
 
         <!-- 画像のプレビューエリア -->
@@ -398,13 +406,103 @@ export default {
     return {
       scrollPosition: null,
       value: '',
-      urls: [],
-      files: [],
       imageCount: 0,
-      text: '',
       height: '20px',
       commentInput: '',
       commentHeight: '31px',
+      // 新規投稿
+      text: '',
+      genre: '',
+      tags: '',
+      urls: [],
+      files: [],
+      // ジャンル
+      genres: [
+        {
+          name: '仕事',
+          route: 'jobs'
+        },
+        {
+          name: '日常',
+          route: 'life'
+        },
+        {
+          name: '人間関係',
+          route: 'relationships'
+        },
+        {
+          name: 'どじ',
+          route: 'dozi'
+        },
+        {
+          name: '恥かいた',
+          route: 'shame'
+        },
+        {
+          name: '学校',
+          route: 'school'
+        },
+        {
+          name: '恋愛',
+          route: 'love'
+        },
+        {
+          name: '結婚生活',
+          route: 'marriage'
+        },
+        {
+          name: 'ゲーム',
+          route: 'game'
+        },
+        {
+          name: 'うんこうんこうんこ',
+          route: 'unko'
+        },
+        {
+          name: 'ちんちん',
+          route: 'chinchin'
+        },
+        {
+          name: 'ちんちん',
+          route: 'chinchin'
+        },
+        {
+          name: 'ちんちん',
+          route: 'chinchin'
+        },
+        {
+          name: 'ちんちん',
+          route: 'chinchin'
+        },
+        {
+          name: 'ちんちん',
+          route: 'chinchin'
+        },
+        {
+          name: 'ちんちん',
+          route: 'chinchin'
+        },
+        {
+          name: 'ちんちん',
+          route: 'chinchin'
+        },
+        {
+          name: 'ちんちん',
+          route: 'chinchin'
+        },
+        {
+          name: 'ちんちん',
+          route: 'chinchin'
+        },
+        {
+          name: 'ちんちん',
+          route: 'chinchin'
+        },
+        {
+          name: 'ちんちん',
+          route: 'chinchin'
+        },
+      ],
       // モーダル
       modalPostShow: false,
       modalPostId: null,
@@ -673,7 +771,8 @@ export default {
     // 投稿のテキストエリアの高さをフレキシブルに
     changeHeight() {
       this.height = this.$refs.area.scrollHeight + 'px';
-      this.height = 31 + 'px';
+      // this.height = 31 + 'px';
+      this.height = 25 + 'px';
       this.$nextTick(() => {
         this.height = this.$refs.area.scrollHeight + 'px';
       });

@@ -31,6 +31,9 @@ import SearchGuchiNew from "./components/search/SearchGuchiNew";
 import SearchGuchiPopular from "./components/search/SearchGuchiPopular";
 import SearchUser from "./components/search/SearchUser";
 
+import Register from "./components/auth/Register";
+import Login from "./components/auth/Login";
+
 
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -46,7 +49,7 @@ Vue.use(VueRouter);
 
 const router = new VueRouter({
     mode: 'history',
-    // 画面遷移時のスクロール位置の制御
+    // 画面遷移時にスクロール位置をトップに
     scrollBehavior (to, from, savedPosition) {
         if (savedPosition) {
             return savedPosition
@@ -63,11 +66,13 @@ const router = new VueRouter({
                     path: '',
                     name: 'home',
                     component: HomeDefault,
+                    meta: { authOnly: true },
                 },
                 {
                     path: 'genre/:name',
                     name: 'home.genre',
                     component: HomeGenre,
+                    meta: { authOnly: true },
                 },
             ]
         },
@@ -79,16 +84,19 @@ const router = new VueRouter({
                     path: '',
                     name: 'user',
                     component: UserPosts,
+                    meta: { authOnly: true },
                 },
                 {
                     path: 'donmai',
                     name: 'user.donmai',
                     component: UserDonmai,
+                    meta: { authOnly: true },
                 },
                 {
                     path: 'guchi',
                     name: 'user.guchi',
                     component: UserGuchi,
+                    meta: { authOnly: true },
                 },
             ]
         },
@@ -100,26 +108,31 @@ const router = new VueRouter({
                     path: 'all',
                     name: 'guchi.all',
                     component: GuchiAll,
+                    meta: { authOnly: true },
                 },
                 {
                     path: 'all/trend',
                     name: 'guchi.all.trend',
                     component: GuchiAllTrend,
+                    meta: { authOnly: true },
                 },
                 {
-                    path: 'room/1',
+                    path: 'room/:id',
                     name: 'guchi.detail',
                     component: GuchiDetail,
+                    meta: { authOnly: true },
                 },
                 {
                     path: ':name',
                     name: 'guchi.genre',
                     component: GuchiGenre,
+                    meta: { authOnly: true },
                 },
                 {
                     path: ':name/trend',
                     name: 'guchi.genre.trend',
                     component: GuchiGenreTrend,
+                    meta: { authOnly: true },
                 },
             ]
         },
@@ -127,6 +140,7 @@ const router = new VueRouter({
             path: '/hot',
             name: 'hot',
             component: Hot,
+            meta: { authOnly: true },
         },
         {
             path: '/tags/:name',
@@ -136,11 +150,13 @@ const router = new VueRouter({
                     path: '',
                     name: 'tags.new',
                     component: TagsNew,
+                    meta: { authOnly: true },
                 },
                 {
                     path: 'popular',
                     name: 'tags.popular',
                     component: TagsPopular,
+                    meta: { authOnly: true },
                 }
             ],
         },
@@ -148,6 +164,7 @@ const router = new VueRouter({
             path: '/trend',
             name: 'trend',
             component: Trend,
+            meta: { authOnly: true },
         },
         {
             path: '/search/:word',
@@ -157,31 +174,72 @@ const router = new VueRouter({
                     path: 'post/new',
                     name: 'search.post.new',
                     component: SearchPostNew,
+                    meta: { authOnly: true },
                 },
                 {
                     path: 'post/popular',
                     name: 'search.post.popular',
                     component: SearchPostPopular,
+                    meta: { authOnly: true },
                 },
                 {
                     path: 'guchi/new',
                     name: 'search.guchi.new',
-                    component: SearchGuchiNew
+                    component: SearchGuchiNew,
+                    meta: { authOnly: true },
                 },
                 {
                     path: 'guchi/popular',
                     name: 'search.guchi.popular',
                     component: SearchGuchiPopular,
+                    meta: { authOnly: true },
                 },
                 {
                     path: 'user/',
                     name: 'search.user',
                     component: SearchUser,
+                    meta: { authOnly: true },
                 }
             ]
-        }
+        },
+        {
+            path: '/register',
+            name: 'auth.register',
+            component: Register,
+            meta: { guestOnly: true },
+        },
+        {
+            path: '/login',
+            name: 'auth.login',
+            component: Login,
+            meta: { guestOnly: true },
+        },
     ]
 });
+
+
+function isLoggedIn() {
+    return localStorage.getItem('auth');
+}
+
+router.beforeEach((to, from, next) => {
+    if (to.matched.some(record => record.meta.authOnly)) {
+        if (!isLoggedIn()) {
+            next({ name: 'auth.login' });
+        } else {
+            next();
+        }
+    } else if (to.matched.some(record => record.meta.guestOnly)) {
+        if (isLoggedIn()) {
+            next({ name: 'home' });
+        } else {
+            next();
+        }
+    } else {
+        next();
+    }
+});
+
 
 /**
  * The following block of code may be used to automatically register your

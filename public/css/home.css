@@ -52,6 +52,14 @@
   border-bottom: 1px solid #a59e9e;
 }
 
+.select-genre select {
+  border-radius: 6px;
+  border: 1px solid #ababab;
+  color: #848081;
+  margin: 0 0 10px 7px;
+  outline: none;
+}
+
 .input-tag {
   display: flex;
 }
