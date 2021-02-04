@@ -1,0 +1,79 @@
+.register-page {
+  padding-top: 60px;
+}
+
+.register {
+  padding: 0 10px 10px 10px;
+}
+
+.register-box {
+  background: pink;
+  width: 100%;
+  margin-top: 10px;
+  border-radius: 16px;
+  color: #5d5d5d;
+}
+
+.register-top {
+  background: lightcoral;
+  text-align: center;
+  font-size: 24px;
+  height: 45px;
+  line-height: 45px;
+  border-radius: 16px 16px 0 0;
+}
+
+.register-each {
+  /* background: skyblue; */
+  max-width: 400px;
+  margin: 0 auto;
+  margin-top: 16px;
+}
+
+.register-each label {
+  display: block;
+}
+
+.register-each input {
+  display: block;
+  width: calc(100% - 12px);
+  font-size: 15px;
+  padding: 6px;
+  border-radius: 8px;
+  border: none;
+}
+
+.register-error {
+  color: red;
+}
+
+.register-bottom {
+  height: 70px;
+  padding-top: 20px;
+  box-sizing: border-box;
+}
+
+.register-btn {
+  display: block;
+  font-size: 20px;
+  background: #ff94b9;
+  width: 100px;
+  text-align: center;
+  border-radius: 10px;
+  margin: 0 auto;
+  border: none;
+}
+
+.register-btn:hover {
+  opacity: 0.7;
+  cursor: pointer;
+}
+
+
+@media (min-width: 620px) {
+  
+  .register-box {
+    width: 600px;
+    margin: 10px auto;
+  }
+}

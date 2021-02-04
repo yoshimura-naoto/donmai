@@ -7,11 +7,11 @@
       <div class="guchi-main">
 
         <!-- 一覧トップのボタンたち -->
-        <!-- <div v-if="$route.path !== $router.resolve({ name: 'guchi.detail' }).href" class="guchi-top-btns"> -->
         <div class="guchi-top-btns">
 
           <!-- 戻るボタン -->
-          <div v-if="$route.path == $router.resolve({ name: 'guchi.detail' }).href" class="thread-back-btn" @click="$router.go(-1)">戻る</div>
+          <!-- <div v-if="$route.path == $router.resolve({ name: 'guchi.detail' }).href" class="thread-back-btn" @click="$router.go(-1)">戻る</div> -->
+          <div v-if="$route.path.substr(0, 12) == '/guchi/room/'" class="thread-back-btn" @click="$router.go(-1)">戻る</div>
 
           <!-- ジャンルボタン、新規作成ボタン -->
           <div class="guchi-top-btns-1">
@@ -33,14 +33,14 @@
 
             <!-- スレッド新規作成ボタン -->
             <!-- <div v-if="!createOpened" class="guchi-new" @click="openCreateForm"> -->
-            <div v-if="!createOpened && $route.path !== $router.resolve({ name: 'guchi.detail' }).href" class="guchi-new" @click="openCreateForm">
+            <div v-if="!createOpened && $route.path.substr(0, 12) !== '/guchi/room/'" class="guchi-new" @click="openCreateForm">
               部屋を作る
             </div>
 
           </div>
 
           <!-- 新着順と人気順で並べ替えボタン -->
-          <div v-if="$route.path !== $router.resolve({ name: 'guchi.detail' }).href" class="guchi-change-order">
+          <div v-if="$route.path.substr(0, 12) !== '/guchi/room/'" class="guchi-change-order">
             <router-link v-if="!$route.path.includes('/trend')" :to="$route.path" :class="{ 'selected': !$route.path.includes('/trend') }">
               新着
             </router-link>
@@ -59,7 +59,7 @@
         </div>
 
         <!-- 部屋を作成 -->
-        <div v-if="createOpened && $route.path !== $router.resolve({ name: 'guchi.detail' }).href" class="guchi-new-form">
+        <div v-if="createOpened && $route.path.substr(0, 12) !== '/guchi/room/'" class="guchi-new-form">
           
           <div class="top">
 
@@ -81,6 +81,7 @@
                 画像を選択
               </div>
 
+              <!-- アイコン画像のプレビュー -->
               <div class="guchi-image-preview-area">
                 <div v-if="!file" class="no-image">NO IMAGE</div>
                 <img class="guchi-new-batsu-icon" :src="'../image/batsu.png'" v-if="file && !$route.path.includes('/trend')" @click="deletePreview">
@@ -100,7 +101,15 @@
 
               <div class="title-input-title">トークテーマを入力</div>
 
-              <input type="text" class="guchi-title-input">
+              <input type="text" class="guchi-title-input" v-model="title">
+
+              <!-- ジャンル選択エリア -->
+              <div class="select-genre-guchi">
+                <select name="genre" v-model="genre">
+                  <option value="" selected>ジャンルを選択してください</option>
+                  <option v-for="(genre, index) in genres" :key="index" :value="genre.route">{{ genre.name }}</option>
+                </select>
+              </div>
 
               <div class="create">
                 <div class="create-btn">作成</div>
@@ -149,6 +158,9 @@ import ClickOutside from 'vue-click-outside';
 export default {
   data: function () {
     return {
+      // 部屋の新規作成
+      title: '',
+      genre: '',
       file: null,
       url: null,
       createOpened: false,

@@ -2106,6 +2106,43 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -2233,11 +2270,246 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function () {
         return;
       });
+    },
+    // ログアウト
+    logout: function logout() {
+      var _this = this;
+
+      axios.post('/api/logout').then(function () {
+        localStorage.removeItem('auth');
+
+        _this.$router.push({
+          name: 'auth.login'
+        });
+      });
     }
   },
   directives: {
     // 要素の外側クリックを認識するライブラリ
     ClickOutside: vue_click_outside__WEBPACK_IMPORTED_MODULE_0___default.a
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/auth/Login.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/auth/Login.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      form: {},
+      errors: []
+    };
+  },
+  methods: {
+    login: function login() {
+      var _this = this;
+
+      axios.get('/sanctum/csrf-cookie').then(function (res) {
+        axios.post('/api/login', _this.form).then(function () {
+          localStorage.setItem('auth', 'true');
+
+          _this.$router.push({
+            name: 'home'
+          });
+        })["catch"](function (error) {
+          _this.errors = error.response.data.errors;
+        });
+      });
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/auth/Register.vue?vue&type=script&lang=js&":
+/*!************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/auth/Register.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      form: {},
+      errors: []
+    };
+  },
+  methods: {
+    submit: function submit() {
+      var _this = this;
+
+      axios.post('/api/register', this.form).then(function () {
+        _this.$router.push({
+          name: 'auth.login'
+        });
+      })["catch"](function (error) {
+        _this.errors = error.response.data.errors;
+      });
+    }
   }
 });
 
@@ -2399,10 +2671,22 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      // 部屋の新規作成
+      title: '',
+      genre: '',
       file: null,
       url: null,
       createOpened: false,
@@ -2567,6 +2851,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -2577,79 +2866,103 @@ __webpack_require__.r(__webpack_exports__);
         created_at: '2021/1/27 19:07',
         comment_count: 4698,
         title: '嫁が怖すぎる件。。。',
-        icon: '../image/img3.jpg'
+        icon: '../image/img3.jpg',
+        bookmarked: false
       }, {
         id: 2,
         genre: '恋愛',
         created_at: '2021/1/27 19:07',
         comment_count: 4698,
-        title: '彼女ってどうやったらできるんだろ？'
+        title: '彼女ってどうやったらできるんだろ？',
+        bookmarked: false
       }, {
         id: 3,
         genre: '仕事',
         created_at: '2021/1/27 19:07',
         comment_count: 4698,
-        title: '上司がうざすぎる！'
+        title: '上司がうざすぎる！',
+        bookmarked: false
       }, {
         id: 4,
         genre: 'ゲーム',
         created_at: '2021/1/27 19:07',
         comment_count: 4698,
-        title: 'APEX全然勝てないんだが。。APEX全然勝てないんだが。。APEX全然勝てないんだが。。APEX全然勝てないんだが。。'
+        title: 'APEX全然勝てないんだが。。APEX全然勝てないんだが。。APEX全然勝てないんだが。。APEX全然勝てないんだが。。',
+        bookmarked: false
       }, {
         id: 5,
         genre: '人間関係',
         created_at: '2021/1/27 19:07',
         comment_count: 4698,
         title: '親友の悪口言い合おうぜ！',
-        icon: '../image/img5.jpg'
+        icon: '../image/img5.jpg',
+        bookmarked: false
       }, {
         id: 6,
         genre: '学校',
         created_at: '2021/1/27 19:07',
         comment_count: 4698,
-        title: '夏休みの宿題多過ぎない？？'
+        title: '夏休みの宿題多過ぎない？？',
+        bookmarked: false
       }, {
         id: 7,
         genre: '結婚生活',
         created_at: '2021/1/27 19:07',
         comment_count: 4698,
-        title: '嫁が怖すぎる件。。。'
+        title: '嫁が怖すぎる件。。。',
+        bookmarked: false
       }, {
         id: 8,
         genre: '恋愛',
         created_at: '2021/1/27 19:07',
         comment_count: 4698,
-        title: '彼女ってどうやったらできるんだろ？'
+        title: '彼女ってどうやったらできるんだろ？',
+        bookmarked: false
       }, {
         id: 9,
         genre: '仕事',
         created_at: '2021/1/27 19:07',
         comment_count: 4698,
         title: '上司がうざすぎる！',
-        icon: '../image/img7.jpg'
+        icon: '../image/img7.jpg',
+        bookmarked: false
       }, {
         id: 10,
         genre: 'ゲーム',
         created_at: '2021/1/27 19:07',
         comment_count: 4698,
-        title: 'APEX全然勝てないんだが。。'
+        title: 'APEX全然勝てないんだが。。',
+        bookmarked: false
       }, {
         id: 11,
         genre: '人間関係',
         created_at: '2021/1/27 19:07',
         comment_count: 4698,
-        title: '親友の悪口言い合おうぜ！'
+        title: '親友の悪口言い合おうぜ！',
+        bookmarked: false
       }, {
         id: 12,
         genre: '学校',
         created_at: '2021/1/27 19:07',
         comment_count: 4698,
-        title: '夏休みの宿題多過ぎない？？'
+        title: '夏休みの宿題多過ぎない？？',
+        bookmarked: false
       }]
     };
   },
-  methods: {},
+  methods: {
+    toGuchiDetail: function toGuchiDetail(threadId) {
+      this.$router.push({
+        name: 'guchi.detail',
+        params: {
+          id: threadId
+        }
+      })["catch"](function () {});
+    },
+    bookMark: function bookMark(i) {
+      this.threads[i].bookmarked = !this.threads[i].bookmarked;
+    }
+  },
   directives: {
     ClickOutside: vue_click_outside__WEBPACK_IMPORTED_MODULE_0___default.a
   }
@@ -2705,6 +3018,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -2714,77 +3031,101 @@ __webpack_require__.r(__webpack_exports__);
         genre: 'ゲーム',
         created_at: '2021/1/27 19:07',
         comment_count: 12000,
-        title: 'APEX全然勝てないんだが。。APEX全然勝てないんだが。。APEX全然勝てないんだが。。APEX全然勝てないんだが。。'
+        title: 'APEX全然勝てないんだが。。APEX全然勝てないんだが。。APEX全然勝てないんだが。。APEX全然勝てないんだが。。',
+        bookmarked: false
       }, {
         id: 5,
         genre: '人間関係',
         created_at: '2021/1/27 19:07',
         comment_count: 11000,
-        title: '親友の悪口言い合おうぜ！'
+        title: '親友の悪口言い合おうぜ！',
+        bookmarked: false
       }, {
         id: 6,
         genre: '学校',
         created_at: '2021/1/27 19:07',
         comment_count: 10000,
-        title: '夏休みの宿題多過ぎない？？'
+        title: '夏休みの宿題多過ぎない？？',
+        bookmarked: false
       }, {
         id: 7,
         genre: '結婚生活',
         created_at: '2021/1/27 19:07',
         comment_count: 9000,
-        title: '嫁が怖すぎる件。。。'
+        title: '嫁が怖すぎる件。。。',
+        bookmarked: false
       }, {
         id: 8,
         genre: '恋愛',
         created_at: '2021/1/27 19:07',
         comment_count: 8000,
-        title: '彼女ってどうやったらできるんだろ？'
+        title: '彼女ってどうやったらできるんだろ？',
+        bookmarked: false
       }, {
         id: 9,
         genre: '仕事',
         created_at: '2021/1/27 19:07',
         comment_count: 7000,
-        title: '上司がうざすぎる！'
+        title: '上司がうざすぎる！',
+        bookmarked: false
       }, {
         id: 10,
         genre: 'ゲーム',
         created_at: '2021/1/27 19:07',
         comment_count: 6000,
-        title: 'APEX全然勝てないんだが。。'
+        title: 'APEX全然勝てないんだが。。',
+        bookmarked: false
       }, {
         id: 11,
         genre: '人間関係',
         created_at: '2021/1/27 19:07',
         comment_count: 5000,
-        title: '親友の悪口言い合おうぜ！'
+        title: '親友の悪口言い合おうぜ！',
+        bookmarked: false
       }, {
         id: 12,
         genre: '学校',
         created_at: '2021/1/27 19:07',
         comment_count: 4000,
-        title: '夏休みの宿題多過ぎない？？'
+        title: '夏休みの宿題多過ぎない？？',
+        bookmarked: false
       }, {
         id: 1,
         genre: '結婚生活',
         created_at: '2021/1/27 19:07',
         comment_count: 3000,
-        title: '嫁が怖すぎる件。。。'
+        title: '嫁が怖すぎる件。。。',
+        bookmarked: false
       }, {
         id: 2,
         genre: '恋愛',
         created_at: '2021/1/27 19:07',
         comment_count: 2000,
-        title: '彼女ってどうやったらできるんだろ？'
+        title: '彼女ってどうやったらできるんだろ？',
+        bookmarked: false
       }, {
         id: 3,
         genre: '仕事',
         created_at: '2021/1/27 19:07',
         comment_count: 1000,
-        title: '上司がうざすぎる！'
+        title: '上司がうざすぎる！',
+        bookmarked: false
       }]
     };
   },
-  methods: {},
+  methods: {
+    toGuchiDetail: function toGuchiDetail(threadId) {
+      this.$router.push({
+        name: 'guchi.detail',
+        params: {
+          id: threadId
+        }
+      })["catch"](function () {});
+    },
+    bookMark: function bookMark(i) {
+      this.threads[i].bookmarked = !this.threads[i].bookmarked;
+    }
+  },
   directives: {
     ClickOutside: vue_click_outside__WEBPACK_IMPORTED_MODULE_0___default.a
   }
@@ -3243,6 +3584,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -3252,17 +3597,31 @@ __webpack_require__.r(__webpack_exports__);
         genre: '仕事',
         created_at: '2021/1/27 19:07',
         comment_count: 5432,
-        title: '上司がうざすぎる！'
+        title: '上司がうざすぎる！',
+        bookmarked: false
       }, {
         id: 3,
         genre: '仕事',
         created_at: '2021/1/27 19:07',
         comment_count: 9876,
-        title: '転職したい。。'
+        title: '転職したい。。',
+        bookmarked: false
       }]
     };
   },
-  methods: {},
+  methods: {
+    toGuchiDetail: function toGuchiDetail(threadId) {
+      this.$router.push({
+        name: 'guchi.detail',
+        params: {
+          id: threadId
+        }
+      })["catch"](function () {});
+    },
+    bookMark: function bookMark(i) {
+      this.threads[i].bookmarked = !this.threads[i].bookmarked;
+    }
+  },
   directives: {
     ClickOutside: vue_click_outside__WEBPACK_IMPORTED_MODULE_0___default.a
   }
@@ -3318,26 +3677,45 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       threads: [{
         id: 3,
+        icon: '../../image/img7.jpg',
         genre: '仕事',
         created_at: '2021/1/27 19:07',
         comment_count: 9876,
-        title: '転職したい。。'
+        title: '転職したい。。',
+        bookmarked: false
       }, {
         id: 9,
         genre: '仕事',
         created_at: '2021/1/27 19:07',
         comment_count: 5432,
-        title: '上司がうざすぎる！'
+        title: '上司がうざすぎる！',
+        bookmarked: false
       }]
     };
   },
-  methods: {},
+  methods: {
+    toGuchiDetail: function toGuchiDetail(threadId) {
+      this.$router.push({
+        name: 'guchi.detail',
+        params: {
+          id: threadId
+        }
+      })["catch"](function () {});
+    },
+    bookMark: function bookMark(i) {
+      this.threads[i].bookmarked = !this.threads[i].bookmarked;
+    }
+  },
   directives: {
     ClickOutside: vue_click_outside__WEBPACK_IMPORTED_MODULE_0___default.a
   }
@@ -3877,18 +4255,94 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       scrollPosition: null,
       value: '',
-      urls: [],
-      files: [],
       imageCount: 0,
-      text: '',
       height: '20px',
       commentInput: '',
       commentHeight: '31px',
+      // 新規投稿
+      text: '',
+      genre: '',
+      tags: '',
+      urls: [],
+      files: [],
+      // ジャンル
+      genres: [{
+        name: '仕事',
+        route: 'jobs'
+      }, {
+        name: '日常',
+        route: 'life'
+      }, {
+        name: '人間関係',
+        route: 'relationships'
+      }, {
+        name: 'どじ',
+        route: 'dozi'
+      }, {
+        name: '恥かいた',
+        route: 'shame'
+      }, {
+        name: '学校',
+        route: 'school'
+      }, {
+        name: '恋愛',
+        route: 'love'
+      }, {
+        name: '結婚生活',
+        route: 'marriage'
+      }, {
+        name: 'ゲーム',
+        route: 'game'
+      }, {
+        name: 'うんこうんこうんこ',
+        route: 'unko'
+      }, {
+        name: 'ちんちん',
+        route: 'chinchin'
+      }, {
+        name: 'ちんちん',
+        route: 'chinchin'
+      }, {
+        name: 'ちんちん',
+        route: 'chinchin'
+      }, {
+        name: 'ちんちん',
+        route: 'chinchin'
+      }, {
+        name: 'ちんちん',
+        route: 'chinchin'
+      }, {
+        name: 'ちんちん',
+        route: 'chinchin'
+      }, {
+        name: 'ちんちん',
+        route: 'chinchin'
+      }, {
+        name: 'ちんちん',
+        route: 'chinchin'
+      }, {
+        name: 'ちんちん',
+        route: 'chinchin'
+      }, {
+        name: 'ちんちん',
+        route: 'chinchin'
+      }, {
+        name: 'ちんちん',
+        route: 'chinchin'
+      }],
       // モーダル
       modalPostShow: false,
       modalPostId: null,
@@ -4104,8 +4558,9 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     changeHeight: function changeHeight() {
       var _this = this;
 
-      this.height = this.$refs.area.scrollHeight + 'px';
-      this.height = 31 + 'px';
+      this.height = this.$refs.area.scrollHeight + 'px'; // this.height = 31 + 'px';
+
+      this.height = 25 + 'px';
       this.$nextTick(function () {
         _this.height = _this.$refs.area.scrollHeight + 'px';
       });
@@ -6056,6 +6511,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -6066,79 +6525,103 @@ __webpack_require__.r(__webpack_exports__);
         created_at: '2021/1/27 19:07',
         comment_count: 4698,
         title: '嫁が怖すぎる件。。。',
-        icon: '../../../image/img3.jpg'
+        icon: '../../../image/img3.jpg',
+        bookmarked: false
       }, {
         id: 2,
         genre: '恋愛',
         created_at: '2021/1/27 19:07',
         comment_count: 4698,
-        title: '彼女ってどうやったらできるんだろ？'
+        title: '彼女ってどうやったらできるんだろ？',
+        bookmarked: false
       }, {
         id: 3,
         genre: '仕事',
         created_at: '2021/1/27 19:07',
         comment_count: 4698,
-        title: '上司がうざすぎる！'
+        title: '上司がうざすぎる！',
+        bookmarked: false
       }, {
         id: 4,
         genre: 'ゲーム',
         created_at: '2021/1/27 19:07',
         comment_count: 4698,
-        title: 'APEX全然勝てないんだが。。APEX全然勝てないんだが。。APEX全然勝てないんだが。。APEX全然勝てないんだが。。'
+        title: 'APEX全然勝てないんだが。。APEX全然勝てないんだが。。APEX全然勝てないんだが。。APEX全然勝てないんだが。。',
+        bookmarked: false
       }, {
         id: 5,
         genre: '人間関係',
         created_at: '2021/1/27 19:07',
         comment_count: 4698,
         title: '親友の悪口言い合おうぜ！',
-        icon: '../../../image/img5.jpg'
+        icon: '../../../image/img5.jpg',
+        bookmarked: false
       }, {
         id: 6,
         genre: '学校',
         created_at: '2021/1/27 19:07',
         comment_count: 4698,
-        title: '夏休みの宿題多過ぎない？？'
+        title: '夏休みの宿題多過ぎない？？',
+        bookmarked: false
       }, {
         id: 7,
         genre: '結婚生活',
         created_at: '2021/1/27 19:07',
         comment_count: 4698,
-        title: '嫁が怖すぎる件。。。'
+        title: '嫁が怖すぎる件。。。',
+        bookmarked: false
       }, {
         id: 8,
         genre: '恋愛',
         created_at: '2021/1/27 19:07',
         comment_count: 4698,
-        title: '彼女ってどうやったらできるんだろ？'
+        title: '彼女ってどうやったらできるんだろ？',
+        bookmarked: false
       }, {
         id: 9,
         genre: '仕事',
         created_at: '2021/1/27 19:07',
         comment_count: 4698,
         title: '上司がうざすぎる！',
-        icon: '../../../image/img7.jpg'
+        icon: '../../../image/img7.jpg',
+        bookmarked: false
       }, {
         id: 10,
         genre: 'ゲーム',
         created_at: '2021/1/27 19:07',
         comment_count: 4698,
-        title: 'APEX全然勝てないんだが。。'
+        title: 'APEX全然勝てないんだが。。',
+        bookmarked: false
       }, {
         id: 11,
         genre: '人間関係',
         created_at: '2021/1/27 19:07',
         comment_count: 4698,
-        title: '親友の悪口言い合おうぜ！'
+        title: '親友の悪口言い合おうぜ！',
+        bookmarked: false
       }, {
         id: 12,
         genre: '学校',
         created_at: '2021/1/27 19:07',
         comment_count: 4698,
-        title: '夏休みの宿題多過ぎない？？'
+        title: '夏休みの宿題多過ぎない？？',
+        bookmarked: false
       }]
     };
   },
-  methods: {},
+  methods: {
+    toGuchiDetail: function toGuchiDetail(threadId) {
+      this.$router.push({
+        name: 'guchi.detail',
+        params: {
+          id: threadId
+        }
+      })["catch"](function () {});
+    },
+    bookMark: function bookMark(i) {
+      this.threads[i].bookmarked = !this.threads[i].bookmarked;
+    }
+  },
   directives: {
     ClickOutside: vue_click_outside__WEBPACK_IMPORTED_MODULE_0___default.a
   }
@@ -6194,6 +6677,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -6204,80 +6691,104 @@ __webpack_require__.r(__webpack_exports__);
         created_at: '2021/1/27 19:07',
         comment_count: 4698,
         title: '嫁が怖すぎる件。。。',
-        icon: '../../../image/img4.jpg'
+        icon: '../../../image/img4.jpg',
+        bookmarked: false
       }, {
         id: 2,
         genre: '恋愛',
         created_at: '2021/1/27 19:07',
         comment_count: 4698,
         title: '彼女ってどうやったらできるんだろ？',
-        icon: '../../../image/img5.jpg'
+        icon: '../../../image/img5.jpg',
+        bookmarked: false
       }, {
         id: 3,
         genre: '仕事',
         created_at: '2021/1/27 19:07',
         comment_count: 4698,
-        title: '上司がうざすぎる！'
+        title: '上司がうざすぎる！',
+        bookmarked: false
       }, {
         id: 4,
         genre: 'ゲーム',
         created_at: '2021/1/27 19:07',
         comment_count: 4698,
-        title: 'APEX全然勝てないんだが。。APEX全然勝てないんだが。。APEX全然勝てないんだが。。APEX全然勝てないんだが。。'
+        title: 'APEX全然勝てないんだが。。APEX全然勝てないんだが。。APEX全然勝てないんだが。。APEX全然勝てないんだが。。',
+        bookmarked: false
       }, {
         id: 5,
         genre: '人間関係',
         created_at: '2021/1/27 19:07',
         comment_count: 4698,
         title: '親友の悪口言い合おうぜ！',
-        icon: '../../../image/img5.jpg'
+        icon: '../../../image/img5.jpg',
+        bookmarked: false
       }, {
         id: 6,
         genre: '学校',
         created_at: '2021/1/27 19:07',
         comment_count: 4698,
-        title: '夏休みの宿題多過ぎない？？'
+        title: '夏休みの宿題多過ぎない？？',
+        bookmarked: false
       }, {
         id: 7,
         genre: '結婚生活',
         created_at: '2021/1/27 19:07',
         comment_count: 4698,
-        title: '嫁が怖すぎる件。。。'
+        title: '嫁が怖すぎる件。。。',
+        bookmarked: false
       }, {
         id: 8,
         genre: '恋愛',
         created_at: '2021/1/27 19:07',
         comment_count: 4698,
-        title: '彼女ってどうやったらできるんだろ？'
+        title: '彼女ってどうやったらできるんだろ？',
+        bookmarked: false
       }, {
         id: 9,
         genre: '仕事',
         created_at: '2021/1/27 19:07',
         comment_count: 4698,
         title: '上司がうざすぎる！',
-        icon: '../../../image/img7.jpg'
+        icon: '../../../image/img7.jpg',
+        bookmarked: false
       }, {
         id: 10,
         genre: 'ゲーム',
         created_at: '2021/1/27 19:07',
         comment_count: 4698,
-        title: 'APEX全然勝てないんだが。。'
+        title: 'APEX全然勝てないんだが。。',
+        bookmarked: false
       }, {
         id: 11,
         genre: '人間関係',
         created_at: '2021/1/27 19:07',
         comment_count: 4698,
-        title: '親友の悪口言い合おうぜ！'
+        title: '親友の悪口言い合おうぜ！',
+        bookmarked: false
       }, {
         id: 12,
         genre: '学校',
         created_at: '2021/1/27 19:07',
         comment_count: 4698,
-        title: '夏休みの宿題多過ぎない？？'
+        title: '夏休みの宿題多過ぎない？？',
+        bookmarked: false
       }]
     };
   },
-  methods: {},
+  methods: {
+    toGuchiDetail: function toGuchiDetail(threadId) {
+      this.$router.push({
+        name: 'guchi.detail',
+        params: {
+          id: threadId
+        }
+      })["catch"](function () {});
+    },
+    bookMark: function bookMark(i) {
+      this.threads[i].bookmarked = !this.threads[i].bookmarked;
+    }
+  },
   directives: {
     ClickOutside: vue_click_outside__WEBPACK_IMPORTED_MODULE_0___default.a
   }
@@ -10953,31 +11464,57 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       threads: [{
         id: 3,
+        icon: '../../image/img7.jpg',
         genre: '仕事',
         created_at: '2021/1/27 19:07',
-        title: '上司がうざすぎる！'
+        title: '上司がうざすぎる！',
+        bookmarked: true
       }, {
         id: 6,
         genre: '学校',
         created_at: '2021/1/27 19:07',
-        title: '夏休みの宿題多過ぎない？？'
+        title: '夏休みの宿題多過ぎない？？',
+        bookmarked: true
       }, {
         id: 9,
         genre: '仕事',
         created_at: '2021/1/27 19:07',
-        title: '上司がうざすぎる！'
+        title: '上司がうざすぎる！',
+        bookmarked: true
       }, {
         id: 12,
         genre: '学校',
         created_at: '2021/1/27 19:07',
-        title: '夏休みの宿題多過ぎない？？'
+        title: '夏休みの宿題多過ぎない？？',
+        bookmarked: true
       }]
     };
+  },
+  methods: {
+    toGuchiDetail: function toGuchiDetail(threadId) {
+      this.$router.push({
+        name: 'guchi.detail',
+        params: {
+          id: threadId
+        }
+      })["catch"](function () {});
+    },
+    bookMark: function bookMark(i) {
+      this.threads[i].bookmarked = !this.threads[i].bookmarked;
+    }
   }
 });
 
@@ -47459,59 +47996,63 @@ var render = function() {
         1
       ),
       _vm._v(" "),
-      _c(
-        "div",
-        {
-          staticClass: "search search-1",
-          class: { "no-search": !_vm.searchOpened }
-        },
-        [
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.keyword,
-                expression: "keyword"
-              },
-              {
-                name: "click-outside",
-                rawName: "v-click-outside",
-                value: _vm.searchClose,
-                expression: "searchClose"
-              }
-            ],
-            staticClass: "search-form",
-            attrs: { id: "search", type: "text", placeholder: "検索" },
-            domProps: { value: _vm.keyword },
-            on: {
-              keydown: function($event) {
-                if (
-                  !$event.type.indexOf("key") &&
-                  _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
-                ) {
-                  return null
+      _vm.$route.path !== "/register" && _vm.$route.path !== "/login"
+        ? _c(
+            "div",
+            {
+              staticClass: "search search-1",
+              class: { "no-search": !_vm.searchOpened }
+            },
+            [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.keyword,
+                    expression: "keyword"
+                  },
+                  {
+                    name: "click-outside",
+                    rawName: "v-click-outside",
+                    value: _vm.searchClose,
+                    expression: "searchClose"
+                  }
+                ],
+                staticClass: "search-form",
+                attrs: { id: "search", type: "text", placeholder: "検索" },
+                domProps: { value: _vm.keyword },
+                on: {
+                  keydown: function($event) {
+                    if (
+                      !$event.type.indexOf("key") &&
+                      _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+                    ) {
+                      return null
+                    }
+                    return _vm.search($event)
+                  },
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.keyword = $event.target.value
+                  }
                 }
-                return _vm.search($event)
-              },
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.keyword = $event.target.value
-              }
-            }
-          })
-        ]
-      ),
+              })
+            ]
+          )
+        : _vm._e(),
       _vm._v(" "),
       !_vm.searchOpened
         ? _c("div", { staticClass: "menus" }, [
-            _c(
-              "div",
-              { staticClass: "search-icon", on: { click: _vm.searchOpen } },
-              [_c("img", { attrs: { src: "/image/search2.png" } })]
-            ),
+            _vm.$route.path !== "/register" && _vm.$route.path !== "/login"
+              ? _c(
+                  "div",
+                  { staticClass: "search-icon", on: { click: _vm.searchOpen } },
+                  [_c("img", { attrs: { src: "/image/search2.png" } })]
+                )
+              : _vm._e(),
             _vm._v(" "),
             _c(
               "div",
@@ -47521,7 +48062,7 @@ var render = function() {
                   "genre-menu-display-1":
                     _vm.$route.path ==
                       _vm.$router.resolve({ name: "home" }).href ||
-                    _vm.$route.path.startsWith("/genre/")
+                    _vm.$route.path.substr(0, 7) == "/genre/"
                 }
               },
               [
@@ -47610,318 +48151,119 @@ var render = function() {
               _c("div", [_vm._v("MENU")]),
               _vm._v(" "),
               _c("ul", [
-                _c(
-                  "li",
-                  [
-                    _c("router-link", { attrs: { to: { name: "home" } } }, [
-                      _c(
-                        "div",
-                        {
-                          staticClass: "menu-set-btn",
-                          class: {
-                            "current-2":
-                              _vm.$route.path ==
-                              _vm.$router.resolve({ name: "home" }).href
-                          }
-                        },
-                        [_vm._v("\n                ホーム\n              ")]
-                      )
-                    ])
-                  ],
-                  1
-                ),
+                _vm.$route.path !== "/register" && _vm.$route.path !== "/login"
+                  ? _c(
+                      "li",
+                      [
+                        _c("router-link", { attrs: { to: { name: "home" } } }, [
+                          _c(
+                            "div",
+                            {
+                              staticClass: "menu-set-btn",
+                              class: {
+                                "current-2":
+                                  _vm.$route.path ==
+                                  _vm.$router.resolve({ name: "home" }).href
+                              }
+                            },
+                            [_vm._v("\n                ホーム\n              ")]
+                          )
+                        ])
+                      ],
+                      1
+                    )
+                  : _vm._e(),
                 _vm._v(" "),
-                _c(
-                  "li",
-                  [
-                    _c("router-link", { attrs: { to: { name: "trend" } } }, [
-                      _c(
-                        "div",
-                        {
-                          staticClass: "menu-set-btn",
-                          class: {
-                            "current-2":
-                              _vm.$route.path ==
-                              _vm.$router.resolve({ name: "trend" }).href
-                          }
-                        },
-                        [_vm._v("\n                トレンド\n              ")]
-                      )
-                    ])
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _c(
-                  "li",
-                  [
-                    _c("router-link", { attrs: { to: { name: "hot" } } }, [
-                      _c(
-                        "div",
-                        {
-                          staticClass: "menu-set-btn",
-                          class: {
-                            "current-2":
-                              _vm.$route.path ==
-                              _vm.$router.resolve({ name: "hot" }).href
-                          }
-                        },
-                        [_vm._v("\n                話題の投稿\n              ")]
-                      )
-                    ])
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _c(
-                  "li",
-                  [
-                    _c(
-                      "router-link",
-                      { attrs: { to: { name: "guchi.all" } } },
+                _vm.$route.path !== "/register" && _vm.$route.path !== "/login"
+                  ? _c(
+                      "li",
                       [
                         _c(
-                          "div",
-                          {
-                            staticClass: "menu-set-btn",
-                            class: {
-                              "current-2": _vm.$route.path.startsWith("/guchi")
-                            }
-                          },
+                          "router-link",
+                          { attrs: { to: { name: "trend" } } },
                           [
-                            _vm._v(
-                              "\n                みんなでグチ\n              "
+                            _c(
+                              "div",
+                              {
+                                staticClass: "menu-set-btn",
+                                class: {
+                                  "current-2":
+                                    _vm.$route.path ==
+                                    _vm.$router.resolve({ name: "trend" }).href
+                                }
+                              },
+                              [
+                                _vm._v(
+                                  "\n                トレンド\n              "
+                                )
+                              ]
                             )
                           ]
                         )
-                      ]
+                      ],
+                      1
                     )
-                  ],
-                  1
-                ),
+                  : _vm._e(),
                 _vm._v(" "),
-                _c(
-                  "li",
-                  [
-                    _c(
-                      "router-link",
-                      { attrs: { to: { name: "user", params: { id: 1 } } } },
+                _vm.$route.path !== "/register" && _vm.$route.path !== "/login"
+                  ? _c(
+                      "li",
                       [
-                        _c("div", { staticClass: "menu-set-btn" }, [
-                          _vm._v("プロフィール")
-                        ])
-                      ]
-                    )
-                  ],
-                  1
-                )
-              ])
-            ]),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "menu each-menu" },
-              [
-                _c(
-                  "router-link",
-                  {
-                    class: {
-                      current:
-                        _vm.$route.path ==
-                          _vm.$router.resolve({ name: "home" }).href ||
-                        _vm.$route.path.startsWith("/genre/")
-                    },
-                    attrs: { to: { name: "home" } }
-                  },
-                  [
-                    _c("div", { staticClass: "menu-set-btn" }, [
-                      _vm._v("ホーム")
-                    ])
-                  ]
-                )
-              ],
-              1
-            ),
-            _vm._v(" "),
-            _c(
-              "div",
-              {
-                staticClass: "header-genre-menu-wide",
-                class: {
-                  "genre-menu-display-2":
-                    _vm.$route.path ==
-                      _vm.$router.resolve({ name: "home" }).href ||
-                    _vm.$route.path.startsWith("/genre/")
-                }
-              },
-              [
-                _c(
-                  "div",
-                  {
-                    directives: [
-                      {
-                        name: "click-outside",
-                        rawName: "v-click-outside",
-                        value: _vm.genreMenuWideClose,
-                        expression: "genreMenuWideClose"
-                      }
-                    ],
-                    staticClass: "menu-set-btn-genre-wide",
-                    on: { click: _vm.genreMenuToggleWide }
-                  },
-                  [_vm._v("\n          ジャンル\n        ")]
-                ),
-                _vm._v(" "),
-                _vm.genreMenuWideOpened
-                  ? _c("div", { staticClass: "pulldown-genre-menu" }, [
-                      _c(
-                        "ul",
-                        [
+                        _c("router-link", { attrs: { to: { name: "hot" } } }, [
                           _c(
-                            "li",
+                            "div",
+                            {
+                              staticClass: "menu-set-btn",
+                              class: {
+                                "current-2":
+                                  _vm.$route.path ==
+                                  _vm.$router.resolve({ name: "hot" }).href
+                              }
+                            },
                             [
-                              _c(
-                                "router-link",
-                                {
-                                  class: { selected: _vm.$route.path == "/" },
-                                  attrs: { to: { name: "home" } }
-                                },
-                                [
-                                  _vm._v(
-                                    "\n                すべて\n              "
-                                  )
-                                ]
+                              _vm._v(
+                                "\n                話題の投稿\n              "
                               )
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _vm._l(_vm.genres, function(genre, index) {
-                            return _c(
-                              "li",
-                              { key: index },
+                            ]
+                          )
+                        ])
+                      ],
+                      1
+                    )
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.$route.path !== "/register" && _vm.$route.path !== "/login"
+                  ? _c(
+                      "li",
+                      [
+                        _c(
+                          "router-link",
+                          { attrs: { to: { name: "guchi.all" } } },
+                          [
+                            _c(
+                              "div",
+                              {
+                                staticClass: "menu-set-btn",
+                                class: {
+                                  "current-2":
+                                    _vm.$route.path.substr(0, 6) == "/guchi"
+                                }
+                              },
                               [
-                                _c(
-                                  "router-link",
-                                  {
-                                    class: {
-                                      selected:
-                                        _vm.$route.path ==
-                                        "/genre/" + genre.route
-                                    },
-                                    attrs: {
-                                      to: {
-                                        name: "home.genre",
-                                        params: { name: genre.route }
-                                      }
-                                    }
-                                  },
-                                  [
-                                    _vm._v(
-                                      "\n                " +
-                                        _vm._s(genre.name) +
-                                        "\n              "
-                                    )
-                                  ]
+                                _vm._v(
+                                  "\n                みんなでグチ\n              "
                                 )
-                              ],
-                              1
+                              ]
                             )
-                          })
-                        ],
-                        2
-                      )
-                    ])
-                  : _vm._e()
-              ]
-            ),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "menu each-menu" },
-              [
-                _c(
-                  "router-link",
-                  {
-                    class: {
-                      current:
-                        _vm.$route.path ==
-                        _vm.$router.resolve({ name: "trend" }).href
-                    },
-                    attrs: { to: { name: "trend" } }
-                  },
-                  [
-                    _c("div", { staticClass: "menu-set-btn" }, [
-                      _vm._v("トレンド")
-                    ])
-                  ]
-                )
-              ],
-              1
-            ),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "menu each-menu" },
-              [
-                _c(
-                  "router-link",
-                  {
-                    class: {
-                      current:
-                        _vm.$route.path ==
-                        _vm.$router.resolve({ name: "hot" }).href
-                    },
-                    attrs: { to: { name: "hot" } }
-                  },
-                  [
-                    _c("div", { staticClass: "menu-set-btn" }, [
-                      _vm._v("話題の投稿")
-                    ])
-                  ]
-                )
-              ],
-              1
-            ),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "menu each-menu" },
-              [
-                _c(
-                  "router-link",
-                  {
-                    class: { current: _vm.$route.path.startsWith("/guchi") },
-                    attrs: { to: { name: "guchi.all" } }
-                  },
-                  [
-                    _c("div", { staticClass: "menu-set-btn" }, [
-                      _vm._v("みんなでグチ")
-                    ])
-                  ]
-                )
-              ],
-              1
-            ),
-            _vm._v(" "),
-            _c("div", { staticClass: "icon each-menu" }, [
-              _c("img", {
-                directives: [
-                  {
-                    name: "click-outside",
-                    rawName: "v-click-outside",
-                    value: _vm.close,
-                    expression: "close"
-                  }
-                ],
-                class: { clicked: _vm.opened },
-                attrs: { src: "/image/unko.jpg" },
-                on: { click: _vm.toggle }
-              }),
-              _vm._v(" "),
-              _vm.opened
-                ? _c("ul", [
-                    _c(
+                          ]
+                        )
+                      ],
+                      1
+                    )
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.$route.path !== "/register" && _vm.$route.path !== "/login"
+                  ? _c(
                       "li",
                       [
                         _c(
@@ -47929,18 +48271,507 @@ var render = function() {
                           {
                             attrs: { to: { name: "user", params: { id: 1 } } }
                           },
-                          [_vm._v("\n              プロフィール\n            ")]
+                          [
+                            _c("div", { staticClass: "menu-set-btn" }, [
+                              _vm._v("プロフィール")
+                            ])
+                          ]
                         )
                       ],
                       1
+                    )
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.$route.path !== "/register" && _vm.$route.path !== "/login"
+                  ? _c("li", [
+                      _c("a", { on: { click: _vm.logout } }, [
+                        _c("div", { staticClass: "menu-set-btn" }, [
+                          _vm._v("ログアウト")
+                        ])
+                      ])
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.$route.path == "/register" || _vm.$route.path == "/login"
+                  ? _c(
+                      "li",
+                      [
+                        _c(
+                          "router-link",
+                          { attrs: { to: { name: "auth.login" } } },
+                          [
+                            _c(
+                              "div",
+                              {
+                                staticClass: "menu-set-btn",
+                                class: {
+                                  "current-2": _vm.$route.path == "/login"
+                                }
+                              },
+                              [
+                                _vm._v(
+                                  "\n                ログイン\n              "
+                                )
+                              ]
+                            )
+                          ]
+                        )
+                      ],
+                      1
+                    )
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.$route.path == "/register" || _vm.$route.path == "/login"
+                  ? _c(
+                      "li",
+                      [
+                        _c(
+                          "router-link",
+                          { attrs: { to: { name: "auth.register" } } },
+                          [
+                            _c(
+                              "div",
+                              {
+                                staticClass: "menu-set-btn",
+                                class: {
+                                  "current-2": _vm.$route.path == "/register"
+                                }
+                              },
+                              [_vm._v("\n                登録\n              ")]
+                            )
+                          ]
+                        )
+                      ],
+                      1
+                    )
+                  : _vm._e()
+              ])
+            ]),
+            _vm._v(" "),
+            _vm.$route.path !== "/register" && _vm.$route.path !== "/login"
+              ? _c(
+                  "div",
+                  { staticClass: "menu each-menu" },
+                  [
+                    _c(
+                      "router-link",
+                      {
+                        class: {
+                          current:
+                            _vm.$route.path ==
+                              _vm.$router.resolve({ name: "home" }).href ||
+                            _vm.$route.path.substr(0, 7) == "/genre/"
+                        },
+                        attrs: { to: { name: "home" } }
+                      },
+                      [
+                        _c("div", { staticClass: "menu-set-btn" }, [
+                          _vm._v("ホーム")
+                        ])
+                      ]
+                    )
+                  ],
+                  1
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.$route.path !== "/register" && _vm.$route.path !== "/login"
+              ? _c(
+                  "div",
+                  {
+                    staticClass: "header-genre-menu-wide",
+                    class: {
+                      "genre-menu-display-2":
+                        _vm.$route.path ==
+                          _vm.$router.resolve({ name: "home" }).href ||
+                        _vm.$route.path.substr(0, 7) == "/genre/"
+                    }
+                  },
+                  [
+                    _c(
+                      "div",
+                      {
+                        directives: [
+                          {
+                            name: "click-outside",
+                            rawName: "v-click-outside",
+                            value: _vm.genreMenuWideClose,
+                            expression: "genreMenuWideClose"
+                          }
+                        ],
+                        staticClass: "menu-set-btn-genre-wide",
+                        on: { click: _vm.genreMenuToggleWide }
+                      },
+                      [_vm._v("\n          ジャンル\n        ")]
                     ),
                     _vm._v(" "),
-                    _vm._m(0)
-                  ])
-                : _vm._e()
-            ])
+                    _vm.genreMenuWideOpened
+                      ? _c("div", { staticClass: "pulldown-genre-menu" }, [
+                          _c(
+                            "ul",
+                            [
+                              _c(
+                                "li",
+                                [
+                                  _c(
+                                    "router-link",
+                                    {
+                                      class: {
+                                        selected: _vm.$route.path == "/"
+                                      },
+                                      attrs: { to: { name: "home" } }
+                                    },
+                                    [
+                                      _vm._v(
+                                        "\n                すべて\n              "
+                                      )
+                                    ]
+                                  )
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _vm._l(_vm.genres, function(genre, index) {
+                                return _c(
+                                  "li",
+                                  { key: index },
+                                  [
+                                    _c(
+                                      "router-link",
+                                      {
+                                        class: {
+                                          selected:
+                                            _vm.$route.path ==
+                                            "/genre/" + genre.route
+                                        },
+                                        attrs: {
+                                          to: {
+                                            name: "home.genre",
+                                            params: { name: genre.route }
+                                          }
+                                        }
+                                      },
+                                      [
+                                        _vm._v(
+                                          "\n                " +
+                                            _vm._s(genre.name) +
+                                            "\n              "
+                                        )
+                                      ]
+                                    )
+                                  ],
+                                  1
+                                )
+                              })
+                            ],
+                            2
+                          )
+                        ])
+                      : _vm._e()
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.$route.path !== "/register" && _vm.$route.path !== "/login"
+              ? _c(
+                  "div",
+                  { staticClass: "menu each-menu" },
+                  [
+                    _c(
+                      "router-link",
+                      {
+                        class: {
+                          current:
+                            _vm.$route.path ==
+                            _vm.$router.resolve({ name: "trend" }).href
+                        },
+                        attrs: { to: { name: "trend" } }
+                      },
+                      [
+                        _c("div", { staticClass: "menu-set-btn" }, [
+                          _vm._v("トレンド")
+                        ])
+                      ]
+                    )
+                  ],
+                  1
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.$route.path !== "/register" && _vm.$route.path !== "/login"
+              ? _c(
+                  "div",
+                  { staticClass: "menu each-menu" },
+                  [
+                    _c(
+                      "router-link",
+                      {
+                        class: {
+                          current:
+                            _vm.$route.path ==
+                            _vm.$router.resolve({ name: "hot" }).href
+                        },
+                        attrs: { to: { name: "hot" } }
+                      },
+                      [
+                        _c("div", { staticClass: "menu-set-btn" }, [
+                          _vm._v("話題の投稿")
+                        ])
+                      ]
+                    )
+                  ],
+                  1
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.$route.path !== "/register" && _vm.$route.path !== "/login"
+              ? _c(
+                  "div",
+                  { staticClass: "menu each-menu" },
+                  [
+                    _c(
+                      "router-link",
+                      {
+                        class: {
+                          current: _vm.$route.path.substr(0, 6) == "/guchi"
+                        },
+                        attrs: { to: { name: "guchi.all" } }
+                      },
+                      [
+                        _c("div", { staticClass: "menu-set-btn" }, [
+                          _vm._v("みんなでグチ")
+                        ])
+                      ]
+                    )
+                  ],
+                  1
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.$route.path !== "/register" && _vm.$route.path !== "/login"
+              ? _c("div", { staticClass: "icon each-menu" }, [
+                  _c("img", {
+                    directives: [
+                      {
+                        name: "click-outside",
+                        rawName: "v-click-outside",
+                        value: _vm.close,
+                        expression: "close"
+                      }
+                    ],
+                    class: { clicked: _vm.opened },
+                    attrs: { src: "/image/unko.jpg" },
+                    on: { click: _vm.toggle }
+                  }),
+                  _vm._v(" "),
+                  _vm.opened
+                    ? _c("ul", [
+                        _c(
+                          "li",
+                          [
+                            _c(
+                              "router-link",
+                              {
+                                attrs: {
+                                  to: { name: "user", params: { id: 1 } }
+                                }
+                              },
+                              [
+                                _vm._v(
+                                  "\n              プロフィール\n            "
+                                )
+                              ]
+                            )
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c("li", [
+                          _c("a", { on: { click: _vm.logout } }, [
+                            _vm._v("\n              ログアウト\n            ")
+                          ])
+                        ])
+                      ])
+                    : _vm._e()
+                ])
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.$route.path == "/register" || _vm.$route.path == "/login"
+              ? _c(
+                  "div",
+                  { staticClass: "menu each-menu" },
+                  [
+                    _c(
+                      "router-link",
+                      {
+                        class: { current: _vm.$route.path == "/login" },
+                        attrs: { to: { name: "auth.login" } }
+                      },
+                      [
+                        _c("div", { staticClass: "menu-set-btn" }, [
+                          _vm._v("ログイン")
+                        ])
+                      ]
+                    )
+                  ],
+                  1
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.$route.path == "/register" || _vm.$route.path == "/login"
+              ? _c(
+                  "div",
+                  { staticClass: "menu each-menu login-menu" },
+                  [
+                    _c(
+                      "router-link",
+                      {
+                        class: { current: _vm.$route.path == "/register" },
+                        attrs: { to: { name: "auth.register" } }
+                      },
+                      [
+                        _c("div", { staticClass: "menu-set-btn" }, [
+                          _vm._v("登録")
+                        ])
+                      ]
+                    )
+                  ],
+                  1
+                )
+              : _vm._e()
           ])
         : _vm._e()
+    ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/auth/Login.vue?vue&type=template&id=4221c3ad&":
+/*!*************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/auth/Login.vue?vue&type=template&id=4221c3ad& ***!
+  \*************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "register-page" }, [
+    _c("div", { staticClass: "register" }, [
+      _c("div", { staticClass: "register-box" }, [
+        _c("div", { staticClass: "register-top" }, [
+          _vm._v("\n        ログイン\n      ")
+        ]),
+        _vm._v(" "),
+        _vm.errors.msg
+          ? _c("div", { staticClass: "register-each" }, [
+              _c("div", { staticClass: "register-error" }, [
+                _vm._v(
+                  "\n          " + _vm._s(_vm.errors.msg[0]) + "\n        "
+                )
+              ])
+            ])
+          : _vm._e(),
+        _vm._v(" "),
+        _c(
+          "form",
+          {
+            on: {
+              submit: function($event) {
+                $event.preventDefault()
+                return _vm.login($event)
+              }
+            }
+          },
+          [
+            _c("div", { staticClass: "register-each" }, [
+              _c("label", { attrs: { for: "email" } }, [
+                _vm._v("メールアドレス")
+              ]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.form.email,
+                    expression: "form.email"
+                  }
+                ],
+                attrs: { type: "text", name: "email" },
+                domProps: { value: _vm.form.email },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.form, "email", $event.target.value)
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _vm.errors.email
+                ? _c("div", { staticClass: "register-error" }, [
+                    _vm._v(
+                      "\n            " +
+                        _vm._s(_vm.errors.email[0]) +
+                        "\n          "
+                    )
+                  ])
+                : _vm._e()
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "register-each" }, [
+              _c("label", { attrs: { for: "password" } }, [
+                _vm._v("パスワード")
+              ]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.form.password,
+                    expression: "form.password"
+                  }
+                ],
+                attrs: { type: "password", name: "password" },
+                domProps: { value: _vm.form.password },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.form, "password", $event.target.value)
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _vm.errors.password
+                ? _c("div", { staticClass: "register-error" }, [
+                    _vm._v(
+                      "\n            " +
+                        _vm._s(_vm.errors.password[0]) +
+                        "\n          "
+                    )
+                  ])
+                : _vm._e()
+            ]),
+            _vm._v(" "),
+            _vm._m(0)
+          ]
+        )
+      ])
     ])
   ])
 }
@@ -47949,8 +48780,212 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("li", [
-      _c("a", [_vm._v("\n              ログアウト\n            ")])
+    return _c("div", { staticClass: "register-bottom" }, [
+      _c("input", {
+        staticClass: "register-btn",
+        attrs: { type: "submit", value: "ログイン" }
+      })
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/auth/Register.vue?vue&type=template&id=d4f9cbe2&":
+/*!****************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/auth/Register.vue?vue&type=template&id=d4f9cbe2& ***!
+  \****************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "register-page" }, [
+    _c("div", { staticClass: "register" }, [
+      _c("div", { staticClass: "register-box" }, [
+        _c("div", { staticClass: "register-top" }, [
+          _vm._v("\n        ユーザー登録\n      ")
+        ]),
+        _vm._v(" "),
+        _c(
+          "form",
+          {
+            on: {
+              submit: function($event) {
+                $event.preventDefault()
+                return _vm.submit($event)
+              }
+            }
+          },
+          [
+            _c("div", { staticClass: "register-each" }, [
+              _c("label", { attrs: { for: "name" } }, [
+                _vm._v("ユーザーネーム")
+              ]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.form.name,
+                    expression: "form.name"
+                  }
+                ],
+                attrs: { type: "text", name: "name" },
+                domProps: { value: _vm.form.name },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.form, "name", $event.target.value)
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _vm.errors.name
+                ? _c("div", { staticClass: "register-error" }, [
+                    _vm._v(
+                      "\n            " +
+                        _vm._s(_vm.errors.name[0]) +
+                        "\n          "
+                    )
+                  ])
+                : _vm._e()
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "register-each" }, [
+              _c("label", { attrs: { for: "email" } }, [
+                _vm._v("メールアドレス")
+              ]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.form.email,
+                    expression: "form.email"
+                  }
+                ],
+                attrs: { type: "text", name: "email" },
+                domProps: { value: _vm.form.email },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.form, "email", $event.target.value)
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _vm.errors.email
+                ? _c("div", { staticClass: "register-error" }, [
+                    _vm._v(
+                      "\n            " +
+                        _vm._s(_vm.errors.email[0]) +
+                        "\n          "
+                    )
+                  ])
+                : _vm._e()
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "register-each" }, [
+              _c("label", { attrs: { for: "password" } }, [
+                _vm._v("パスワード")
+              ]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.form.password,
+                    expression: "form.password"
+                  }
+                ],
+                attrs: { type: "password", name: "password" },
+                domProps: { value: _vm.form.password },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.form, "password", $event.target.value)
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _vm.errors.password
+                ? _c("div", { staticClass: "register-error" }, [
+                    _vm._v(
+                      "\n            " +
+                        _vm._s(_vm.errors.password[0]) +
+                        "\n          "
+                    )
+                  ])
+                : _vm._e()
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "register-each" }, [
+              _c("label", { attrs: { for: "password-confirm" } }, [
+                _vm._v("パスワードの確認")
+              ]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.form.password_confirmation,
+                    expression: "form.password_confirmation"
+                  }
+                ],
+                attrs: { type: "password", name: "password-confirm" },
+                domProps: { value: _vm.form.password_confirmation },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(
+                      _vm.form,
+                      "password_confirmation",
+                      $event.target.value
+                    )
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _vm._m(0)
+          ]
+        )
+      ])
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "register-bottom" }, [
+      _c("input", {
+        staticClass: "register-btn",
+        attrs: { type: "submit", value: "登録" }
+      })
     ])
   }
 ]
@@ -47982,8 +49017,7 @@ var render = function() {
         { staticClass: "guchi-main" },
         [
           _c("div", { staticClass: "guchi-top-btns" }, [
-            _vm.$route.path ==
-            _vm.$router.resolve({ name: "guchi.detail" }).href
+            _vm.$route.path.substr(0, 12) == "/guchi/room/"
               ? _c(
                   "div",
                   {
@@ -48075,8 +49109,7 @@ var render = function() {
               ),
               _vm._v(" "),
               !_vm.createOpened &&
-              _vm.$route.path !==
-                _vm.$router.resolve({ name: "guchi.detail" }).href
+              _vm.$route.path.substr(0, 12) !== "/guchi/room/"
                 ? _c(
                     "div",
                     {
@@ -48088,8 +49121,7 @@ var render = function() {
                 : _vm._e()
             ]),
             _vm._v(" "),
-            _vm.$route.path !==
-            _vm.$router.resolve({ name: "guchi.detail" }).href
+            _vm.$route.path.substr(0, 12) !== "/guchi/room/"
               ? _c(
                   "div",
                   { staticClass: "guchi-change-order" },
@@ -48151,8 +49183,7 @@ var render = function() {
               : _vm._e()
           ]),
           _vm._v(" "),
-          _vm.createOpened &&
-          _vm.$route.path !== _vm.$router.resolve({ name: "guchi.detail" }).href
+          _vm.createOpened && _vm.$route.path.substr(0, 12) !== "/guchi/room/"
             ? _c("div", { staticClass: "guchi-new-form" }, [
                 _c("div", { staticClass: "top" }, [
                   _c("div", { staticClass: "top-title" }, [
@@ -48228,7 +49259,81 @@ var render = function() {
                     ])
                   ]),
                   _vm._v(" "),
-                  _vm._m(0)
+                  _c("div", { staticClass: "title-input" }, [
+                    _c("div", { staticClass: "title-input-title" }, [
+                      _vm._v("トークテーマを入力")
+                    ]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.title,
+                          expression: "title"
+                        }
+                      ],
+                      staticClass: "guchi-title-input",
+                      attrs: { type: "text" },
+                      domProps: { value: _vm.title },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.title = $event.target.value
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "select-genre-guchi" }, [
+                      _c(
+                        "select",
+                        {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.genre,
+                              expression: "genre"
+                            }
+                          ],
+                          attrs: { name: "genre" },
+                          on: {
+                            change: function($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function(o) {
+                                  return o.selected
+                                })
+                                .map(function(o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.genre = $event.target.multiple
+                                ? $$selectedVal
+                                : $$selectedVal[0]
+                            }
+                          }
+                        },
+                        [
+                          _c("option", { attrs: { value: "", selected: "" } }, [
+                            _vm._v("ジャンルを選択してください")
+                          ]),
+                          _vm._v(" "),
+                          _vm._l(_vm.genres, function(genre, index) {
+                            return _c(
+                              "option",
+                              { key: index, domProps: { value: genre.route } },
+                              [_vm._v(_vm._s(genre.name))]
+                            )
+                          })
+                        ],
+                        2
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _vm._m(0)
+                  ])
                 ])
               ])
             : _vm._e(),
@@ -48300,19 +49405,8 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "title-input" }, [
-      _c("div", { staticClass: "title-input-title" }, [
-        _vm._v("トークテーマを入力")
-      ]),
-      _vm._v(" "),
-      _c("input", {
-        staticClass: "guchi-title-input",
-        attrs: { type: "text" }
-      }),
-      _vm._v(" "),
-      _c("div", { staticClass: "create" }, [
-        _c("div", { staticClass: "create-btn" }, [_vm._v("作成")])
-      ])
+    return _c("div", { staticClass: "create" }, [
+      _c("div", { staticClass: "create-btn" }, [_vm._v("作成")])
     ])
   }
 ]
@@ -48340,61 +49434,133 @@ var render = function() {
   return _c(
     "div",
     { staticClass: "thread-box" },
-    _vm._l(_vm.threads, function(thread) {
+    _vm._l(_vm.threads, function(thread, index) {
       return _c(
-        "router-link",
+        "a",
         {
           key: thread.id,
           staticClass: "guchi-thread",
-          attrs: { to: { name: "guchi.detail" } }
+          on: {
+            click: function($event) {
+              if ($event.target !== $event.currentTarget) {
+                return null
+              }
+              return _vm.toGuchiDetail(thread.id)
+            }
+          }
         },
         [
-          _c("div", { staticClass: "thread-list-icon" }, [
-            !thread.icon
-              ? _c("div", {
-                  staticClass: "thread-left-icon-image none",
-                  style: { backgroundImage: "url(../image/no-image.png)" }
-                })
-              : _vm._e(),
-            _vm._v(" "),
-            thread.icon
-              ? _c("div", {
-                  staticClass: "thread-left-icon-image",
-                  style: { backgroundImage: "url(" + thread.icon + ")" }
-                })
-              : _vm._e()
-          ]),
+          _c(
+            "div",
+            {
+              staticClass: "thread-list-icon",
+              on: {
+                click: function($event) {
+                  return _vm.toGuchiDetail(thread.id)
+                }
+              }
+            },
+            [
+              !thread.icon
+                ? _c("div", {
+                    staticClass: "thread-left-icon-image none",
+                    style: { backgroundImage: "url(../image/no-image.png)" }
+                  })
+                : _vm._e(),
+              _vm._v(" "),
+              thread.icon
+                ? _c("div", {
+                    staticClass: "thread-left-icon-image",
+                    style: { backgroundImage: "url(" + thread.icon + ")" }
+                  })
+                : _vm._e()
+            ]
+          ),
           _vm._v(" "),
-          _c("div", { staticClass: "thread-left" }, [
-            _c("div", { staticClass: "thread-left-top" }, [
-              _c("div", { staticClass: "genre-icon" }, [
-                _vm._v(_vm._s(thread.genre))
+          _c(
+            "div",
+            {
+              staticClass: "thread-left",
+              on: {
+                click: function($event) {
+                  return _vm.toGuchiDetail(thread.id)
+                }
+              }
+            },
+            [
+              _c("div", { staticClass: "thread-left-top" }, [
+                _c("div", { staticClass: "genre-icon" }, [
+                  _vm._v(_vm._s(thread.genre))
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "thread-time" }, [
+                  _vm._v(_vm._s(thread.created_at))
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "thread-comment-count" }, [
+                  _c("img", { attrs: { src: "../image/comment.png" } }),
+                  _vm._v(
+                    "\n          " + _vm._s(thread.comment_count) + "\n        "
+                  )
+                ])
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "thread-time" }, [
-                _vm._v(_vm._s(thread.created_at))
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "thread-comment-count" }, [
-                _c("img", { attrs: { src: "../image/comment.png" } }),
-                _vm._v(
-                  "\n          " + _vm._s(thread.comment_count) + "\n        "
-                )
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "thread-title" }, [
-              _vm._v(_vm._s(thread.title))
-            ])
-          ]),
+              _c(
+                "div",
+                {
+                  staticClass: "thread-title",
+                  on: {
+                    click: function($event) {
+                      return _vm.toGuchiDetail(thread.id)
+                    }
+                  }
+                },
+                [_vm._v(_vm._s(thread.title))]
+              )
+            ]
+          ),
           _vm._v(" "),
-          _c("div", { staticClass: "bookmark" }, [
-            _c("img", { attrs: { src: "../image/bookmark.png" } })
-          ])
+          _c(
+            "div",
+            {
+              staticClass: "bookmark",
+              on: {
+                click: function($event) {
+                  if ($event.target !== $event.currentTarget) {
+                    return null
+                  }
+                  return _vm.toGuchiDetail(thread.id)
+                }
+              }
+            },
+            [
+              !thread.bookmarked
+                ? _c("img", {
+                    attrs: { src: "../image/bookmark.png" },
+                    on: {
+                      click: function($event) {
+                        return _vm.bookMark(index)
+                      }
+                    }
+                  })
+                : _vm._e(),
+              _vm._v(" "),
+              thread.bookmarked
+                ? _c("img", {
+                    attrs: { src: "../image/bookmarked.png" },
+                    on: {
+                      click: function($event) {
+                        return _vm.bookMark(index)
+                      }
+                    }
+                  })
+                : _vm._e()
+            ]
+          )
         ]
       )
     }),
-    1
+    0
   )
 }
 var staticRenderFns = []
@@ -48422,61 +49588,133 @@ var render = function() {
   return _c(
     "div",
     { staticClass: "thread-box" },
-    _vm._l(_vm.threads, function(thread) {
+    _vm._l(_vm.threads, function(thread, index) {
       return _c(
-        "router-link",
+        "a",
         {
           key: thread.id,
           staticClass: "guchi-thread",
-          attrs: { to: { name: "guchi.detail" } }
+          on: {
+            click: function($event) {
+              if ($event.target !== $event.currentTarget) {
+                return null
+              }
+              return _vm.toGuchiDetail(thread.id)
+            }
+          }
         },
         [
-          _c("div", { staticClass: "thread-list-icon" }, [
-            !thread.icon
-              ? _c("div", {
-                  staticClass: "thread-left-icon-image none",
-                  style: { backgroundImage: "url(../../image/no-image.png)" }
-                })
-              : _vm._e(),
-            _vm._v(" "),
-            thread.icon
-              ? _c("div", {
-                  staticClass: "thread-left-icon-image",
-                  style: { backgroundImage: "url(" + thread.icon + ")" }
-                })
-              : _vm._e()
-          ]),
+          _c(
+            "div",
+            {
+              staticClass: "thread-list-icon",
+              on: {
+                click: function($event) {
+                  return _vm.toGuchiDetail(thread.id)
+                }
+              }
+            },
+            [
+              !thread.icon
+                ? _c("div", {
+                    staticClass: "thread-left-icon-image none",
+                    style: { backgroundImage: "url(../../image/no-image.png)" }
+                  })
+                : _vm._e(),
+              _vm._v(" "),
+              thread.icon
+                ? _c("div", {
+                    staticClass: "thread-left-icon-image",
+                    style: { backgroundImage: "url(" + thread.icon + ")" }
+                  })
+                : _vm._e()
+            ]
+          ),
           _vm._v(" "),
-          _c("div", { staticClass: "thread-left" }, [
-            _c("div", { staticClass: "thread-left-top" }, [
-              _c("div", { staticClass: "genre-icon" }, [
-                _vm._v(_vm._s(thread.genre))
+          _c(
+            "div",
+            {
+              staticClass: "thread-left",
+              on: {
+                click: function($event) {
+                  return _vm.toGuchiDetail(thread.id)
+                }
+              }
+            },
+            [
+              _c("div", { staticClass: "thread-left-top" }, [
+                _c("div", { staticClass: "genre-icon" }, [
+                  _vm._v(_vm._s(thread.genre))
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "thread-time" }, [
+                  _vm._v(_vm._s(thread.created_at))
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "thread-comment-count" }, [
+                  _c("img", { attrs: { src: "../../image/comment.png" } }),
+                  _vm._v(
+                    "\n          " + _vm._s(thread.comment_count) + "\n        "
+                  )
+                ])
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "thread-time" }, [
-                _vm._v(_vm._s(thread.created_at))
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "thread-comment-count" }, [
-                _c("img", { attrs: { src: "../../image/comment.png" } }),
-                _vm._v(
-                  "\n          " + _vm._s(thread.comment_count) + "\n        "
-                )
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "thread-title" }, [
-              _vm._v(_vm._s(thread.title))
-            ])
-          ]),
+              _c(
+                "div",
+                {
+                  staticClass: "thread-title",
+                  on: {
+                    click: function($event) {
+                      return _vm.toGuchiDetail(thread.id)
+                    }
+                  }
+                },
+                [_vm._v(_vm._s(thread.title))]
+              )
+            ]
+          ),
           _vm._v(" "),
-          _c("div", { staticClass: "bookmark" }, [
-            _c("img", { attrs: { src: "../../image/bookmark.png" } })
-          ])
+          _c(
+            "div",
+            {
+              staticClass: "bookmark",
+              on: {
+                click: function($event) {
+                  if ($event.target !== $event.currentTarget) {
+                    return null
+                  }
+                  return _vm.toGuchiDetail(thread.id)
+                }
+              }
+            },
+            [
+              !thread.bookmarked
+                ? _c("img", {
+                    attrs: { src: "../../image/bookmark.png" },
+                    on: {
+                      click: function($event) {
+                        return _vm.bookMark(index)
+                      }
+                    }
+                  })
+                : _vm._e(),
+              _vm._v(" "),
+              thread.bookmarked
+                ? _c("img", {
+                    attrs: { src: "../../image/bookmarked.png" },
+                    on: {
+                      click: function($event) {
+                        return _vm.bookMark(index)
+                      }
+                    }
+                  })
+                : _vm._e()
+            ]
+          )
         ]
       )
     }),
-    1
+    0
   )
 }
 var staticRenderFns = []
@@ -48795,61 +50033,133 @@ var render = function() {
   return _c(
     "div",
     { staticClass: "thread-box" },
-    _vm._l(_vm.threads, function(thread) {
+    _vm._l(_vm.threads, function(thread, index) {
       return _c(
-        "router-link",
+        "a",
         {
           key: thread.id,
           staticClass: "guchi-thread",
-          attrs: { to: { name: "guchi.detail" } }
+          on: {
+            click: function($event) {
+              if ($event.target !== $event.currentTarget) {
+                return null
+              }
+              return _vm.toGuchiDetail(thread.id)
+            }
+          }
         },
         [
-          _c("div", { staticClass: "thread-list-icon" }, [
-            !thread.icon
-              ? _c("div", {
-                  staticClass: "thread-left-icon-image none",
-                  style: { backgroundImage: "url(../image/no-image.png)" }
-                })
-              : _vm._e(),
-            _vm._v(" "),
-            thread.icon
-              ? _c("div", {
-                  staticClass: "thread-left-icon-image",
-                  style: { backgroundImage: "url(" + thread.icon + ")" }
-                })
-              : _vm._e()
-          ]),
+          _c(
+            "div",
+            {
+              staticClass: "thread-list-icon",
+              on: {
+                click: function($event) {
+                  return _vm.toGuchiDetail(thread.id)
+                }
+              }
+            },
+            [
+              !thread.icon
+                ? _c("div", {
+                    staticClass: "thread-left-icon-image none",
+                    style: { backgroundImage: "url(../image/no-image.png)" }
+                  })
+                : _vm._e(),
+              _vm._v(" "),
+              thread.icon
+                ? _c("div", {
+                    staticClass: "thread-left-icon-image",
+                    style: { backgroundImage: "url(" + thread.icon + ")" }
+                  })
+                : _vm._e()
+            ]
+          ),
           _vm._v(" "),
-          _c("div", { staticClass: "thread-left" }, [
-            _c("div", { staticClass: "thread-left-top" }, [
-              _c("div", { staticClass: "genre-icon" }, [
-                _vm._v(_vm._s(thread.genre))
+          _c(
+            "div",
+            {
+              staticClass: "thread-left",
+              on: {
+                click: function($event) {
+                  return _vm.toGuchiDetail(thread.id)
+                }
+              }
+            },
+            [
+              _c("div", { staticClass: "thread-left-top" }, [
+                _c("div", { staticClass: "genre-icon" }, [
+                  _vm._v(_vm._s(thread.genre))
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "thread-time" }, [
+                  _vm._v(_vm._s(thread.created_at))
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "thread-comment-count" }, [
+                  _c("img", { attrs: { src: "../../image/comment.png" } }),
+                  _vm._v(
+                    "\n          " + _vm._s(thread.comment_count) + "\n        "
+                  )
+                ])
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "thread-time" }, [
-                _vm._v(_vm._s(thread.created_at))
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "thread-comment-count" }, [
-                _c("img", { attrs: { src: "../image/comment.png" } }),
-                _vm._v(
-                  "\n          " + _vm._s(thread.comment_count) + "\n        "
-                )
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "thread-title" }, [
-              _vm._v(_vm._s(thread.title))
-            ])
-          ]),
+              _c(
+                "div",
+                {
+                  staticClass: "thread-title",
+                  on: {
+                    click: function($event) {
+                      return _vm.toGuchiDetail(thread.id)
+                    }
+                  }
+                },
+                [_vm._v(_vm._s(thread.title))]
+              )
+            ]
+          ),
           _vm._v(" "),
-          _c("div", { staticClass: "bookmark" }, [
-            _c("img", { attrs: { src: "../image/bookmark.png" } })
-          ])
+          _c(
+            "div",
+            {
+              staticClass: "bookmark",
+              on: {
+                click: function($event) {
+                  if ($event.target !== $event.currentTarget) {
+                    return null
+                  }
+                  return _vm.toGuchiDetail(thread.id)
+                }
+              }
+            },
+            [
+              !thread.bookmarked
+                ? _c("img", {
+                    attrs: { src: "../image/bookmark.png" },
+                    on: {
+                      click: function($event) {
+                        return _vm.bookMark(index)
+                      }
+                    }
+                  })
+                : _vm._e(),
+              _vm._v(" "),
+              thread.bookmarked
+                ? _c("img", {
+                    attrs: { src: "../image/bookmarked.png" },
+                    on: {
+                      click: function($event) {
+                        return _vm.bookMark(index)
+                      }
+                    }
+                  })
+                : _vm._e()
+            ]
+          )
         ]
       )
     }),
-    1
+    0
   )
 }
 var staticRenderFns = []
@@ -48877,61 +50187,133 @@ var render = function() {
   return _c(
     "div",
     { staticClass: "thread-box" },
-    _vm._l(_vm.threads, function(thread) {
+    _vm._l(_vm.threads, function(thread, index) {
       return _c(
-        "router-link",
+        "a",
         {
           key: thread.id,
           staticClass: "guchi-thread",
-          attrs: { to: { name: "guchi.detail" } }
+          on: {
+            click: function($event) {
+              if ($event.target !== $event.currentTarget) {
+                return null
+              }
+              return _vm.toGuchiDetail(thread.id)
+            }
+          }
         },
         [
-          _c("div", { staticClass: "thread-list-icon" }, [
-            !thread.icon
-              ? _c("div", {
-                  staticClass: "thread-left-icon-image none",
-                  style: { backgroundImage: "url(../../image/no-image.png)" }
-                })
-              : _vm._e(),
-            _vm._v(" "),
-            thread.icon
-              ? _c("div", {
-                  staticClass: "thread-left-icon-image",
-                  style: { backgroundImage: "url(" + thread.icon + ")" }
-                })
-              : _vm._e()
-          ]),
+          _c(
+            "div",
+            {
+              staticClass: "thread-list-icon",
+              on: {
+                click: function($event) {
+                  return _vm.toGuchiDetail(thread.id)
+                }
+              }
+            },
+            [
+              !thread.icon
+                ? _c("div", {
+                    staticClass: "thread-left-icon-image none",
+                    style: { backgroundImage: "url(../../image/no-image.png)" }
+                  })
+                : _vm._e(),
+              _vm._v(" "),
+              thread.icon
+                ? _c("div", {
+                    staticClass: "thread-left-icon-image",
+                    style: { backgroundImage: "url(" + thread.icon + ")" }
+                  })
+                : _vm._e()
+            ]
+          ),
           _vm._v(" "),
-          _c("div", { staticClass: "thread-left" }, [
-            _c("div", { staticClass: "thread-left-top" }, [
-              _c("div", { staticClass: "genre-icon" }, [
-                _vm._v(_vm._s(thread.genre))
+          _c(
+            "div",
+            {
+              staticClass: "thread-left",
+              on: {
+                click: function($event) {
+                  return _vm.toGuchiDetail(thread.id)
+                }
+              }
+            },
+            [
+              _c("div", { staticClass: "thread-left-top" }, [
+                _c("div", { staticClass: "genre-icon" }, [
+                  _vm._v(_vm._s(thread.genre))
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "thread-time" }, [
+                  _vm._v(_vm._s(thread.created_at))
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "thread-comment-count" }, [
+                  _c("img", { attrs: { src: "../../image/comment.png" } }),
+                  _vm._v(
+                    "\n          " + _vm._s(thread.comment_count) + "\n        "
+                  )
+                ])
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "thread-time" }, [
-                _vm._v(_vm._s(thread.created_at))
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "thread-comment-count" }, [
-                _c("img", { attrs: { src: "../../image/comment.png" } }),
-                _vm._v(
-                  "\n          " + _vm._s(thread.comment_count) + "\n        "
-                )
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "thread-title" }, [
-              _vm._v(_vm._s(thread.title))
-            ])
-          ]),
+              _c(
+                "div",
+                {
+                  staticClass: "thread-title",
+                  on: {
+                    click: function($event) {
+                      return _vm.toGuchiDetail(thread.id)
+                    }
+                  }
+                },
+                [_vm._v(_vm._s(thread.title))]
+              )
+            ]
+          ),
           _vm._v(" "),
-          _c("div", { staticClass: "bookmark" }, [
-            _c("img", { attrs: { src: "../../image/bookmark.png" } })
-          ])
+          _c(
+            "div",
+            {
+              staticClass: "bookmark",
+              on: {
+                click: function($event) {
+                  if ($event.target !== $event.currentTarget) {
+                    return null
+                  }
+                  return _vm.toGuchiDetail(thread.id)
+                }
+              }
+            },
+            [
+              !thread.bookmarked
+                ? _c("img", {
+                    attrs: { src: "../../image/bookmark.png" },
+                    on: {
+                      click: function($event) {
+                        return _vm.bookMark(index)
+                      }
+                    }
+                  })
+                : _vm._e(),
+              _vm._v(" "),
+              thread.bookmarked
+                ? _c("img", {
+                    attrs: { src: "../../image/bookmarked.png" },
+                    on: {
+                      click: function($event) {
+                        return _vm.bookMark(index)
+                      }
+                    }
+                  })
+                : _vm._e()
+            ]
+          )
         ]
       )
     }),
-    1
+    0
   )
 }
 var staticRenderFns = []
@@ -49078,7 +50460,74 @@ var render = function() {
             })
           ]),
           _vm._v(" "),
-          _vm._m(0),
+          _c("div", { staticClass: "select-genre" }, [
+            _c(
+              "select",
+              {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.genre,
+                    expression: "genre"
+                  }
+                ],
+                attrs: { name: "genre" },
+                on: {
+                  change: function($event) {
+                    var $$selectedVal = Array.prototype.filter
+                      .call($event.target.options, function(o) {
+                        return o.selected
+                      })
+                      .map(function(o) {
+                        var val = "_value" in o ? o._value : o.value
+                        return val
+                      })
+                    _vm.genre = $event.target.multiple
+                      ? $$selectedVal
+                      : $$selectedVal[0]
+                  }
+                }
+              },
+              [
+                _c("option", { attrs: { value: "", selected: "" } }, [
+                  _vm._v("ジャンルを選択してください")
+                ]),
+                _vm._v(" "),
+                _vm._l(_vm.genres, function(genre, index) {
+                  return _c(
+                    "option",
+                    { key: index, domProps: { value: genre.route } },
+                    [_vm._v(_vm._s(genre.name))]
+                  )
+                })
+              ],
+              2
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "input-tag" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.tags,
+                  expression: "tags"
+                }
+              ],
+              attrs: { type: "text", placeholder: "タグ（例: #ああ #いい）" },
+              domProps: { value: _vm.tags },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.tags = $event.target.value
+                }
+              }
+            })
+          ]),
           _vm._v(" "),
           _vm.imageCount > 0
             ? _c(
@@ -49148,7 +50597,7 @@ var render = function() {
               ])
             ]),
             _vm._v(" "),
-            _vm._m(1)
+            _vm._m(0)
           ])
         ])
       ]),
@@ -49175,7 +50624,7 @@ var render = function() {
               _vm._v(_vm._s(post.user))
             ]),
             _vm._v(" "),
-            _vm._m(2, true),
+            _vm._m(1, true),
             _vm._v(" "),
             post.tags
               ? _c(
@@ -49347,7 +50796,7 @@ var render = function() {
                         _vm._v(_vm._s(_vm.modalPostUser))
                       ]),
                       _vm._v(" "),
-                      _vm._m(3),
+                      _vm._m(2),
                       _vm._v(" "),
                       _vm.modalPostTags
                         ? _c(
@@ -50120,16 +51569,6 @@ var render = function() {
   )
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "input-tag" }, [
-      _c("input", {
-        attrs: { type: "text", placeholder: "タグ（例: #ああ #いい）" }
-      })
-    ])
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -52241,8 +53680,10 @@ var render = function() {
                   staticClass: "search-post search-menu",
                   class: {
                     selected:
-                      _vm.$route.path.endsWith("/post/new") ||
-                      _vm.$route.path.endsWith("/post/popular")
+                      _vm.$route.path.lastIndexOf("/post/new") + 9 ==
+                        _vm.$route.path.length ||
+                      _vm.$route.path.lastIndexOf("/post/popular") + 13 ==
+                        _vm.$route.path.length
                   },
                   attrs: {
                     to: {
@@ -52260,8 +53701,10 @@ var render = function() {
                   staticClass: "search-guchi search-menu",
                   class: {
                     selected:
-                      _vm.$route.path.endsWith("/guchi/new") ||
-                      _vm.$route.path.endsWith("/guchi/popular")
+                      _vm.$route.path.lastIndexOf("/guchi/new") + 10 ==
+                        _vm.$route.path.length ||
+                      _vm.$route.path.lastIndexOf("/guchi/popular") + 14 ==
+                        _vm.$route.path.length
                   },
                   attrs: {
                     to: {
@@ -52277,7 +53720,11 @@ var render = function() {
                 "router-link",
                 {
                   staticClass: "search-user search-menu",
-                  class: { selected: _vm.$route.path.endsWith("/user") },
+                  class: {
+                    selected:
+                      _vm.$route.path.lastIndexOf("/user") + 5 ==
+                      _vm.$route.path.length
+                  },
                   attrs: {
                     to: {
                       name: "search.user",
@@ -52295,13 +53742,19 @@ var render = function() {
             "div",
             { staticClass: "search-order-area" },
             [
-              _vm.$route.path.endsWith("/post/new") ||
-              _vm.$route.path.endsWith("/post/popular")
+              _vm.$route.path.lastIndexOf("/post/new") + 9 ==
+                _vm.$route.path.length ||
+              _vm.$route.path.lastIndexOf("/post/popular") + 13 ==
+                _vm.$route.path.length
                 ? _c(
                     "router-link",
                     {
                       staticClass: "search-order-new",
-                      class: { selected: _vm.$route.path.endsWith("/new") },
+                      class: {
+                        selected:
+                          _vm.$route.path.lastIndexOf("/new") + 4 ==
+                          _vm.$route.path.length
+                      },
                       attrs: {
                         to: {
                           name: "search.post.new",
@@ -52313,13 +53766,19 @@ var render = function() {
                   )
                 : _vm._e(),
               _vm._v(" "),
-              _vm.$route.path.endsWith("/guchi/new") ||
-              _vm.$route.path.endsWith("/guchi/popular")
+              _vm.$route.path.lastIndexOf("/guchi/new") + 10 ==
+                _vm.$route.path.length ||
+              _vm.$route.path.lastIndexOf("/guchi/popular") + 14 ==
+                _vm.$route.path.length
                 ? _c(
                     "router-link",
                     {
                       staticClass: "search-order-new",
-                      class: { selected: _vm.$route.path.endsWith("/new") },
+                      class: {
+                        selected:
+                          _vm.$route.path.lastIndexOf("/new") + 4 ==
+                          _vm.$route.path.length
+                      },
                       attrs: {
                         to: {
                           name: "search.guchi.new",
@@ -52331,13 +53790,19 @@ var render = function() {
                   )
                 : _vm._e(),
               _vm._v(" "),
-              _vm.$route.path.endsWith("/post/new") ||
-              _vm.$route.path.endsWith("/post/popular")
+              _vm.$route.path.lastIndexOf("/post/new") + 9 ==
+                _vm.$route.path.length ||
+              _vm.$route.path.lastIndexOf("/post/popular") + 13 ==
+                _vm.$route.path.length
                 ? _c(
                     "router-link",
                     {
                       staticClass: "search-order-popular",
-                      class: { selected: _vm.$route.path.endsWith("/popular") },
+                      class: {
+                        selected:
+                          _vm.$route.path.lastIndexOf("/popular") + 8 ==
+                          _vm.$route.path.length
+                      },
                       attrs: {
                         to: {
                           name: "search.post.popular",
@@ -52349,13 +53814,19 @@ var render = function() {
                   )
                 : _vm._e(),
               _vm._v(" "),
-              _vm.$route.path.endsWith("/guchi/new") ||
-              _vm.$route.path.endsWith("/guchi/popular")
+              _vm.$route.path.lastIndexOf("/guchi/new") + 10 ==
+                _vm.$route.path.length ||
+              _vm.$route.path.lastIndexOf("/guchi/popular") + 14 ==
+                _vm.$route.path.length
                 ? _c(
                     "router-link",
                     {
                       staticClass: "search-order-popular",
-                      class: { selected: _vm.$route.path.endsWith("/popular") },
+                      class: {
+                        selected:
+                          _vm.$route.path.lastIndexOf("/popular") + 8 ==
+                          _vm.$route.path.length
+                      },
                       attrs: {
                         to: {
                           name: "search.guchi.popular",
@@ -52402,61 +53873,135 @@ var render = function() {
   return _c(
     "div",
     { staticClass: "thread-box" },
-    _vm._l(_vm.threads, function(thread) {
+    _vm._l(_vm.threads, function(thread, index) {
       return _c(
-        "router-link",
+        "a",
         {
           key: thread.id,
           staticClass: "guchi-thread",
-          attrs: { to: { name: "guchi.detail" } }
+          on: {
+            click: function($event) {
+              if ($event.target !== $event.currentTarget) {
+                return null
+              }
+              return _vm.toGuchiDetail(thread.id)
+            }
+          }
         },
         [
-          _c("div", { staticClass: "thread-list-icon" }, [
-            !thread.icon
-              ? _c("div", {
-                  staticClass: "thread-left-icon-image none",
-                  style: { backgroundImage: "url(../../../image/no-image.png)" }
-                })
-              : _vm._e(),
-            _vm._v(" "),
-            thread.icon
-              ? _c("div", {
-                  staticClass: "thread-left-icon-image",
-                  style: { backgroundImage: "url(" + thread.icon + ")" }
-                })
-              : _vm._e()
-          ]),
+          _c(
+            "div",
+            {
+              staticClass: "thread-list-icon",
+              on: {
+                click: function($event) {
+                  return _vm.toGuchiDetail(thread.id)
+                }
+              }
+            },
+            [
+              !thread.icon
+                ? _c("div", {
+                    staticClass: "thread-left-icon-image none",
+                    style: {
+                      backgroundImage: "url(../../../image/no-image.png)"
+                    }
+                  })
+                : _vm._e(),
+              _vm._v(" "),
+              thread.icon
+                ? _c("div", {
+                    staticClass: "thread-left-icon-image",
+                    style: { backgroundImage: "url(" + thread.icon + ")" }
+                  })
+                : _vm._e()
+            ]
+          ),
           _vm._v(" "),
-          _c("div", { staticClass: "thread-left" }, [
-            _c("div", { staticClass: "thread-left-top" }, [
-              _c("div", { staticClass: "genre-icon" }, [
-                _vm._v(_vm._s(thread.genre))
+          _c(
+            "div",
+            {
+              staticClass: "thread-left",
+              on: {
+                click: function($event) {
+                  return _vm.toGuchiDetail(thread.id)
+                }
+              }
+            },
+            [
+              _c("div", { staticClass: "thread-left-top" }, [
+                _c("div", { staticClass: "genre-icon" }, [
+                  _vm._v(_vm._s(thread.genre))
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "thread-time" }, [
+                  _vm._v(_vm._s(thread.created_at))
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "thread-comment-count" }, [
+                  _c("img", { attrs: { src: "../../../image/comment.png" } }),
+                  _vm._v(
+                    "\n          " + _vm._s(thread.comment_count) + "\n        "
+                  )
+                ])
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "thread-time" }, [
-                _vm._v(_vm._s(thread.created_at))
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "thread-comment-count" }, [
-                _c("img", { attrs: { src: "../../../image/comment.png" } }),
-                _vm._v(
-                  "\n          " + _vm._s(thread.comment_count) + "\n        "
-                )
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "thread-title" }, [
-              _vm._v(_vm._s(thread.title))
-            ])
-          ]),
+              _c(
+                "div",
+                {
+                  staticClass: "thread-title",
+                  on: {
+                    click: function($event) {
+                      return _vm.toGuchiDetail(thread.id)
+                    }
+                  }
+                },
+                [_vm._v(_vm._s(thread.title))]
+              )
+            ]
+          ),
           _vm._v(" "),
-          _c("div", { staticClass: "bookmark" }, [
-            _c("img", { attrs: { src: "../../../image/bookmark.png" } })
-          ])
+          _c(
+            "div",
+            {
+              staticClass: "bookmark",
+              on: {
+                click: function($event) {
+                  if ($event.target !== $event.currentTarget) {
+                    return null
+                  }
+                  return _vm.toGuchiDetail(thread.id)
+                }
+              }
+            },
+            [
+              !thread.bookmarked
+                ? _c("img", {
+                    attrs: { src: "../../../image/bookmark.png" },
+                    on: {
+                      click: function($event) {
+                        return _vm.bookMark(index)
+                      }
+                    }
+                  })
+                : _vm._e(),
+              _vm._v(" "),
+              thread.bookmarked
+                ? _c("img", {
+                    attrs: { src: "../../../image/bookmarked.png" },
+                    on: {
+                      click: function($event) {
+                        return _vm.bookMark(index)
+                      }
+                    }
+                  })
+                : _vm._e()
+            ]
+          )
         ]
       )
     }),
-    1
+    0
   )
 }
 var staticRenderFns = []
@@ -52484,61 +54029,135 @@ var render = function() {
   return _c(
     "div",
     { staticClass: "thread-box" },
-    _vm._l(_vm.threads, function(thread) {
+    _vm._l(_vm.threads, function(thread, index) {
       return _c(
-        "router-link",
+        "a",
         {
           key: thread.id,
           staticClass: "guchi-thread",
-          attrs: { to: { name: "guchi.detail" } }
+          on: {
+            click: function($event) {
+              if ($event.target !== $event.currentTarget) {
+                return null
+              }
+              return _vm.toGuchiDetail(thread.id)
+            }
+          }
         },
         [
-          _c("div", { staticClass: "thread-list-icon" }, [
-            !thread.icon
-              ? _c("div", {
-                  staticClass: "thread-left-icon-image none",
-                  style: { backgroundImage: "url(../../../image/no-image.png)" }
-                })
-              : _vm._e(),
-            _vm._v(" "),
-            thread.icon
-              ? _c("div", {
-                  staticClass: "thread-left-icon-image",
-                  style: { backgroundImage: "url(" + thread.icon + ")" }
-                })
-              : _vm._e()
-          ]),
+          _c(
+            "div",
+            {
+              staticClass: "thread-list-icon",
+              on: {
+                click: function($event) {
+                  return _vm.toGuchiDetail(thread.id)
+                }
+              }
+            },
+            [
+              !thread.icon
+                ? _c("div", {
+                    staticClass: "thread-left-icon-image none",
+                    style: {
+                      backgroundImage: "url(../../../image/no-image.png)"
+                    }
+                  })
+                : _vm._e(),
+              _vm._v(" "),
+              thread.icon
+                ? _c("div", {
+                    staticClass: "thread-left-icon-image",
+                    style: { backgroundImage: "url(" + thread.icon + ")" }
+                  })
+                : _vm._e()
+            ]
+          ),
           _vm._v(" "),
-          _c("div", { staticClass: "thread-left" }, [
-            _c("div", { staticClass: "thread-left-top" }, [
-              _c("div", { staticClass: "genre-icon" }, [
-                _vm._v(_vm._s(thread.genre))
+          _c(
+            "div",
+            {
+              staticClass: "thread-left",
+              on: {
+                click: function($event) {
+                  return _vm.toGuchiDetail(thread.id)
+                }
+              }
+            },
+            [
+              _c("div", { staticClass: "thread-left-top" }, [
+                _c("div", { staticClass: "genre-icon" }, [
+                  _vm._v(_vm._s(thread.genre))
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "thread-time" }, [
+                  _vm._v(_vm._s(thread.created_at))
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "thread-comment-count" }, [
+                  _c("img", { attrs: { src: "../../../image/comment.png" } }),
+                  _vm._v(
+                    "\n          " + _vm._s(thread.comment_count) + "\n        "
+                  )
+                ])
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "thread-time" }, [
-                _vm._v(_vm._s(thread.created_at))
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "thread-comment-count" }, [
-                _c("img", { attrs: { src: "../../../image/comment.png" } }),
-                _vm._v(
-                  "\n          " + _vm._s(thread.comment_count) + "\n        "
-                )
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "thread-title" }, [
-              _vm._v(_vm._s(thread.title))
-            ])
-          ]),
+              _c(
+                "div",
+                {
+                  staticClass: "thread-title",
+                  on: {
+                    click: function($event) {
+                      return _vm.toGuchiDetail(thread.id)
+                    }
+                  }
+                },
+                [_vm._v(_vm._s(thread.title))]
+              )
+            ]
+          ),
           _vm._v(" "),
-          _c("div", { staticClass: "bookmark" }, [
-            _c("img", { attrs: { src: "../../../image/bookmark.png" } })
-          ])
+          _c(
+            "div",
+            {
+              staticClass: "bookmark",
+              on: {
+                click: function($event) {
+                  if ($event.target !== $event.currentTarget) {
+                    return null
+                  }
+                  return _vm.toGuchiDetail(thread.id)
+                }
+              }
+            },
+            [
+              !thread.bookmarked
+                ? _c("img", {
+                    attrs: { src: "../../../image/bookmark.png" },
+                    on: {
+                      click: function($event) {
+                        return _vm.bookMark(index)
+                      }
+                    }
+                  })
+                : _vm._e(),
+              _vm._v(" "),
+              thread.bookmarked
+                ? _c("img", {
+                    attrs: { src: "../../../image/bookmarked.png" },
+                    on: {
+                      click: function($event) {
+                        return _vm.bookMark(index)
+                      }
+                    }
+                  })
+                : _vm._e()
+            ]
+          )
         ]
       )
     }),
-    1
+    0
   )
 }
 var staticRenderFns = []
@@ -58499,54 +60118,135 @@ var render = function() {
   return _c(
     "div",
     { staticClass: "user-thread-box" },
-    _vm._l(_vm.threads, function(thread) {
+    _vm._l(_vm.threads, function(thread, index) {
       return _c(
-        "router-link",
+        "a",
         {
           key: thread.id,
           staticClass: "guchi-thread",
-          attrs: { to: { name: "guchi.detail" } }
+          on: {
+            click: function($event) {
+              if ($event.target !== $event.currentTarget) {
+                return null
+              }
+              return _vm.toGuchiDetail(thread.id)
+            }
+          }
         },
         [
-          _c("div", { staticClass: "thread-list-icon" }, [
-            !thread.icon
-              ? _c("div", {
-                  staticClass: "thread-left-icon-image none",
-                  style: { backgroundImage: "url(../../image/no-image.png)" }
-                })
-              : _vm._e(),
-            _vm._v(" "),
-            thread.icon
-              ? _c("div", {
-                  staticClass: "thread-left-icon-image",
-                  style: { backgroundImage: "url(" + thread.icon + ")" }
-                })
-              : _vm._e()
-          ]),
+          _c(
+            "div",
+            {
+              staticClass: "thread-list-icon",
+              on: {
+                click: function($event) {
+                  return _vm.toGuchiDetail(thread.id)
+                }
+              }
+            },
+            [
+              !thread.icon
+                ? _c("div", {
+                    staticClass: "thread-left-icon-image none",
+                    style: { backgroundImage: "url(../../image/no-image.png)" }
+                  })
+                : _vm._e(),
+              _vm._v(" "),
+              thread.icon
+                ? _c("div", {
+                    staticClass: "thread-left-icon-image",
+                    style: { backgroundImage: "url(" + thread.icon + ")" }
+                  })
+                : _vm._e()
+            ]
+          ),
           _vm._v(" "),
-          _c("div", { staticClass: "thread-left" }, [
-            _c("div", { staticClass: "thread-left-top" }, [
-              _c("div", { staticClass: "genre-icon" }, [
-                _vm._v(_vm._s(thread.genre))
+          _c(
+            "div",
+            {
+              staticClass: "thread-left",
+              on: {
+                click: function($event) {
+                  return _vm.toGuchiDetail(thread.id)
+                }
+              }
+            },
+            [
+              _c("div", { staticClass: "thread-left-top" }, [
+                _c("div", { staticClass: "genre-icon" }, [
+                  _vm._v(_vm._s(thread.genre))
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "thread-time" }, [
+                  _vm._v(_vm._s(thread.created_at))
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "thread-comment-count" }, [
+                  _c("img", { attrs: { src: "../../image/comment.png" } }),
+                  _vm._v(
+                    "\n            " +
+                      _vm._s(thread.comment_count) +
+                      "\n          "
+                  )
+                ])
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "thread-time" }, [
-                _vm._v(_vm._s(thread.created_at))
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "thread-title" }, [
-              _vm._v(_vm._s(thread.title))
-            ])
-          ]),
+              _c(
+                "div",
+                {
+                  staticClass: "thread-title",
+                  on: {
+                    click: function($event) {
+                      return _vm.toGuchiDetail(thread.id)
+                    }
+                  }
+                },
+                [_vm._v(_vm._s(thread.title))]
+              )
+            ]
+          ),
           _vm._v(" "),
-          _c("div", { staticClass: "bookmark" }, [
-            _c("img", { attrs: { src: "../../image/bookmark.png" } })
-          ])
+          _c(
+            "div",
+            {
+              staticClass: "bookmark",
+              on: {
+                click: function($event) {
+                  if ($event.target !== $event.currentTarget) {
+                    return null
+                  }
+                  return _vm.toGuchiDetail(thread.id)
+                }
+              }
+            },
+            [
+              !thread.bookmarked
+                ? _c("img", {
+                    attrs: { src: "../../image/bookmark.png" },
+                    on: {
+                      click: function($event) {
+                        return _vm.bookMark(index)
+                      }
+                    }
+                  })
+                : _vm._e(),
+              _vm._v(" "),
+              thread.bookmarked
+                ? _c("img", {
+                    attrs: { src: "../../image/bookmarked.png" },
+                    on: {
+                      click: function($event) {
+                        return _vm.bookMark(index)
+                      }
+                    }
+                  })
+                : _vm._e()
+            ]
+          )
         ]
       )
     }),
-    1
+    0
   )
 }
 var staticRenderFns = []
@@ -74858,6 +76558,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_search_SearchGuchiNew__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./components/search/SearchGuchiNew */ "./resources/js/components/search/SearchGuchiNew.vue");
 /* harmony import */ var _components_search_SearchGuchiPopular__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./components/search/SearchGuchiPopular */ "./resources/js/components/search/SearchGuchiPopular.vue");
 /* harmony import */ var _components_search_SearchUser__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./components/search/SearchUser */ "./resources/js/components/search/SearchUser.vue");
+/* harmony import */ var _components_auth_Register__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./components/auth/Register */ "./resources/js/components/auth/Register.vue");
+/* harmony import */ var _components_auth_Login__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./components/auth/Login */ "./resources/js/components/auth/Login.vue");
+
+
 
 
 
@@ -74896,7 +76600,7 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.
 Vue.use(vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]);
 var router = new vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]({
   mode: 'history',
-  // 画面遷移時のスクロール位置の制御
+  // 画面遷移時にスクロール位置をトップに
   scrollBehavior: function scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {
       return savedPosition;
@@ -74913,11 +76617,17 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]({
     children: [{
       path: '',
       name: 'home',
-      component: _components_home_HomeDefault__WEBPACK_IMPORTED_MODULE_3__["default"]
+      component: _components_home_HomeDefault__WEBPACK_IMPORTED_MODULE_3__["default"],
+      meta: {
+        authOnly: true
+      }
     }, {
       path: 'genre/:name',
       name: 'home.genre',
-      component: _components_home_HomeGenre__WEBPACK_IMPORTED_MODULE_4__["default"]
+      component: _components_home_HomeGenre__WEBPACK_IMPORTED_MODULE_4__["default"],
+      meta: {
+        authOnly: true
+      }
     }]
   }, {
     path: '/user/:id',
@@ -74925,15 +76635,24 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]({
     children: [{
       path: '',
       name: 'user',
-      component: _components_user_UserPosts__WEBPACK_IMPORTED_MODULE_6__["default"]
+      component: _components_user_UserPosts__WEBPACK_IMPORTED_MODULE_6__["default"],
+      meta: {
+        authOnly: true
+      }
     }, {
       path: 'donmai',
       name: 'user.donmai',
-      component: _components_user_UserDonmai__WEBPACK_IMPORTED_MODULE_7__["default"]
+      component: _components_user_UserDonmai__WEBPACK_IMPORTED_MODULE_7__["default"],
+      meta: {
+        authOnly: true
+      }
     }, {
       path: 'guchi',
       name: 'user.guchi',
-      component: _components_user_UserGuchi__WEBPACK_IMPORTED_MODULE_8__["default"]
+      component: _components_user_UserGuchi__WEBPACK_IMPORTED_MODULE_8__["default"],
+      meta: {
+        authOnly: true
+      }
     }]
   }, {
     path: '/guchi',
@@ -74941,69 +76660,155 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]({
     children: [{
       path: 'all',
       name: 'guchi.all',
-      component: _components_guchi_GuchiAll__WEBPACK_IMPORTED_MODULE_10__["default"]
+      component: _components_guchi_GuchiAll__WEBPACK_IMPORTED_MODULE_10__["default"],
+      meta: {
+        authOnly: true
+      }
     }, {
       path: 'all/trend',
       name: 'guchi.all.trend',
-      component: _components_guchi_GuchiAllTrend__WEBPACK_IMPORTED_MODULE_11__["default"]
+      component: _components_guchi_GuchiAllTrend__WEBPACK_IMPORTED_MODULE_11__["default"],
+      meta: {
+        authOnly: true
+      }
     }, {
-      path: 'room/1',
+      path: 'room/:id',
       name: 'guchi.detail',
-      component: _components_guchi_GuchiDetail__WEBPACK_IMPORTED_MODULE_14__["default"]
+      component: _components_guchi_GuchiDetail__WEBPACK_IMPORTED_MODULE_14__["default"],
+      meta: {
+        authOnly: true
+      }
     }, {
       path: ':name',
       name: 'guchi.genre',
-      component: _components_guchi_GuchiGenre__WEBPACK_IMPORTED_MODULE_12__["default"]
+      component: _components_guchi_GuchiGenre__WEBPACK_IMPORTED_MODULE_12__["default"],
+      meta: {
+        authOnly: true
+      }
     }, {
       path: ':name/trend',
       name: 'guchi.genre.trend',
-      component: _components_guchi_GuchiGenreTrend__WEBPACK_IMPORTED_MODULE_13__["default"]
+      component: _components_guchi_GuchiGenreTrend__WEBPACK_IMPORTED_MODULE_13__["default"],
+      meta: {
+        authOnly: true
+      }
     }]
   }, {
     path: '/hot',
     name: 'hot',
-    component: _components_hot_Hot__WEBPACK_IMPORTED_MODULE_15__["default"]
+    component: _components_hot_Hot__WEBPACK_IMPORTED_MODULE_15__["default"],
+    meta: {
+      authOnly: true
+    }
   }, {
     path: '/tags/:name',
     component: _components_tags_Tags__WEBPACK_IMPORTED_MODULE_16__["default"],
     children: [{
       path: '',
       name: 'tags.new',
-      component: _components_tags_TagsNew__WEBPACK_IMPORTED_MODULE_17__["default"]
+      component: _components_tags_TagsNew__WEBPACK_IMPORTED_MODULE_17__["default"],
+      meta: {
+        authOnly: true
+      }
     }, {
       path: 'popular',
       name: 'tags.popular',
-      component: _components_tags_TagsPopular__WEBPACK_IMPORTED_MODULE_18__["default"]
+      component: _components_tags_TagsPopular__WEBPACK_IMPORTED_MODULE_18__["default"],
+      meta: {
+        authOnly: true
+      }
     }]
   }, {
     path: '/trend',
     name: 'trend',
-    component: _components_trend_Trend__WEBPACK_IMPORTED_MODULE_19__["default"]
+    component: _components_trend_Trend__WEBPACK_IMPORTED_MODULE_19__["default"],
+    meta: {
+      authOnly: true
+    }
   }, {
     path: '/search/:word',
     component: _components_search_Search__WEBPACK_IMPORTED_MODULE_20__["default"],
     children: [{
       path: 'post/new',
       name: 'search.post.new',
-      component: _components_search_SearchPostNew__WEBPACK_IMPORTED_MODULE_21__["default"]
+      component: _components_search_SearchPostNew__WEBPACK_IMPORTED_MODULE_21__["default"],
+      meta: {
+        authOnly: true
+      }
     }, {
       path: 'post/popular',
       name: 'search.post.popular',
-      component: _components_search_SearchPostPopular__WEBPACK_IMPORTED_MODULE_22__["default"]
+      component: _components_search_SearchPostPopular__WEBPACK_IMPORTED_MODULE_22__["default"],
+      meta: {
+        authOnly: true
+      }
     }, {
       path: 'guchi/new',
       name: 'search.guchi.new',
-      component: _components_search_SearchGuchiNew__WEBPACK_IMPORTED_MODULE_23__["default"]
+      component: _components_search_SearchGuchiNew__WEBPACK_IMPORTED_MODULE_23__["default"],
+      meta: {
+        authOnly: true
+      }
     }, {
       path: 'guchi/popular',
       name: 'search.guchi.popular',
-      component: _components_search_SearchGuchiPopular__WEBPACK_IMPORTED_MODULE_24__["default"]
+      component: _components_search_SearchGuchiPopular__WEBPACK_IMPORTED_MODULE_24__["default"],
+      meta: {
+        authOnly: true
+      }
     }, {
       path: 'user/',
       name: 'search.user',
-      component: _components_search_SearchUser__WEBPACK_IMPORTED_MODULE_25__["default"]
+      component: _components_search_SearchUser__WEBPACK_IMPORTED_MODULE_25__["default"],
+      meta: {
+        authOnly: true
+      }
     }]
+  }, {
+    path: '/register',
+    name: 'auth.register',
+    component: _components_auth_Register__WEBPACK_IMPORTED_MODULE_26__["default"],
+    meta: {
+      guestOnly: true
+    }
+  }, {
+    path: '/login',
+    name: 'auth.login',
+    component: _components_auth_Login__WEBPACK_IMPORTED_MODULE_27__["default"],
+    meta: {
+      guestOnly: true
+    }
   }]
+});
+
+function isLoggedIn() {
+  return localStorage.getItem('auth');
+}
+
+router.beforeEach(function (to, from, next) {
+  if (to.matched.some(function (record) {
+    return record.meta.authOnly;
+  })) {
+    if (!isLoggedIn()) {
+      next({
+        name: 'auth.login'
+      });
+    } else {
+      next();
+    }
+  } else if (to.matched.some(function (record) {
+    return record.meta.guestOnly;
+  })) {
+    if (isLoggedIn()) {
+      next({
+        name: 'home'
+      });
+    } else {
+      next();
+    }
+  } else {
+    next();
+  }
 });
 /**
  * The following block of code may be used to automatically register your
@@ -75138,6 +76943,144 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Header_vue_vue_type_template_id_1f42fb90___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Header_vue_vue_type_template_id_1f42fb90___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/auth/Login.vue":
+/*!************************************************!*\
+  !*** ./resources/js/components/auth/Login.vue ***!
+  \************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Login_vue_vue_type_template_id_4221c3ad___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Login.vue?vue&type=template&id=4221c3ad& */ "./resources/js/components/auth/Login.vue?vue&type=template&id=4221c3ad&");
+/* harmony import */ var _Login_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Login.vue?vue&type=script&lang=js& */ "./resources/js/components/auth/Login.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Login_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Login_vue_vue_type_template_id_4221c3ad___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Login_vue_vue_type_template_id_4221c3ad___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/auth/Login.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/auth/Login.vue?vue&type=script&lang=js&":
+/*!*************************************************************************!*\
+  !*** ./resources/js/components/auth/Login.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Login_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./Login.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/auth/Login.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Login_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/auth/Login.vue?vue&type=template&id=4221c3ad&":
+/*!*******************************************************************************!*\
+  !*** ./resources/js/components/auth/Login.vue?vue&type=template&id=4221c3ad& ***!
+  \*******************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Login_vue_vue_type_template_id_4221c3ad___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./Login.vue?vue&type=template&id=4221c3ad& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/auth/Login.vue?vue&type=template&id=4221c3ad&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Login_vue_vue_type_template_id_4221c3ad___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Login_vue_vue_type_template_id_4221c3ad___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/auth/Register.vue":
+/*!***************************************************!*\
+  !*** ./resources/js/components/auth/Register.vue ***!
+  \***************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Register_vue_vue_type_template_id_d4f9cbe2___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Register.vue?vue&type=template&id=d4f9cbe2& */ "./resources/js/components/auth/Register.vue?vue&type=template&id=d4f9cbe2&");
+/* harmony import */ var _Register_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Register.vue?vue&type=script&lang=js& */ "./resources/js/components/auth/Register.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Register_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Register_vue_vue_type_template_id_d4f9cbe2___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Register_vue_vue_type_template_id_d4f9cbe2___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/auth/Register.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/auth/Register.vue?vue&type=script&lang=js&":
+/*!****************************************************************************!*\
+  !*** ./resources/js/components/auth/Register.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Register_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./Register.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/auth/Register.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Register_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/auth/Register.vue?vue&type=template&id=d4f9cbe2&":
+/*!**********************************************************************************!*\
+  !*** ./resources/js/components/auth/Register.vue?vue&type=template&id=d4f9cbe2& ***!
+  \**********************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Register_vue_vue_type_template_id_d4f9cbe2___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./Register.vue?vue&type=template&id=d4f9cbe2& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/auth/Register.vue?vue&type=template&id=d4f9cbe2&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Register_vue_vue_type_template_id_d4f9cbe2___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Register_vue_vue_type_template_id_d4f9cbe2___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

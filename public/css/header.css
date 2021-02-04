@@ -425,6 +425,10 @@ body {
   .search-form {
     width: 256px;
   }
+
+  .login-menu {
+    width: 50px;
+  }
 }
 
 

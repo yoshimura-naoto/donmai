@@ -11,7 +11,7 @@
       </div>
 
       <!-- 検索フォーム -->
-      <div :class="{ 'no-search': !searchOpened }" class="search search-1">
+      <div :class="{ 'no-search': !searchOpened }" class="search search-1" v-if="$route.path !== '/register' && $route.path !== '/login'">
         <input v-model="keyword" @keydown.enter="search" v-click-outside="searchClose" class="search-form" id="search" type="text" placeholder="検索">
       </div>
 
@@ -19,12 +19,12 @@
       <div v-if="!searchOpened" class="menus">
 
         <!-- 検索アイコン（ボタン） -->
-        <div class="search-icon" @click="searchOpen">
+        <div class="search-icon" @click="searchOpen" v-if="$route.path !== '/register' && $route.path !== '/login'">
           <img :src="'/image/search2.png'">
         </div>
 
         <!-- ジャンルメニュー -->
-        <div :class="{'genre-menu-display-1': $route.path == $router.resolve({ name: 'home' }).href || $route.path.startsWith('/genre/') }" class="header-genre-menu-2">
+        <div :class="{'genre-menu-display-1': $route.path == $router.resolve({ name: 'home' }).href || $route.path.substr(0, 7) == '/genre/' }" class="header-genre-menu-2">
           <div class="menu-set-btn-genre" @click="genreMenuToggle" v-click-outside="genreMenuClose">
             ジャンル
           </div>
@@ -48,49 +48,69 @@
         <div class="menu menu-set">
           <div>MENU</div>
           <ul>
-            <li>
+            <li v-if="$route.path !== '/register' && $route.path !== '/login'">
               <router-link :to="{name: 'home'}">
                 <div class="menu-set-btn" :class="{ 'current-2': $route.path == $router.resolve({ name: 'home' }).href }">
                   ホーム
                 </div>
               </router-link>
             </li>
-            <li>
+            <li v-if="$route.path !== '/register' && $route.path !== '/login'">
               <router-link :to="{name: 'trend'}">
                 <div class="menu-set-btn" :class="{ 'current-2': $route.path == $router.resolve({ name: 'trend' }).href }">
                   トレンド
                 </div>
               </router-link>
             </li>
-            <li>
+            <li v-if="$route.path !== '/register' && $route.path !== '/login'">
               <router-link :to="{name: 'hot'}">
                 <div class="menu-set-btn" :class="{ 'current-2': $route.path == $router.resolve({ name: 'hot' }).href }">
                   話題の投稿
                 </div>
               </router-link>
             </li>
-            <li>
+            <li v-if="$route.path !== '/register' && $route.path !== '/login'">
               <router-link :to="{name: 'guchi.all'}">
-                <div class="menu-set-btn" :class="{ 'current-2': $route.path.startsWith('/guchi') }">
+                <div class="menu-set-btn" :class="{ 'current-2': $route.path.substr(0, 6) == '/guchi' }">
                   みんなでグチ
                 </div>
               </router-link>
             </li>
-            <li>
+            <li v-if="$route.path !== '/register' && $route.path !== '/login'">
               <router-link :to="{name: 'user', params: { id: 1 }}">
                 <div class="menu-set-btn">プロフィール</div>
+              </router-link>
+            </li>
+            <li v-if="$route.path !== '/register' && $route.path !== '/login'">
+              <a @click="logout">
+                <div class="menu-set-btn">ログアウト</div>
+              </a>
+            </li>
+            <li v-if="$route.path == '/register' || $route.path == '/login'">
+              <router-link :to="{ name: 'auth.login' }">
+                <div class="menu-set-btn" :class="{ 'current-2': $route.path == '/login' }">
+                  ログイン
+                </div>
+              </router-link>
+            </li>
+            <li v-if="$route.path == '/register' || $route.path == '/login'">
+              <router-link :to="{ name: 'auth.register' }">
+                <div class="menu-set-btn" :class="{ 'current-2': $route.path == '/register' }">
+                  登録
+                </div>
               </router-link>
             </li>
           </ul>
         </div>
 
         <!-- 画面幅670px以上の時のヘッダーメニュー -->
-        <div class="menu each-menu">
-          <router-link :to="{name: 'home'}" :class="{ 'current': $route.path == $router.resolve({ name: 'home' }).href || $route.path.startsWith('/genre/') }">
+        <div class="menu each-menu" v-if="$route.path !== '/register' && $route.path !== '/login'">
+          <router-link :to="{name: 'home'}" :class="{ 'current': $route.path == $router.resolve({ name: 'home' }).href || $route.path.substr(0, 7) == '/genre/' }">
             <div class="menu-set-btn">ホーム</div>
           </router-link>
         </div>
-        <div :class="{'genre-menu-display-2': $route.path == $router.resolve({ name: 'home' }).href || $route.path.startsWith('/genre/') }" class="header-genre-menu-wide">
+
+        <div v-if="$route.path !== '/register' && $route.path !== '/login'" :class="{'genre-menu-display-2': $route.path == $router.resolve({ name: 'home' }).href || $route.path.substr(0, 7) == '/genre/' }" class="header-genre-menu-wide">
           <div class="menu-set-btn-genre-wide" @click="genreMenuToggleWide" v-click-outside="genreMenuWideClose">
             ジャンル
           </div>
@@ -109,22 +129,26 @@
             </ul>
           </div>
         </div>
-        <div class="menu each-menu">
+
+        <div v-if="$route.path !== '/register' && $route.path !== '/login'" class="menu each-menu">
           <router-link :to="{name: 'trend'}" :class="{ 'current': $route.path == $router.resolve({ name: 'trend' }).href }">
             <div class="menu-set-btn">トレンド</div>
           </router-link>
         </div>
-        <div class="menu each-menu">
+
+        <div v-if="$route.path !== '/register' && $route.path !== '/login'" class="menu each-menu">
           <router-link :to="{name: 'hot'}" :class="{ 'current': $route.path == $router.resolve({ name: 'hot' }).href }">
             <div class="menu-set-btn">話題の投稿</div>
           </router-link>
         </div>
-        <div class="menu each-menu">
-          <router-link :to="{name: 'guchi.all'}" :class="{ 'current': $route.path.startsWith('/guchi') }">
+
+        <div v-if="$route.path !== '/register' && $route.path !== '/login'" class="menu each-menu">
+          <router-link :to="{name: 'guchi.all'}" :class="{ 'current': $route.path.substr(0, 6) == '/guchi' }">
             <div class="menu-set-btn">みんなでグチ</div>
           </router-link>
         </div>
-        <div class="icon each-menu">
+
+        <div v-if="$route.path !== '/register' && $route.path !== '/login'" class="icon each-menu">
           <img :src="'/image/unko.jpg'" @click="toggle" v-click-outside="close" :class="{'clicked':opened}">
           <ul v-if="opened">
             <li>
@@ -133,12 +157,25 @@
               </router-link>
             </li>
             <li>
-              <a>
+              <a @click="logout">
                 ログアウト
               </a>
             </li>
           </ul>
         </div>
+
+        <div v-if="$route.path == '/register' || $route.path == '/login'" class="menu each-menu">
+          <router-link :to="{name: 'auth.login'}" :class="{ 'current': $route.path == '/login' }">
+            <div class="menu-set-btn">ログイン</div>
+          </router-link>
+        </div>
+
+        <div v-if="$route.path == '/register' || $route.path == '/login'" class="menu each-menu login-menu">
+          <router-link :to="{name: 'auth.register'}" :class="{ 'current': $route.path == '/register' }">
+            <div class="menu-set-btn">登録</div>
+          </router-link>
+        </div>
+
       </div>
 
     </div>
@@ -296,6 +333,14 @@ export default {
           return;
         });
     },
+    // ログアウト
+    logout() {
+      axios.post('/api/logout')
+        .then(() => {
+          localStorage.removeItem('auth');
+          this.$router.push({ name: 'auth.login' });
+        });
+    }
   },
   directives: {
     // 要素の外側クリックを認識するライブラリ
