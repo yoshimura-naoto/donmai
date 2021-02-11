@@ -5,8 +5,8 @@
     <div class="new-post">
 
       <!-- アイコン画像 -->
-      <div class="logo-area">
-        <img :src="'../image/unko.jpg'">
+      <div class="logo-area" v-if="authUser">
+        <img :src="authUser.icon">
       </div>
 
       <!-- 入力エリア -->
@@ -14,58 +14,80 @@
 
         <!-- テキスト入力エリア -->
         <div class="input-1">
-          <textarea v-model="text" ref="area" :style="styles" class="flex-textarea" placeholder="なんかあった？"></textarea>
+          <!-- <textarea v-model="newPost.body" ref="area" :style="styles" class="flex-textarea" placeholder="なんかあった？"></textarea> -->
+          <textarea v-model="newPost.body" ref="area" :style="styles" class="flex-textarea" placeholder="なんかあった？"></textarea>
+        </div>
+
+        <div v-if="errors.body" class="user-edit-error">
+          {{ errors.body[0] }}
         </div>
 
         <!-- ジャンル選択エリア -->
         <div class="select-genre">
-          <select name="genre" v-model="genre">
-            <option value="" selected>ジャンルを選択してください</option>
-            <option v-for="(genre, index) in genres" :key="index" :value="genre.route">{{ genre.name }}</option>
+          <select name="genre" v-model="newPost.genreIndex">
+            <option value='' selected>ジャンルを選択してください</option>
+            <option v-for="(genre, index) in genres" :key="index" :value="index">{{ genre.name }}</option>
           </select>
+
+          <div v-if="errors.genreIndex" class="user-edit-error">
+            {{ errors.genreIndex[0] }}
+          </div>
         </div>
 
         <!-- タグ入力エリア -->
         <div class="input-tag">
-          <input type="text" placeholder="タグ（例: #ああ #いい）" v-model="tags">
+          <input type="text" placeholder="タグ（例: #ああ #いい）" v-model="newPost.tags">
+        </div>
+
+        <div v-if="errors.tags" class="user-edit-error">
+          {{ errors.tags[0] }}
         </div>
 
         <!-- 画像のプレビューエリア -->
-        <div v-if="imageCount > 0" class="image-preview" >
-          <div v-for="(url, index) in urls" :key="index" class="each-preview" :class="{ 'one-image-pre': imageCount == 1, 'two-image-pre': imageCount == 2, 'three-image-pre': imageCount == 3, 'four-image-pre': imageCount == 4, 'yokonaga': imageCount == 3 && index == 0 }">
+        <div v-if="newPost.images.length > 0" class="image-preview" >
+          <div v-for="(url, index) in urls" :key="index" class="each-preview" :class="{ 'one-image-pre': newPost.images.length == 1, 'two-image-pre': newPost.images.length == 2, 'three-image-pre': newPost.images.length == 3, 'four-image-pre': newPost.images.length == 4, 'yokonaga': newPost.images.length == 3 && index == 0 }">
             <div class="delete-image">
               <img class="batsu-icon" :src="'../image/batsu.png'" @click="deletePreview(url, index)">
             </div>
             <div class="each-image-box">
-              <div class="each-image" :style="{ backgroundImage: 'url(' + url + ')' }" :class="{ 'one-each-image': imageCount == 1, 'two-each-image': imageCount == 2, 'three-each-image': imageCount == 3, 'four-each-image': imageCount == 4, 'yokonaga-image': imageCount == 3 && index == 0 }"></div>
+              <div class="each-image" :style="{ backgroundImage: 'url(' + url + ')' }" :class="{ 'one-each-image': newPost.images.length == 1, 'two-each-image': newPost.images.length == 2, 'three-each-image': newPost.images.length == 3, 'four-each-image': newPost.images.length == 4, 'yokonaga-image': newPost.images.length == 3 && index == 0 }"></div>
             </div>
           </div>
         </div>
 
         <!-- 画像追加ボタンと投稿ボタン -->
         <div class="input-2">
+
           <div class="image-add">
             <label>
               <img class="image-icon" :src="'../image/image.png'" alt="画像追加">
               <input class="file-upload" type="file" ref="preview" @change="uploadFile" accept="image/*" multiple>
             </label>
           </div>
+
           <div class="submit">
-            <div class="submit-btn">投稿</div>
+            <div class="submit-btn" @click="submit">投稿</div>
           </div>
+
+          <!-- テスト用 -->
+          <!-- <div class="submit">
+            <div class="submit-btn" @click="check">チェック</div>
+          </div> -->
+          
         </div>
 
       </div>
     </div>
 
   
+
     <!-- 投稿一覧 -->
     <div v-for="(post, index) in posts" :key="post.id" class="posts">
 
       <!-- アイコン画像 -->
       <div class="logo-area">
-        <router-link :to="{ name: 'user', params: { id: post.userId }}">
-          <img :src="'../image/unko.jpg'">
+        <router-link :to="{ name: 'user', params: { id: post.user.id }}">
+          <img :src="post.user.icon">
         </router-link>
       </div>
 
@@ -73,27 +95,23 @@
       <div class="input-area">
 
         <!-- ユーザー名 -->
-        <div class="user-name-post">{{ post.user }}</div>
+        <div class="user-name-post">{{ post.user.name }}</div>
 
         <!-- テキスト -->
-        <div class="post-body">
-          こんにちは。こんにちは。こんにちは。こんにちは。こんにちは。こんにちは。<br>
-          こんにちは。こんにちは。<br>
-          こんにちは。こんにちは。
-        </div>
+        <div class="post-body">{{ post.body }}</div>
 
         <!-- タグ -->
         <div v-if="post.tags" class="post-tags">
-          <router-link :to="{ name: 'tags.new', params: { name: tag.replace('#', '') }}" v-for="(tag, index) in post.tags" :key="index">
-            {{ tag }}
+          <router-link :to="{ name: 'tags.new', params: { name: tag.name }}" v-for="(tag, index) in post.tags" :key="index">
+            #{{ tag.name }}
           </router-link>
         </div>
 
         <!-- 画像たち -->
-        <div v-if="post.images.length > 0" class="post-image-view">
-          <div v-for="(image, index) in post.images" :key="index" class="each-preview" :class="{ 'one-image-pre': post.images.length == 1, 'two-image-pre': post.images.length == 2, 'three-image-pre': post.images.length == 3, 'four-image-pre': post.images.length == 4, 'yokonaga': post.images.length == 3 && index == 0 }">
-            <div @click="openImageModal(image)" class="each-image-box">
-              <div class="each-image" :style="{ backgroundImage: 'url(' + image + ')' }" :class="{ 'one-each-image': post.images.length == 1, 'two-each-image': post.images.length == 2, 'three-each-image': post.images.length == 3, 'four-each-image': post.images.length == 4, 'yokonaga-image': post.images.length == 3 && index == 0 }"></div>
+        <div v-if="post.post_images && post.post_images.length > 0" class="post-image-view">
+          <div v-for="(image, index) in post.post_images" :key="index" class="each-preview" :class="{ 'one-image-pre': post.post_images.length == 1, 'two-image-pre': post.post_images.length == 2, 'three-image-pre': post.post_images.length == 3, 'four-image-pre': post.post_images.length == 4, 'yokonaga': post.post_images.length == 3 && index == 0 }">
+            <div @click="openImageModal(image.path)" class="each-image-box">
+              <div class="each-image" :style="{ backgroundImage: 'url(' + image.path + ')' }" :class="{ 'one-each-image': post.post_images.length == 1, 'two-each-image': post.post_images.length == 2, 'three-each-image': post.post_images.length == 3, 'four-each-image': post.post_images.length == 4, 'yokonaga-image': post.post_images.length == 3 && index == 0 }"></div>
             </div>
           </div>
         </div>
@@ -104,17 +122,18 @@
           <div class="post-donmai post-action-icon" @click="donmai(index)">
             <img v-if="!post.donmai" :src="'../image/donmai.png'" width="30px">
             <img v-if="post.donmai" :src="'../image/donmaied.png'" width="30px">
-            {{ post.donmai_count }}
+            {{ post.donmaiCount }}
           </div>
           <!-- コメントボタン -->
           <div @click="openModalPost(index)" class="post-comment-icon post-action-icon">
             <img :src="'../image/comment.png'">
-            {{ post.comment_count }}
+            {{ post.commentCount }}
           </div>
         </div>
 
       </div>
     </div>
+
 
 
     <!-- 投稿モーダル -->
@@ -128,7 +147,7 @@
           <!-- アイコン画像 -->
           <div class="logo-area">
             <router-link :to="{ name: 'user', params: { id: modalPostUserId }}">
-              <img :src="'../image/unko.jpg'">
+              <img :src="modalPostUserIcon">
             </router-link>
           </div>
 
@@ -136,27 +155,23 @@
           <div class="input-area">
 
             <!-- ユーザー名 -->
-            <div class="user-name-post">{{ modalPostUser }}</div>
+            <div class="user-name-post">{{ modalPostUserName }}</div>
 
             <!-- テキスト -->
-            <div class="post-body">
-              こんにちは。こんにちは。こんにちは。こんにちは。こんにちは。こんにちは。<br>
-              こんにちは。こんにちは。<br>
-              こんにちは。こんにちは。
-            </div>
+            <div class="post-body">{{ modalPostBody }}</div>
 
             <!-- タグ -->
             <div v-if="modalPostTags" class="post-tags">
-              <router-link :to="{ name: 'tags.new', params: { name: tag.replace('#', '') }}" v-for="(tag, index) in modalPostTags" :key="index">
-                {{ tag }}
+              <router-link :to="{ name: 'tags.new', params: { name: tag.name }}" v-for="(tag, index) in modalPostTags" :key="index">
+                #{{ tag.name }}
               </router-link>
             </div>
 
             <!-- 画像たち -->
             <div v-if="modalPostImages.length > 0" class="post-image-view">
               <div v-for="(image, index) in modalPostImages" :key="index" class="each-preview" :class="{ 'one-image-pre': modalPostImages.length == 1, 'two-image-pre': modalPostImages.length == 2, 'three-image-pre': modalPostImages.length == 3, 'four-image-pre': modalPostImages.length == 4, 'yokonaga': modalPostImages.length == 3 && index == 0 }">
-                <div @click="openImageModal(image)" class="each-image-box">
-                  <div class="each-image" :style="{ backgroundImage: 'url(' + image + ')' }" :class="{ 'one-each-image': modalPostImages.length == 1, 'two-each-image': modalPostImages.length == 2, 'three-each-image': modalPostImages.length == 3, 'four-each-image': modalPostImages.length == 4, 'yokonaga-image': modalPostImages.length == 3 && index == 0 }"></div>
+                <div @click="openImageModal(image.path)" class="each-image-box">
+                  <div class="each-image" :style="{ backgroundImage: 'url(' + image.path + ')' }" :class="{ 'one-each-image': modalPostImages.length == 1, 'two-each-image': modalPostImages.length == 2, 'three-each-image': modalPostImages.length == 3, 'four-each-image': modalPostImages.length == 4, 'yokonaga-image': modalPostImages.length == 3 && index == 0 }"></div>
                 </div>
               </div>
             </div>
@@ -173,18 +188,23 @@
               </div>
             </div>
 
+
             <!-- コメント入力 -->
             <div class="comment-post-area">
 
               <div class="comment-post-icon">
-                <img :src="'../image/unko.jpg'">
+                <img :src="authUser.icon">
               </div>
             
               <div class="input-3">
 
                 <textarea v-model="commentInput" ref="commentarea" :style="commentStyles" class="flex-textarea-2" placeholder="コメントを入力"></textarea>
 
-                <div class="comment-btn-main">
+                <div v-if="commentErrors.body" class="user-edit-error">
+                  {{ commentErrors.body[0] }}
+                </div>
+
+                <div class="comment-btn-main" @click="commentPost">
                   コメント
                 </div>
 
@@ -192,14 +212,15 @@
               
             </div>
 
-            <!-- コメントたち -->
+
+            <!-- それぞれのコメントたち -->
             <div v-for="(comment, index) in modalPostComments" :key="comment.id" class="overlay-post-comment-area">
 
               <!-- アイコン -->
               <div class="overlay-post-comment-left">
 
-                <router-link :to="{ name: 'user', params: { id: comment.userId }}">
-                  <img :src="comment.icon">
+                <router-link :to="{ name: 'user', params: { id: comment.user.id }}">
+                  <img :src="comment.user.icon">
                 </router-link>
 
               </div>
@@ -210,20 +231,18 @@
 
                   <!-- 名前 -->
                   <div class="overlay-post-name">
-                    {{ comment.user }}
+                    {{ comment.user.name }}
                   </div>
 
                   <!-- 日付 -->
                   <div class="overlay-post-day">
-                    {{ comment.day }}
+                    {{ comment.created_at }}
                   </div>
 
                 </div>
 
                 <!-- コメント内容 -->
-                <div class="overlay-post-comment">
-                  うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。
-                </div>
+                <div class="overlay-post-comment">{{ comment.body }}</div>
 
                 <div class="overlay-post-bottom">
 
@@ -244,11 +263,12 @@
                   <!-- コメントへのいいね -->
                   <div class="overlay-post-good">
                     {{ comment.goodCount }}
-                    <img v-if="!comment.good" :src="'../image/good.png'" @click="commentGood(comment.id)">
-                    <img v-if="comment.good" :src="'../image/gooded.png'" @click="commentGood(comment.id)">
+                    <img v-if="!comment.gooded" :src="'../image/good.png'" @click="commentGood(index)">
+                    <img v-if="comment.gooded" :src="'../image/gooded.png'" @click="commentGood(index)">
                   </div>
 
                 </div>
+
 
                 <!-- コメントへの返信入力フォーム -->
                 <div v-if="comment.replyFormOpened" class="input-3">
@@ -256,13 +276,20 @@
                   <!-- <textarea v-model="comment.replyInput" ref="replyarea" @keydown="changeReplyHeight(index)" :style="replyStyles(index)" class="flex-textarea-2" placeholder="コメントを入力"></textarea> -->
                   <textarea v-model="comment.replyInput" ref="replyarea" class="flex-textarea-2" placeholder="返信を入力"></textarea>
 
+                  <div v-if="comment.replyErrors.body" class="user-edit-error">
+                    {{ comment.replyErrors.body[0] }}
+                  </div>
+                  <!-- <div v-if="modalPostComments[0].replyErrors" class="user-edit-error">
+                    {{ modalPostComments[0].replyErrors.body[0] }}
+                  </div> -->
+
                   <div class="comment-reply-btns">
 
                     <div @click="closeReplyForm(index)" class="reply-cancel-btn">
                       キャンセル
                     </div>
 
-                    <div class="comment-btn">
+                    <div class="comment-btn" @click="reply(index)">
                       コメント
                     </div>
 
@@ -270,7 +297,8 @@
 
                 </div>
 
-                <!-- コメントへの返信 -->
+
+                <!-- コメントへの返信たち -->
                 <div v-if="comment.replyShow">
 
                   <div v-for="reply in comment.replies" :key="reply.id" class="comment-reply-area">
@@ -279,8 +307,8 @@
 
                       <!-- アイコン -->
                       <div class="overlay-post-comment-left">
-                        <router-link :to="{ name: 'user', params: { id: reply.userId }}">
-                          <img :src="reply.icon">
+                        <router-link :to="{ name: 'user', params: { id: reply.user.id }}">
+                          <img :src="reply.user.icon">
                         </router-link>
                       </div>
 
@@ -290,28 +318,26 @@
 
                           <!-- 名前 -->
                           <div class="overlay-post-name">
-                            {{ reply.user }}
+                            {{ reply.user.name }}
                           </div>
 
                           <!-- 日付 -->
                           <div class="overlay-post-day">
-                            {{ reply.day }}
+                            {{ reply.created_at }}
                           </div>
 
                         </div>
 
                         <!-- コメント内容 -->
-                        <div class="overlay-post-comment">
-                          うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。
-                        </div>
+                        <div class="overlay-post-comment">{{ reply.body }}</div>
 
                         <div class="overlay-post-bottom">
 
                           <!-- コメントへの返信へのいいね -->
                           <div class="overlay-post-good">
                             {{ reply.goodCount }}
-                            <img v-if="!reply.good" :src="'../image/good.png'" @click="replyGood(comment.id ,reply.id)">
-                            <img v-if="reply.good" :src="'../image/gooded.png'" @click="replyGood(comment.id ,reply.id)">
+                            <img v-if="!reply.gooded" :src="'../image/good.png'" @click="replyGood(comment.id, reply.id)">
+                            <img v-if="reply.gooded" :src="'../image/gooded.png'" @click="replyGood(comment.id, reply.id)">
                           </div>
 
                         </div>
@@ -336,14 +362,16 @@
 
     </div>
 
+
     <!-- 画像モーダル -->
     <div v-show="modalImageShow" @click.self="closeImageModal" class="overlay-image">
 
       <div class="overlay-image-box">
-        <img :src="modalImage" class="overlay-image-image">
+        <img :src="modalImage" class="overlay-image-image" :class="{'height-is-bigger':heightIsBigger}">
       </div>
 
     </div>
+
 
     <!-- 「どんまい」モーダル -->
     <div v-if="modalDonmaiShow" @click.self="closeModalDonmai" class="overlay-post">
@@ -379,10 +407,10 @@
             <div class="overlay-donmai-right">
 
               <!-- フォローボタン -->
-              <div v-if="!user.followed" @click="donmaiFollowToggle(index)" class="overlay-donmai-follow">
+              <div v-if="!user.followed && user.id !== authUser.id" @click="donmaiFollow(index)" class="overlay-donmai-follow">
                 フォローする
               </div>
-              <div v-if="user.followed" @click="donmaiFollowToggle(index)" class="overlay-donmai-followed">
+              <div v-if="user.followed && user.id !== authUser.id" @click="donmaiUnFollow(index)" class="overlay-donmai-followed">
                 フォロー中
               </div>
 
@@ -390,6 +418,10 @@
 
           </div>
 
+        </div>
+
+        <div class="no-follower" v-if="modalDonmaiUsers.length == 0">
+          どんまいしてるユーザーはいません。
         </div>
 
       </div>
@@ -402,380 +434,180 @@
 
 <script>
 export default {
+  inject: ['reload'],
+
   data: function () {
     return {
+      // 認証ユーザー情報
+      authUser: null,
+      // コンポーネントのリロード用
+      // isRouterShow: true,
+      // ウィンドウ幅
+      windowWidth: window.innerWidth,
+      // 縦長画像の調整
+      tatenagaImageWidth: null,
+      heightIsBigger: false,
+      // スクロール位置
       scrollPosition: null,
-      value: '',
       imageCount: 0,
+      // 入力フォームの高さ調整用
       height: '20px',
       commentInput: '',
       commentHeight: '31px',
-      // 新規投稿
-      text: '',
-      genre: '',
-      tags: '',
-      urls: [],
-      files: [],
       // ジャンル
-      genres: [
-        {
-          name: '仕事',
-          route: 'jobs'
-        },
-        {
-          name: '日常',
-          route: 'life'
-        },
-        {
-          name: '人間関係',
-          route: 'relationships'
-        },
-        {
-          name: 'どじ',
-          route: 'dozi'
-        },
-        {
-          name: '恥かいた',
-          route: 'shame'
-        },
-        {
-          name: '学校',
-          route: 'school'
-        },
-        {
-          name: '恋愛',
-          route: 'love'
-        },
-        {
-          name: '結婚生活',
-          route: 'marriage'
-        },
-        {
-          name: 'ゲーム',
-          route: 'game'
-        },
-        {
-          name: 'うんこうんこうんこ',
-          route: 'unko'
-        },
-        {
-          name: 'ちんちん',
-          route: 'chinchin'
-        },
-        {
-          name: 'ちんちん',
-          route: 'chinchin'
-        },
-        {
-          name: 'ちんちん',
-          route: 'chinchin'
-        },
-        {
-          name: 'ちんちん',
-          route: 'chinchin'
-        },
-        {
-          name: 'ちんちん',
-          route: 'chinchin'
-        },
-        {
-          name: 'ちんちん',
-          route: 'chinchin'
-        },
-        {
-          name: 'ちんちん',
-          route: 'chinchin'
-        },
-        {
-          name: 'ちんちん',
-          route: 'chinchin'
-        },
-        {
-          name: 'ちんちん',
-          route: 'chinchin'
-        },
-        {
-          name: 'ちんちん',
-          route: 'chinchin'
-        },
-        {
-          name: 'ちんちん',
-          route: 'chinchin'
-        },
+      genres: [],
+      // 新規投稿
+      newPost: {
+        body: '',
+        genreIndex: '',
+        tags: '',
+        images: [],
+      },
+      errors: [],
+      urls: [],
+      // 投稿
+      posts: [
+        // {
+        //   id: 1,
+        //   user: {
+        //     id: 5,
+        //     name: '太郎',
+        //     icon: 'https:/...'
+        //   },
+        //   body: 'こんにちは。',
+        //   genre: {
+        //     route: 'job',
+        //     name: '仕事',
+        //   },
+        //   tags: [
+        //     {
+        //       id: 1,
+        //       name: '鬼滅'
+        //     }
+        //   ],
+        //   post_images: [
+        //     {
+        //       id: 4,
+        //       path: 'https:/...'
+        //     }
+        //   ],
+        //   donmai: false,
+        //   donmaiCount: 5,
+        //   commentCount: 9,
+        // }
       ],
       // モーダル
       modalPostShow: false,
+      modalPostIndex: null,
       modalPostId: null,
-      modalPostUser: '',
       modalPostUserId: null,
+      modalPostUserName: null,
+      modalPostUserIcon: null,
+      modalPostBody: null,
+      modalPostTags: [],
+      modalPostImages: [],
       modalPostDonmai: false,
       modalPostDonmaiCount: null,
-      modalPostImages: [],
-      modalPostTags: [],
-      modalPostCommentCount: 9,
+      modalPostCommentCount: null,
       modalPostComments: [
-        {
-          id: 1,
-          userId: 2,
-          user: '鈴木誠也',
-          icon: '../image/img1.jpg',
-          day: '5日前',
-          goodCount: 37,
-          good: false,
-          replyCount: 4,
-          replyShow: false,
-          replyFormOpened: false,
-          replyInput: '',
-          replyHeight: '31px',
-          replies: [
-            {
-              id: 2,
-              userId: 3,
-              user: '柳田',
-              icon: '../image/img5.jpg',
-              day: '4日前',
-              goodCount: 37,
-              good: false,
-            },
-            {
-              id: 3,
-              userId: 4,
-              user: '筒香',
-              icon: '../image/img6.jpg',
-              day: '3日前',
-              goodCount: 37,
-              good: false,
-            },
-            {
-              id: 4,
-              userId: 5,
-              user: '田中将大',
-              icon: '../image/img7.jpg',
-              day: '2日前',
-              goodCount: 37,
-              good: false,
-            },
-            {
-              id: 5,
-              userId: 6,
-              user: 'ダルビッシュ',
-              icon: '../image/img8.jpg',
-              day: '1日前',
-              goodCount: 37,
-              good: false,
-            },
-          ],
-        },
-        {
-          id: 2,
-          userId: 4,
-          user: 'ジーター',
-          icon: '../image/img2.jpg',
-          day: '4日前',
-          goodCount: 37,
-          good: false,
-          replyCount: 0,
-          replyShow: false,
-          replyFormOpened: false,
-          replyInput: '',
-          replyHeight: '31px',
-          replies: [],
-        },
-        {
-          id: 3,
-          userId: 6,
-          user: 'ブライアント',
-          icon: '../image/img3.jpg',
-          day: '3日前',
-          goodCount: 37,
-          good: false,
-          replyCount: 3,
-          replyShow: false,
-          replyFormOpened: false,
-          replyInput: '',
-          replyHeight: '31px',
-          replies: [
-            {
-              id: 2,
-              userId: 3,
-              user: 'カーショウ',
-              icon: '../image/img5.jpg',
-              day: '4日前',
-              goodCount: 37,
-              good: false,
-            },
-            {
-              id: 3,
-              userId: 4,
-              user: 'シャーザー',
-              icon: '../image/img6.jpg',
-              day: '3日前',
-              goodCount: 37,
-              good: false,
-            },
-            {
-              id: 4,
-              userId: 5,
-              user: 'バーランダー',
-              icon: '../image/img7.jpg',
-              day: '2日前',
-              goodCount: 37,
-              good: false,
-            },
-          ],
-        },
-        {
-          id: 4,
-          userId: 8,
-          user: '松井秀樹',
-          icon: '../image/img4.jpg',
-          day: '2日前',
-          goodCount: 37,
-          good: false,
-          replyCount: 0,
-          replyShow: false,
-          replyFormOpened: false,
-          replyInput: '',
-          replyHeight: '31px',
-          replies: [],
-        },
+        // {
+        //   id: 1,
+        //   userId: 2,
+        //   user: '鈴木誠也',
+        //   icon: '../image/img1.jpg',
+        //   day: '5日前',
+        //   goodCount: 37,
+        //   good: false,
+        //   replyCount: 4,
+        //   replyShow: false,
+        //   replyFormOpened: false,
+        //   replyInput: '',
+        //   replyErrors: [],
+        //   replyHeight: '31px',
+        //   replies: [
+        //     {
+        //       id: 2,
+        //       userId: 3,
+        //       user: '柳田',
+        //       icon: '../image/img5.jpg',
+        //       day: '4日前',
+        //       goodCount: 37,
+        //       good: false,
+        //     },
+        //   ],
+        // },
       ],
+      newComment: {},
+      newReply: {},
+      commentErrors: [],
       // 画像モーダル
       modalImageShow: false,
       modalImage: '',
       // どんまいモーダル
       modalDonmaiShow: false,
       modalDonmaiUsers: [
-        {
-          id: 11,
-          icon: '../image/img1.jpg',
-          name: 'ジェイコブ・デグロム',
-          followed: false,
-        },
-        {
-          id: 22,
-          icon: '../image/img2.jpg',
-          name: 'ゲリット・コール',
-          followed: false,
-        },
-        {
-          id: 33,
-          icon: '../image/img3.jpg',
-          name: '山本由伸',
-          followed: false,
-        },
-        {
-          id: 44,
-          icon: '../image/img4.jpg',
-          name: '千賀滉大',
-          followed: false,
-        },
-        {
-          id: 55,
-          icon: '../image/img5.jpg',
-          name: '菅野智之',
-          followed: false,
-        },
-        {
-          id: 66,
-          icon: '../image/img6.jpg',
-          name: 'うんこクソ野郎',
-          followed: false,
-        },
-        {
-          id: 77,
-          icon: '../image/img6.jpg',
-          name: 'うんこクソ野郎',
-          followed: false,
-        },
-        {
-          id: 88,
-          icon: '../image/img6.jpg',
-          name: 'うんこクソ野郎',
-          followed: false,
-        },
-        {
-          id: 99,
-          icon: '../image/img6.jpg',
-          name: 'うんこクソ野郎',
-          followed: false,
-        },
-        {
-          id: 1010,
-          icon: '../image/img6.jpg',
-          name: 'うんこクソ野郎',
-          followed: false,
-        },
-      ],
-      // 投稿
-      posts: [
-        {
-          id: 1,
-          user: 'なおとくん',
-          userId: 1,
-          donmai: false,
-          donmai_count: 43,
-          comment_count: 9,
-          images: [
-            '../image/img1.jpg',
-            '../image/img3.jpg',
-            '../image/img5.jpg',
-            '../image/img7.jpg',
-          ],
-          tags: [
-            '#ばか',
-            '#あほ',
-            '#うんち',
-            '#ちんちん',
-            '#ハゲ',
-          ]
-        },
-        {
-          id: 2,
-          user: '城之内くん',
-          userId: 2,
-          donmai: false,
-          donmai_count: 27,
-          comment_count: 11,
-          images: [
-            '../image/img6.jpg',
-          ],
-          tags: [
-            '#ひぐらし',
-            '#にぱー',
-            '#けいちゃん',
-            '#おやしろさま',
-          ]
-        },
-        {
-          id: 3,
-          user: 'マイケル',
-          userId: 3,
-          donmai: false,
-          donmai_count: 65,
-          comment_count: 12,
-          images: [
-            '../image/img1.jpg',
-            '../image/img2.jpg',
-            '../image/tatenaga.jpg',
-          ],
-          tags: [
-            '#天気',
-            '#洪水',
-          ]
-        },
+        // {
+          // id: 11,
+          // icon: '../image/img1.jpg',
+          // name: 'ジェイコブ・デグロム',
+          // followed: false,
+        // },
       ],
     };
   },
+
   methods: {
+    // テスト
+    check() {
+      console.log(this.newPost);
+    },
+    // 認証ユーザー情報、全ジャンル、投稿を取得
+    getInitInfo() {
+      axios.get('/api/home/init')
+        .then((res) => {
+          this.genres = res.data.genres;
+          this.authUser = res.data.authUser;
+          this.posts = res.data.posts;
+          if (!this.authUser.icon) {
+            this.authUser.icon = '../image/user.png';
+          }
+          for (let i = 0; i < this.posts.length; i++) {
+            if (!this.posts[i].user.icon) {
+              this.posts[i].icon = '../image/user.png';
+            }
+          }
+          console.log(this.posts);
+        }).catch(() => {
+          return;
+        });
+    },
     // 投稿のテキストエリアの高さをフレキシブルに
     changeHeight() {
       this.height = this.$refs.area.scrollHeight + 'px';
-      // this.height = 31 + 'px';
       this.height = 25 + 'px';
       this.$nextTick(() => {
         this.height = this.$refs.area.scrollHeight + 'px';
       });
+    },
+    // 投稿
+    submit() {
+      let data = new FormData();
+      Object.entries(this.newPost).forEach(([key, value]) => {
+        if (Array.isArray(value)) {
+          value.forEach((v, i) => {
+            data.append(key + '[]', v);
+          })
+        } else {
+          data.append(key, value);
+        }
+      })
+      axios.post('/api/post/add', data)
+        .then(() => {
+          this.reload();
+        }).catch((error) => {
+          this.errors = error.response.data.errors;
+          // console.log(this.errors);
+        });
     },
     // コメント入力欄の高さをフレキシブルに
     changeCommentHeight() {
@@ -795,17 +627,24 @@ export default {
     // },
     // 画像アップロードでプレビュー
     uploadFile() {
-      const file = this.$refs.preview.files;
-      if (this.files.length + file.length > 4) {
-        window.alert('画像は最大４枚までです！');
+      const files = this.$refs.preview.files;
+      for (let i = 0; i < files.length; i++) {
+        if (!files[i].type.match('image.*')) {
+          files.splice(i, 1);
+        }
+      }
+      if (this.newPost.images.length + files.length > 4) {
+        window.alert('画像は４枚までです！');
       } else {
-        this.files.push(...file);
-        for (let i = 0; i < file.length; i++) {
-          this.urls.push(URL.createObjectURL(file[i]));
+        this.newPost.images.push(...files);
+        for (let i = 0; i < files.length; i++) {
+          this.urls.push(URL.createObjectURL(files[i]));
         }
         this.$refs.preview.value = '';
+        console.log(this.newPost.images);
+        console.log(this.urls);
       }
-      this.imageCount = this.files.length;
+      // this.imageCount = this.files.length;
       // console.log(this.files);
       // console.log(this.urls);
       // console.log(this.imageCount);
@@ -813,11 +652,12 @@ export default {
     // 画像プレビューの削除
     deletePreview(url, index) {
       this.urls.splice(index, 1);
-      this.files.splice(index, 1);
+      this.newPost.images.splice(index, 1);
       URL.revokeObjectURL(url);
-      this.imageCount = this.files.length;
+      console.log(this.urls);
+      console.log(this.newPost.images);
+      // this.imageCount = this.files.length;
       // console.log(this.files);
-      // console.log(this.urls);
       // console.log(this.imageCount);
     },
     // どんまい機能の処理
@@ -825,9 +665,19 @@ export default {
       const post = this.posts[i];
       post.donmai = !post.donmai;
       if (post.donmai == false) {
-        post.donmai_count--;
+        axios.post('/api/undonmai/' + this.posts[i].id)
+          .then(() => {
+            post.donmaiCount--;
+          }).catch(() => {
+            return;
+          });
       } else {
-        post.donmai_count++;
+        axios.post('/api/donmai/' + this.posts[i].id)
+          .then(() => {
+            post.donmaiCount++;
+          }).catch(() => {
+            return;
+          });
       }
     },
     // モーダルのどんまい機能
@@ -862,28 +712,43 @@ export default {
       this.scrollPosition = null;
     },
     // 投稿のモーダルウィンドウの開閉
-    openModalPost(postIndex) {
-      this.keepScrollWhenOpen();
-      this.modalPostId = this.posts[postIndex].id;
-      this.modalPostUser = this.posts[postIndex].user;
-      this.modalPostUserId = this.posts[postIndex].userId;
-      this.modalPostDonmai = this.posts[postIndex].donmai;
-      this.modalPostDonmaiCount = this.posts[postIndex].donmai_count;
-      this.modalPostImages = this.posts[postIndex].images;
-      this.modalPostTags = this.posts[postIndex].tags;
-      this.modalPostCommentCount = this.posts[postIndex].comment_count;
-      this.modalPostShow = true;
+    openModalPost(i) {
+      axios.get('/api/comments/get/' + this.posts[i].id)
+        .then((res) => {
+          this.modalPostIndex = i;
+          this.modalPostComments = res.data;
+          this.keepScrollWhenOpen();
+          this.modalPostId = this.posts[i].id;
+          this.modalPostUserId = this.posts[i].user.id;
+          this.modalPostUserName = this.posts[i].user.name;
+          this.modalPostUserIcon = this.posts[i].user.icon;
+          this.modalPostBody = this.posts[i].body;
+          this.modalPostTags = this.posts[i].tags;
+          this.modalPostImages = this.posts[i].post_images;
+          this.modalPostDonmai = this.posts[i].donmai;
+          this.modalPostDonmaiCount = this.posts[i].donmaiCount;
+          this.modalPostCommentCount = this.posts[i].commentCount;
+          this.modalPostShow = true;
+          // console.log(this.modalPostComments);
+          // console.log(this.modalPostUserId);
+          // console.log(this.modalPostUserIcon);
+        }).catch(() => {
+          return;
+        });
     },
     closeModalPost() {
       this.keepScrollWhenClose();
       this.modalPostShow = false;
+      this.modalPostIndex = null;
       this.modalPostId = null;
-      this.modalPostUser = '';
       this.modalPostUserId = null;
+      this.modalPostUserName = null;
+      this.modalPostUserIcon = null;
+      this.modalPostBody = null;
+      this.modalPostTags = [];
+      this.modalPostImages = [];
       this.modalPostDonmai = false;
       this.modalPostDonmaiCount = null;
-      this.modalPostImages = [];
-      this.modalPostTags = [];
       this.modalPostCommentCount = null;
       this.modalPostComments.map(function(element) {
         element.replyShow = false;
@@ -891,7 +756,14 @@ export default {
     },
     // どんまいしたユーザーのモーダルウィンドウの開閉
     openModalDonmai() {
-      this.modalDonmaiShow = true;
+      axios.get('/api/donmai/users/' + this.modalPostId)
+        .then((res) => {
+          this.modalDonmaiUsers = res.data;
+          // console.log(this.modalDonmaiUsers);
+          this.modalDonmaiShow = true;
+        }).catch(() => {
+          return;
+        });
     },
     closeModalDonmai() {
       this.modalDonmaiShow = false;
@@ -903,31 +775,91 @@ export default {
       }
       this.modalImageShow = true;
       this.modalImage = image;
-      const overlayImage = document.querySelector('.overlay-image-image');
       const img = new Image();
       img.src = image;
       const img_width = img.width;
       const img_height = img.height;
-      // console.log(overlayImage);
-      // console.log(img_width);
-      // console.log(img_height);
-      if (img_height > img_width) {
-        overlayImage.classList.add('height-is-bigger');
+      if (img_height >= img_width) {
+        this.heightIsBigger = true;
+        document.querySelector('.overlay-image-image').addEventListener('load', () => {
+          this.tatenagaImageWidth = document.querySelector('.overlay-image-image').clientWidth;
+          // console.log(this.tatenagaImageWidth);
+        });
       }
     },
     closeImageModal() {
       if (!this.modalPostShow) {
         this.keepScrollWhenClose();
       }
-      const overlayImage = document.querySelector('.overlay-image-image');
-      overlayImage.classList.remove('height-is-bigger');
+      this.heightIsBigger = false;
+      this.tatenagaImageWidth = null;
       this.modalImageShow = false;
       this.modalImage = '';
     },
     // どんまいしたユーザーのフォローとアンフォロー
-    donmaiFollowToggle(i) {
-      this.modalDonmaiUsers[i].followed = !this.modalDonmaiUsers[i].followed;
+    donmaiFollow(i) {
+      axios.post('/api/follow', this.modalDonmaiUsers[i])
+        .then(() => {
+          this.modalDonmaiUsers[i].followed = true;
+        }).catch(() => {
+          return;
+        });
     },
+    donmaiUnFollow(i) {
+      axios.post('/api/unfollow', this.modalDonmaiUsers[i])
+        .then(() => {
+          this.modalDonmaiUsers[i].followed = false;
+        }).catch(() => {
+          return;
+        });
+    },
+    // コメント投稿
+    commentPost() {
+      let data = new FormData();
+      data.append('postId', this.modalPostId);
+      data.append('body', this.commentInput);
+      axios.post('/api/comment', data)
+        .then((res) => {
+          console.log(res.data);
+          this.modalPostComments.unshift(res.data);
+          this.commentInput = '';
+          this.posts[this.modalPostIndex].commentCount++;
+          this.modalPostCommentCount++;
+          this.commentErrors = [];
+        }).catch((error) => {
+          console.log(error.response.data.errors);
+          this.commentErrors = error.response.data.errors;
+        });
+    },
+    // commentPost() {
+    //   let data = new FormData();
+    //   data.append('postId', this.modalPostId);
+    //   data.append('body', this.commentInput);
+    //   axios.post('/api/comment', data)
+    //     .then((res) => {
+    //       console.log(res.data.commentId);
+    //       this.newComment.id = res.data.commentId;
+    //       this.newComment.created_at = 'たった今';
+    //       this.newComment.body = this.commentInput;
+    //       this.newComment.user = this.authUser;
+    //       this.newComment.goodCount = 0;
+    //       this.newComment.gooded = false;
+    //       this.newComment.replyCount = 0;
+    //       this.newComment.replyFormOpened = false;
+    //       this.newComment.replyInput = '';
+    //       this.newComment.replies = [];
+    //       console.log(this.newComment);
+    //       this.modalPostComments.unshift(this.newComment);
+    //       console.log(this.modalPostComments);
+    //       this.newComment = {};
+    //       this.commentInput = '';
+    //       this.posts[this.modalPostIndex].commentCount++;
+    //       this.modalPostCommentCount++;
+    //     }).catch((error) => {
+    //       console.log(error.response.data.errors);
+    //       this.commentErrors = error.response.data.errors;
+    //     });
+    // },
     //コメントへの返信の表示と非表示
     openCommentReply(i) {
       this.modalPostComments[i].replyShow = true;
@@ -935,25 +867,100 @@ export default {
     closeCommentReply(i) {
       this.modalPostComments[i].replyShow = false;
     },
-    // コメントのいいね機能
+    // コメントへのいいね機能
     commentGood(i) {
-      const comment = this.modalPostComments.find((v) => v.id == i);
-      comment.good = !comment.good;
-      if (!comment.good) {
-        comment.goodCount--;
+      const comment = this.modalPostComments[i];
+      // comment.gooded = !comment.gooded;
+      if (!comment.gooded) {
+        axios.post('/api/comment/good/' + comment.id)
+          .then(() => {
+            this.$set(comment, 'gooded', true);
+            this.$set(comment, 'goodCount', comment.goodCount + 1);
+            // comment.goodCount++;
+          }).catch(() => {
+            return;
+          });
       } else {
-        comment.goodCount++;
+        axios.post('/api/comment/ungood/' + comment.id)
+          .then(() => {
+            this.$set(comment, 'gooded', false);
+            this.$set(comment, 'goodCount', comment.goodCount - 1);
+            // comment.goodCount--;
+          }).catch(() => {
+            return;
+          });
       }
     },
+    // コメントへの返信の投稿
+    reply(i) {
+      let data = new FormData();
+      data.append('body', this.modalPostComments[i].replyInput);
+      data.append('commentId', this.modalPostComments[i].id);
+      axios.post('/api/comment/reply', data)
+        .then((res) => {
+          console.log(res.data);
+          this.modalPostComments[i].replies.push(res.data);
+          this.modalPostComments[i].replyCount++;
+          this.modalPostComments[i].replyInput = '';
+          this.modalPostComments[i].replyErrors = [];
+          this.posts[this.modalPostIndex].commentCount++;
+          this.modalPostCommentCount++;
+          this.modalPostComments[i].replyShow = true;
+          this.modalPostComments[i].replyFormOpened = false;
+        }).catch((error) => {
+          this.modalPostComments[i].replyErrors = error.response.data.errors;
+          console.log(this.modalPostComments[0]);
+        });
+    },
+    // reply(i) {
+    //   let data = new FormData();
+    //   data.append('body', this.modalPostComments[i].replyInput);
+    //   data.append('commentId', this.modalPostComments[i].id);
+    //   axios.post('/api/comment/reply', data)
+    //     .then((res) => {
+    //       console.log(res);
+    //       this.newReply.id = res.data.replyId;
+    //       this.newReply.created_at = 'たった今';
+    //       this.newReply.body = this.modalPostComments[i].replyInput;
+    //       this.newReply.user = this.authUser;
+    //       this.newReply.goodCount = 0;
+    //       this.newReply.gooded = false;
+    //       console.log(this.newReply);
+    //       this.modalPostComments[i].replies.push(this.newReply);
+    //       this.modalPostComments[i].replyCount++;
+    //       this.modalPostComments[i].replyInput = '';
+    //       this.modalPostComments[i].replyErrors = [];
+    //       this.newReply = {};
+    //       this.posts[this.modalPostIndex].commentCount++;
+    //       this.modalPostCommentCount++;
+    //       this.modalPostComments[i].replyShow = true;
+    //       this.modalPostComments[i].replyFormOpened = false;
+    //     }).catch((error) => {
+    //       console.log(error.response.data.errors.body[0]);
+    //       this.modalPostComments[i].replyErrors = error.response.data.errors;
+    //       // console.log(this.modalPostComments[i].replyErrors);
+    //       console.log(this.modalPostComments[0]);
+    //     });
+    // },
     // コメントの返信へのいいね機能
     replyGood(comId, repId) {
       const comment = this.modalPostComments.find((v) => v.id == comId);
       const reply = comment.replies.find((v) => v.id == repId);
-      reply.good = !reply.good;
-      if (!reply.good) {
-        reply.goodCount--;
+      reply.gooded = !reply.gooded;
+      if (!reply.gooded) {
+        axios.post('/api/comment/reply/ungood/' + repId)
+          .then(() => {
+            reply.goodCount--;
+          }).catch(() => {
+            return;
+          });
       } else {
-        reply.goodCount++;
+        axios.post('/api/comment/reply/good/' + repId)
+          .then(() => {
+            reply.goodCount++;
+          }).catch(() => {
+            return;
+          });
       }
     },
     // コメントへの返信フォームの表示と非表示
@@ -963,7 +970,18 @@ export default {
     closeReplyForm(i) {
       this.modalPostComments[i].replyFormOpened = false;
     },
+    // 画像のモーダルで画像が縦長だった場合の対処
+    handleResize() {
+      if (this.tatenagaImageWidth && this.tatenagaImageWidth > window.innerWidth) {
+        this.heightIsBigger = false;
+      } else if (this.tatenagaImageWidth && this.tatenagaImageWidth <= window.innerWidth) {
+        this.heightIsBigger = true;
+      } else {
+        return;
+      }
+    },
   },
+
   computed: {
     // テキストエリアの高さを計算
     styles() {
@@ -982,9 +1000,10 @@ export default {
     //   }
     // },
   },
+
   watch: {
     // テキストエリアの高さの変化を監視
-    text() {
+    'newPost.body': function(val) {
       this.changeHeight();
     },
     commentInput() {
@@ -997,10 +1016,22 @@ export default {
     //   deep: true
     // },
   },
+
+  created() {
+    window.addEventListener('resize', this.handleResize);
+  },
+
+  destroyed() {
+    window.removeEventListener('resize', this.handleResize);
+  },
+
   mounted() {
+    // 初期化
+    this.getInitInfo();
     // マウント時にもテキストエリアの高さをフレキシブルに
     this.changeHeight();
   },
+
   beforeRouteLeave (to, from, next) {
     if (this.modalPostShow || this.modalImageShow) {
       this.keepScrollWhenClose();
@@ -1009,5 +1040,14 @@ export default {
     }
     next();
   },
+
+  // beforeRouteUpdate (to, from, next) {
+  //   if (this.modalPostShow || this.modalImageShow) {
+  //     this.keepScrollWhenClose();
+  //     this.modalPostShow = false;
+  //     this.modalImageShow = false;
+  //   }
+  //   next();
+  // },
 }
 </script>

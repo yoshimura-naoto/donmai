@@ -8,6 +8,8 @@ import User from "./components/user/User";
 import UserPosts from "./components/user/UserPosts";
 import UserDonmai from "./components/user/UserDonmai";
 import UserGuchi from "./components/user/UserGuchi";
+import UserEdit from "./components/user/UserEdit";
+import UserPassword from "./components/user/UserPassword";
 
 import Guchi from "./components/guchi/Guchi";
 import GuchiAll from "./components/guchi/GuchiAll";
@@ -75,6 +77,18 @@ const router = new VueRouter({
                     meta: { authOnly: true },
                 },
             ]
+        },
+        {
+            path: '/user/edit',
+            name: 'user.edit',
+            component: UserEdit,
+            meta: { authOnly: true },
+        },
+        {
+            path: '/user/password',
+            name: 'user.password',
+            component: UserPassword,
+            meta: { authOnly: true },
         },
         {
             path: '/user/:id',

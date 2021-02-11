@@ -67,6 +67,10 @@
   user-select: none;
 }
 
+.profile-edit-btn {
+  width: 140px;
+}
+
 .userinfo-follow-btn:hover {
   cursor: pointer;
   background: #b7b3b3;
@@ -106,6 +110,7 @@
   padding: 10px 0;
   color: #3e3d3d;
   width: 300px;
+  white-space: pre-line;
 }
 
 /* ユーザー情報の投稿数、フォロワー数、フォロー数表示エリア */
@@ -168,10 +173,192 @@
 }
 
 
+/* ユーザー編集ページ */
+.user-edit-page {
+  padding-top: 60px;
+}
+
+.user-edit {
+  padding: 10px;
+}
+
+.user-edit-box {
+  background: #a4e2ea;
+  color: #5d5d5d;
+  border-radius: 16px;
+  padding-bottom: 30px;
+}
+
+.user-edit-top {
+  background: #75c2ff;
+  text-align: center;
+  font-size: 24px;
+  height: 45px;
+  line-height: 45px;
+  border-radius: 16px 16px 0 0;
+}
+
+.user-edit-name-icon {
+  display: flex;
+  margin: 10px;
+}
+
+.user-edit-icon {
+  position: relative;
+}
+
+.user-edit-batsu-icon {
+  position: absolute;
+  background: white;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  cursor: pointer;
+  user-select: none;
+  top: 0px;
+  left: 0px;
+}
+
+.user-edit-icon-img {
+  display: block;
+  background: #e4e3e3;
+  margin-bottom: 3px;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+}
+
+.user-edit-icon .preview {
+  width: 100px;
+  height: 100px;
+  margin-bottom: 3px;
+  background-size: cover;
+  border-radius: 50%;
+}
+
+.user-edit-current-user-name {
+  margin-left: 10px;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.user-edit-user-name {
+  margin: 20px 10px 0 10px;
+}
+
+.user-edit-user-name label,
+.user-edit-pr label {
+  display: block;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.user-edit-user-name input {
+  display: block;
+  font-size: 20px;
+  border: none;
+  padding: 5px;
+  border-radius: 8px;
+  width: calc(100% - 10px);
+}
+
+.user-edit-pr {
+  margin: 30px 10px 0 10px;
+}
+
+.user-edit-pr textarea {
+  display: block;
+  width: calc(100% - 10px);
+  border: none;
+  resize: none;
+  border-radius: 8px;
+  height: 100px;
+  padding: 5px;
+  font-size: 16px;
+}
+
+.user-edit-password {
+  margin: 30px 30px 0 30px;
+}
+
+.user-edit-password-top {
+  font-size: 18px;
+  margin-bottom: 6px;
+  font-weight: bold;
+}
+
+.user-edit-error {
+  color: red;
+}
+
+.user-edit-password-each {
+  margin-bottom: 10px;
+}
+
+.user-edit-password-each label {
+  display: block;
+  font-size: 15px;
+}
+
+.user-edit-password-each input {
+  display: block;
+  font-size: 20px;
+  border: none;
+  padding: 5px;
+  border-radius: 8px;
+  width: calc(100% - 10px);
+}
+
+.user-edit-modify-btn {
+  margin: 30px auto 0;
+  font-size: 18px;
+  background: #99a7f5;
+  color: #646162;
+  width: 100px;
+  text-align: center;
+  border-radius: 10px;
+}
+
+.user-edit-modify-btn:hover {
+  opacity: 0.7;
+  cursor: pointer;
+}
+
+.user-edit-to-password {
+  margin: 30px 10px 0 10px;
+}
+
+.user-edit-to-password a {
+  display: block;
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: bold;
+  color: #5d5d5d;
+  background: #b6b8bf;
+  width: 180px;
+  height: 36px;
+  text-align: center;
+  line-height: 36px;
+  border-radius: 10px;
+}
+
+.user-edit-to-password a:hover {
+  opacity: 0.8;
+}
+
+.no-follower {
+  margin: 10px;
+}
+
 
 @media (min-width: 620px) {
 
   .user-posts {
+    width: 600px;
+    margin: 0 auto;
+  }
+
+  .user-edit {
     width: 600px;
     margin: 0 auto;
   }
@@ -197,6 +384,7 @@
   .userpage-icon img {
     width: 150px;
     height: 150px;
+    background: #ececec;
   }
 
   .userinfo-data-area {

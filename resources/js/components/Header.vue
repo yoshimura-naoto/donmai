@@ -25,9 +25,11 @@
 
         <!-- ジャンルメニュー -->
         <div :class="{'genre-menu-display-1': $route.path == $router.resolve({ name: 'home' }).href || $route.path.substr(0, 7) == '/genre/' }" class="header-genre-menu-2">
+
           <div class="menu-set-btn-genre" @click="genreMenuToggle" v-click-outside="genreMenuClose">
             ジャンル
           </div>
+
           <div v-if="genreOpened" class="pulldown-genre-menu">
             <ul>
               <li>
@@ -42,12 +44,14 @@
               </li>
             </ul>
           </div>
+
         </div>
 
         <!-- 画面幅670px未満の時のヘッダーメニューをプルダウン化 -->
         <div class="menu menu-set">
           <div>MENU</div>
           <ul>
+
             <li v-if="$route.path !== '/register' && $route.path !== '/login'">
               <router-link :to="{name: 'home'}">
                 <div class="menu-set-btn" :class="{ 'current-2': $route.path == $router.resolve({ name: 'home' }).href }">
@@ -55,6 +59,7 @@
                 </div>
               </router-link>
             </li>
+
             <li v-if="$route.path !== '/register' && $route.path !== '/login'">
               <router-link :to="{name: 'trend'}">
                 <div class="menu-set-btn" :class="{ 'current-2': $route.path == $router.resolve({ name: 'trend' }).href }">
@@ -62,6 +67,7 @@
                 </div>
               </router-link>
             </li>
+
             <li v-if="$route.path !== '/register' && $route.path !== '/login'">
               <router-link :to="{name: 'hot'}">
                 <div class="menu-set-btn" :class="{ 'current-2': $route.path == $router.resolve({ name: 'hot' }).href }">
@@ -69,6 +75,7 @@
                 </div>
               </router-link>
             </li>
+
             <li v-if="$route.path !== '/register' && $route.path !== '/login'">
               <router-link :to="{name: 'guchi.all'}">
                 <div class="menu-set-btn" :class="{ 'current-2': $route.path.substr(0, 6) == '/guchi' }">
@@ -76,16 +83,20 @@
                 </div>
               </router-link>
             </li>
-            <li v-if="$route.path !== '/register' && $route.path !== '/login'">
-              <router-link :to="{name: 'user', params: { id: 1 }}">
+
+            <li v-if="$route.path !== '/register' && $route.path !== '/login' && authUser">
+              <router-link :to="{name: 'user', params: { id: authUser.id }}">
+              <!-- <router-link :to="{name: 'user', params: { id: 100 }}"> -->
                 <div class="menu-set-btn">プロフィール</div>
               </router-link>
             </li>
+
             <li v-if="$route.path !== '/register' && $route.path !== '/login'">
               <a @click="logout">
                 <div class="menu-set-btn">ログアウト</div>
               </a>
             </li>
+
             <li v-if="$route.path == '/register' || $route.path == '/login'">
               <router-link :to="{ name: 'auth.login' }">
                 <div class="menu-set-btn" :class="{ 'current-2': $route.path == '/login' }">
@@ -93,6 +104,7 @@
                 </div>
               </router-link>
             </li>
+
             <li v-if="$route.path == '/register' || $route.path == '/login'">
               <router-link :to="{ name: 'auth.register' }">
                 <div class="menu-set-btn" :class="{ 'current-2': $route.path == '/register' }">
@@ -100,8 +112,10 @@
                 </div>
               </router-link>
             </li>
+
           </ul>
         </div>
+
 
         <!-- 画面幅670px以上の時のヘッダーメニュー -->
         <div class="menu each-menu" v-if="$route.path !== '/register' && $route.path !== '/login'">
@@ -148,19 +162,24 @@
           </router-link>
         </div>
 
-        <div v-if="$route.path !== '/register' && $route.path !== '/login'" class="icon each-menu">
-          <img :src="'/image/unko.jpg'" @click="toggle" v-click-outside="close" :class="{'clicked':opened}">
+        <div v-if="$route.path !== '/register' && $route.path !== '/login' && authUser" class="icon each-menu">
+
+          <img :src="authUser.icon" @click="toggle" v-click-outside="close" :class="{'clicked':opened}">
+
           <ul v-if="opened">
+
             <li>
-              <router-link :to="{name: 'user', params: { id: 1 }}">
+              <router-link :to="{name: 'user', params: { id: authUser.id }}">
                 プロフィール
               </router-link>
             </li>
+
             <li>
               <a @click="logout">
                 ログアウト
               </a>
             </li>
+
           </ul>
         </div>
 
@@ -190,103 +209,22 @@ import ClickOutside from 'vue-click-outside';
 export default {
   data: function () {
     return {
+      // 認証ユーザー情報
+      authUser: null,
+      // メニューの開閉
       opened: false,
       genreOpened: false,
       genreMenuWideOpened: false,
       searchOpened: false,
       canSearchClose: false,
       keyword: '',
-      genres: [
-        {
-          name: '仕事',
-          route: 'jobs'
-        },
-        {
-          name: '日常',
-          route: 'life'
-        },
-        {
-          name: '人間関係',
-          route: 'relationships'
-        },
-        {
-          name: 'どじ',
-          route: 'dozi'
-        },
-        {
-          name: '恥かいた',
-          route: 'shame'
-        },
-        {
-          name: '学校',
-          route: 'school'
-        },
-        {
-          name: '恋愛',
-          route: 'love'
-        },
-        {
-          name: '結婚生活',
-          route: 'marriage'
-        },
-        {
-          name: 'ゲーム',
-          route: 'game'
-        },
-        {
-          name: 'うんこうんこうんこ',
-          route: 'unko'
-        },
-        {
-          name: 'ちんちん',
-          route: 'chinchin'
-        },
-        {
-          name: 'ちんちん',
-          route: 'chinchin'
-        },
-        {
-          name: 'ちんちん',
-          route: 'chinchin'
-        },
-        {
-          name: 'ちんちん',
-          route: 'chinchin'
-        },
-        {
-          name: 'ちんちん',
-          route: 'chinchin'
-        },
-        {
-          name: 'ちんちん',
-          route: 'chinchin'
-        },
-        {
-          name: 'ちんちん',
-          route: 'chinchin'
-        },
-        {
-          name: 'ちんちん',
-          route: 'chinchin'
-        },
-        {
-          name: 'ちんちん',
-          route: 'chinchin'
-        },
-        {
-          name: 'ちんちん',
-          route: 'chinchin'
-        },
-        {
-          name: 'ちんちん',
-          route: 'chinchin'
-        },
-      ],
+      genres: [],
     }
   },
+
   methods: {
     // プロフィールメニューの開閉
-    toggle(opened) {
+    toggle() {
       this.opened = !this.opened;
     },
     close() {
@@ -342,6 +280,26 @@ export default {
         });
     }
   },
+
+  mounted() {
+    // 認証ユーザー情報取得
+    if (this.$route.path !== '/login' && this.$route.path !== '/register') {
+      axios.get('/api/headinit')
+        .then((res) => {
+          // console.log('ちんこ');
+          // console.log(res.data);
+          this.authUser = res.data.authUser;
+          this.genres = res.data.genres;
+          if (!this.authUser.icon) {
+            this.authUser.icon = '/image/user.png';
+          }
+          // console.log(this.genres);
+        }).catch(() => {
+          // console.log('うんこ');
+        });
+    }
+  },
+
   directives: {
     // 要素の外側クリックを認識するライブラリ
     ClickOutside

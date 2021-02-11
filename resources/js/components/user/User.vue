@@ -11,28 +11,45 @@
         <div class="user-info-top">
 
           <!-- ユーザーアイコン -->
-          <div class="userpage-icon">
-            <img :src="icon">
+          <div class="userpage-icon" v-if="user">
+            <img :src="user.icon">
+            <!-- <img v-if="user.icon" :src="user.icon">
+            <img v-if="!user.icon" :src="'../../image/user.png'"> -->
           </div>
 
           <div class="user-info-top-right">
 
             <!-- ユーザー名 -->
             <div class="userinfo-name-area">
-              <div>{{ name }}</div>
+              <div v-if="user">{{ user.name }}</div>
             </div>
-            <!-- フォローボタン -->
-            <div class="userinfo-btn-area">
-              <div v-if="!followed" @click="toggleFollow" class="userinfo-follow-btn">フォローする</div>
-              <div v-if="followed" @click="toggleFollow" class="userinfo-follow-btn-followed">フォロー中</div>
+
+            <!-- フォローボタン・プロフィール編集ボタン -->
+            <div class="userinfo-btn-area" v-if="authUser && user">
+
+              <div v-if="Number($route.params.id) !== authUser.id && !user.followed" @click="followUser" class="userinfo-follow-btn">
+                フォローする
+              </div>
+
+              <div v-if="Number($route.params.id) !== authUser.id && user.followed" @click="unfollowUser" class="userinfo-follow-btn-followed">
+                フォロー中
+              </div>
+
+              <div v-if="Number($route.params.id) == authUser.id" @click="toUserEdit" class="userinfo-follow-btn profile-edit-btn">
+                プロフィール編集
+              </div>
+
             </div>
+
+            <!-- <div class="userinfo-btn-area">
+            </div> -->
 
             <!-- 投稿数、フォロワー数、フォロー数表示エリア（画面幅730px以上） -->
-            <div class="userinfo-data-area">
+            <div class="userinfo-data-area" v-if="user">
 
               <div class="each-data1">投稿<span class="num">{{ postCount }}</span>件</div>
-              <div @click="opneModalFollow(1)" class="each-data2">フォロワー<span class="num">{{ follower }}</span>人</div>
-              <div @click="opneModalFollow(2)" class="each-data3">フォロー中<span class="num">{{ follow }}</span>人</div>
+              <div @click="opneModalFollower" class="each-data2">フォロワー<span class="num">{{ user.follower }}</span>人</div>
+              <div @click="opneModalFollowing" class="each-data3">フォロー中<span class="num">{{ user.follow }}</span>人</div>
 
             </div>
 
@@ -43,17 +60,12 @@
         <!-- ユーザーの自己紹介エリア -->
         <div class="user-info-pr">
 
-          <div class="pr-text">
-            ただの死にたがりです。<br>
-            人生リタイアしたい。<br>
-            でも死ぬのって怖いよね。<br>
-            じゃあどうしろってんだよ。
-          </div>
+          <div class="pr-text" v-if="user">{{ user.pr }}</div>
 
         </div>
 
         <!-- 投稿数、フォロワー数、フォロー数表示エリア（画面幅730px未満） -->
-        <div class="user-info-nums">
+        <div class="user-info-nums" v-if="user">
 
             <div class="userinfo-nums-each">
               <div>投稿</div>
@@ -61,15 +73,15 @@
               <div>件</div>
             </div>
 
-            <div @click="opneModalFollow(1)" class="userinfo-nums-each clickable">
+            <div @click="opneModalFollower" class="userinfo-nums-each clickable">
               <div>フォロワー</div>
-              <div class="userinfo-number">{{ follower }}</div>
+              <div class="userinfo-number">{{ user.follower }}</div>
               <div>人</div>
             </div>
 
-            <div @click="opneModalFollow(2)" class="userinfo-nums-each clickable">
+            <div @click="opneModalFollowing" class="userinfo-nums-each clickable">
               <div>フォロー中</div>
-              <div class="userinfo-number">{{ follow }}</div>
+              <div class="userinfo-number">{{ user.follow }}</div>
               <div>人</div>
             </div>
 
@@ -99,38 +111,38 @@
     </div>
 
 
-    <!-- 「フォロワー」モーダル -->
-    <div v-if="modalFollowShow" @click.self="closeModalFollow" class="overlay-post">
+    <!-- 「フォロー・フォロワー」モーダル -->
+    <div v-if="modalFollowShow" @click.self="modalFollowClose" class="overlay-post">
 
       <div class="overlay-donmai-content">
 
-        <div v-if="!isFollowModal" class="overlay-donmai-title">
+        <div v-if="modalFollowerShow" class="overlay-donmai-title">
           フォロワー
         </div>
-        <div v-if="isFollowModal" class="overlay-donmai-title">
+        <div v-if="modalFollowingShow" class="overlay-donmai-title">
           フォロー中
         </div>
 
         <!-- 「フォロワー」を選択した場合 -->
-        <div v-if="!isFollowModal" class="donmai-user-box">
+        <div v-if="modalFollowerShow" class="donmai-user-box">
 
-          <div v-for="(user, index) in modalFollowers" :key="user.id" class="donmai-user-list">
+          <div v-for="(follower, index) in modalFollowers" :key="follower.id" class="donmai-user-list">
 
             <div class="overlay-donmai-left">
 
               <!-- アイコン -->
               <div class="overlay-donmai-user-icon">
                 <!-- <router-link :to="{ name: 'user', params: { id: user.id }}" @click.native="fromModalFollwToUser"> -->
-                <router-link :to="{ name: 'user', params: { id: user.id }}">
-                  <img :src="user.icon">
+                <router-link :to="{ name: 'user', params: { id: follower.id }}">
+                  <img :src="follower.icon">
                 </router-link>
               </div>
 
               <!-- ユーザー名 -->
               <div class="overlay-donmai-user-name">
                 <!-- <router-link :to="{ name: 'user', params: { id: user.id }}" @click.native="fromModalFollwToUser"> -->
-                <router-link :to="{ name: 'user', params: { id: user.id }}">
-                  {{ user.name }}
+                <router-link :to="{ name: 'user', params: { id: follower.id }}">
+                  {{ follower.name }}
                 </router-link>
               </div>
 
@@ -139,10 +151,10 @@
             <div class="overlay-donmai-right">
 
               <!-- フォローボタン -->
-              <div v-if="!user.followed" @click="followToggle(index)" class="overlay-donmai-follow">
+              <div v-if="!follower.followed && follower.id !== authUser.id" @click="followFollower(index)" class="overlay-donmai-follow">
                 フォローする
               </div>
-              <div v-if="user.followed" @click="followToggle(index)" class="overlay-donmai-followed">
+              <div v-if="follower.followed && follower.id !== authUser.id" @click="unFollowFollower(index)" class="overlay-donmai-followed">
                 フォロー中
               </div>
 
@@ -150,28 +162,30 @@
 
           </div>
 
+          <div class="no-follower" v-if="!user.follower">
+            フォロワーはいません。
+          </div>
+
         </div>
 
         <!-- 「フォロー中」を選択したの場合 -->
-        <div v-if="isFollowModal" class="donmai-user-box">
+        <div v-if="modalFollowingShow" class="donmai-user-box">
 
-          <div v-for="(user, index) in modalFollows" :key="user.id" class="donmai-user-list">
+          <div v-for="(followingUser, index) in modalFollows" :key="followingUser.id" class="donmai-user-list">
 
             <div class="overlay-donmai-left">
 
               <!-- アイコン -->
               <div class="overlay-donmai-user-icon">
-                <!-- <router-link :to="{ name: 'user', params: { id: user.id }}" @click.native="fromModalFollwToUser"> -->
-                <router-link :to="{ name: 'user', params: { id: user.id }}">
-                  <img :src="user.icon">
+                <router-link :to="{ name: 'user', params: { id: followingUser.id }}">
+                  <img :src="followingUser.icon">
                 </router-link>
               </div>
 
               <!-- ユーザー名 -->
               <div class="overlay-donmai-user-name">
-                <!-- <router-link :to="{ name: 'user', params: { id: user.id }}" @click.native="fromModalFollwToUser"> -->
-                <router-link :to="{ name: 'user', params: { id: user.id }}">
-                  {{ user.name }}
+                <router-link :to="{ name: 'user', params: { id: followingUser.id }}">
+                  {{ followingUser.name }}
                 </router-link>
               </div>
 
@@ -180,15 +194,19 @@
             <div class="overlay-donmai-right">
 
               <!-- フォローボタン -->
-              <div v-if="!user.followed" @click="followToggle(index)" class="overlay-donmai-follow">
+              <div v-if="!followingUser.followed && followingUser.id !== authUser.id" @click="followFollowing(index)" class="overlay-donmai-follow">
                 フォローする
               </div>
-              <div v-if="user.followed" @click="followToggle(index)" class="overlay-donmai-followed">
+              <div v-if="followingUser.followed && followingUser.id !== authUser.id" @click="unFollowFollowing(index)" class="overlay-donmai-followed">
                 フォロー中
               </div>
 
             </div>
 
+          </div>
+
+          <div class="no-follower" v-if="!user.follow">
+            誰もフォローしていません。
           </div>
 
         </div>
@@ -206,96 +224,55 @@
 export default {
   data() {
     return {
-      icon: '../../image/unko.jpg',
-      name: 'うんこマン',
-      followed: false,
+      // 認証ユーザー情報
+      authUser: null,
+      // ユーザー情報
+      user: null,
+      // フォロー・フォロワー・投稿数の情報
+      // followed: false,
       postCount: 8000,
-      follower: 3450,
-      follow: 2155,
+      // follower: 3450,
+      // follow: 2155,
       // 前のページのルート
       prevRoute: null,
       // フォロー・フォロワーのモーダル
-      isFollowModal: false,
       modalFollowShow: false,
-      modalFollowers: [
-        {
-          id: 111,
-          icon: '../../image/img1.jpg',
-          name: 'あああああ',
-          followed: false,
-        },
-        {
-          id: 222,
-          icon: '../../image/img2.jpg',
-          name: 'いいいいい',
-          followed: false,
-        },
-        {
-          id: 333,
-          icon: '../../image/img3.jpg',
-          name: 'ううううううう',
-          followed: false,
-        },
-        {
-          id: 444,
-          icon: '../../image/img4.jpg',
-          name: 'えええええええ',
-          followed: false,
-        },
-        {
-          id: 555,
-          icon: '../../image/img5.jpg',
-          name: 'おおおおおお',
-          followed: false,
-        },
-        {
-          id: 666,
-          icon: '../../image/img6.jpg',
-          name: 'かかかかかかか',
-          followed: false,
-        },
-        {
-          id: 777,
-          icon: '../../image/img7.jpg',
-          name: '聴き聴ききききき',
-          followed: false,
-        },
-        {
-          id: 888,
-          icon: '../../image/img8.jpg',
-          name: 'クククククくくく',
-          followed: false,
-        },
-      ],
+      modalFollowingShow: false,
+      modalFollowerShow: false,
       modalFollows: [
-        {
-          id: 123,
-          icon: '../../image/img7.jpg',
-          name: 'マイク',
-          followed: true,
-        },
-        {
-          id: 234,
-          icon: '../../image/img8.jpg',
-          name: 'マイク',
-          followed: true,
-        },
-        {
-          id: 345,
-          icon: '../../image/img2.jpg',
-          name: 'マイク',
-          followed: true,
-        },
-        {
-          id: 456,
-          icon: '../../image/img1.jpg',
-          name: 'マイク',
-          followed: true,
-        },
+        // id, icon, name, followed,
+      ],
+      modalFollowers: [
+        // id, icon, name, followed,
       ],
     }
   },
+
   methods: {
+    // axiosで認証ユーザー情報を取得
+    getAuthUserInfo() {
+      axios.get('/api/user')
+      .then((res) => {
+        // console.log(res.data);
+        this.authUser = res.data;
+      }).catch(() => {
+        return;
+      });
+    },
+    // axiosで現在のページのユーザー情報を取得
+    getUserInfo(paramId) {
+      axios.get('/api/user/' + paramId)
+      .then((res) => {
+        // console.log(res.data);
+        this.user = res.data;
+        if (this.user.icon === null) {
+          this.user.icon = '../../image/user.png';
+        }
+        // this.user.pr = str_replace('\n', '<br>');
+      }).catch(() => {
+        return;
+      });
+    },
     // モーダルウィンドウ開閉時に背景のスクロール位置を維持
     keepScrollWhenOpen() {
       const body = document.querySelector('body');
@@ -315,60 +292,141 @@ export default {
       this.scrollPosition = null;
     },
     // フォロー・フォロワーのモーダルウィンドウの開閉
-    opneModalFollow(n) {
-      this.keepScrollWhenOpen();
-      if (n == 1) {
-        this.isFollowModal = false;
-      } else {
-        this.isFollowModal = true;
-      }
-      this.modalFollowShow = true;
+    opneModalFollowing() {
+      axios.get('/api/following/' + this.user.id)
+        .then((res) => {
+          this.modalFollows = res.data;
+          // console.log(this.modalFollows);
+          for (let i = 0; i < this.modalFollows.length; i++) {
+            if (!this.modalFollows[i].icon) {
+              this.modalFollows[i].icon = '../../image/user.png';
+            }
+            // this.modalFollows[i].followed = true;
+          }
+          this.keepScrollWhenOpen();
+          this.modalFollowShow = true;
+          this.modalFollowingShow = true;
+        }).catch(() => {
+          return;
+        });
     },
-    closeModalFollow() {
+    opneModalFollower() {
+      axios.get('/api/follower/' + this.user.id)
+        .then((res) => {
+          this.modalFollowers = res.data;
+          // console.log(this.modalFollowers);
+          for (let i = 0; i < this.modalFollowers.length; i++) {
+            if (!this.modalFollowers[i].icon) {
+              this.modalFollowers[i].icon = '../../image/user.png';
+            }
+          }
+          this.keepScrollWhenOpen();
+          this.modalFollowShow = true;
+          this.modalFollowerShow = true;
+        }).catch(() => {
+          return;
+        });
+    },
+    modalFollowClose() {
       this.keepScrollWhenClose();
       this.modalFollowShow = false;
-      console.log('うんこ');
+      this.modalFollowingShow = false;
+      this.modalFollowerShow = false;
     },
-    // フォローとアンフォローの処理
-    toggleFollow() {
-      this.followed = !this.followed;
-      if (this.followed) {
-        this.follower++;
-      } else {
-        this.follower--;
-      }
+     // プロフィール編集ページへ遷移
+    toUserEdit() {
+      this.$router.push({ name: 'user.edit'});
+    },
+    // フォローとアンフォローの処理（でかボタン）
+    followUser() {
+      axios.post('/api/follow', this.user)
+        .then(() => {
+          this.user.followed = true;
+          this.user.follower++;
+        }).catch(() => {
+          return;
+        });
+    },
+    unfollowUser() {
+      axios.post('/api/unfollow', this.user)
+        .then(() => {
+          this.user.followed = false;
+          this.user.follower--;
+        }).catch(() => {
+          return;
+        });
     },
     // フォロー・フォロワーのフォローとアンフォロー
-    followToggle(i) {
-      if (this.isFollowModal) {
-        this.modalFollows[i].followed = !this.modalFollows[i].followed;
-      } else {
-        this.modalFollowers[i].followed = !this.modalFollowers[i].followed;
-      }
+    // フォロワーモーダルでフォロー
+    followFollower(i) {
+      axios.post('/api/follow', this.modalFollowers[i])
+        .then(() => {
+          this.modalFollowers[i].followed = true;
+          if (this.authUser.id == this.user.id) {
+            this.user.follow++;
+          }
+        }).catch(() => {
+          return;
+        });
     },
-    // フォロー・フォロワーモーダルのユーザーをクリックした際の処理
-    // fromModalFollwToUser() {
-    //   const body = document.querySelector('body');
-    //   const userPage = document.querySelector('.user-page');
-    //   body.classList.remove('bodyWhenOverlay');
-    //   userPage.classList.remove('user-page-when-overlay');
-    //   userPage.style.top = null;
-    //   this.scrollPosition = null;
-    //   this.modalFollowShow = false;
-    // }
+    // フォロワーモーダルでアンフォロー
+    unFollowFollower(i) {
+      axios.post('/api/unfollow', this.modalFollowers[i])
+        .then(() => {
+          this.modalFollowers[i].followed = false;
+          if (this.authUser.id == this.user.id) {
+            this.user.follow--;
+          }
+        }).catch(() => {
+          return;
+        });
+    },
+    // フォローモーダルでフォロー
+    followFollowing(i) {
+      axios.post('/api/follow', this.modalFollows[i])
+        .then(() => {
+          this.modalFollows[i].followed = true;
+          if (this.authUser.id == this.user.id) {
+            this.user.follow++;
+          }
+        }).catch(() => {
+          return;
+        });
+    },
+    // フォローモーダルでアンフォロー
+    unFollowFollowing(i) {
+      axios.post('/api/unfollow', this.modalFollows[i])
+        .then(() => {
+          this.modalFollows[i].followed = false;
+          if (this.authUser.id == this.user.id) {
+            this.user.follow--;
+          }
+        }).catch(() => {
+          return;
+        });
+    },
   },
+
+  mounted() {
+    // 認証ユーザー情報取得
+    this.getAuthUserInfo();
+    // このページで表示するユーザーの情報取得
+    this.getUserInfo(this.$route.params.id);
+  },
+
   beforeRouteLeave (to, from, next) {
     if (this.modalFollowShow) {
-      this.keepScrollWhenClose();
-      this.modalFollowShow = false;
+      this.modalFollowClose();
     }
     next();
   },
+
   beforeRouteUpdate (to, from, next) {
     if (this.modalFollowShow) {
-      this.keepScrollWhenClose();
-      this.modalFollowShow = false;
+      this.modalFollowClose();
     }
+    this.getAuthUserInfo();
+    this.getUserInfo(to.params.id);
     next();
   },
 }

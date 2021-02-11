@@ -7,15 +7,19 @@
 }
 
 .register-box {
-  background: pink;
+  background: #a4e2ea;
   width: 100%;
   margin-top: 10px;
   border-radius: 16px;
   color: #5d5d5d;
 }
 
+.register-box form {
+  margin: 0 10px;
+}
+
 .register-top {
-  background: lightcoral;
+  background: #75c2ff;
   text-align: center;
   font-size: 24px;
   height: 45px;
@@ -55,13 +59,15 @@
 
 .register-btn {
   display: block;
-  font-size: 20px;
-  background: #ff94b9;
+  font-size: 18px;
+  background: #99a7f5;
+  color: #646162;
   width: 100px;
   text-align: center;
   border-radius: 10px;
   margin: 0 auto;
   border: none;
+  outline: none;
 }
 
 .register-btn:hover {
