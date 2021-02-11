@@ -150,6 +150,7 @@ body {
   border-radius: 50%;
   cursor: pointer;
   user-select: none;
+  background: white;
 }
 
 .clicked {

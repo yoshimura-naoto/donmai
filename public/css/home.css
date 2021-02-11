@@ -52,11 +52,15 @@
   border-bottom: 1px solid #a59e9e;
 }
 
+.select-genre {
+  margin-bottom: 8px;
+}
+
 .select-genre select {
   border-radius: 6px;
   border: 1px solid #ababab;
   color: #848081;
-  margin: 0 0 10px 7px;
+  margin: 0 0 0 7px;
   outline: none;
 }
 
@@ -66,9 +70,9 @@
 
 .input-tag input {
   border: navajowhite;
-  font-size: 16px;
+  font-size: 14px;
   color: #525252;
-  padding: 3px 5px;
+  padding: 8px 6px;
   width: 100%;
   border-radius: 6px;
   margin-left: 7px;
@@ -217,6 +221,7 @@
   font-weight: bolder;
   color: #525252;
   margin-bottom: 2px;
+  white-space: pre-line;
 }
 
 .post-tags a {
@@ -300,11 +305,14 @@
 
 .overlay-post-content {
   z-index: 7;
-  margin: 50px 10px;
-  max-width: 700px;
+  padding: 0 10px;
+  width: 100%;
+  /* margin: 50px 10px;
+  max-width: 700px; */
 }
 
 .posts-overlay {
+  /* width: 580px; */
   padding: 10px 10px 0 10px;
   background: pink;
   display: flex;
@@ -344,6 +352,10 @@
   border-radius: 50%;
 }
 
+.overlay-post-comment-right {
+  flex: 1;
+}
+
 .overlay-post-comment-top {
   display: flex;
   margin-bottom: 1px;
@@ -367,6 +379,7 @@
 .overlay-post-comment {
   margin-bottom: 3px;
   color: #353535;
+  white-space: pre-line;
 }
 
 .overlay-post-bottom {
@@ -389,6 +402,7 @@
 .comment-post-area {
   display: flex;
   margin: 5px 0;
+  padding-bottom: 10px;
 }
 
 .comment-post-icon img {
@@ -599,6 +613,7 @@
   width: 36px;
   height: 36px;
   border-radius: 50%;
+  background: #e8e8e8;
 }
 
 .overlay-donmai-user-name a {
@@ -657,6 +672,22 @@
     margin: 0 auto;
   }
 }
+
+
+
+@media (min-width: 720px) {
+  .overlay-post-content {
+    margin: unset;
+    margin: 50px 10px;
+    max-width: 700px;
+  }
+
+  .posts-overlay {
+    width: 680px;
+  }
+}
+
+
 
 
 @media (min-width: 800px) {

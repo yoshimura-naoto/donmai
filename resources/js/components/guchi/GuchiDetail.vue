@@ -318,8 +318,8 @@ export default {
           this.urls.push(URL.createObjectURL(file[i]));
         }
         this.$refs.threadPreview.value = '';
-        console.log(this.files);
-        console.log(this.urls);
+        // console.log(this.files);
+        // console.log(this.urls);
       }
     },
     // 画像プレビューの削除
@@ -327,8 +327,8 @@ export default {
       this.urls.splice(index, 1);
       this.files.splice(index, 1);
       URL.revokeObjectURL(url);
-      console.log(this.files);
-      console.log(this.urls);
+      // console.log(this.files);
+      // console.log(this.urls);
     },
     // ページ最下部へスクロール
     scrollToEnd() {

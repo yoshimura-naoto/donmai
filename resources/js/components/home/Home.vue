@@ -3,7 +3,7 @@
   <div class="home">
 
     <!-- 投稿一覧 -->
-    <router-view></router-view>
+    <router-view v-if="isRouteShow"></router-view>
 
     <!-- サイドメニュー -->
     <div class="sidemenu">
@@ -11,7 +11,7 @@
         <!-- サイドメニュータイトル -->
         <div class="genre-head">ジャンル</div>
         <!-- ジャンル一覧 -->
-        <div class="genre-list">
+        <div class="genre-list" v-if="genres">
           <ul>
             <li>
               <router-link :to="{ name: 'home' }" :class="{ 'selected': $route.path == '/' }">
@@ -35,95 +35,38 @@
 
 <script>
 export default {
+  provide() {
+    return {
+      reload: this.reload,
+    }
+  },
   data: function () {
     return {
-      genres: [
-        {
-          name: '仕事',
-          route: 'jobs'
-        },
-        {
-          name: '日常',
-          route: 'life'
-        },
-        {
-          name: '人間関係',
-          route: 'relationships'
-        },
-        {
-          name: 'どじ',
-          route: 'dozi'
-        },
-        {
-          name: '恥かいた',
-          route: 'shame'
-        },
-        {
-          name: '学校',
-          route: 'school'
-        },
-        {
-          name: '恋愛',
-          route: 'love'
-        },
-        {
-          name: '結婚生活',
-          route: 'marriage'
-        },
-        {
-          name: 'ゲーム',
-          route: 'game'
-        },
-        {
-          name: 'うんこうんこうんこ',
-          route: 'unko'
-        },
-        {
-          name: 'ちんちん',
-          route: 'chinchin'
-        },
-        {
-          name: 'ちんちん',
-          route: 'chinchin'
-        },
-        {
-          name: 'ちんちん',
-          route: 'chinchin'
-        },
-        {
-          name: 'ちんちん',
-          route: 'chinchin'
-        },
-        {
-          name: 'ちんちん',
-          route: 'chinchin'
-        },
-        {
-          name: 'ちんちん',
-          route: 'chinchin'
-        },
-        {
-          name: 'ちんちん',
-          route: 'chinchin'
-        },
-        {
-          name: 'ちんちん',
-          route: 'chinchin'
-        },
-        {
-          name: 'ちんちん',
-          route: 'chinchin'
-        },
-        {
-          name: 'ちんちん',
-          route: 'chinchin'
-        },
-        {
-          name: 'ちんちん',
-          route: 'chinchin'
-        },
-      ],
+      isRouteShow: true,
+      genres: [],
     }
-  }
+  },
+
+  methods: {
+    // 全ジャンルを取得
+    getGenres() {
+      axios.get('/api/genre')
+        .then((res) => {
+          this.genres = res.data;
+        }).catch(() => {
+          return;
+        });
+    },
+    // 子コンポーネント再描画
+    async reload() {
+      this.isRouteShow = false;
+      await this.$nextTick();
+      this.isRouteShow = true;
+    },
+  },
+
+  mounted() {
+    this.getGenres();
+  },
 }
 </script>
