@@ -217,12 +217,15 @@
             <div v-for="(comment, index) in modalPostComments" :key="comment.id" class="overlay-post-comment-area">
 
               <!-- アイコン -->
-              <div class="overlay-post-comment-left">
-
+              <div v-if="comment.user.icon" class="overlay-post-comment-left">
                 <router-link :to="{ name: 'user', params: { id: comment.user.id }}">
                   <img :src="comment.user.icon">
                 </router-link>
-
+              </div>
+              <div v-if="!comment.user.icon" class="overlay-post-comment-left">
+                <router-link :to="{ name: 'user', params: { id: comment.user.id }}">
+                  <img :src="'../image/user.png'">
+                </router-link>
               </div>
 
               <div class="overlay-post-comment-right">
@@ -306,9 +309,14 @@
                     <div class="overlay-post-comment-reply-area">
 
                       <!-- アイコン -->
-                      <div class="overlay-post-comment-left">
+                      <div v-if="reply.user.icon" class="overlay-post-comment-left">
                         <router-link :to="{ name: 'user', params: { id: reply.user.id }}">
                           <img :src="reply.user.icon">
+                        </router-link>
+                      </div>
+                      <div v-if="!reply.user.icon" class="overlay-post-comment-left">
+                        <router-link :to="{ name: 'user', params: { id: reply.user.id }}">
+                          <img :src="'../image/user.png'">
                         </router-link>
                       </div>
 
@@ -389,9 +397,14 @@
             <div class="overlay-donmai-left">
 
               <!-- アイコン -->
-              <div class="overlay-donmai-user-icon">
+              <div v-if="user.icon" class="overlay-donmai-user-icon">
                 <router-link :to="{ name: 'user', params: { id: user.id }}">
                   <img :src="user.icon">
+                </router-link>
+              </div>
+              <div v-if="!user.icon" class="overlay-donmai-user-icon">
+                <router-link :to="{ name: 'user', params: { id: user.id }}">
+                  <img :src="'../image/user.png'">
                 </router-link>
               </div>
 
@@ -565,6 +578,7 @@ export default {
     getInitInfo() {
       axios.get('/api/home/init')
         .then((res) => {
+          console.log(res.data);
           this.genres = res.data.genres;
           this.authUser = res.data.authUser;
           this.posts = res.data.posts;
@@ -573,10 +587,10 @@ export default {
           }
           for (let i = 0; i < this.posts.length; i++) {
             if (!this.posts[i].user.icon) {
-              this.posts[i].icon = '../image/user.png';
+              this.posts[i].user.icon = '../image/user.png';
             }
           }
-          console.log(this.posts);
+          // console.log(this.posts);
         }).catch(() => {
           return;
         });
@@ -717,6 +731,16 @@ export default {
         .then((res) => {
           this.modalPostIndex = i;
           this.modalPostComments = res.data;
+          // for (let i = 0; i < this.modalPostComments.length; i++){
+          //   if (!this.modalPostComments[i].user.icon) {
+          //     this.modalPostComments[i].user.icon = '../image/user.png';
+          //   }
+          //   for (let j = 0; j < this.modalPostComments[i].replies.length; j++) {
+          //     if (!this.modalPostComments[i].replies[j].user.icon) {
+          //       this.modalPostComments[i].replies[j].user.icon = '../image/user.png';
+          //     }
+          //   }
+          // }
           this.keepScrollWhenOpen();
           this.modalPostId = this.posts[i].id;
           this.modalPostUserId = this.posts[i].user.id;

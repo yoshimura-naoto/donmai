@@ -12,14 +12,14 @@
 
         <div class="trend-box">
           
-          <router-link :to="{ name: 'tags.new', params: { name: trend.tag.replace('#', '') }}" v-for="(trend, index) in trends" :key="index" class="trend-each">
+          <router-link :to="{ name: 'tags.new', params: { name: trend.name.replace('#', '') }}" v-for="(trend, index) in trends" :key="index" class="trend-each">
   
             <div class="trend-rank">
               {{ index + 1 }}位
             </div>
   
             <div class="trend-tag">
-              {{ trend.tag }}
+              {{ trend.name }}
             </div>
   
             <div class="trend-bar-area">
@@ -51,72 +51,42 @@ export default {
     return {
       frame: 0,
       intervalId: 0,
-      trends: [
-        {
-          tag: '#うんち',
-          postCount: 124324,
-          postCountShow: 0,
-        },
-        {
-          tag: '#おやしろさま',
-          postCount: 91563,
-          postCountShow: 0,
-        },
-        {
-          tag: '#ばか',
-          postCount: 82123,
-          postCountShow: 0,
-        },
-        {
-          tag: '#シンジ',
-          postCount: 70543,
-          postCountShow: 0,
-        },
-        {
-          tag: '#エヴァンゲリオン',
-          postCount: 63056,
-          postCountShow: 0,
-        },
-        {
-          tag: '#ひぐらし',
-          postCount: 50375,
-          postCountShow: 0,
-        },
-        {
-          tag: '#さとこ',
-          postCount: 30274,
-          postCountShow: 0,
-        },
-        {
-          tag: '#ハゲ',
-          postCount: 22647,
-          postCountShow: 0,
-        },
-        {
-          tag: '#うへへ',
-          postCount: 3000,
-          postCountShow: 0,
-        },
-      ]
+      trends: [],
     }
   },
+
   methods: {
+    // タグ数のランキング情報の取得
+    getTagRank() {
+      axios.get('/api/tag/trend')
+        .then((res) => {
+          // console.log(res.data);
+          this.trends = res.data;
+          this.$nextTick(function () {
+            this.makeGraph();
+            this.postCountUp();
+          });
+        }).catch(() => {
+          return;
+        });
+    },
     // グラフの描画
     makeGraph() {
-      const firstPostCount = this.trends[0].postCount;
+      const firstPostCount = this.trends[0].posts_count;
       for (let i = 0; i < this.trends.length; i++) {
         const trend = document.querySelector('.trend-box').children[i];
-        const postCount = this.trends[i].postCount;
-        trend.children[2].style.width = postCount / firstPostCount * 100 + '%';
+        const postsCount = this.trends[i].posts_count;
+        trend.children[2].style.width = postsCount / firstPostCount * 100 + '%';
       }
     },
     postCountPlus() {
       const frameCount = 50;
       this.frame++;
       for (let i = 0; i < this.trends.length; i++) {
-        this.trends[i].postCountShow += Math.floor(this.trends[i].postCount / frameCount);
-        if (this.frame == frameCount) {
-          this.trends[i].postCountShow = this.trends[i].postCount;
+        this.trends[i].postCountNow += this.trends[i].posts_count / frameCount;
+        this.trends[i].postCountShow = Math.floor(this.trends[i].postCountNow);
+        if (this.frame === frameCount) {
+          this.trends[i].postCountShow = this.trends[i].posts_count;
         }
       }
       if (this.frame == frameCount) {
@@ -128,9 +98,15 @@ export default {
       this.intervalId = setInterval(function() {self.postCountPlus()}, 20);
     }
   },
+
+  computed: {
+
+  },
+
   mounted() {
-    this.makeGraph();
-    this.postCountUp();
+    this.getTagRank();
+    // this.makeGraph();
+    // this.postCountUp();
   },
 }
 </script>

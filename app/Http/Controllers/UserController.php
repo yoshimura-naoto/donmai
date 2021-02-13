@@ -49,7 +49,13 @@ class UserController extends Controller
         $user = User::where('id', $request->id)->first();
 
         // アイコン画像アップロードの処理
-        if (request()->iconImage) {
+        // $imageExistense = $request->hasFile('iconImage');
+
+        var_dump($request->hasFile('iconImage'));
+        var_dump($request->icon);
+        var_dump($request->iconImage);
+        
+        if ($request->hasFile('iconImage')) {
             // 画像を正方形にリサイズして保存
             $image = $request->file('iconImage');
             InterventionImage::make($image)
@@ -59,8 +65,12 @@ class UserController extends Controller
             // 現在のアイコン画像の削除して新たに画像を保存
             Storage::disk('s3')->delete(parse_url($user->icon, PHP_URL_PATH));
             $user->icon = Storage::disk('s3')->url($path);
-        } else {
+        } else if (!$request->icon) {
+        // } else if ($request->icon == 'null') {
+            Storage::disk('s3')->delete(parse_url($user->icon, PHP_URL_PATH));
             $user->icon = null;
+        } else {
+            $user->icon = $user->icon;
         }
 
         // ユーザー名と自己紹介文の更新

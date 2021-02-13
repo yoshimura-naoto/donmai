@@ -60,6 +60,14 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::post('/comment/reply/good/{id}', 'ReplyController@good');
     Route::post('/comment/reply/ungood/{id}', 'ReplyController@ungood');
     
+    // トレンド
+    Route::get('/tag/trend', 'TagController@getTrend');
+    Route::get('/tag/count/{name}', 'TagController@tagCount');
+    Route::get('/tags/new/{name}', 'TagController@tagsNewGet');
+    Route::get('/tags/popular/{name}', 'TagController@tagsPopularGet');
+
+    // 話題の投稿
+    Route::get('/hot', 'PostController@getHot');
 });
 
 // ログイン関連

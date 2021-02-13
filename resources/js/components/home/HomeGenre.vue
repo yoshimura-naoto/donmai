@@ -137,12 +137,15 @@
             <div v-for="(comment, index) in modalPostComments" :key="comment.id" class="overlay-post-comment-area">
 
               <!-- アイコン -->
-              <div class="overlay-post-comment-left">
-
+              <div v-if="comment.user.icon" class="overlay-post-comment-left">
                 <router-link :to="{ name: 'user', params: { id: comment.user.id }}">
                   <img :src="comment.user.icon">
                 </router-link>
-
+              </div>
+              <div v-if="!comment.user.icon" class="overlay-post-comment-left">
+                <router-link :to="{ name: 'user', params: { id: comment.user.id }}">
+                  <img :src="'../image/user.png'">
+                </router-link>
               </div>
 
               <div class="overlay-post-comment-right">
@@ -221,9 +224,14 @@
                     <div class="overlay-post-comment-reply-area">
 
                       <!-- アイコン -->
-                      <div class="overlay-post-comment-left">
+                      <div v-if="reply.user.icon" class="overlay-post-comment-left">
                         <router-link :to="{ name: 'user', params: { id: reply.user.id }}">
                           <img :src="reply.user.icon">
+                        </router-link>
+                      </div>
+                      <div v-if="!reply.user.icon" class="overlay-post-comment-left">
+                        <router-link :to="{ name: 'user', params: { id: reply.user.id }}">
+                          <img :src="'../image/user.png'">
                         </router-link>
                       </div>
 
@@ -302,9 +310,14 @@
             <div class="overlay-donmai-left">
 
               <!-- アイコン -->
-              <div class="overlay-donmai-user-icon">
+              <div v-if="user.icon" class="overlay-donmai-user-icon">
                 <router-link :to="{ name: 'user', params: { id: user.id }}">
                   <img :src="user.icon">
+                </router-link>
+              </div>
+              <div v-if="!user.icon" class="overlay-donmai-user-icon">
+                <router-link :to="{ name: 'user', params: { id: user.id }}">
+                  <img :src="'../image/user.png'">
                 </router-link>
               </div>
 
@@ -457,13 +470,15 @@ export default {
       axios.get('/api/home/genre/' + name)
         .then((res) => {
           this.authUser = res.data.authUser;
+          if (!this.authUser.icon) {
+            this.authUser.icon = '../image/user.png';
+          }
           this.posts = res.data.posts;
           for (let i = 0; i < this.posts.length; i++) {
             if (!this.posts[i].user.icon) {
-              this.posts[i].icon = '../image/user.png';
+              this.posts[i].user.icon = '../image/user.png';
             }
           }
-          // console.log(this.posts);
         });
     },
     // コメント入力欄の高さをフレキシブルに
@@ -531,6 +546,16 @@ export default {
         .then((res) => {
           this.modalPostIndex = i;
           this.modalPostComments = res.data;
+          // for (let i = 0; i < this.modalPostComments.length; i++){
+          //   if (!this.modalPostComments[i].user.icon) {
+          //     this.modalPostComments[i].user.icon = '../image/user.png';
+          //   }
+          //   for (let j = 0; j < this.modalPostComments[i].replies.length; j++) {
+          //     if (!this.modalPostComments[i].replies[j].user.icon) {
+          //       this.modalPostComments[i].replies[j].user.icon = '../image/user.png';
+          //     }
+          //   }
+          // }
           this.keepScrollWhenOpen();
           this.modalPostId = this.posts[i].id;
           this.modalPostUserId = this.posts[i].user.id;
@@ -543,7 +568,7 @@ export default {
           this.modalPostDonmaiCount = this.posts[i].donmaiCount;
           this.modalPostCommentCount = this.posts[i].commentCount;
           this.modalPostShow = true;
-          // console.log(this.modalPostComments);
+          console.log(this.modalPostComments);
           // console.log(this.modalPostUserId);
           // console.log(this.modalPostUserIcon);
         }).catch(() => {
