@@ -84,6 +84,8 @@ class User extends Authenticatable
     public static $updateRules = [
         'name' => 'required | max:30',
         'pr' => 'max:100 | nullable',
+        'icon' => 'nullable',
+        'iconImage' => 'nullable',
     ];
 
     // ユーザーのプロフィール更新のバリデーションメッセージ

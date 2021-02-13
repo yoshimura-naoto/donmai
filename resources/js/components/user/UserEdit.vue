@@ -22,9 +22,11 @@
               <img v-if="url" class="user-edit-batsu-icon" :src="'../../../image/batsu.png'" @click="deletePreview">
               
               <!-- 元々のアイコン -->
-              <img class="user-edit-icon-img" v-if="form.icon && !form.iconImage && !url" :src="form.icon">
+              <img class="user-edit-icon-img" v-if="form.icon && !url" :src="form.icon">
+              <!-- <img class="user-edit-icon-img" v-if="!form.iconImage && !url && currentIcon" :src="currentIcon"> -->
               <!-- アイコンがない場合の仮画像 -->
-              <img class="user-edit-icon-img" v-if="!form.icon && !form.iconImage && !url" :src="'../../../image/user.png'">
+              <img class="user-edit-icon-img" v-if="!form.icon && !url" :src="'../../../image/user.png'">
+              <!-- <img class="user-edit-icon-img" v-if="!form.iconImage && !url && !currentIcon" :src="'../../../image/user.png'"> -->
               <!-- アップロードしたアイコンのプレビュー -->
               <div v-if="url" class="preview" :style="{ backgroundImage: 'url(' + url + ')' }"></div>
 
@@ -97,10 +99,10 @@
           変更
         </div>
 
-        <!-- テスト用 -->
-        <!-- <div class="user-edit-modify-btn" @click="checkForm">
+        <!-- テスト -->
+        <div class="user-edit-modify-btn" @click="checkForm">
           チェック
-        </div> -->
+        </div>
 
       </div>
 
@@ -118,10 +120,13 @@ export default {
       // 送信データ
       form: {
         id: null,
+        icon: null,
         name: null,
         pr: null,
+        // 新しいアイコン
         iconImage: null,
       },
+      // currentIcon: '',
       errors: [],
       // プレビュー用データ
       url: '',
@@ -140,6 +145,7 @@ export default {
         this.form.iconImage = null;
         return;
       }
+      this.form.icon = null;
       this.url = URL.createObjectURL(this.form.iconImage);
       this.$refs.preview.value = '';
       this.message = '';
@@ -153,15 +159,21 @@ export default {
       this.form.icon = null;
       this.url = '';
       console.log(this.form.iconImage);
+      console.log(this.form.icon);
       console.log(this.url);
     },
-    // 変更
+    // 変更を送信
     submit() {
       let data = new FormData();
       data.append('id', this.form.id);
       data.append('name', this.form.name);
       data.append('pr', this.form.pr);
-      data.append('iconImage', this.form.iconImage);
+      if (this.form.icon) {
+        data.append('icon', this.form.icon);
+      }
+      if (this.form.iconImage) {
+        data.append('iconImage', this.form.iconImage);
+      }
       axios.post('/api/user/edit', data)
         .then(() => {
           this.$router.push({ name: 'user', params: { id: this.form.id }});
@@ -179,7 +191,10 @@ export default {
     axios.get('/api/user')
       .then((res) => {
         console.log(res.data);
-        this.form = res.data;
+        this.$set(this.form, 'id', res.data.id);
+        this.$set(this.form, 'icon', res.data.icon);
+        this.$set(this.form, 'name', res.data.name);
+        this.$set(this.form, 'pr', res.data.pr);
       });
   },
 }

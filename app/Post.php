@@ -101,4 +101,6 @@ class Post extends Model
     {
         return $this->hasManyThrough('App\Reply', 'App\Comment');
     }
+
+    
 }

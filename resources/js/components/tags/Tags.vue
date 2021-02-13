@@ -12,7 +12,7 @@
         </div>
 
         <div class="tag-posts-count">
-          投稿4000万件
+          投稿{{ postsCount }}件
         </div>
 
       </div>
@@ -41,6 +41,19 @@
 
 <script>
 export default {
-  
+  data () {
+    return {
+      postsCount: null,
+    }
+  },
+
+  mounted() {
+    axios.get('/api/tag/count/' + this.$route.params.name)
+      .then((res) => {
+        this.postsCount = res.data;
+      }).catch(() => {
+        return;
+      });
+  }
 }
 </script>

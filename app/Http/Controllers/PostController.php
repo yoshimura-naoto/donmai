@@ -42,8 +42,9 @@ class PostController extends Controller
         $posts = Post::with(['user', 'tags', 'postImages', 'donmais' => function ($query) {
                     $query->where('user_id', Auth::id());
                 }])
-                ->withCount('donmais')
-                ->withCount('comments', 'replies')
+                // ->withCount('donmais')
+                // ->withCount('comments', 'replies')
+                ->withCount('donmais', 'comments', 'replies')
                 ->orderBy('created_at', 'desc')
                 ->get();
 
@@ -64,6 +65,8 @@ class PostController extends Controller
             'genres' => $genres,
             'posts' => $posts,
         ];
+
+        // print_r($posts);
 
         return $data;
     }
@@ -89,10 +92,45 @@ class PostController extends Controller
                 ->withCount('comments', 'replies')
                 ->orderBy('created_at', 'desc')
                 ->get();
-        // $posts = Post::where('genre_index', $genreIndex)
-        //         ->with(['user', 'tags', 'postImages', 'donmais', 'comments.replies'])
-        //         ->orderBy('created_at', 'desc')
-        //         ->get();
+
+        foreach ($posts as $post) {
+            if (count($post->donmais) > 0) {
+                $post->donmai = true;
+            } else {
+                $post->donmai = false;
+            }
+            $post->donmaiCount = $post->donmais_count;
+            $post->commentCount = $post->comments_count + $post->replies_count;
+        }
+
+        $data = [
+            'authUser' => $authUser,
+            'posts' => $posts,
+        ];
+
+        // print_r('おしっこ');
+        // print_r($posts);
+        // var_dump($posts);
+
+        return $data;
+    }
+
+
+
+    // 話題の投稿の取得
+    public function getHot()
+    {
+        $authUser = Auth::user();
+
+        // 投稿一覧をdonmais数が多い順で取得
+        $posts = Post::with(['user', 'tags', 'postImages', 'donmais' => function ($query) {
+            $query->where('user_id', Auth::id());
+        }])
+        // ->withCount('donmais')
+        // ->withCount('comments', 'replies')
+        ->withCount('donmais', 'comments', 'replies')
+        ->orderBy('donmais_count', 'desc')
+        ->get();
 
         foreach ($posts as $post) {
             if (count($post->donmais) > 0) {
