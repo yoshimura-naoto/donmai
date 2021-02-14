@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Builder;
 
 use App\User;
 use App\Post;
@@ -126,10 +127,9 @@ class PostController extends Controller
         $posts = Post::with(['user', 'tags', 'postImages', 'donmais' => function ($query) {
             $query->where('user_id', Auth::id());
         }])
-        // ->withCount('donmais')
-        // ->withCount('comments', 'replies')
         ->withCount('donmais', 'comments', 'replies')
         ->orderBy('donmais_count', 'desc')
+        ->orderBy('comments_count', 'desc')
         ->get();
 
         foreach ($posts as $post) {
@@ -144,6 +144,140 @@ class PostController extends Controller
 
         $data = [
             'authUser' => $authUser,
+            'posts' => $posts,
+        ];
+
+        return $data;
+    }
+
+
+
+    // ユーザーの投稿を取得
+    public function getUserPosts($id)
+    {
+        $posts = Post::where('user_id', $id)
+                    ->with(['user', 'tags', 'postImages'])
+                    ->withCount(['donmais', 'comments', 'replies',
+                                 'donmais as donmai_by_user' => function (Builder $query) {
+                                    $query->where('user_id', Auth::id());
+                                }])
+                    ->orderBy('created_at', 'desc')
+                    ->get();
+
+        foreach ($posts as $post) {
+            if ($post->donmai_by_user) {
+                $post->donmai = true;
+            } else {
+                $post->donmai = false;
+            }
+            $post->donmaiCount = $post->donmais_count;
+            $post->commentCount = $post->comments_count + $post->replies_count;
+        }
+
+        $data = [
+            'authUser' => Auth::user(),
+            'posts' => $posts,
+        ];
+
+        return $data;
+    }
+
+
+
+    // 検索で投稿を新着順で取得
+    public function getSearchPostsNew($word)
+    {
+        $posts = Post::whereHas('tags', function (Builder $query) use ($word) {
+                        $query->where('name', $word);
+                    })
+                    ->with(['user', 'tags', 'postImages'])
+                    ->withCount(['donmais', 'comments', 'replies',
+                                 'donmais as donmai_by_user' => function (Builder $query) {
+                                    $query->where('user_id', Auth::id());
+                                }])
+                    ->orderBy('created_at', 'desc')
+                    ->get();
+
+        foreach ($posts as $post) {
+            if ($post->donmai_by_user) {
+                $post->donmai = true;
+            } else {
+                $post->donmai = false;
+            }
+            $post->donmaiCount = $post->donmais_count;
+            $post->commentCount = $post->comments_count + $post->replies_count;
+        }
+
+        $data = [
+            'authUser' => Auth::user(),
+            'posts' => $posts,
+        ];
+
+        return $data;
+    }
+
+
+
+    // 検索で投稿を人気順で取得
+    public function getSearchPostsPopular($word)
+    {
+        $posts = Post::whereHas('tags', function (Builder $query) use ($word) {
+            $query->where('name', $word);
+        })
+        ->with(['user', 'tags', 'postImages'])
+        ->withCount(['donmais', 'comments', 'replies',
+                     'donmais as donmai_by_user' => function (Builder $query) {
+                        $query->where('user_id', Auth::id());
+                    }])
+        ->orderBy('donmais_count', 'desc')
+        ->get();
+
+        foreach ($posts as $post) {
+            if ($post->donmai_by_user) {
+                $post->donmai = true;
+            } else {
+                $post->donmai = false;
+            }
+            $post->donmaiCount = $post->donmais_count;
+            $post->commentCount = $post->comments_count + $post->replies_count;
+        }
+
+        $data = [
+            'authUser' => Auth::user(),
+            'posts' => $posts,
+        ];
+
+        return $data;
+    }
+
+
+
+    // ユーザーがどんまいした投稿を取得
+    public function getUserDonmaiPosts($id)
+    {
+        $posts = Post::whereHas('donmais', function (Builder $query) use ($id) {
+                        $query->where('user_id', $id);
+                    })
+                    ->with(['user', 'tags', 'postImages'])
+                    ->withCount(['donmais', 'comments', 'replies',
+                                 'donmais as donmai_by_user' => function (Builder $query) {
+                                    $query->where('user_id', Auth::id());
+                                }])
+                    ->orderBy('created_at', 'desc')
+                    ->get();
+
+        foreach ($posts as $post) {
+            if ($post->donmai_by_user) {
+                $post->donmai = true;
+            } else {
+                $post->donmai = false;
+            }
+            $post->donmaiCount = $post->donmais_count;
+            $post->commentCount = $post->comments_count + $post->replies_count;
+        }
+
+        $data = [
+            'authUser' => Auth::user(),
             'posts' => $posts,
         ];
 

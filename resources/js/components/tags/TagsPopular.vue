@@ -121,6 +121,10 @@
 
                 <textarea v-model="commentInput" ref="commentarea" :style="commentStyles" class="flex-textarea-2" placeholder="コメントを入力"></textarea>
 
+                <div v-if="commentErrors.body" class="user-edit-error">
+                  {{ commentErrors.body[0] }}
+                </div>
+
                 <div class="comment-btn-main" @click="commentPost">
                   コメント
                 </div>

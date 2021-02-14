@@ -159,4 +159,28 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\ReplyGood');
     }
+
+    // グチ部屋(guchi_rooms)とのリレーション
+    public function guchiRooms()
+    {
+        return $this->hasMany('App\GuchiRoom');
+    }
+
+    // グチ部屋のブックマークとのリレーション
+    public function guchiBookmarks()
+    {
+        return $this->hasMany('App\GuchiBookmark');
+    }
+
+    // グチとのリレーション
+    public function guchis()
+    {
+        return $this->hasMany('App\Guchi');
+    }
+
+    // グチへのいいねとのリレーション
+    public function guchiGoods()
+    {
+        return $this->hasMany('App\GuchiGood');
+    }
 }

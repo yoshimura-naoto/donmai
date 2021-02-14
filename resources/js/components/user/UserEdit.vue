@@ -44,9 +44,6 @@
             <div v-if="message" class="user-edit-error">
               {{ message }}
             </div>
-            <!-- <div v-if="errors.iconImage" class="user-edit-error">
-              {{ errors.iconImage }}
-            </div> -->
 
           </div>
 

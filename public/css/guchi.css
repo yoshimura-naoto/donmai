@@ -252,6 +252,7 @@
   height: 24px;
   border-radius: 12px;
   margin-left: 5px;
+  overflow: hidden;
 }
 
 .guchi-change-order .selected {
@@ -312,6 +313,7 @@
   padding: 0px 5px;
   margin-left: 3px;
   border-radius: 6px;
+  overflow: hidden;
 }
 
 .thread-time {
@@ -320,6 +322,7 @@
   color: #a2a2a2;
   height: 20px;
   line-height: 22px;
+  overflow: hidden;
 }
 
 .thread-comment-count {
@@ -423,9 +426,19 @@
   height: 100px;
 }
 
-.thread-title-area-icon img {
+.thread-title-area-icon .none {
+  opacity: 0.4;
+}
+
+/* .thread-title-area-icon img {
   width: 100px;
   height: 100px;
+} */
+
+.thread-title-area-icon-image {
+  width: 100px;
+  height: 100px;
+  background-size: cover;
 }
 
 .thread-title-area-right {
@@ -509,7 +522,8 @@
 .thread-comment-area-comment {
   font-size: 18px;
   font-weight: bold;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
+  white-space: pre-line;
 }
 
 .thread-comment-area-image {
@@ -529,9 +543,13 @@
   justify-content: space-between;
 } */
 
-.thread-comment-area-good {
+/* .thread-comment-area-good {
   width: 61px;
   margin-left: auto;
+} */
+
+.thread-comment-area-good .good {
+  text-align: right;
 }
 
 .thread-comment-area-good .good img {
@@ -688,6 +706,7 @@
 
   .thread-box {
     width: 600px;
+    margin: 0 auto;
   }
 
   .guchi-genre-wide {

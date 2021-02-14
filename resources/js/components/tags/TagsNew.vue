@@ -121,6 +121,10 @@
 
                 <textarea v-model="commentInput" ref="commentarea" :style="commentStyles" class="flex-textarea-2" placeholder="コメントを入力"></textarea>
 
+                <div v-if="commentErrors.body" class="user-edit-error">
+                  {{ commentErrors.body[0] }}
+                </div>
+
                 <div class="comment-btn-main" @click="commentPost">
                   コメント
                 </div>
@@ -551,16 +555,6 @@ export default {
         .then((res) => {
           this.modalPostIndex = i;
           this.modalPostComments = res.data;
-          // for (let i = 0; i < this.modalPostComments.length; i++){
-          //   if (!this.modalPostComments[i].user.icon) {
-          //     this.modalPostComments[i].user.icon = '../../image/user.png';
-          //   }
-          //   for (let j = 0; j < this.modalPostComments[i].replies.length; j++) {
-          //     if (!this.modalPostComments[i].replies[j].user.icon) {
-          //       this.modalPostComments[i].replies[j].user.icon = '../../image/user.png';
-          //     }
-          //   }
-          // }
           this.keepScrollWhenOpen();
           this.modalPostId = this.posts[i].id;
           this.modalPostUserId = this.posts[i].user.id;

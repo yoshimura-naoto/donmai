@@ -4,9 +4,6 @@
 
     <div class="thread-page-container">
 
-      <!-- 戻るボタン -->
-      <!-- <div class="thread-back-btn" @click="$router.go(-1)">戻る</div> -->
-
       <!-- 下ボタン -->
       <div class="thread-scroll-btn" @click="scrollToEnd">
         <img :src="'../../image/shita.png'">
@@ -17,14 +14,16 @@
         <!-- スレッドタイトル -->
         <div class="thread-title-area">
 
+          <!-- スレッドのアイコン -->
           <div class="thread-title-area-icon">
-            <img :src="'../../image/unko.jpg'">
+            <div v-if="!guchiRoom.icon" class="thread-title-area-icon-image none" :style="{ backgroundImage: 'url(../../image/no-image.png)' }"></div>
+            <div v-if="guchiRoom.icon" class="thread-title-area-icon-image" :style="{ backgroundImage: 'url(' + guchiRoom.icon + ')' }"></div>
           </div>
 
           <div class="thread-title-area-right">
 
             <div class="thread-title-area-title">
-              <div class="thread-title">うんこ食べたくなってこない？うんこ食べたくなってこない？</div>
+              <div class="thread-title">{{ guchiRoom.title }}</div>
             </div>
 
             <div class="thread-title-area-infos">
@@ -32,12 +31,12 @@
               <div class="thread-title-area-comment">
                 <div class="comment-count">
                     <img :src="'../../image/comment.png'">
-                    {{ comments.length }}
+                    {{ guchis.length }}
                 </div>
               </div>
 
               <div class="thread-title-area-time">
-                <div class="time">2021/01/28 18:28</div>
+                <div class="time">{{ guchiRoom.created_at }}</div>
               </div>
 
             </div>
@@ -45,42 +44,46 @@
           </div>
 
         </div>
+
 
         <!-- コメント一覧 -->
-        <div v-for="comment in comments" :key="comment.id" class="thread-comment-area"  :class="{ 'self-comment': comment.self }">
+        <div :key="resetKey">
 
-          <!-- IDと投稿日時 -->
-          <div class="thread-comment-area-top">
-            <div class="id" :class="{ 'self-id': comment.self }">{{ comment.id }}:</div>
-            <div class="time">{{ comment.created_at }}</div>
-          </div>
+          <div v-for="(guchi, index) in guchis" :key="guchi.id" class="thread-comment-area"  :class="{ 'self-comment': guchi.user_id === authUser.id }">
 
-          <!-- コメント本文 -->
-          <div class="thread-comment-area-comment">
-            {{ comment.content }}
-          </div>
-
-          <!-- 画像表示 -->
-          <div class="thread-comment-area-image">
-            <div v-for="(image, index) in comment.images" :key="index">
-              <img :src="image" @click="openImageModal(image)">
+            <!-- IDと投稿日時 -->
+            <div class="thread-comment-area-top">
+              <div class="id" :class="{ 'self-id': guchi.user_id === authUser.id }">{{ index + 1 }}:</div>
+              <div class="time">{{ guchi.created_at }}</div>
             </div>
-          </div>
 
-          <div class="thread-comment-area-bottom">
+            <!-- コメント本文 -->
+            <div class="thread-comment-area-comment">{{ guchi.body }}</div>
 
-            <!-- いいね -->
-            <div class="thread-comment-area-good">
-              <div class="good">
-                {{ comment.good_count }}
-                <img v-if="!comment.gooded" @click="goodToggle(comment.id)" :src="'../../image/good.png'">
-                <img v-if="comment.gooded" @click="goodToggle(comment.id)" :src="'../../image/gooded.png'">
+            <!-- 画像表示 -->
+            <div v-if="guchi.guchi_images.length > 0" class="thread-comment-area-image">
+              <div v-for="(image, index) in guchi.guchi_images" :key="index">
+                <img :src="image.path" @click="openImageModal(image.path)">
               </div>
+            </div>
+
+            <div class="thread-comment-area-bottom">
+
+              <!-- いいね -->
+              <div class="thread-comment-area-good">
+                <div class="good">
+                  {{ guchi.guchi_goods_count }}
+                  <img v-if="!guchi.gooded" @click="good(index)" :src="'../../image/good.png'">
+                  <img v-if="guchi.gooded" @click="unGood(index)" :src="'../../image/gooded.png'">
+                </div>
+              </div>
+
             </div>
 
           </div>
 
         </div>
+
 
         <!-- コメント投稿エリア -->
         <div class="thread-post-area">
@@ -89,7 +92,11 @@
 
           <!-- コメント入力欄 -->
           <div class="input">
-            <textarea></textarea>
+            <textarea v-model="form.body"></textarea>
+          </div>
+
+          <div v-if="errors.body" class="user-edit-error">
+            {{ errors.body[0] }}
           </div>
 
           <!-- 画像のプレビュー -->
@@ -108,21 +115,30 @@
             </label>
           </div>
 
+          <div v-if="message" class="user-edit-error">
+            {{ message }}
+          </div>
+
           <!-- 匿名か名前公開するか選択 -->
           <div class="check-btns">
-            <div class="tokumei" :class="{ 'selected': postStyle == 'anonymous' }" @click="anonymous">
+            <div class="tokumei" :class="{ 'selected': form.anonymous }" @click="anonymous">
               <img :src="'../../image/check.png'">
               匿名で投稿
             </div>
-            <div class="show-name" :class="{ 'selected': postStyle == 'showName' }" @click="showName">
+            <div class="show-name" :class="{ 'selected': !form.anonymous }" @click="showName">
               <img :src="'../../image/check.png'">
               名前とアイコンを表示
             </div>
           </div>
 
+          <!-- テスト用 -->
+          <!-- <div class="post">
+            <div class="post-btn" @click="check">チェック</div>
+          </div> -->
+
           <!-- 投稿ボタン -->
           <div class="post">
-            <div class="post-btn">投稿</div>
+            <div class="post-btn" @click="submit">投稿</div>
           </div>
 
         </div>
@@ -136,7 +152,7 @@
     <div v-show="modalImageShow" @click.self="closeImageModal" class="overlay-image">
 
       <div class="overlay-image-box">
-        <img :src="modalImage" class="overlay-image-image">
+        <img :src="modalImage" class="overlay-image-image" :class="{'height-is-bigger':heightIsBigger}">
       </div>
 
     </div>
@@ -150,185 +166,165 @@
 export default {
   data() {
     return {
+      // 縦長の画像の幅の調整
+      tatenagaImageWidth: null,
+      heightIsBigger: false,
       // モーダル
       modalImageShow: false,
       modalImage: '',
-      postStyle: 'anonymous',
-      comments: [
-        {
-          id: 1,
-          created_at: '2021/01/28 18:28',
-          content: 'コロナになってから異様にうんこ食べたくなるんだけどわかる人おる？',
-          images: [],
-          good_count: 115,
-          gooded: false,
-          self: false,
-        },
-        {
-          id: 2,
-          created_at: '2021/01/28 18:28',
-          content: 'コロナになってから異様にうんこ食べたくなるんだけどわかる人おる？',
-          images: [],
-          good_count: 115,
-          gooded: false,
-          self: true,
-        },
-        {
-          id: 3,
-          created_at: '2021/01/28 18:28',
-          content: 'コロナになってから異様にうんこ食べたくなるんだけどわかる人おる？',
-          images: [
-            '../../image/img1.jpg',
-            '../../image/img3.jpg',
-          ],
-          good_count: 115,
-          gooded: true,
-          self: false,
-        },
-        {
-          id: 4,
-          created_at: '2021/01/28 18:28',
-          content: 'コロナになってから異様にうんこ食べたくなるんだけどわかる人おる？',
-          images: [],
-          good_count: 115,
-          gooded: false,
-          self: false,
-        },
-        {
-          id: 5,
-          created_at: '2021/01/28 18:28',
-          content: 'コロナになってから異様にうんこ食べたくなるんだけどわかる人おる？',
-          images: [],
-          good_count: 115,
-          gooded: false,
-          self: false,
-        },
-        {
-          id: 6,
-          created_at: '2021/01/28 18:28',
-          content: 'コロナになってから異様にうんこ食べたくなるんだけどわかる人おる？',
-          images: [],
-          good_count: 115,
-          gooded: false,
-          self: true,
-        },
-        {
-          id: 7,
-          created_at: '2021/01/28 18:28',
-          content: 'コロナになってから異様にうんこ食べたくなるんだけどわかる人おる？',
-          images: [],
-          good_count: 115,
-          gooded: false,
-          self: false,
-        },
-        {
-          id: 8,
-          created_at: '2021/01/28 18:28',
-          content: 'コロナになってから異様にうんこ食べたくなるんだけどわかる人おる？',
-          images: [],
-          good_count: 115,
-          gooded: false,
-        },
-        {
-          id: 9,
-          created_at: '2021/01/28 18:28',
-          content: 'コロナになってから異様にうんこ食べたくなるんだけどわかる人おる？',
-          images: [],
-          good_count: 115,
-          gooded: true,
-        },
-        {
-          id: 10,
-          created_at: '2021/01/28 18:28',
-          content: 'コロナになってから異様にうんこ食べたくなるんだけどわかる人おる？',
-          images: [
-            '../../image/img5.jpg',
-          ],
-          good_count: 115,
-          gooded: false,
-          self: true,
-        },
-        {
-          id: 11,
-          created_at: '2021/01/28 18:28',
-          content: 'コロナになってから異様にうんこ食べたくなるんだけどわかる人おる？',
-          images: [],
-          good_count: 115,
-          gooded: false,
-          self: false,
-        },
-        {
-          id: 12,
-          created_at: '2021/01/28 18:28',
-          content: 'コロナになってから異様にうんこ食べたくなるんだけどわかる人おる？',
-          images: [],
-          good_count: 115,
-          gooded: false,
-          self: true,
-        },
-        {
-          id: 13,
-          created_at: '2021/01/28 18:28',
-          content: 'コロナになってから異様にうんこ食べたくなるんだけどわかる人おる？',
-          images: [],
-          good_count: 115,
-          gooded: false,
-          self: false,
-        },
-        {
-          id: 14,
-          created_at: '2021/01/28 18:28',
-          content: 'コロナになってから異様にうんこ食べたくなるんだけどわかる人おる？',
-          images: [],
-          good_count: 115,
-          gooded: false,
-          self: false,
-        },
+      // 認証ユーザー情報
+      authUser: null,
+      // このグチ部屋の情報
+      guchiRoom: {
+        // id:
+        // icon:
+        // title:
+        // created_at:
+        // user_id:
+      },
+      // グチ投稿で送信するもの
+      form: {
+        body: '',
+        images: [],
+        anonymous: 'true',
+      },
+      message: null,
+      errors: [],
+      // グチたち
+      guchis: [
+        // {
+          // id:
+          // user_id:
+          // body:
+          // anonymous:
+          // created_at:
+          // guchi_images:
+          // guchi_goods_count:
+          // gooded:
+          // user: {
+              // id:
+              // name:
+              // icon:
+          // }
+        // }
       ],
       urls: [],
-      files: [],
+      // リロードの用のキー
+      resetKey: 0,
     }
   },
+
   methods: {
-    // 匿名か名前表示か選択
-    anonymous() {
-      this.postStyle = 'anonymous';
+    // チェックテスト
+    check() {
+      console.log(this.form);
     },
-    showName() {
-      this.postStyle = 'showName';
+    // ページ初期化
+    getInitInfo(roomId) {
+      axios.get('/api/guchi/init/' + roomId)
+        .then((res) => {
+          this.authUser = res.data.authUser;
+          this.guchiRoom = res.data.guchiRoom;
+          this.guchis = res.data.guchis;
+          console.log(this.guchis);
+        }).catch(() => {
+          return;
+        });
     },
     // グッドの切り替え
-    goodToggle(commentId) {
-      const comment = this.comments.find((v) => v.id == commentId);
-      comment.gooded = !comment.gooded;
-      if (comment.gooded == false) {
-        comment.good_count--;
-      } else {
-        comment.good_count++;
-      }
+    good(i) {
+      axios.post('/api/guchi/good/' + this.guchis[i].id)
+        .then(() => {
+          this.guchis[i].gooded = true;
+          this.guchis[i].guchi_goods_count++;
+        }).catch(() => {
+          return;
+        });
+    },
+    unGood(i) {
+      axios.post('/api/guchi/ungood/' + this.guchis[i].id)
+        .then(() => {
+          this.guchis[i].gooded = false;
+          this.guchis[i].guchi_goods_count--;
+        }).catch(() => {
+          return;
+        });
     },
     // 画像アップロードとプレビュー
     uploadFile() {
-      const file = this.$refs.threadPreview.files;
-      if (this.files.length + file.length > 3) {
+      const addImages = this.$refs.threadPreview.files;
+      for (let i = 0; i < addImages.length; i++) {
+        if (!addImages[i].type.match('image.*')) {
+          this.message = '画像ファイルを選択してください！';
+          return;
+        }
+      }
+      if (this.form.images.length + addImages.length > 3) {
         window.alert('画像は１投稿につき３枚までです！');
       } else {
-        this.files.push(...file);
-        for (let i = 0; i < file.length; i++) {
-          this.urls.push(URL.createObjectURL(file[i]));
+        this.form.images.push(...addImages);
+        for (let i = 0; i < this.form.images.length; i++) {
+          this.urls.push(URL.createObjectURL(this.form.images[i]));
         }
         this.$refs.threadPreview.value = '';
-        // console.log(this.files);
-        // console.log(this.urls);
+        this.message = null;
+        console.log(this.urls);
+        console.log(this.form.images);
       }
     },
     // 画像プレビューの削除
     deletePreview(url, index) {
       this.urls.splice(index, 1);
-      this.files.splice(index, 1);
+      this.form.images.splice(index, 1);
       URL.revokeObjectURL(url);
-      // console.log(this.files);
-      // console.log(this.urls);
+      console.log(this.urls);
+      console.log(this.form.images);
+    },
+    // 匿名か名前表示か選択
+    anonymous() {
+      this.form.anonymous = 'true';
+    },
+    showName() {
+      this.form.anonymous = null;
+    },
+    // グチの送信
+    submit() {
+      let data = new FormData();
+      Object.entries(this.form).forEach(([key, value]) => {
+        if (Array.isArray(value)) {
+          value.forEach((v, i) => {
+            data.append(key + '[]', v)
+          })
+        } else {
+          data.append('body', this.form.body);
+          data.append('roomId', this.guchiRoom.id);
+          if (this.form.anonymous) {
+            data.append('anonymous', this.form.anonymous);
+          }
+        }
+      })
+      axios.post('/api/guchi/create', data)
+        .then(() => {
+          this.form.body = '';
+          this.form.images = [];
+          this.form.anonymous = true;
+          this.errors = [];
+          this.urls = [];
+          this.message = null;
+          axios.get('/api/guchi/get/' + this.$route.params.id)
+            .then((res) => {
+              console.log(res.data);
+              this.guchis = res.data;
+              this.resetKey++;
+              this.$nextTick(function() {
+                this.scrollToEnd();
+              });
+            }).catch(() => {
+              return;
+            });
+        }).catch((error) => {
+          this.errors = error.response.data.errors;
+        });
     },
     // ページ最下部へスクロール
     scrollToEnd() {
@@ -357,29 +353,57 @@ export default {
     },
     // 画像のモーダルウィンドウの開閉
     openImageModal(image) {
-      this.keepScrollWhenOpen();
+      if (!this.modalPostShow) {
+        this.keepScrollWhenOpen();
+      }
       this.modalImageShow = true;
       this.modalImage = image;
-      const overlayImage = document.querySelector('.overlay-image-image');
       const img = new Image();
       img.src = image;
       const img_width = img.width;
       const img_height = img.height;
-      if (img_height > img_width) {
-        overlayImage.classList.add('height-is-bigger');
+      if (img_height >= img_width) {
+        this.heightIsBigger = true;
+        document.querySelector('.overlay-image-image').addEventListener('load', () => {
+          this.tatenagaImageWidth = document.querySelector('.overlay-image-image').clientWidth;
+          // console.log(this.tatenagaImageWidth);
+        });
       }
     },
-    closeImageModal() {      
-      this.keepScrollWhenClose();
-      const overlayImage = document.querySelector('.overlay-image-image');
-      overlayImage.classList.remove('height-is-bigger');
+    closeImageModal() {
+      if (!this.modalPostShow) {
+        this.keepScrollWhenClose();
+      }
+      this.heightIsBigger = false;
+      this.tatenagaImageWidth = null;
       this.modalImageShow = false;
       this.modalImage = '';
     },
+    // 画像のモーダルで画像が縦長だった場合の対処
+    handleResize() {
+      if (this.tatenagaImageWidth && this.tatenagaImageWidth > window.innerWidth) {
+        this.heightIsBigger = false;
+      } else if (this.tatenagaImageWidth && this.tatenagaImageWidth <= window.innerWidth) {
+        this.heightIsBigger = true;
+      } else {
+        return;
+      }
+    },
   },
+
+  created() {
+    window.addEventListener('resize', this.handleResize);
+  },
+
+  destroyed() {
+    window.removeEventListener('resize', this.handleResize);
+  },
+
   mounted() {
+    this.getInitInfo(this.$route.params.id);
     this.scrollToEnd();
   },
+
   beforeRouteLeave (to, from, next) {
     if (this.modalImageShow) {
       this.keepScrollWhenClose();
