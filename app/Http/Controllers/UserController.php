@@ -66,7 +66,6 @@ class UserController extends Controller
             Storage::disk('s3')->delete(parse_url($user->icon, PHP_URL_PATH));
             $user->icon = Storage::disk('s3')->url($path);
         } else if (!$request->icon) {
-        // } else if ($request->icon == 'null') {
             Storage::disk('s3')->delete(parse_url($user->icon, PHP_URL_PATH));
             $user->icon = null;
         } else {
@@ -100,5 +99,32 @@ class UserController extends Controller
         }
 
         $user->save();
+    }
+
+
+
+    // 検索したユーザーを取得
+    public function getSearchUsers($word)
+    {
+        $users = User::where('name', 'like', '%' . $word . '%')
+                    ->with(['followers' => function ($query) {
+                        $query->where('user_id', Auth::id());
+                    }])
+                    ->get();
+
+        foreach ($users as $user) {
+            if (count($user->followers) > 0) {
+                $user->followed = true;
+            } else {
+                $user->followed = false;
+            }
+        }
+
+        $data = [
+            'authUser' => Auth::user(),
+            'users' => $users,
+        ];
+
+        return $data;
     }
 }

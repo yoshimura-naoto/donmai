@@ -10,7 +10,6 @@
         <div class="guchi-top-btns">
 
           <!-- 戻るボタン -->
-          <!-- <div v-if="$route.path == $router.resolve({ name: 'guchi.detail' }).href" class="thread-back-btn" @click="$router.go(-1)">戻る</div> -->
           <div v-if="$route.path.substr(0, 12) == '/guchi/room/'" class="thread-back-btn" @click="$router.go(-1)">戻る</div>
 
           <!-- ジャンルボタン、新規作成ボタン -->
@@ -83,9 +82,9 @@
 
               <!-- アイコン画像のプレビュー -->
               <div class="guchi-image-preview-area">
-                <div v-if="!file" class="no-image">NO IMAGE</div>
-                <img class="guchi-new-batsu-icon" :src="'../image/batsu.png'" v-if="file && !$route.path.includes('/trend')" @click="deletePreview">
-                <img class="guchi-new-batsu-icon" :src="'../../image/batsu.png'" v-if="file && $route.path.includes('/trend')" @click="deletePreview">
+                <div v-if="!form.icon" class="no-image">NO IMAGE</div>
+                <img class="guchi-new-batsu-icon" :src="'../image/batsu.png'" v-if="form.icon && !$route.path.includes('/trend')" @click="deletePreview">
+                <img class="guchi-new-batsu-icon" :src="'../../image/batsu.png'" v-if="form.icon && $route.path.includes('/trend')" @click="deletePreview">
                 <div class="guchi-image-preview" :style="{ backgroundImage: 'url(' + url + ')' }"></div>
               </div>
 
@@ -95,24 +94,42 @@
                 <input class="file-upload" type="file" ref="preview" @change="uploadFile" accept="image/*">
               </label>
 
+              <div v-if="message" class="user-edit-error">
+                {{ message }}
+              </div>
+
             </div>
 
             <div class="title-input">
 
               <div class="title-input-title">トークテーマを入力</div>
 
-              <input type="text" class="guchi-title-input" v-model="title">
+              <input type="text" class="guchi-title-input" v-model="form.title">
+
+              <div v-if="errors.title" class="user-edit-error">
+                {{ errors.title[0] }}
+              </div>
 
               <!-- ジャンル選択エリア -->
               <div class="select-genre-guchi">
-                <select name="genre" v-model="genre">
+                <select name="genre" v-model="form.genre">
                   <option value="" selected>ジャンルを選択してください</option>
                   <option v-for="(genre, index) in genres" :key="index" :value="genre.route">{{ genre.name }}</option>
                 </select>
               </div>
 
+              <div v-if="errors.genre" class="user-edit-error">
+                {{ errors.genre[0] }}
+              </div>
+
+              <!-- テスト用 -->
               <div class="create">
-                <div class="create-btn">作成</div>
+                <div class="create-btn" @click="check">チェック</div>
+              </div>
+
+              <!-- 作成ボタン -->
+              <div class="create">
+                <div class="create-btn" @click="submit">作成</div>
               </div>
 
             </div>
@@ -121,7 +138,7 @@
 
         </div>
 
-        <router-view></router-view>
+        <router-view :key="reloadKey"></router-view>
 
       </div>
 
@@ -159,102 +176,37 @@ export default {
   data: function () {
     return {
       // 部屋の新規作成
-      title: '',
-      genre: '',
-      file: null,
-      url: null,
+      form: {
+        icon: null,
+        title: '',
+        genre: '',
+      },
+      // file: null,
+      message: '',
+      errors: [],
+      url: '',
       createOpened: false,
       genreOpen: false,
-      genres: [
-        {
-          name: '仕事',
-          route: 'jobs'
-        },
-        {
-          name: '日常',
-          route: 'life'
-        },
-        {
-          name: '人間関係',
-          route: 'relationships'
-        },
-        {
-          name: 'どじ',
-          route: 'dozi'
-        },
-        {
-          name: '恥かいた',
-          route: 'shame'
-        },
-        {
-          name: '学校',
-          route: 'school'
-        },
-        {
-          name: '恋愛',
-          route: 'love'
-        },
-        {
-          name: '結婚生活',
-          route: 'marriage'
-        },
-        {
-          name: 'ゲーム',
-          route: 'game'
-        },
-        {
-          name: 'うんこうんこうんこ',
-          route: 'unko'
-        },
-        {
-          name: 'ちんちん',
-          route: 'chinchin'
-        },
-        {
-          name: 'ちんちん',
-          route: 'chinchin'
-        },
-        {
-          name: 'ちんちん',
-          route: 'chinchin'
-        },
-        {
-          name: 'ちんちん',
-          route: 'chinchin'
-        },
-        {
-          name: 'ちんちん',
-          route: 'chinchin'
-        },
-        {
-          name: 'ちんちん',
-          route: 'chinchin'
-        },
-        {
-          name: 'ちんちん',
-          route: 'chinchin'
-        },
-        {
-          name: 'ちんちん',
-          route: 'chinchin'
-        },
-        {
-          name: 'ちんちん',
-          route: 'chinchin'
-        },
-        {
-          name: 'ちんちん',
-          route: 'chinchin'
-        },
-        {
-          name: 'ちんちん',
-          route: 'chinchin'
-        },
-      ],
+      genres: [],
+      // 子コンポーネントの再読み込み用のキー
+      reloadKey: 0,
     }
   },
   methods: {
-    // ジャンルメーニューの開閉
+    // チェック
+    check() {
+      console.log(this.form);
+    },
+    // ジャンル一覧を取得
+    getGenres() {
+      axios.get('/api/guchiroom/genres')
+        .then((res) => {
+          this.genres = res.data;
+        }).catch(() => {
+          return;
+        });
+    },
+    // ジャンルメニューの開閉
     genreMenuOpen() {
       this.genreOpen = true;
     },
@@ -270,27 +222,65 @@ export default {
     },
     // 画像アップロードのプレビュー
     uploadFile() {
-      this.file = this.$refs.preview.files[0];
-      this.url = URL.createObjectURL(this.file);
+      this.form.icon = this.$refs.preview.files[0];
+      if (!this.form.icon.type.match('image.*')) {
+        this.message = '画像ファイルを選択してください';
+        this.form.icon = null;
+        return;
+      }
+      this.url = URL.createObjectURL(this.form.icon);
       this.$refs.preview.value = '';
-      console.log(this.file);
+      this.message = '';
+      console.log(this.form.icon);
       console.log(this.url);
     },
     // 画像プレビューの削除
     deletePreview() {
       URL.revokeObjectURL(this.url);
       this.url = '';
-      this.file = '';
-      console.log(this.file);
+      this.form.icon = '';
       console.log(this.url);
+      console.log(this.form.icon);
+    },
+    // グチ部屋の投稿（作成）
+    submit() {
+      let data = new FormData();
+      if (this.form.icon) {
+        data.append('icon', this.form.icon);
+      }
+      data.append('title', this.form.title);
+      data.append('genre', this.form.genre);
+      axios.post('/api/guchiroom/create', data)
+        .then(() => {
+          this.form.icon = null;
+          this.form.title = '';
+          this.form.genre = '';
+          this.url = null;
+          this.errors = [];
+          this.message = '';
+          this.closeCreateForm();
+          if (this.$route.path === '/guchi/all') {
+            this.reloadKey++;
+          } else {
+            this.$router.push({ name: 'guchi.all' });
+          }
+        }).catch((error) => {
+          this.errors = error.response.data.errors;
+        });
     },
   },
+
+  mounted() {
+    this.getGenres();
+  },
+
   beforeRouteUpdate (to, from, next) {
     if (this.createOpened) {
       this.closeCreateForm();
     }
     next();
   },
+
   directives: {
     ClickOutside
   },

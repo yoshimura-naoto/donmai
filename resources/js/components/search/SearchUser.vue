@@ -7,10 +7,9 @@
 
       <!-- 左側 -->
       <div @click="toUserPage(user.id)" class="search-user-left">
-
         <!-- アイコン -->
-        <img :src="user.icon" class="search-user-icon">
-
+        <img v-if="user.icon" :src="user.icon" class="search-user-icon">
+        <img v-if="!user.icon" :src="'../../../image/user.png'" class="search-user-icon">
       </div>
 
       <!-- 右側 -->
@@ -24,10 +23,10 @@
           </div>
 
           <!-- フォローボタン -->
-          <div v-if="!user.followed" @click="toggleFollow(user)" class="search-user-follow-btn">
+          <div v-if="!user.followed && user.id !== authUser.id" @click="follow(index)" class="search-user-follow-btn">
             フォローする
           </div>
-          <div v-if="user.followed" @click="toggleFollow(user)" class="search-user-followed-btn">
+          <div v-if="user.followed && user.id !== authUser.id" @click="unFollow(index)" class="search-user-followed-btn">
             フォロー中
           </div>
 
@@ -51,39 +50,56 @@
 export default {
   data () {
     return {
+      authUser: null,
       users: [
-        {
-          id: 3,
-          icon: '../../image/unko.jpg',
-          name: 'チンカス',
-          followed: false,
-          pr: 'うんちが大好き。うんちが大好き。うんちが大好き。うんちが大好き。うんちが大好き。うんちが大好き。うんちが大好き。うんちが大好き。うんちが大好き。うんちが大好き。'
-        },
-        {
-          id: 6,
-          icon: '../../image/img1.jpg',
-          name: 'いぬぬわん',
-          followed: false,
-          pr: 'わんわん。わんわん。わんわん。わんわん。わんわん。わんわん。わんわん。わんわん。わんわん。わんわん。'
-        },
-        {
-          id: 9,
-          icon: '../../image/img4.jpg',
-          name: 'ふるでりか',
-          followed: false,
-          pr: 'にぱー！にぱー！にぱー！にぱー！にぱー！にぱー！にぱー！にぱー！にぱー！にぱー！にぱー！'
-        }
+        // {
+        //   id: 3,
+        //   icon: '../../image/unko.jpg',
+        //   name: 'チンカス',
+        //   followed: false,
+        //   pr: 'うんちが大好き。うんちが大好き。うんちが大好き。うんちが大好き。うんちが大好き。うんちが大好き。うんちが大好き。うんちが大好き。うんちが大好き。うんちが大好き。'
+        // },
       ],
     }
   },
   methods: {
-    // フォローボタンの処理
-    toggleFollow(user) {
-      user.followed = !user.followed;
+    getInitInfo() {
+      axios.get('/api/search/users/' + this.$route.params.word)
+        .then((res) => {
+          console.log(res.data);
+          this.authUser = res.data.authUser;
+          this.users = res.data.users;
+        }).catch(() => {
+          return;
+        });
     },
+    // フォローボタンの処理
+    follow(i) {
+      axios.post('/api/follow', this.users[i])
+        .then(() => {
+          this.users[i].followed = true;
+        }).catch(() => {
+          return;
+        });
+    },
+    unFollow(i) {
+      axios.post('/api/unfollow', this.users[i])
+        .then(() => {
+          this.users[i].followed = false;
+        }).catch(() => {
+          return;
+        });
+    },
+    // ユーザーページへ遷移
     toUserPage(user_id) {
       this.$router.push({ name: 'user', params: { id: user_id }});
     }
   },
+
+  mounted() {
+    this.getInitInfo();
+  },
+
+
 }
 </script>

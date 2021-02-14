@@ -28,6 +28,9 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::post('/user/password', 'UserController@password');
     Route::post('/user/edit', 'UserController@update');
     Route::get('/user/{id}', 'UserController@show');
+    Route::get('/user/posts/{id}', 'PostController@getUserPosts');
+    Route::get('/user/donmai/{id}', 'PostController@getUserDonmaiPosts');
+    Route::get('/guchiroom/user/{id}', 'GuchiController@getUserGuchiroom');
 
     // フォロー関連
     Route::get('/following/{id}', 'FollowController@followingShow');
@@ -68,6 +71,28 @@ Route::middleware('auth:sanctum')->group(function(){
 
     // 話題の投稿
     Route::get('/hot', 'PostController@getHot');
+
+    // みんなでグチ
+    Route::get('/guchiroom/genres', 'GuchiController@guchiRoomGenreGet');
+    Route::post('/guchiroom/create', 'GuchiController@roomCreate');
+    Route::get('/guchiroom/all/new', 'GuchiController@getRoomsNew');
+    Route::get('/guchiroom/all/trend', 'GuchiController@getRoomsTrend');
+    Route::get('/guchiroom/genre/new/{name}', 'GuchiController@getRoomsGenreNew');
+    Route::get('/guchiroom/genre/trend/{name}', 'GuchiController@getRoomsGenreTrend');
+    Route::post('/guchiroom/bookmark/{id}', 'GuchiController@bookmark');
+    Route::post('/guchiroom/unbookmark/{id}', 'GuchiController@unBookmark');
+    Route::get('/guchi/init/{id}', 'GuchiController@init');
+    Route::get('/guchi/get/{id}', 'GuchiController@guchiGet');
+    Route::post('/guchi/create', 'GuchiController@guchiCreate');
+    Route::post('/guchi/good/{id}', 'GuchiController@good');
+    Route::post('/guchi/ungood/{id}', 'GuchiController@ungood');
+
+    // 検索
+    Route::get('/search/posts/new/{word}','PostController@getSearchPostsNew');
+    Route::get('/search/posts/popular/{word}','PostController@getSearchPostsPopular');
+    Route::get('/search/guchiroom/new/{word}','GuchiController@getSearchGuchiroomNew');
+    Route::get('/search/guchiroom/popular/{word}','GuchiController@getSearchGuchiroomPopular');
+    Route::get('/search/users/{word}','UserController@getSearchUsers');
 });
 
 // ログイン関連

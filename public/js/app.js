@@ -2667,85 +2667,60 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       // 部屋の新規作成
-      title: '',
-      genre: '',
-      file: null,
-      url: null,
+      form: {
+        icon: null,
+        title: '',
+        genre: ''
+      },
+      // file: null,
+      message: '',
+      errors: [],
+      url: '',
       createOpened: false,
       genreOpen: false,
-      genres: [{
-        name: '仕事',
-        route: 'jobs'
-      }, {
-        name: '日常',
-        route: 'life'
-      }, {
-        name: '人間関係',
-        route: 'relationships'
-      }, {
-        name: 'どじ',
-        route: 'dozi'
-      }, {
-        name: '恥かいた',
-        route: 'shame'
-      }, {
-        name: '学校',
-        route: 'school'
-      }, {
-        name: '恋愛',
-        route: 'love'
-      }, {
-        name: '結婚生活',
-        route: 'marriage'
-      }, {
-        name: 'ゲーム',
-        route: 'game'
-      }, {
-        name: 'うんこうんこうんこ',
-        route: 'unko'
-      }, {
-        name: 'ちんちん',
-        route: 'chinchin'
-      }, {
-        name: 'ちんちん',
-        route: 'chinchin'
-      }, {
-        name: 'ちんちん',
-        route: 'chinchin'
-      }, {
-        name: 'ちんちん',
-        route: 'chinchin'
-      }, {
-        name: 'ちんちん',
-        route: 'chinchin'
-      }, {
-        name: 'ちんちん',
-        route: 'chinchin'
-      }, {
-        name: 'ちんちん',
-        route: 'chinchin'
-      }, {
-        name: 'ちんちん',
-        route: 'chinchin'
-      }, {
-        name: 'ちんちん',
-        route: 'chinchin'
-      }, {
-        name: 'ちんちん',
-        route: 'chinchin'
-      }, {
-        name: 'ちんちん',
-        route: 'chinchin'
-      }]
+      genres: [],
+      // 子コンポーネントの再読み込み用のキー
+      reloadKey: 0
     };
   },
   methods: {
-    // ジャンルメーニューの開閉
+    // チェック
+    check: function check() {
+      console.log(this.form);
+    },
+    // ジャンル一覧を取得
+    getGenres: function getGenres() {
+      var _this = this;
+
+      axios.get('/api/guchiroom/genres').then(function (res) {
+        _this.genres = res.data;
+      })["catch"](function () {
+        return;
+      });
+    },
+    // ジャンルメニューの開閉
     genreMenuOpen: function genreMenuOpen() {
       this.genreOpen = true;
     },
@@ -2761,20 +2736,64 @@ __webpack_require__.r(__webpack_exports__);
     },
     // 画像アップロードのプレビュー
     uploadFile: function uploadFile() {
-      this.file = this.$refs.preview.files[0];
-      this.url = URL.createObjectURL(this.file);
+      this.form.icon = this.$refs.preview.files[0];
+
+      if (!this.form.icon.type.match('image.*')) {
+        this.message = '画像ファイルを選択してください';
+        this.form.icon = null;
+        return;
+      }
+
+      this.url = URL.createObjectURL(this.form.icon);
       this.$refs.preview.value = '';
-      console.log(this.file);
+      this.message = '';
+      console.log(this.form.icon);
       console.log(this.url);
     },
     // 画像プレビューの削除
     deletePreview: function deletePreview() {
       URL.revokeObjectURL(this.url);
       this.url = '';
-      this.file = '';
-      console.log(this.file);
+      this.form.icon = '';
       console.log(this.url);
+      console.log(this.form.icon);
+    },
+    // グチ部屋の投稿（作成）
+    submit: function submit() {
+      var _this2 = this;
+
+      var data = new FormData();
+
+      if (this.form.icon) {
+        data.append('icon', this.form.icon);
+      }
+
+      data.append('title', this.form.title);
+      data.append('genre', this.form.genre);
+      axios.post('/api/guchiroom/create', data).then(function () {
+        _this2.form.icon = null;
+        _this2.form.title = '';
+        _this2.form.genre = '';
+        _this2.url = null;
+        _this2.errors = [];
+        _this2.message = '';
+
+        _this2.closeCreateForm();
+
+        if (_this2.$route.path === '/guchi/all') {
+          _this2.reloadKey++;
+        } else {
+          _this2.$router.push({
+            name: 'guchi.all'
+          });
+        }
+      })["catch"](function (error) {
+        _this2.errors = error.response.data.errors;
+      });
     }
+  },
+  mounted: function mounted() {
+    this.getGenres();
   },
   beforeRouteUpdate: function beforeRouteUpdate(to, from, next) {
     if (this.createOpened) {
@@ -2847,108 +2866,62 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      threads: [{
-        id: 1,
-        genre: '結婚生活',
-        created_at: '2021/1/27 19:07',
-        comment_count: 4698,
-        title: '嫁が怖すぎる件。。。',
-        icon: '../image/img3.jpg',
-        bookmarked: false
-      }, {
-        id: 2,
-        genre: '恋愛',
-        created_at: '2021/1/27 19:07',
-        comment_count: 4698,
-        title: '彼女ってどうやったらできるんだろ？',
-        bookmarked: false
-      }, {
-        id: 3,
-        genre: '仕事',
-        created_at: '2021/1/27 19:07',
-        comment_count: 4698,
-        title: '上司がうざすぎる！',
-        bookmarked: false
-      }, {
-        id: 4,
-        genre: 'ゲーム',
-        created_at: '2021/1/27 19:07',
-        comment_count: 4698,
-        title: 'APEX全然勝てないんだが。。APEX全然勝てないんだが。。APEX全然勝てないんだが。。APEX全然勝てないんだが。。',
-        bookmarked: false
-      }, {
-        id: 5,
-        genre: '人間関係',
-        created_at: '2021/1/27 19:07',
-        comment_count: 4698,
-        title: '親友の悪口言い合おうぜ！',
-        icon: '../image/img5.jpg',
-        bookmarked: false
-      }, {
-        id: 6,
-        genre: '学校',
-        created_at: '2021/1/27 19:07',
-        comment_count: 4698,
-        title: '夏休みの宿題多過ぎない？？',
-        bookmarked: false
-      }, {
-        id: 7,
-        genre: '結婚生活',
-        created_at: '2021/1/27 19:07',
-        comment_count: 4698,
-        title: '嫁が怖すぎる件。。。',
-        bookmarked: false
-      }, {
-        id: 8,
-        genre: '恋愛',
-        created_at: '2021/1/27 19:07',
-        comment_count: 4698,
-        title: '彼女ってどうやったらできるんだろ？',
-        bookmarked: false
-      }, {
-        id: 9,
-        genre: '仕事',
-        created_at: '2021/1/27 19:07',
-        comment_count: 4698,
-        title: '上司がうざすぎる！',
-        icon: '../image/img7.jpg',
-        bookmarked: false
-      }, {
-        id: 10,
-        genre: 'ゲーム',
-        created_at: '2021/1/27 19:07',
-        comment_count: 4698,
-        title: 'APEX全然勝てないんだが。。',
-        bookmarked: false
-      }, {
-        id: 11,
-        genre: '人間関係',
-        created_at: '2021/1/27 19:07',
-        comment_count: 4698,
-        title: '親友の悪口言い合おうぜ！',
-        bookmarked: false
-      }, {
-        id: 12,
-        genre: '学校',
-        created_at: '2021/1/27 19:07',
-        comment_count: 4698,
-        title: '夏休みの宿題多過ぎない？？',
-        bookmarked: false
-      }]
+      guchiRooms: [// {
+        // id
+        // icon
+        // title
+        // genre
+        // created_at
+        // user_id
+        // guchis_count
+        // bookmarked
+        // }
+      ]
     };
   },
   methods: {
-    toGuchiDetail: function toGuchiDetail(threadId) {
+    // 初期化
+    getInitInfo: function getInitInfo() {
+      var _this = this;
+
+      axios.get('/api/guchiroom/all/new').then(function (res) {
+        console.log(res.data);
+        _this.guchiRooms = res.data;
+      }).then(function () {
+        return;
+      });
+    },
+    // グチの詳細ページへ遷移
+    toGuchiDetail: function toGuchiDetail(roomId) {
       this.$router.push({
         name: 'guchi.detail',
         params: {
-          id: threadId
+          id: roomId
         }
       })["catch"](function () {});
     },
+    // ブックマーク
     bookMark: function bookMark(i) {
-      this.threads[i].bookmarked = !this.threads[i].bookmarked;
+      var _this2 = this;
+
+      axios.post('/api/guchiroom/bookmark/' + this.guchiRooms[i].id).then(function () {
+        _this2.guchiRooms[i].bookmarked = true;
+      })["catch"](function () {
+        return;
+      });
+    },
+    unBookMark: function unBookMark(i) {
+      var _this3 = this;
+
+      axios.post('/api/guchiroom/unbookmark/' + this.guchiRooms[i].id).then(function () {
+        _this3.guchiRooms[i].bookmarked = false;
+      })["catch"](function () {
+        return;
+      });
     }
+  },
+  mounted: function mounted() {
+    this.getInitInfo();
   },
   directives: {
     ClickOutside: vue_click_outside__WEBPACK_IMPORTED_MODULE_0___default.a
@@ -3009,109 +2982,67 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      threads: [{
-        id: 4,
-        genre: 'ゲーム',
-        created_at: '2021/1/27 19:07',
-        comment_count: 12000,
-        title: 'APEX全然勝てないんだが。。APEX全然勝てないんだが。。APEX全然勝てないんだが。。APEX全然勝てないんだが。。',
-        bookmarked: false
-      }, {
-        id: 5,
-        genre: '人間関係',
-        created_at: '2021/1/27 19:07',
-        comment_count: 11000,
-        title: '親友の悪口言い合おうぜ！',
-        bookmarked: false
-      }, {
-        id: 6,
-        genre: '学校',
-        created_at: '2021/1/27 19:07',
-        comment_count: 10000,
-        title: '夏休みの宿題多過ぎない？？',
-        bookmarked: false
-      }, {
-        id: 7,
-        genre: '結婚生活',
-        created_at: '2021/1/27 19:07',
-        comment_count: 9000,
-        title: '嫁が怖すぎる件。。。',
-        bookmarked: false
-      }, {
-        id: 8,
-        genre: '恋愛',
-        created_at: '2021/1/27 19:07',
-        comment_count: 8000,
-        title: '彼女ってどうやったらできるんだろ？',
-        bookmarked: false
-      }, {
-        id: 9,
-        genre: '仕事',
-        created_at: '2021/1/27 19:07',
-        comment_count: 7000,
-        title: '上司がうざすぎる！',
-        bookmarked: false
-      }, {
-        id: 10,
-        genre: 'ゲーム',
-        created_at: '2021/1/27 19:07',
-        comment_count: 6000,
-        title: 'APEX全然勝てないんだが。。',
-        bookmarked: false
-      }, {
-        id: 11,
-        genre: '人間関係',
-        created_at: '2021/1/27 19:07',
-        comment_count: 5000,
-        title: '親友の悪口言い合おうぜ！',
-        bookmarked: false
-      }, {
-        id: 12,
-        genre: '学校',
-        created_at: '2021/1/27 19:07',
-        comment_count: 4000,
-        title: '夏休みの宿題多過ぎない？？',
-        bookmarked: false
-      }, {
-        id: 1,
-        genre: '結婚生活',
-        created_at: '2021/1/27 19:07',
-        comment_count: 3000,
-        title: '嫁が怖すぎる件。。。',
-        bookmarked: false
-      }, {
-        id: 2,
-        genre: '恋愛',
-        created_at: '2021/1/27 19:07',
-        comment_count: 2000,
-        title: '彼女ってどうやったらできるんだろ？',
-        bookmarked: false
-      }, {
-        id: 3,
-        genre: '仕事',
-        created_at: '2021/1/27 19:07',
-        comment_count: 1000,
-        title: '上司がうざすぎる！',
-        bookmarked: false
-      }]
+      guchiRooms: [// {
+        // id
+        // icon
+        // title
+        // genre
+        // created_at
+        // user_id
+        // guchis_count
+        // bookmarked
+        // }
+      ]
     };
   },
   methods: {
-    toGuchiDetail: function toGuchiDetail(threadId) {
+    // 初期化
+    getInitInfo: function getInitInfo() {
+      var _this = this;
+
+      axios.get('/api/guchiroom/all/trend').then(function (res) {
+        console.log(res.data);
+        _this.guchiRooms = res.data;
+      }).then(function () {
+        return;
+      });
+    },
+    // グチの詳細ページへ遷移
+    toGuchiDetail: function toGuchiDetail(roomId) {
       this.$router.push({
         name: 'guchi.detail',
         params: {
-          id: threadId
+          id: roomId
         }
       })["catch"](function () {});
     },
+    // ブックマーク
     bookMark: function bookMark(i) {
-      this.threads[i].bookmarked = !this.threads[i].bookmarked;
+      var _this2 = this;
+
+      axios.post('/api/guchiroom/bookmark/' + this.guchiRooms[i].id).then(function () {
+        _this2.guchiRooms[i].bookmarked = true;
+      })["catch"](function () {
+        return;
+      });
+    },
+    unBookMark: function unBookMark(i) {
+      var _this3 = this;
+
+      axios.post('/api/guchiroom/unbookmark/' + this.guchiRooms[i].id).then(function () {
+        _this3.guchiRooms[i].bookmarked = false;
+      })["catch"](function () {
+        return;
+      });
     }
+  },
+  mounted: function mounted() {
+    this.getInitInfo();
   },
   directives: {
     ClickOutside: vue_click_outside__WEBPACK_IMPORTED_MODULE_0___default.a
@@ -3129,6 +3060,14 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -3289,174 +3228,196 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      // 縦長の画像の幅の調整
+      tatenagaImageWidth: null,
+      heightIsBigger: false,
       // モーダル
       modalImageShow: false,
       modalImage: '',
-      postStyle: 'anonymous',
-      comments: [{
-        id: 1,
-        created_at: '2021/01/28 18:28',
-        content: 'コロナになってから異様にうんこ食べたくなるんだけどわかる人おる？',
+      // 認証ユーザー情報
+      authUser: null,
+      // このグチ部屋の情報
+      guchiRoom: {// id:
+        // icon:
+        // title:
+        // created_at:
+        // user_id:
+      },
+      // グチ投稿で送信するもの
+      form: {
+        body: '',
         images: [],
-        good_count: 115,
-        gooded: false,
-        self: false
-      }, {
-        id: 2,
-        created_at: '2021/01/28 18:28',
-        content: 'コロナになってから異様にうんこ食べたくなるんだけどわかる人おる？',
-        images: [],
-        good_count: 115,
-        gooded: false,
-        self: true
-      }, {
-        id: 3,
-        created_at: '2021/01/28 18:28',
-        content: 'コロナになってから異様にうんこ食べたくなるんだけどわかる人おる？',
-        images: ['../../image/img1.jpg', '../../image/img3.jpg'],
-        good_count: 115,
-        gooded: true,
-        self: false
-      }, {
-        id: 4,
-        created_at: '2021/01/28 18:28',
-        content: 'コロナになってから異様にうんこ食べたくなるんだけどわかる人おる？',
-        images: [],
-        good_count: 115,
-        gooded: false,
-        self: false
-      }, {
-        id: 5,
-        created_at: '2021/01/28 18:28',
-        content: 'コロナになってから異様にうんこ食べたくなるんだけどわかる人おる？',
-        images: [],
-        good_count: 115,
-        gooded: false,
-        self: false
-      }, {
-        id: 6,
-        created_at: '2021/01/28 18:28',
-        content: 'コロナになってから異様にうんこ食べたくなるんだけどわかる人おる？',
-        images: [],
-        good_count: 115,
-        gooded: false,
-        self: true
-      }, {
-        id: 7,
-        created_at: '2021/01/28 18:28',
-        content: 'コロナになってから異様にうんこ食べたくなるんだけどわかる人おる？',
-        images: [],
-        good_count: 115,
-        gooded: false,
-        self: false
-      }, {
-        id: 8,
-        created_at: '2021/01/28 18:28',
-        content: 'コロナになってから異様にうんこ食べたくなるんだけどわかる人おる？',
-        images: [],
-        good_count: 115,
-        gooded: false
-      }, {
-        id: 9,
-        created_at: '2021/01/28 18:28',
-        content: 'コロナになってから異様にうんこ食べたくなるんだけどわかる人おる？',
-        images: [],
-        good_count: 115,
-        gooded: true
-      }, {
-        id: 10,
-        created_at: '2021/01/28 18:28',
-        content: 'コロナになってから異様にうんこ食べたくなるんだけどわかる人おる？',
-        images: ['../../image/img5.jpg'],
-        good_count: 115,
-        gooded: false,
-        self: true
-      }, {
-        id: 11,
-        created_at: '2021/01/28 18:28',
-        content: 'コロナになってから異様にうんこ食べたくなるんだけどわかる人おる？',
-        images: [],
-        good_count: 115,
-        gooded: false,
-        self: false
-      }, {
-        id: 12,
-        created_at: '2021/01/28 18:28',
-        content: 'コロナになってから異様にうんこ食べたくなるんだけどわかる人おる？',
-        images: [],
-        good_count: 115,
-        gooded: false,
-        self: true
-      }, {
-        id: 13,
-        created_at: '2021/01/28 18:28',
-        content: 'コロナになってから異様にうんこ食べたくなるんだけどわかる人おる？',
-        images: [],
-        good_count: 115,
-        gooded: false,
-        self: false
-      }, {
-        id: 14,
-        created_at: '2021/01/28 18:28',
-        content: 'コロナになってから異様にうんこ食べたくなるんだけどわかる人おる？',
-        images: [],
-        good_count: 115,
-        gooded: false,
-        self: false
-      }],
+        anonymous: 'true'
+      },
+      message: null,
+      errors: [],
+      // グチたち
+      guchis: [// {
+        // id:
+        // user_id:
+        // body:
+        // anonymous:
+        // created_at:
+        // guchi_images:
+        // guchi_goods_count:
+        // gooded:
+        // user: {
+        // id:
+        // name:
+        // icon:
+        // }
+        // }
+      ],
       urls: [],
-      files: []
+      // リロードの用のキー
+      resetKey: 0
     };
   },
   methods: {
-    // 匿名か名前表示か選択
-    anonymous: function anonymous() {
-      this.postStyle = 'anonymous';
+    // チェックテスト
+    check: function check() {
+      console.log(this.form);
     },
-    showName: function showName() {
-      this.postStyle = 'showName';
+    // ページ初期化
+    getInitInfo: function getInitInfo(roomId) {
+      var _this = this;
+
+      axios.get('/api/guchi/init/' + roomId).then(function (res) {
+        _this.authUser = res.data.authUser;
+        _this.guchiRoom = res.data.guchiRoom;
+        _this.guchis = res.data.guchis;
+        console.log(_this.guchis);
+      })["catch"](function () {
+        return;
+      });
     },
     // グッドの切り替え
-    goodToggle: function goodToggle(commentId) {
-      var comment = this.comments.find(function (v) {
-        return v.id == commentId;
-      });
-      comment.gooded = !comment.gooded;
+    good: function good(i) {
+      var _this2 = this;
 
-      if (comment.gooded == false) {
-        comment.good_count--;
-      } else {
-        comment.good_count++;
-      }
+      axios.post('/api/guchi/good/' + this.guchis[i].id).then(function () {
+        _this2.guchis[i].gooded = true;
+        _this2.guchis[i].guchi_goods_count++;
+      })["catch"](function () {
+        return;
+      });
+    },
+    unGood: function unGood(i) {
+      var _this3 = this;
+
+      axios.post('/api/guchi/ungood/' + this.guchis[i].id).then(function () {
+        _this3.guchis[i].gooded = false;
+        _this3.guchis[i].guchi_goods_count--;
+      })["catch"](function () {
+        return;
+      });
     },
     // 画像アップロードとプレビュー
     uploadFile: function uploadFile() {
-      var file = this.$refs.threadPreview.files;
+      var addImages = this.$refs.threadPreview.files;
 
-      if (this.files.length + file.length > 3) {
+      for (var i = 0; i < addImages.length; i++) {
+        if (!addImages[i].type.match('image.*')) {
+          this.message = '画像ファイルを選択してください！';
+          return;
+        }
+      }
+
+      if (this.form.images.length + addImages.length > 3) {
         window.alert('画像は１投稿につき３枚までです！');
       } else {
-        var _this$files;
+        var _this$form$images;
 
-        (_this$files = this.files).push.apply(_this$files, _toConsumableArray(file));
+        (_this$form$images = this.form.images).push.apply(_this$form$images, _toConsumableArray(addImages));
 
-        for (var i = 0; i < file.length; i++) {
-          this.urls.push(URL.createObjectURL(file[i]));
+        for (var _i = 0; _i < this.form.images.length; _i++) {
+          this.urls.push(URL.createObjectURL(this.form.images[_i]));
         }
 
-        this.$refs.threadPreview.value = ''; // console.log(this.files);
-        // console.log(this.urls);
+        this.$refs.threadPreview.value = '';
+        this.message = null;
+        console.log(this.urls);
+        console.log(this.form.images);
       }
     },
     // 画像プレビューの削除
     deletePreview: function deletePreview(url, index) {
       this.urls.splice(index, 1);
-      this.files.splice(index, 1);
-      URL.revokeObjectURL(url); // console.log(this.files);
-      // console.log(this.urls);
+      this.form.images.splice(index, 1);
+      URL.revokeObjectURL(url);
+      console.log(this.urls);
+      console.log(this.form.images);
+    },
+    // 匿名か名前表示か選択
+    anonymous: function anonymous() {
+      this.form.anonymous = 'true';
+    },
+    showName: function showName() {
+      this.form.anonymous = null;
+    },
+    // グチの送信
+    submit: function submit() {
+      var _this4 = this;
+
+      var data = new FormData();
+      Object.entries(this.form).forEach(function (_ref) {
+        var _ref2 = _slicedToArray(_ref, 2),
+            key = _ref2[0],
+            value = _ref2[1];
+
+        if (Array.isArray(value)) {
+          value.forEach(function (v, i) {
+            data.append(key + '[]', v);
+          });
+        } else {
+          data.append('body', _this4.form.body);
+          data.append('roomId', _this4.guchiRoom.id);
+
+          if (_this4.form.anonymous) {
+            data.append('anonymous', _this4.form.anonymous);
+          }
+        }
+      });
+      axios.post('/api/guchi/create', data).then(function () {
+        _this4.form.body = '';
+        _this4.form.images = [];
+        _this4.form.anonymous = true;
+        _this4.errors = [];
+        _this4.urls = [];
+        _this4.message = null;
+        axios.get('/api/guchi/get/' + _this4.$route.params.id).then(function (res) {
+          console.log(res.data);
+          _this4.guchis = res.data;
+          _this4.resetKey++;
+
+          _this4.$nextTick(function () {
+            this.scrollToEnd();
+          });
+        })["catch"](function () {
+          return;
+        });
+      })["catch"](function (error) {
+        _this4.errors = error.response.data.errors;
+      });
     },
     // ページ最下部へスクロール
     scrollToEnd: function scrollToEnd() {
@@ -3485,28 +3446,55 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     // 画像のモーダルウィンドウの開閉
     openImageModal: function openImageModal(image) {
-      this.keepScrollWhenOpen();
+      var _this5 = this;
+
+      if (!this.modalPostShow) {
+        this.keepScrollWhenOpen();
+      }
+
       this.modalImageShow = true;
       this.modalImage = image;
-      var overlayImage = document.querySelector('.overlay-image-image');
       var img = new Image();
       img.src = image;
       var img_width = img.width;
       var img_height = img.height;
 
-      if (img_height > img_width) {
-        overlayImage.classList.add('height-is-bigger');
+      if (img_height >= img_width) {
+        this.heightIsBigger = true;
+        document.querySelector('.overlay-image-image').addEventListener('load', function () {
+          _this5.tatenagaImageWidth = document.querySelector('.overlay-image-image').clientWidth; // console.log(this.tatenagaImageWidth);
+        });
       }
     },
     closeImageModal: function closeImageModal() {
-      this.keepScrollWhenClose();
-      var overlayImage = document.querySelector('.overlay-image-image');
-      overlayImage.classList.remove('height-is-bigger');
+      if (!this.modalPostShow) {
+        this.keepScrollWhenClose();
+      }
+
+      this.heightIsBigger = false;
+      this.tatenagaImageWidth = null;
       this.modalImageShow = false;
       this.modalImage = '';
+    },
+    // 画像のモーダルで画像が縦長だった場合の対処
+    handleResize: function handleResize() {
+      if (this.tatenagaImageWidth && this.tatenagaImageWidth > window.innerWidth) {
+        this.heightIsBigger = false;
+      } else if (this.tatenagaImageWidth && this.tatenagaImageWidth <= window.innerWidth) {
+        this.heightIsBigger = true;
+      } else {
+        return;
+      }
     }
   },
+  created: function created() {
+    window.addEventListener('resize', this.handleResize);
+  },
+  destroyed: function destroyed() {
+    window.removeEventListener('resize', this.handleResize);
+  },
   mounted: function mounted() {
+    this.getInitInfo(this.$route.params.id);
     this.scrollToEnd();
   },
   beforeRouteLeave: function beforeRouteLeave(to, from, next) {
@@ -3573,42 +3561,74 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      threads: [{
-        id: 9,
-        genre: '仕事',
-        created_at: '2021/1/27 19:07',
-        comment_count: 5432,
-        title: '上司がうざすぎる！',
-        bookmarked: false
-      }, {
-        id: 3,
-        genre: '仕事',
-        created_at: '2021/1/27 19:07',
-        comment_count: 9876,
-        title: '転職したい。。',
-        bookmarked: false
-      }]
+      guchiRooms: [// {
+        // id
+        // icon
+        // title
+        // genre
+        // created_at
+        // user_id
+        // guchis_count
+        // bookmarked
+        // }
+      ]
     };
   },
   methods: {
-    toGuchiDetail: function toGuchiDetail(threadId) {
+    // 初期化
+    getInitInfo: function getInitInfo(genreName) {
+      var _this = this;
+
+      axios.get('/api/guchiroom/genre/new/' + genreName).then(function (res) {
+        console.log(res.data);
+        _this.guchiRooms = res.data;
+      }).then(function () {
+        return;
+      });
+    },
+    // グチの詳細ページへ遷移
+    toGuchiDetail: function toGuchiDetail(roomId) {
       this.$router.push({
         name: 'guchi.detail',
         params: {
-          id: threadId
+          id: roomId
         }
       })["catch"](function () {});
     },
+    // ブックマーク
     bookMark: function bookMark(i) {
-      this.threads[i].bookmarked = !this.threads[i].bookmarked;
+      var _this2 = this;
+
+      axios.post('/api/guchiroom/bookmark/' + this.guchiRooms[i].id).then(function () {
+        _this2.guchiRooms[i].bookmarked = true;
+      })["catch"](function () {
+        return;
+      });
+    },
+    unBookMark: function unBookMark(i) {
+      var _this3 = this;
+
+      axios.post('/api/guchiroom/unbookmark/' + this.guchiRooms[i].id).then(function () {
+        _this3.guchiRooms[i].bookmarked = false;
+      })["catch"](function () {
+        return;
+      });
     }
+  },
+  mounted: function mounted() {
+    this.getInitInfo(this.$route.params.name);
   },
   directives: {
     ClickOutside: vue_click_outside__WEBPACK_IMPORTED_MODULE_0___default.a
+  },
+  beforeRouteUpdate: function beforeRouteUpdate(to, from, next) {
+    this.getInitInfo(to.params.name);
+    next();
   }
 });
 
@@ -3666,43 +3686,74 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      threads: [{
-        id: 3,
-        icon: '../../image/img7.jpg',
-        genre: '仕事',
-        created_at: '2021/1/27 19:07',
-        comment_count: 9876,
-        title: '転職したい。。',
-        bookmarked: false
-      }, {
-        id: 9,
-        genre: '仕事',
-        created_at: '2021/1/27 19:07',
-        comment_count: 5432,
-        title: '上司がうざすぎる！',
-        bookmarked: false
-      }]
+      guchiRooms: [// {
+        // id
+        // icon
+        // title
+        // genre
+        // created_at
+        // user_id
+        // guchis_count
+        // bookmarked
+        // }
+      ]
     };
   },
   methods: {
-    toGuchiDetail: function toGuchiDetail(threadId) {
+    // 初期化
+    getInitInfo: function getInitInfo(genreName) {
+      var _this = this;
+
+      axios.get('/api/guchiroom/genre/trend/' + genreName).then(function (res) {
+        console.log(res.data);
+        _this.guchiRooms = res.data;
+      }).then(function () {
+        return;
+      });
+    },
+    // グチの詳細ページへ遷移
+    toGuchiDetail: function toGuchiDetail(roomId) {
       this.$router.push({
         name: 'guchi.detail',
         params: {
-          id: threadId
+          id: roomId
         }
       })["catch"](function () {});
     },
+    // ブックマーク
     bookMark: function bookMark(i) {
-      this.threads[i].bookmarked = !this.threads[i].bookmarked;
+      var _this2 = this;
+
+      axios.post('/api/guchiroom/bookmark/' + this.guchiRooms[i].id).then(function () {
+        _this2.guchiRooms[i].bookmarked = true;
+      })["catch"](function () {
+        return;
+      });
+    },
+    unBookMark: function unBookMark(i) {
+      var _this3 = this;
+
+      axios.post('/api/guchiroom/unbookmark/' + this.guchiRooms[i].id).then(function () {
+        _this3.guchiRooms[i].bookmarked = false;
+      })["catch"](function () {
+        return;
+      });
     }
+  },
+  mounted: function mounted() {
+    this.getInitInfo(this.$route.params.name);
   },
   directives: {
     ClickOutside: vue_click_outside__WEBPACK_IMPORTED_MODULE_0___default.a
+  },
+  beforeRouteUpdate: function beforeRouteUpdate(to, from, next) {
+    this.getInitInfo(to.params.name);
+    next();
   }
 });
 
@@ -4589,16 +4640,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
       axios.get('/api/comments/get/' + this.posts[i].id).then(function (res) {
         _this5.modalPostIndex = i;
-        _this5.modalPostComments = res.data; // for (let i = 0; i < this.modalPostComments.length; i++){
-        //   if (!this.modalPostComments[i].user.icon) {
-        //     this.modalPostComments[i].user.icon = '../image/user.png';
-        //   }
-        //   for (let j = 0; j < this.modalPostComments[i].replies.length; j++) {
-        //     if (!this.modalPostComments[i].replies[j].user.icon) {
-        //       this.modalPostComments[i].replies[j].user.icon = '../image/user.png';
-        //     }
-        //   }
-        // }
+        _this5.modalPostComments = res.data;
 
         _this5.keepScrollWhenOpen();
 
@@ -6166,6 +6208,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -6776,112 +6822,67 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      threads: [{
-        id: 1,
-        genre: '結婚生活',
-        created_at: '2021/1/27 19:07',
-        comment_count: 4698,
-        title: '嫁が怖すぎる件。。。',
-        icon: '../../../image/img3.jpg',
-        bookmarked: false
-      }, {
-        id: 2,
-        genre: '恋愛',
-        created_at: '2021/1/27 19:07',
-        comment_count: 4698,
-        title: '彼女ってどうやったらできるんだろ？',
-        bookmarked: false
-      }, {
-        id: 3,
-        genre: '仕事',
-        created_at: '2021/1/27 19:07',
-        comment_count: 4698,
-        title: '上司がうざすぎる！',
-        bookmarked: false
-      }, {
-        id: 4,
-        genre: 'ゲーム',
-        created_at: '2021/1/27 19:07',
-        comment_count: 4698,
-        title: 'APEX全然勝てないんだが。。APEX全然勝てないんだが。。APEX全然勝てないんだが。。APEX全然勝てないんだが。。',
-        bookmarked: false
-      }, {
-        id: 5,
-        genre: '人間関係',
-        created_at: '2021/1/27 19:07',
-        comment_count: 4698,
-        title: '親友の悪口言い合おうぜ！',
-        icon: '../../../image/img5.jpg',
-        bookmarked: false
-      }, {
-        id: 6,
-        genre: '学校',
-        created_at: '2021/1/27 19:07',
-        comment_count: 4698,
-        title: '夏休みの宿題多過ぎない？？',
-        bookmarked: false
-      }, {
-        id: 7,
-        genre: '結婚生活',
-        created_at: '2021/1/27 19:07',
-        comment_count: 4698,
-        title: '嫁が怖すぎる件。。。',
-        bookmarked: false
-      }, {
-        id: 8,
-        genre: '恋愛',
-        created_at: '2021/1/27 19:07',
-        comment_count: 4698,
-        title: '彼女ってどうやったらできるんだろ？',
-        bookmarked: false
-      }, {
-        id: 9,
-        genre: '仕事',
-        created_at: '2021/1/27 19:07',
-        comment_count: 4698,
-        title: '上司がうざすぎる！',
-        icon: '../../../image/img7.jpg',
-        bookmarked: false
-      }, {
-        id: 10,
-        genre: 'ゲーム',
-        created_at: '2021/1/27 19:07',
-        comment_count: 4698,
-        title: 'APEX全然勝てないんだが。。',
-        bookmarked: false
-      }, {
-        id: 11,
-        genre: '人間関係',
-        created_at: '2021/1/27 19:07',
-        comment_count: 4698,
-        title: '親友の悪口言い合おうぜ！',
-        bookmarked: false
-      }, {
-        id: 12,
-        genre: '学校',
-        created_at: '2021/1/27 19:07',
-        comment_count: 4698,
-        title: '夏休みの宿題多過ぎない？？',
-        bookmarked: false
-      }]
+      guchiRooms: [// {
+        // id
+        // icon
+        // title
+        // genre
+        // created_at
+        // user_id
+        // guchis_count
+        // bookmarked
+        // }
+      ]
     };
   },
   methods: {
-    toGuchiDetail: function toGuchiDetail(threadId) {
+    // 初期化
+    getInitInfo: function getInitInfo() {
+      var _this = this;
+
+      axios.get('/api/search/guchiroom/new/' + this.$route.params.word).then(function (res) {
+        console.log(res.data);
+        _this.guchiRooms = res.data;
+      }).then(function () {
+        return;
+      });
+    },
+    // グチの詳細ページへ遷移
+    toGuchiDetail: function toGuchiDetail(roomId) {
       this.$router.push({
         name: 'guchi.detail',
         params: {
-          id: threadId
+          id: roomId
         }
       })["catch"](function () {});
     },
+    // ブックマーク
     bookMark: function bookMark(i) {
-      this.threads[i].bookmarked = !this.threads[i].bookmarked;
+      var _this2 = this;
+
+      axios.post('/api/guchiroom/bookmark/' + this.guchiRooms[i].id).then(function () {
+        _this2.guchiRooms[i].bookmarked = true;
+      })["catch"](function () {
+        return;
+      });
+    },
+    unBookMark: function unBookMark(i) {
+      var _this3 = this;
+
+      axios.post('/api/guchiroom/unbookmark/' + this.guchiRooms[i].id).then(function () {
+        _this3.guchiRooms[i].bookmarked = false;
+      })["catch"](function () {
+        return;
+      });
     }
+  },
+  mounted: function mounted() {
+    this.getInitInfo();
   },
   directives: {
     ClickOutside: vue_click_outside__WEBPACK_IMPORTED_MODULE_0___default.a
@@ -6942,113 +6943,67 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      threads: [{
-        id: 1,
-        genre: '結婚生活',
-        created_at: '2021/1/27 19:07',
-        comment_count: 4698,
-        title: '嫁が怖すぎる件。。。',
-        icon: '../../../image/img4.jpg',
-        bookmarked: false
-      }, {
-        id: 2,
-        genre: '恋愛',
-        created_at: '2021/1/27 19:07',
-        comment_count: 4698,
-        title: '彼女ってどうやったらできるんだろ？',
-        icon: '../../../image/img5.jpg',
-        bookmarked: false
-      }, {
-        id: 3,
-        genre: '仕事',
-        created_at: '2021/1/27 19:07',
-        comment_count: 4698,
-        title: '上司がうざすぎる！',
-        bookmarked: false
-      }, {
-        id: 4,
-        genre: 'ゲーム',
-        created_at: '2021/1/27 19:07',
-        comment_count: 4698,
-        title: 'APEX全然勝てないんだが。。APEX全然勝てないんだが。。APEX全然勝てないんだが。。APEX全然勝てないんだが。。',
-        bookmarked: false
-      }, {
-        id: 5,
-        genre: '人間関係',
-        created_at: '2021/1/27 19:07',
-        comment_count: 4698,
-        title: '親友の悪口言い合おうぜ！',
-        icon: '../../../image/img5.jpg',
-        bookmarked: false
-      }, {
-        id: 6,
-        genre: '学校',
-        created_at: '2021/1/27 19:07',
-        comment_count: 4698,
-        title: '夏休みの宿題多過ぎない？？',
-        bookmarked: false
-      }, {
-        id: 7,
-        genre: '結婚生活',
-        created_at: '2021/1/27 19:07',
-        comment_count: 4698,
-        title: '嫁が怖すぎる件。。。',
-        bookmarked: false
-      }, {
-        id: 8,
-        genre: '恋愛',
-        created_at: '2021/1/27 19:07',
-        comment_count: 4698,
-        title: '彼女ってどうやったらできるんだろ？',
-        bookmarked: false
-      }, {
-        id: 9,
-        genre: '仕事',
-        created_at: '2021/1/27 19:07',
-        comment_count: 4698,
-        title: '上司がうざすぎる！',
-        icon: '../../../image/img7.jpg',
-        bookmarked: false
-      }, {
-        id: 10,
-        genre: 'ゲーム',
-        created_at: '2021/1/27 19:07',
-        comment_count: 4698,
-        title: 'APEX全然勝てないんだが。。',
-        bookmarked: false
-      }, {
-        id: 11,
-        genre: '人間関係',
-        created_at: '2021/1/27 19:07',
-        comment_count: 4698,
-        title: '親友の悪口言い合おうぜ！',
-        bookmarked: false
-      }, {
-        id: 12,
-        genre: '学校',
-        created_at: '2021/1/27 19:07',
-        comment_count: 4698,
-        title: '夏休みの宿題多過ぎない？？',
-        bookmarked: false
-      }]
+      guchiRooms: [// {
+        // id
+        // icon
+        // title
+        // genre
+        // created_at
+        // user_id
+        // guchis_count
+        // bookmarked
+        // }
+      ]
     };
   },
   methods: {
-    toGuchiDetail: function toGuchiDetail(threadId) {
+    // 初期化
+    getInitInfo: function getInitInfo() {
+      var _this = this;
+
+      axios.get('/api/search/guchiroom/popular/' + this.$route.params.word).then(function (res) {
+        console.log(res.data);
+        _this.guchiRooms = res.data;
+      }).then(function () {
+        return;
+      });
+    },
+    // グチの詳細ページへ遷移
+    toGuchiDetail: function toGuchiDetail(roomId) {
       this.$router.push({
         name: 'guchi.detail',
         params: {
-          id: threadId
+          id: roomId
         }
       })["catch"](function () {});
     },
+    // ブックマーク
     bookMark: function bookMark(i) {
-      this.threads[i].bookmarked = !this.threads[i].bookmarked;
+      var _this2 = this;
+
+      axios.post('/api/guchiroom/bookmark/' + this.guchiRooms[i].id).then(function () {
+        _this2.guchiRooms[i].bookmarked = true;
+      })["catch"](function () {
+        return;
+      });
+    },
+    unBookMark: function unBookMark(i) {
+      var _this3 = this;
+
+      axios.post('/api/guchiroom/unbookmark/' + this.guchiRooms[i].id).then(function () {
+        _this3.guchiRooms[i].bookmarked = false;
+      })["catch"](function () {
+        return;
+      });
     }
+  },
+  mounted: function mounted() {
+    this.getInitInfo();
   },
   directives: {
     ClickOutside: vue_click_outside__WEBPACK_IMPORTED_MODULE_0___default.a
@@ -7414,253 +7369,176 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      // 縦長の画像の幅の調整
+      tatenagaImageWidth: null,
+      heightIsBigger: false,
+      // スクロール位置
       scrollPosition: null,
+      // 認証ユーザー
+      authUser: null,
+      // 投稿
+      posts: [// {
+        //   id: 1,
+        //   user: {
+        //     id: 5,
+        //     name: '太郎',
+        //     icon: 'https:/...'
+        //   },
+        //   body: 'こんにちは。',
+        //   genre: {
+        //     route: 'job',
+        //     name: '仕事',
+        //   },
+        //   tags: [
+        //     {
+        //       id: 1,
+        //       name: '鬼滅'
+        //     }
+        //   ],
+        //   post_images: [
+        //     {
+        //       id: 4,
+        //       path: 'https:/...'
+        //     }
+        //   ],
+        //   donmai: false,
+        //   donmaiCount: 5,
+        //   commentCount: 9,
+        // }
+      ],
+      // コメント
       commentInput: '',
       commentHeight: '31px',
       // モーダル
       modalPostShow: false,
+      modalPostIndex: null,
       modalPostId: null,
-      modalPostUser: '',
       modalPostUserId: null,
-      modalPostUserIcon: '',
+      modalPostUserName: null,
+      modalPostUserIcon: null,
+      modalPostBody: null,
+      modalPostTags: [],
+      modalPostImages: [],
       modalPostDonmai: false,
       modalPostDonmaiCount: null,
-      modalPostImages: [],
-      modalPostTags: [],
-      modalPostCommentCount: 9,
-      modalPostComments: [{
-        id: 1,
-        userId: 2,
-        user: '鈴木誠也',
-        icon: '../../../image/img1.jpg',
-        day: '5日前',
-        goodCount: 37,
-        good: false,
-        replyCount: 4,
-        replyShow: false,
-        replyFormOpened: false,
-        replyInput: '',
-        replyHeight: '31px',
-        replies: [{
-          id: 2,
-          userId: 3,
-          user: '柳田',
-          icon: '../../../image/img5.jpg',
-          day: '4日前',
-          goodCount: 37,
-          good: false
-        }, {
-          id: 3,
-          userId: 4,
-          user: '筒香',
-          icon: '../../../image/img6.jpg',
-          day: '3日前',
-          goodCount: 37,
-          good: false
-        }, {
-          id: 4,
-          userId: 5,
-          user: '田中将大',
-          icon: '../../../image/img7.jpg',
-          day: '2日前',
-          goodCount: 37,
-          good: false
-        }, {
-          id: 5,
-          userId: 6,
-          user: 'ダルビッシュ',
-          icon: '../../../image/img8.jpg',
-          day: '1日前',
-          goodCount: 37,
-          good: false
-        }]
-      }, {
-        id: 2,
-        userId: 4,
-        user: 'ジーター',
-        icon: '../../../image/img2.jpg',
-        day: '4日前',
-        goodCount: 37,
-        good: false,
-        replyCount: 0,
-        replyShow: false,
-        replyFormOpened: false,
-        replyInput: '',
-        replyHeight: '31px',
-        replies: []
-      }, {
-        id: 3,
-        userId: 6,
-        user: 'ブライアント',
-        icon: '../../../image/img3.jpg',
-        day: '3日前',
-        goodCount: 37,
-        good: false,
-        replyCount: 3,
-        replyShow: false,
-        replyFormOpened: false,
-        replyInput: '',
-        replyHeight: '31px',
-        replies: [{
-          id: 2,
-          userId: 3,
-          user: 'カーショウ',
-          icon: '../../../image/img5.jpg',
-          day: '4日前',
-          goodCount: 37,
-          good: false
-        }, {
-          id: 3,
-          userId: 4,
-          user: 'シャーザー',
-          icon: '../../../image/img6.jpg',
-          day: '3日前',
-          goodCount: 37,
-          good: false
-        }, {
-          id: 4,
-          userId: 5,
-          user: 'バーランダー',
-          icon: '../../../image/img7.jpg',
-          day: '2日前',
-          goodCount: 37,
-          good: false
-        }]
-      }, {
-        id: 4,
-        userId: 8,
-        user: '松井秀樹',
-        icon: '../../../image/img4.jpg',
-        day: '2日前',
-        goodCount: 37,
-        good: false,
-        replyCount: 0,
-        replyShow: false,
-        replyFormOpened: false,
-        replyInput: '',
-        replyHeight: '31px',
-        replies: []
-      }],
+      modalPostCommentCount: null,
+      modalPostComments: [// {
+        //   id: 1,
+        //   userId: 2,
+        //   user: '鈴木誠也',
+        //   icon: '../image/img1.jpg',
+        //   day: '5日前',
+        //   goodCount: 37,
+        //   good: false,
+        //   replyCount: 4,
+        //   replyShow: false,
+        //   replyFormOpened: false,
+        //   replyInput: '',
+        //   replyErrors: [],
+        //   replyHeight: '31px',
+        //   replies: [
+        //     {
+        //       id: 2,
+        //       userId: 3,
+        //       user: '柳田',
+        //       icon: '../image/img5.jpg',
+        //       day: '4日前',
+        //       goodCount: 37,
+        //       good: false,
+        //     },
+        //   ],
+        // },
+      ],
+      newComment: {},
+      newReply: {},
+      commentErrors: [],
       // 画像モーダル
       modalImageShow: false,
       modalImage: '',
       // どんまいモーダル
       modalDonmaiShow: false,
-      modalDonmaiUsers: [{
-        id: 11,
-        icon: '../../../image/img1.jpg',
-        name: 'ジェイコブ・デグロム',
-        followed: false
-      }, {
-        id: 22,
-        icon: '../../../image/img2.jpg',
-        name: 'ゲリット・コール',
-        followed: false
-      }, {
-        id: 33,
-        icon: '../../../image/img3.jpg',
-        name: '山本由伸',
-        followed: false
-      }, {
-        id: 44,
-        icon: '../../../image/img4.jpg',
-        name: '千賀滉大',
-        followed: false
-      }, {
-        id: 55,
-        icon: '../../../image/img5.jpg',
-        name: '菅野智之',
-        followed: false
-      }, {
-        id: 66,
-        icon: '../../../image/img6.jpg',
-        name: 'うんこクソ野郎',
-        followed: false
-      }, {
-        id: 77,
-        icon: '../../../image/img6.jpg',
-        name: 'うんこクソ野郎',
-        followed: false
-      }, {
-        id: 88,
-        icon: '../../../image/img6.jpg',
-        name: 'うんこクソ野郎',
-        followed: false
-      }, {
-        id: 99,
-        icon: '../../../image/img6.jpg',
-        name: 'うんこクソ野郎',
-        followed: false
-      }, {
-        id: 1010,
-        icon: '../../../image/img6.jpg',
-        name: 'うんこクソ野郎',
-        followed: false
-      }],
-      // 投稿
-      posts: [{
-        id: 3,
-        user: 'うんこマン',
-        userId: 15,
-        userIcon: '../../../image/img1.jpg',
-        donmai: false,
-        donmai_count: 10000,
-        comment_count: 9,
-        images: ['../../../image/img5.jpg'],
-        tags: ['#ばか', '#あほ', '#うんち', '#ちんちん', '#ハゲ']
-      }, {
-        id: 2,
-        user: 'ハゲ野郎',
-        userId: 16,
-        userIcon: '../../../image/img2.jpg',
-        donmai: false,
-        donmai_count: 9500,
-        comment_count: 10,
-        images: ['../../../image/img1.jpg', '../../../image/img6.jpg']
-      }, {
-        id: 4,
-        user: 'でべそ野郎',
-        userId: 17,
-        userIcon: '../../../image/img3.jpg',
-        donmai: false,
-        donmai_count: 8000,
-        comment_count: 11,
-        images: []
-      }, {
-        id: 1,
-        user: 'ちんこ野郎',
-        userId: 18,
-        userIcon: '../../../image/img4.jpg',
-        donmai: false,
-        donmai_count: 7400,
-        comment_count: 12,
-        images: ['../../../image/img2.jpg', '../../../image/img3.jpg', '../../../image/img4.jpg']
-      }]
+      modalDonmaiUsers: [// {
+        //   id: 11,
+        //   icon: '../image/img1.jpg',
+        //   name: 'ジェイコブ・デグロム',
+        //   followed: false,
+        // },
+      ]
     };
   },
   methods: {
+    // 初期化
+    getInitInfo: function getInitInfo(word) {
+      var _this = this;
+
+      axios.get('/api/search/posts/new/' + word).then(function (res) {
+        // console.log(res.data);
+        // console.log(res.data.posts);
+        // console.log(res.data.authUser);
+        _this.authUser = res.data.authUser;
+
+        if (!_this.authUser.icon) {
+          _this.authUser.icon = '../../../image/user.png';
+        }
+
+        _this.posts = res.data.posts;
+
+        for (var i = 0; i < _this.posts.length; i++) {
+          if (!_this.posts[i].user.icon) {
+            _this.posts[i].user.icon = '../../../image/user.png';
+          }
+        } // console.log(this.authUser);
+        // console.log(this.posts);
+
+      })["catch"](function () {
+        return;
+      });
+    },
     // コメント入力欄の高さをフレキシブルに
     changeCommentHeight: function changeCommentHeight() {
-      var _this = this;
+      var _this2 = this;
 
       this.commentHeight = this.$refs.commentarea.scrollHeight + 'px';
       this.commentHeight = 18 + 'px';
       this.$nextTick(function () {
-        _this.commentHeight = _this.$refs.commentarea.scrollHeight + 'px';
+        _this2.commentHeight = _this2.$refs.commentarea.scrollHeight + 'px';
       });
     },
     // どんまい機能の処理
-    donmai: function donmai(index) {
-      var post = this.posts[index];
+    donmai: function donmai(i) {
+      var post = this.posts[i];
       post.donmai = !post.donmai;
 
       if (post.donmai == false) {
-        post.donmai_count--;
+        axios.post('/api/undonmai/' + this.posts[i].id).then(function () {
+          post.donmaiCount--;
+        })["catch"](function () {
+          return;
+        });
       } else {
-        post.donmai_count++;
+        axios.post('/api/donmai/' + this.posts[i].id).then(function () {
+          post.donmaiCount++;
+        })["catch"](function () {
+          return;
+        });
       }
     },
     // モーダルのどんまい機能
@@ -7698,29 +7576,45 @@ __webpack_require__.r(__webpack_exports__);
       this.scrollPosition = null;
     },
     // 投稿のモーダルウィンドウの開閉
-    openModalPost: function openModalPost(postIndex) {
-      this.keepScrollWhenOpen();
-      this.modalPostId = this.posts[postIndex].id;
-      this.modalPostUser = this.posts[postIndex].user;
-      this.modalPostUserId = this.posts[postIndex].userId;
-      this.modalPostUserIcon = this.posts[postIndex].userIcon;
-      this.modalPostDonmai = this.posts[postIndex].donmai;
-      this.modalPostDonmaiCount = this.posts[postIndex].donmai_count;
-      this.modalPostImages = this.posts[postIndex].images;
-      this.modalPostTags = this.posts[postIndex].tags;
-      this.modalPostCommentCount = this.posts[postIndex].comment_count;
-      this.modalPostShow = true;
+    openModalPost: function openModalPost(i) {
+      var _this3 = this;
+
+      axios.get('/api/comments/get/' + this.posts[i].id).then(function (res) {
+        _this3.modalPostIndex = i;
+        _this3.modalPostComments = res.data;
+
+        _this3.keepScrollWhenOpen();
+
+        _this3.modalPostId = _this3.posts[i].id;
+        _this3.modalPostUserId = _this3.posts[i].user.id;
+        _this3.modalPostUserName = _this3.posts[i].user.name;
+        _this3.modalPostUserIcon = _this3.posts[i].user.icon;
+        _this3.modalPostBody = _this3.posts[i].body;
+        _this3.modalPostTags = _this3.posts[i].tags;
+        _this3.modalPostImages = _this3.posts[i].post_images;
+        _this3.modalPostDonmai = _this3.posts[i].donmai;
+        _this3.modalPostDonmaiCount = _this3.posts[i].donmaiCount;
+        _this3.modalPostCommentCount = _this3.posts[i].commentCount;
+        _this3.modalPostShow = true; // console.log(this.modalPostComments);
+        // console.log(this.modalPostUserId);
+        // console.log(this.modalPostUserIcon);
+      })["catch"](function () {
+        return;
+      });
     },
     closeModalPost: function closeModalPost() {
       this.keepScrollWhenClose();
       this.modalPostShow = false;
+      this.modalPostIndex = null;
       this.modalPostId = null;
-      this.modalPostUser = '';
       this.modalPostUserId = null;
+      this.modalPostUserName = null;
+      this.modalPostUserIcon = null;
+      this.modalPostBody = null;
+      this.modalPostTags = [];
+      this.modalPostImages = [];
       this.modalPostDonmai = false;
       this.modalPostDonmaiCount = null;
-      this.modalPostImages = [];
-      this.modalPostTags = [];
       this.modalPostCommentCount = null;
       this.modalPostComments.map(function (element) {
         element.replyShow = false;
@@ -7728,27 +7622,39 @@ __webpack_require__.r(__webpack_exports__);
     },
     // どんまいしたユーザーのモーダルウィンドウの開閉
     openModalDonmai: function openModalDonmai() {
-      this.modalDonmaiShow = true;
+      var _this4 = this;
+
+      axios.get('/api/donmai/users/' + this.modalPostId).then(function (res) {
+        _this4.modalDonmaiUsers = res.data; // console.log(this.modalDonmaiUsers);
+
+        _this4.modalDonmaiShow = true;
+      })["catch"](function () {
+        return;
+      });
     },
     closeModalDonmai: function closeModalDonmai() {
       this.modalDonmaiShow = false;
     },
     // 画像のモーダルウィンドウの開閉
     openImageModal: function openImageModal(image) {
+      var _this5 = this;
+
       if (!this.modalPostShow) {
         this.keepScrollWhenOpen();
       }
 
       this.modalImageShow = true;
       this.modalImage = image;
-      var overlayImage = document.querySelector('.overlay-image-image');
       var img = new Image();
       img.src = image;
       var img_width = img.width;
       var img_height = img.height;
 
-      if (img_height > img_width) {
-        overlayImage.classList.add('height-is-bigger');
+      if (img_height >= img_width) {
+        this.heightIsBigger = true;
+        document.querySelector('.overlay-image-image').addEventListener('load', function () {
+          _this5.tatenagaImageWidth = document.querySelector('.overlay-image-image').clientWidth; // console.log(this.tatenagaImageWidth);
+        });
       }
     },
     closeImageModal: function closeImageModal() {
@@ -7756,14 +7662,50 @@ __webpack_require__.r(__webpack_exports__);
         this.keepScrollWhenClose();
       }
 
-      var overlayImage = document.querySelector('.overlay-image-image');
-      overlayImage.classList.remove('height-is-bigger');
+      this.heightIsBigger = false;
+      this.tatenagaImageWidth = null;
       this.modalImageShow = false;
       this.modalImage = '';
     },
     // どんまいしたユーザーのフォローとアンフォロー
-    donmaiFollowToggle: function donmaiFollowToggle(i) {
-      this.modalDonmaiUsers[i].followed = !this.modalDonmaiUsers[i].followed;
+    donmaiFollow: function donmaiFollow(i) {
+      var _this6 = this;
+
+      axios.post('/api/follow', this.modalDonmaiUsers[i]).then(function () {
+        _this6.modalDonmaiUsers[i].followed = true;
+      })["catch"](function () {
+        return;
+      });
+    },
+    donmaiUnFollow: function donmaiUnFollow(i) {
+      var _this7 = this;
+
+      axios.post('/api/unfollow', this.modalDonmaiUsers[i]).then(function () {
+        _this7.modalDonmaiUsers[i].followed = false;
+      })["catch"](function () {
+        return;
+      });
+    },
+    // コメント投稿
+    commentPost: function commentPost() {
+      var _this8 = this;
+
+      var data = new FormData();
+      data.append('postId', this.modalPostId);
+      data.append('body', this.commentInput);
+      axios.post('/api/comment', data).then(function (res) {
+        // console.log(res.data);
+        _this8.modalPostComments.unshift(res.data);
+
+        _this8.commentInput = '';
+        _this8.posts[_this8.modalPostIndex].commentCount++;
+        _this8.modalPostCommentCount++;
+        _this8.commentErrors = [];
+      })["catch"](function (error) {
+        // console.log(error.response.data.errors);
+        // this.modalPostComments[i].replyErrors = [];
+        _this8.commentErrors = error.response.data.errors;
+      });
     },
     //コメントへの返信の表示と非表示
     openCommentReply: function openCommentReply(i) {
@@ -7774,16 +7716,44 @@ __webpack_require__.r(__webpack_exports__);
     },
     // コメントのいいね機能
     commentGood: function commentGood(i) {
-      var comment = this.modalPostComments.find(function (v) {
-        return v.id == i;
-      });
-      comment.good = !comment.good;
+      var comment = this.modalPostComments[i];
+      comment.gooded = !comment.gooded;
 
-      if (!comment.good) {
-        comment.goodCount--;
+      if (!comment.gooded) {
+        axios.post('/api/comment/ungood/' + comment.id).then(function () {
+          comment.goodCount--;
+        })["catch"](function () {
+          return;
+        });
       } else {
-        comment.goodCount++;
+        axios.post('/api/comment/good/' + comment.id).then(function () {
+          comment.goodCount++;
+        })["catch"](function () {
+          return;
+        });
       }
+    },
+    // コメントへの返信の投稿
+    reply: function reply(i) {
+      var _this9 = this;
+
+      var data = new FormData();
+      data.append('body', this.modalPostComments[i].replyInput);
+      data.append('commentId', this.modalPostComments[i].id);
+      axios.post('/api/comment/reply', data).then(function (res) {
+        // console.log(res.data);
+        _this9.modalPostComments[i].replies.push(res.data);
+
+        _this9.modalPostComments[i].replyCount++;
+        _this9.modalPostComments[i].replyInput = '';
+        _this9.modalPostComments[i].replyErrors = [];
+        _this9.posts[_this9.modalPostIndex].commentCount++;
+        _this9.modalPostCommentCount++;
+        _this9.modalPostComments[i].replyShow = true;
+        _this9.modalPostComments[i].replyFormOpened = false;
+      })["catch"](function (error) {
+        _this9.modalPostComments[i].replyErrors = error.response.data.errors; // console.log(this.modalPostComments[i].replyErrors)
+      });
     },
     // コメントの返信へのいいね機能
     replyGood: function replyGood(comId, repId) {
@@ -7793,12 +7763,20 @@ __webpack_require__.r(__webpack_exports__);
       var reply = comment.replies.find(function (v) {
         return v.id == repId;
       });
-      reply.good = !reply.good;
+      reply.gooded = !reply.gooded;
 
-      if (!reply.good) {
-        reply.goodCount--;
+      if (!reply.gooded) {
+        axios.post('/api/comment/reply/ungood/' + repId).then(function () {
+          reply.goodCount--;
+        })["catch"](function () {
+          return;
+        });
       } else {
-        reply.goodCount++;
+        axios.post('/api/comment/reply/good/' + repId).then(function () {
+          reply.goodCount++;
+        })["catch"](function () {
+          return;
+        });
       }
     },
     // コメントへの返信フォームの表示と非表示
@@ -7807,7 +7785,30 @@ __webpack_require__.r(__webpack_exports__);
     },
     closeReplyForm: function closeReplyForm(i) {
       this.modalPostComments[i].replyFormOpened = false;
+    },
+    // モーダルのタグをクリックして新たなタグページへ遷移する際の処理
+    // fromModalTagToTag() {
+    //   const body = document.querySelector('body');
+    //   const tagsPage = document.querySelector('.tags-page');
+    //   body.classList.remove('bodyWhenOverlay');
+    //   tagsPage.classList.remove('tags-page-when-overlay');
+    //   tagsPage.style.top = null;
+    //   this.scrollPosition = null;
+    //   this.modalPostShow = false;
+    // },
+    // 画像のモーダルで画像が縦長だった場合の対処
+    handleResize: function handleResize() {
+      if (this.tatenagaImageWidth && this.tatenagaImageWidth > window.innerWidth) {
+        this.heightIsBigger = false;
+      } else if (this.tatenagaImageWidth && this.tatenagaImageWidth <= window.innerWidth) {
+        this.heightIsBigger = true;
+      } else {
+        return;
+      }
     }
+  },
+  mounted: function mounted() {
+    this.getInitInfo(this.$route.params.word);
   },
   computed: {
     // コメント入力欄の高さを計算
@@ -7834,6 +7835,12 @@ __webpack_require__.r(__webpack_exports__);
     // },
 
   },
+  created: function created() {
+    window.addEventListener('resize', this.handleResize);
+  },
+  destroyed: function destroyed() {
+    window.removeEventListener('resize', this.handleResize);
+  },
   beforeRouteLeave: function beforeRouteLeave(to, from, next) {
     if (this.modalPostShow || this.modalImageShow) {
       this.keepScrollWhenClose();
@@ -7841,6 +7848,17 @@ __webpack_require__.r(__webpack_exports__);
       this.modalImageShow = false;
     }
 
+    next();
+  },
+  beforeRouteUpdate: function beforeRouteUpdate(to, from, next) {
+    if (this.modalPostShow || this.modalImageShow) {
+      this.keepScrollWhenClose();
+      this.modalPostShow = false;
+      this.modalImageShow = false;
+      this.closeModalDonmai();
+    }
+
+    this.getInitInfo(to.params.word);
     next();
   }
 });
@@ -8204,253 +8222,176 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      // 縦長の画像の幅の調整
+      tatenagaImageWidth: null,
+      heightIsBigger: false,
+      // スクロール位置
       scrollPosition: null,
+      // 認証ユーザー
+      authUser: null,
+      // 投稿
+      posts: [// {
+        //   id: 1,
+        //   user: {
+        //     id: 5,
+        //     name: '太郎',
+        //     icon: 'https:/...'
+        //   },
+        //   body: 'こんにちは。',
+        //   genre: {
+        //     route: 'job',
+        //     name: '仕事',
+        //   },
+        //   tags: [
+        //     {
+        //       id: 1,
+        //       name: '鬼滅'
+        //     }
+        //   ],
+        //   post_images: [
+        //     {
+        //       id: 4,
+        //       path: 'https:/...'
+        //     }
+        //   ],
+        //   donmai: false,
+        //   donmaiCount: 5,
+        //   commentCount: 9,
+        // }
+      ],
+      // コメント
       commentInput: '',
       commentHeight: '31px',
       // モーダル
       modalPostShow: false,
+      modalPostIndex: null,
       modalPostId: null,
-      modalPostUser: '',
       modalPostUserId: null,
-      modalPostUserIcon: '',
+      modalPostUserName: null,
+      modalPostUserIcon: null,
+      modalPostBody: null,
+      modalPostTags: [],
+      modalPostImages: [],
       modalPostDonmai: false,
       modalPostDonmaiCount: null,
-      modalPostImages: [],
-      modalPostTags: [],
-      modalPostCommentCount: 9,
-      modalPostComments: [{
-        id: 1,
-        userId: 2,
-        user: '鈴木誠也',
-        icon: '../../../image/img1.jpg',
-        day: '5日前',
-        goodCount: 37,
-        good: false,
-        replyCount: 4,
-        replyShow: false,
-        replyFormOpened: false,
-        replyInput: '',
-        replyHeight: '31px',
-        replies: [{
-          id: 2,
-          userId: 3,
-          user: '柳田',
-          icon: '../../../image/img5.jpg',
-          day: '4日前',
-          goodCount: 37,
-          good: false
-        }, {
-          id: 3,
-          userId: 4,
-          user: '筒香',
-          icon: '../../../image/img6.jpg',
-          day: '3日前',
-          goodCount: 37,
-          good: false
-        }, {
-          id: 4,
-          userId: 5,
-          user: '田中将大',
-          icon: '../../../image/img7.jpg',
-          day: '2日前',
-          goodCount: 37,
-          good: false
-        }, {
-          id: 5,
-          userId: 6,
-          user: 'ダルビッシュ',
-          icon: '../../../image/img8.jpg',
-          day: '1日前',
-          goodCount: 37,
-          good: false
-        }]
-      }, {
-        id: 2,
-        userId: 4,
-        user: 'ジーター',
-        icon: '../../../image/img2.jpg',
-        day: '4日前',
-        goodCount: 37,
-        good: false,
-        replyCount: 0,
-        replyShow: false,
-        replyFormOpened: false,
-        replyInput: '',
-        replyHeight: '31px',
-        replies: []
-      }, {
-        id: 3,
-        userId: 6,
-        user: 'ブライアント',
-        icon: '../../../image/img3.jpg',
-        day: '3日前',
-        goodCount: 37,
-        good: false,
-        replyCount: 3,
-        replyShow: false,
-        replyFormOpened: false,
-        replyInput: '',
-        replyHeight: '31px',
-        replies: [{
-          id: 2,
-          userId: 3,
-          user: 'カーショウ',
-          icon: '../../../image/img5.jpg',
-          day: '4日前',
-          goodCount: 37,
-          good: false
-        }, {
-          id: 3,
-          userId: 4,
-          user: 'シャーザー',
-          icon: '../../../image/img6.jpg',
-          day: '3日前',
-          goodCount: 37,
-          good: false
-        }, {
-          id: 4,
-          userId: 5,
-          user: 'バーランダー',
-          icon: '../../../image/img7.jpg',
-          day: '2日前',
-          goodCount: 37,
-          good: false
-        }]
-      }, {
-        id: 4,
-        userId: 8,
-        user: '松井秀樹',
-        icon: '../../../image/img4.jpg',
-        day: '2日前',
-        goodCount: 37,
-        good: false,
-        replyCount: 0,
-        replyShow: false,
-        replyFormOpened: false,
-        replyInput: '',
-        replyHeight: '31px',
-        replies: []
-      }],
+      modalPostCommentCount: null,
+      modalPostComments: [// {
+        //   id: 1,
+        //   userId: 2,
+        //   user: '鈴木誠也',
+        //   icon: '../image/img1.jpg',
+        //   day: '5日前',
+        //   goodCount: 37,
+        //   good: false,
+        //   replyCount: 4,
+        //   replyShow: false,
+        //   replyFormOpened: false,
+        //   replyInput: '',
+        //   replyErrors: [],
+        //   replyHeight: '31px',
+        //   replies: [
+        //     {
+        //       id: 2,
+        //       userId: 3,
+        //       user: '柳田',
+        //       icon: '../image/img5.jpg',
+        //       day: '4日前',
+        //       goodCount: 37,
+        //       good: false,
+        //     },
+        //   ],
+        // },
+      ],
+      newComment: {},
+      newReply: {},
+      commentErrors: [],
       // 画像モーダル
       modalImageShow: false,
       modalImage: '',
       // どんまいモーダル
       modalDonmaiShow: false,
-      modalDonmaiUsers: [{
-        id: 11,
-        icon: '../../../image/img1.jpg',
-        name: 'ジェイコブ・デグロム',
-        followed: false
-      }, {
-        id: 22,
-        icon: '../../../image/img2.jpg',
-        name: 'ゲリット・コール',
-        followed: false
-      }, {
-        id: 33,
-        icon: '../../../image/img3.jpg',
-        name: '山本由伸',
-        followed: false
-      }, {
-        id: 44,
-        icon: '../../../image/img4.jpg',
-        name: '千賀滉大',
-        followed: false
-      }, {
-        id: 55,
-        icon: '../../../image/img5.jpg',
-        name: '菅野智之',
-        followed: false
-      }, {
-        id: 66,
-        icon: '../../../image/img6.jpg',
-        name: 'うんこクソ野郎',
-        followed: false
-      }, {
-        id: 77,
-        icon: '../../../image/img6.jpg',
-        name: 'うんこクソ野郎',
-        followed: false
-      }, {
-        id: 88,
-        icon: '../../../image/img6.jpg',
-        name: 'うんこクソ野郎',
-        followed: false
-      }, {
-        id: 99,
-        icon: '../../../image/img6.jpg',
-        name: 'うんこクソ野郎',
-        followed: false
-      }, {
-        id: 1010,
-        icon: '../../../image/img6.jpg',
-        name: 'うんこクソ野郎',
-        followed: false
-      }],
-      // 投稿
-      posts: [{
-        id: 3,
-        user: 'うんこマン',
-        userId: 19,
-        userIcon: '../../../image/img5.jpg',
-        donmai: false,
-        donmai_count: 10000,
-        comment_count: 210,
-        images: ['../../../image/img1.jpg'],
-        tags: ['#ばか', '#あほ', '#うんち', '#ちんちん', '#ハゲ']
-      }, {
-        id: 2,
-        user: 'ハゲ野郎',
-        userId: 20,
-        userIcon: '../../../image/img6.jpg',
-        donmai: false,
-        donmai_count: 9500,
-        comment_count: 220,
-        images: ['../../../image/img1.jpg', '../../../image/img6.jpg']
-      }, {
-        id: 4,
-        user: 'でべそ野郎',
-        userId: 21,
-        userIcon: '../../../image/img7.jpg',
-        donmai: false,
-        donmai_count: 8000,
-        comment_count: 230,
-        images: []
-      }, {
-        id: 1,
-        user: 'ちんこ野郎',
-        userId: 22,
-        userIcon: '../../../image/img8.jpg',
-        donmai: false,
-        donmai_count: 7400,
-        comment_count: 100,
-        images: ['../../../image/img2.jpg', '../../../image/img3.jpg', '../../../image/img4.jpg']
-      }]
+      modalDonmaiUsers: [// {
+        //   id: 11,
+        //   icon: '../image/img1.jpg',
+        //   name: 'ジェイコブ・デグロム',
+        //   followed: false,
+        // },
+      ]
     };
   },
   methods: {
+    // 初期化
+    getInitInfo: function getInitInfo(word) {
+      var _this = this;
+
+      axios.get('/api/search/posts/popular/' + word).then(function (res) {
+        // console.log(res.data);
+        // console.log(res.data.posts);
+        // console.log(res.data.authUser);
+        _this.authUser = res.data.authUser;
+
+        if (!_this.authUser.icon) {
+          _this.authUser.icon = '../../../image/user.png';
+        }
+
+        _this.posts = res.data.posts;
+
+        for (var i = 0; i < _this.posts.length; i++) {
+          if (!_this.posts[i].user.icon) {
+            _this.posts[i].user.icon = '../../../image/user.png';
+          }
+        } // console.log(this.authUser);
+        // console.log(this.posts);
+
+      })["catch"](function () {
+        return;
+      });
+    },
     // コメント入力欄の高さをフレキシブルに
     changeCommentHeight: function changeCommentHeight() {
-      var _this = this;
+      var _this2 = this;
 
       this.commentHeight = this.$refs.commentarea.scrollHeight + 'px';
       this.commentHeight = 18 + 'px';
       this.$nextTick(function () {
-        _this.commentHeight = _this.$refs.commentarea.scrollHeight + 'px';
+        _this2.commentHeight = _this2.$refs.commentarea.scrollHeight + 'px';
       });
     },
     // どんまい機能の処理
-    donmai: function donmai(index) {
-      var post = this.posts[index];
+    donmai: function donmai(i) {
+      var post = this.posts[i];
       post.donmai = !post.donmai;
 
       if (post.donmai == false) {
-        post.donmai_count--;
+        axios.post('/api/undonmai/' + this.posts[i].id).then(function () {
+          post.donmaiCount--;
+        })["catch"](function () {
+          return;
+        });
       } else {
-        post.donmai_count++;
+        axios.post('/api/donmai/' + this.posts[i].id).then(function () {
+          post.donmaiCount++;
+        })["catch"](function () {
+          return;
+        });
       }
     },
     // モーダルのどんまい機能
@@ -8488,29 +8429,45 @@ __webpack_require__.r(__webpack_exports__);
       this.scrollPosition = null;
     },
     // 投稿のモーダルウィンドウの開閉
-    openModalPost: function openModalPost(postIndex) {
-      this.keepScrollWhenOpen();
-      this.modalPostId = this.posts[postIndex].id;
-      this.modalPostUser = this.posts[postIndex].user;
-      this.modalPostUserId = this.posts[postIndex].userId;
-      this.modalPostUserIcon = this.posts[postIndex].userIcon;
-      this.modalPostDonmai = this.posts[postIndex].donmai;
-      this.modalPostDonmaiCount = this.posts[postIndex].donmai_count;
-      this.modalPostImages = this.posts[postIndex].images;
-      this.modalPostTags = this.posts[postIndex].tags;
-      this.modalPostCommentCount = this.posts[postIndex].comment_count;
-      this.modalPostShow = true;
+    openModalPost: function openModalPost(i) {
+      var _this3 = this;
+
+      axios.get('/api/comments/get/' + this.posts[i].id).then(function (res) {
+        _this3.modalPostIndex = i;
+        _this3.modalPostComments = res.data;
+
+        _this3.keepScrollWhenOpen();
+
+        _this3.modalPostId = _this3.posts[i].id;
+        _this3.modalPostUserId = _this3.posts[i].user.id;
+        _this3.modalPostUserName = _this3.posts[i].user.name;
+        _this3.modalPostUserIcon = _this3.posts[i].user.icon;
+        _this3.modalPostBody = _this3.posts[i].body;
+        _this3.modalPostTags = _this3.posts[i].tags;
+        _this3.modalPostImages = _this3.posts[i].post_images;
+        _this3.modalPostDonmai = _this3.posts[i].donmai;
+        _this3.modalPostDonmaiCount = _this3.posts[i].donmaiCount;
+        _this3.modalPostCommentCount = _this3.posts[i].commentCount;
+        _this3.modalPostShow = true; // console.log(this.modalPostComments);
+        // console.log(this.modalPostUserId);
+        // console.log(this.modalPostUserIcon);
+      })["catch"](function () {
+        return;
+      });
     },
     closeModalPost: function closeModalPost() {
       this.keepScrollWhenClose();
       this.modalPostShow = false;
+      this.modalPostIndex = null;
       this.modalPostId = null;
-      this.modalPostUser = '';
       this.modalPostUserId = null;
+      this.modalPostUserName = null;
+      this.modalPostUserIcon = null;
+      this.modalPostBody = null;
+      this.modalPostTags = [];
+      this.modalPostImages = [];
       this.modalPostDonmai = false;
       this.modalPostDonmaiCount = null;
-      this.modalPostImages = [];
-      this.modalPostTags = [];
       this.modalPostCommentCount = null;
       this.modalPostComments.map(function (element) {
         element.replyShow = false;
@@ -8518,27 +8475,39 @@ __webpack_require__.r(__webpack_exports__);
     },
     // どんまいしたユーザーのモーダルウィンドウの開閉
     openModalDonmai: function openModalDonmai() {
-      this.modalDonmaiShow = true;
+      var _this4 = this;
+
+      axios.get('/api/donmai/users/' + this.modalPostId).then(function (res) {
+        _this4.modalDonmaiUsers = res.data; // console.log(this.modalDonmaiUsers);
+
+        _this4.modalDonmaiShow = true;
+      })["catch"](function () {
+        return;
+      });
     },
     closeModalDonmai: function closeModalDonmai() {
       this.modalDonmaiShow = false;
     },
     // 画像のモーダルウィンドウの開閉
     openImageModal: function openImageModal(image) {
+      var _this5 = this;
+
       if (!this.modalPostShow) {
         this.keepScrollWhenOpen();
       }
 
       this.modalImageShow = true;
       this.modalImage = image;
-      var overlayImage = document.querySelector('.overlay-image-image');
       var img = new Image();
       img.src = image;
       var img_width = img.width;
       var img_height = img.height;
 
-      if (img_height > img_width) {
-        overlayImage.classList.add('height-is-bigger');
+      if (img_height >= img_width) {
+        this.heightIsBigger = true;
+        document.querySelector('.overlay-image-image').addEventListener('load', function () {
+          _this5.tatenagaImageWidth = document.querySelector('.overlay-image-image').clientWidth; // console.log(this.tatenagaImageWidth);
+        });
       }
     },
     closeImageModal: function closeImageModal() {
@@ -8546,14 +8515,50 @@ __webpack_require__.r(__webpack_exports__);
         this.keepScrollWhenClose();
       }
 
-      var overlayImage = document.querySelector('.overlay-image-image');
-      overlayImage.classList.remove('height-is-bigger');
+      this.heightIsBigger = false;
+      this.tatenagaImageWidth = null;
       this.modalImageShow = false;
       this.modalImage = '';
     },
     // どんまいしたユーザーのフォローとアンフォロー
-    donmaiFollowToggle: function donmaiFollowToggle(i) {
-      this.modalDonmaiUsers[i].followed = !this.modalDonmaiUsers[i].followed;
+    donmaiFollow: function donmaiFollow(i) {
+      var _this6 = this;
+
+      axios.post('/api/follow', this.modalDonmaiUsers[i]).then(function () {
+        _this6.modalDonmaiUsers[i].followed = true;
+      })["catch"](function () {
+        return;
+      });
+    },
+    donmaiUnFollow: function donmaiUnFollow(i) {
+      var _this7 = this;
+
+      axios.post('/api/unfollow', this.modalDonmaiUsers[i]).then(function () {
+        _this7.modalDonmaiUsers[i].followed = false;
+      })["catch"](function () {
+        return;
+      });
+    },
+    // コメント投稿
+    commentPost: function commentPost() {
+      var _this8 = this;
+
+      var data = new FormData();
+      data.append('postId', this.modalPostId);
+      data.append('body', this.commentInput);
+      axios.post('/api/comment', data).then(function (res) {
+        // console.log(res.data);
+        _this8.modalPostComments.unshift(res.data);
+
+        _this8.commentInput = '';
+        _this8.posts[_this8.modalPostIndex].commentCount++;
+        _this8.modalPostCommentCount++;
+        _this8.commentErrors = [];
+      })["catch"](function (error) {
+        // console.log(error.response.data.errors);
+        // this.modalPostComments[i].replyErrors = [];
+        _this8.commentErrors = error.response.data.errors;
+      });
     },
     //コメントへの返信の表示と非表示
     openCommentReply: function openCommentReply(i) {
@@ -8564,16 +8569,44 @@ __webpack_require__.r(__webpack_exports__);
     },
     // コメントのいいね機能
     commentGood: function commentGood(i) {
-      var comment = this.modalPostComments.find(function (v) {
-        return v.id == i;
-      });
-      comment.good = !comment.good;
+      var comment = this.modalPostComments[i];
+      comment.gooded = !comment.gooded;
 
-      if (!comment.good) {
-        comment.goodCount--;
+      if (!comment.gooded) {
+        axios.post('/api/comment/ungood/' + comment.id).then(function () {
+          comment.goodCount--;
+        })["catch"](function () {
+          return;
+        });
       } else {
-        comment.goodCount++;
+        axios.post('/api/comment/good/' + comment.id).then(function () {
+          comment.goodCount++;
+        })["catch"](function () {
+          return;
+        });
       }
+    },
+    // コメントへの返信の投稿
+    reply: function reply(i) {
+      var _this9 = this;
+
+      var data = new FormData();
+      data.append('body', this.modalPostComments[i].replyInput);
+      data.append('commentId', this.modalPostComments[i].id);
+      axios.post('/api/comment/reply', data).then(function (res) {
+        // console.log(res.data);
+        _this9.modalPostComments[i].replies.push(res.data);
+
+        _this9.modalPostComments[i].replyCount++;
+        _this9.modalPostComments[i].replyInput = '';
+        _this9.modalPostComments[i].replyErrors = [];
+        _this9.posts[_this9.modalPostIndex].commentCount++;
+        _this9.modalPostCommentCount++;
+        _this9.modalPostComments[i].replyShow = true;
+        _this9.modalPostComments[i].replyFormOpened = false;
+      })["catch"](function (error) {
+        _this9.modalPostComments[i].replyErrors = error.response.data.errors; // console.log(this.modalPostComments[i].replyErrors)
+      });
     },
     // コメントの返信へのいいね機能
     replyGood: function replyGood(comId, repId) {
@@ -8583,12 +8616,20 @@ __webpack_require__.r(__webpack_exports__);
       var reply = comment.replies.find(function (v) {
         return v.id == repId;
       });
-      reply.good = !reply.good;
+      reply.gooded = !reply.gooded;
 
-      if (!reply.good) {
-        reply.goodCount--;
+      if (!reply.gooded) {
+        axios.post('/api/comment/reply/ungood/' + repId).then(function () {
+          reply.goodCount--;
+        })["catch"](function () {
+          return;
+        });
       } else {
-        reply.goodCount++;
+        axios.post('/api/comment/reply/good/' + repId).then(function () {
+          reply.goodCount++;
+        })["catch"](function () {
+          return;
+        });
       }
     },
     // コメントへの返信フォームの表示と非表示
@@ -8597,7 +8638,30 @@ __webpack_require__.r(__webpack_exports__);
     },
     closeReplyForm: function closeReplyForm(i) {
       this.modalPostComments[i].replyFormOpened = false;
+    },
+    // モーダルのタグをクリックして新たなタグページへ遷移する際の処理
+    // fromModalTagToTag() {
+    //   const body = document.querySelector('body');
+    //   const tagsPage = document.querySelector('.tags-page');
+    //   body.classList.remove('bodyWhenOverlay');
+    //   tagsPage.classList.remove('tags-page-when-overlay');
+    //   tagsPage.style.top = null;
+    //   this.scrollPosition = null;
+    //   this.modalPostShow = false;
+    // },
+    // 画像のモーダルで画像が縦長だった場合の対処
+    handleResize: function handleResize() {
+      if (this.tatenagaImageWidth && this.tatenagaImageWidth > window.innerWidth) {
+        this.heightIsBigger = false;
+      } else if (this.tatenagaImageWidth && this.tatenagaImageWidth <= window.innerWidth) {
+        this.heightIsBigger = true;
+      } else {
+        return;
+      }
     }
+  },
+  mounted: function mounted() {
+    this.getInitInfo(this.$route.params.word);
   },
   computed: {
     // コメント入力欄の高さを計算
@@ -8624,6 +8688,12 @@ __webpack_require__.r(__webpack_exports__);
     // },
 
   },
+  created: function created() {
+    window.addEventListener('resize', this.handleResize);
+  },
+  destroyed: function destroyed() {
+    window.removeEventListener('resize', this.handleResize);
+  },
   beforeRouteLeave: function beforeRouteLeave(to, from, next) {
     if (this.modalPostShow || this.modalImageShow) {
       this.keepScrollWhenClose();
@@ -8631,6 +8701,17 @@ __webpack_require__.r(__webpack_exports__);
       this.modalImageShow = false;
     }
 
+    next();
+  },
+  beforeRouteUpdate: function beforeRouteUpdate(to, from, next) {
+    if (this.modalPostShow || this.modalImageShow) {
+      this.keepScrollWhenClose();
+      this.modalPostShow = false;
+      this.modalImageShow = false;
+      this.closeModalDonmai();
+    }
+
+    this.getInitInfo(to.params.word);
     next();
   }
 });
@@ -8694,36 +8775,52 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      users: [{
-        id: 3,
-        icon: '../../image/unko.jpg',
-        name: 'チンカス',
-        followed: false,
-        pr: 'うんちが大好き。うんちが大好き。うんちが大好き。うんちが大好き。うんちが大好き。うんちが大好き。うんちが大好き。うんちが大好き。うんちが大好き。うんちが大好き。'
-      }, {
-        id: 6,
-        icon: '../../image/img1.jpg',
-        name: 'いぬぬわん',
-        followed: false,
-        pr: 'わんわん。わんわん。わんわん。わんわん。わんわん。わんわん。わんわん。わんわん。わんわん。わんわん。'
-      }, {
-        id: 9,
-        icon: '../../image/img4.jpg',
-        name: 'ふるでりか',
-        followed: false,
-        pr: 'にぱー！にぱー！にぱー！にぱー！にぱー！にぱー！にぱー！にぱー！にぱー！にぱー！にぱー！'
-      }]
+      authUser: null,
+      users: [// {
+        //   id: 3,
+        //   icon: '../../image/unko.jpg',
+        //   name: 'チンカス',
+        //   followed: false,
+        //   pr: 'うんちが大好き。うんちが大好き。うんちが大好き。うんちが大好き。うんちが大好き。うんちが大好き。うんちが大好き。うんちが大好き。うんちが大好き。うんちが大好き。'
+        // },
+      ]
     };
   },
   methods: {
-    // フォローボタンの処理
-    toggleFollow: function toggleFollow(user) {
-      user.followed = !user.followed;
+    getInitInfo: function getInitInfo() {
+      var _this = this;
+
+      axios.get('/api/search/users/' + this.$route.params.word).then(function (res) {
+        console.log(res.data);
+        _this.authUser = res.data.authUser;
+        _this.users = res.data.users;
+      })["catch"](function () {
+        return;
+      });
     },
+    // フォローボタンの処理
+    follow: function follow(i) {
+      var _this2 = this;
+
+      axios.post('/api/follow', this.users[i]).then(function () {
+        _this2.users[i].followed = true;
+      })["catch"](function () {
+        return;
+      });
+    },
+    unFollow: function unFollow(i) {
+      var _this3 = this;
+
+      axios.post('/api/unfollow', this.users[i]).then(function () {
+        _this3.users[i].followed = false;
+      })["catch"](function () {
+        return;
+      });
+    },
+    // ユーザーページへ遷移
     toUserPage: function toUserPage(user_id) {
       this.$router.push({
         name: 'user',
@@ -8732,6 +8829,9 @@ __webpack_require__.r(__webpack_exports__);
         }
       });
     }
+  },
+  mounted: function mounted() {
+    this.getInitInfo();
   }
 });
 
@@ -8815,6 +8915,10 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
 //
 //
 //
@@ -9371,16 +9475,7 @@ __webpack_require__.r(__webpack_exports__);
 
       axios.get('/api/comments/get/' + this.posts[i].id).then(function (res) {
         _this3.modalPostIndex = i;
-        _this3.modalPostComments = res.data; // for (let i = 0; i < this.modalPostComments.length; i++){
-        //   if (!this.modalPostComments[i].user.icon) {
-        //     this.modalPostComments[i].user.icon = '../../image/user.png';
-        //   }
-        //   for (let j = 0; j < this.modalPostComments[i].replies.length; j++) {
-        //     if (!this.modalPostComments[i].replies[j].user.icon) {
-        //       this.modalPostComments[i].replies[j].user.icon = '../../image/user.png';
-        //     }
-        //   }
-        // }
+        _this3.modalPostComments = res.data;
 
         _this3.keepScrollWhenOpen();
 
@@ -9673,6 +9768,10 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
 //
 //
 //
@@ -11458,235 +11557,177 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      // 縦長の画像の幅の調整
+      tatenagaImageWidth: null,
+      heightIsBigger: false,
+      // スクロール位置
       scrollPosition: null,
+      // 認証ユーザー
+      authUser: null,
+      // 投稿
+      posts: [// {
+        //   id: 1,
+        //   user: {
+        //     id: 5,
+        //     name: '太郎',
+        //     icon: 'https:/...'
+        //   },
+        //   body: 'こんにちは。',
+        //   genre: {
+        //     route: 'job',
+        //     name: '仕事',
+        //   },
+        //   tags: [
+        //     {
+        //       id: 1,
+        //       name: '鬼滅'
+        //     }
+        //   ],
+        //   post_images: [
+        //     {
+        //       id: 4,
+        //       path: 'https:/...'
+        //     }
+        //   ],
+        //   donmai: false,
+        //   donmaiCount: 5,
+        //   commentCount: 9,
+        // }
+      ],
+      // コメント
       commentInput: '',
       commentHeight: '31px',
       // モーダル
       modalPostShow: false,
+      modalPostIndex: null,
       modalPostId: null,
-      modalPostUser: '',
       modalPostUserId: null,
-      modalPostUserIcon: '',
+      modalPostUserName: null,
+      modalPostUserIcon: null,
+      modalPostBody: null,
+      modalPostTags: [],
+      modalPostImages: [],
       modalPostDonmai: false,
       modalPostDonmaiCount: null,
-      modalPostImages: [],
-      modalPostTags: [],
-      modalPostCommentCount: 9,
-      modalPostComments: [{
-        id: 1,
-        userId: 2,
-        user: '鈴木誠也',
-        icon: '../../image/img1.jpg',
-        day: '5日前',
-        goodCount: 37,
-        good: false,
-        replyCount: 4,
-        replyShow: false,
-        replyFormOpened: false,
-        replyInput: '',
-        replyHeight: '31px',
-        replies: [{
-          id: 2,
-          userId: 3,
-          user: '柳田',
-          icon: '../../image/img5.jpg',
-          day: '4日前',
-          goodCount: 37,
-          good: false
-        }, {
-          id: 3,
-          userId: 4,
-          user: '筒香',
-          icon: '../../image/img6.jpg',
-          day: '3日前',
-          goodCount: 37,
-          good: false
-        }, {
-          id: 4,
-          userId: 5,
-          user: '田中将大',
-          icon: '../../image/img7.jpg',
-          day: '2日前',
-          goodCount: 37,
-          good: false
-        }, {
-          id: 5,
-          userId: 6,
-          user: 'ダルビッシュ',
-          icon: '../../image/img8.jpg',
-          day: '1日前',
-          goodCount: 37,
-          good: false
-        }]
-      }, {
-        id: 2,
-        userId: 4,
-        user: 'ジーター',
-        icon: '../../image/img2.jpg',
-        day: '4日前',
-        goodCount: 37,
-        good: false,
-        replyCount: 0,
-        replyShow: false,
-        replyFormOpened: false,
-        replyInput: '',
-        replyHeight: '31px',
-        replies: []
-      }, {
-        id: 3,
-        userId: 6,
-        user: 'ブライアント',
-        icon: '../../image/img3.jpg',
-        day: '3日前',
-        goodCount: 37,
-        good: false,
-        replyCount: 3,
-        replyShow: false,
-        replyFormOpened: false,
-        replyInput: '',
-        replyHeight: '31px',
-        replies: [{
-          id: 2,
-          userId: 3,
-          user: 'カーショウ',
-          icon: '../../image/img5.jpg',
-          day: '4日前',
-          goodCount: 37,
-          good: false
-        }, {
-          id: 3,
-          userId: 4,
-          user: 'シャーザー',
-          icon: '../../image/img6.jpg',
-          day: '3日前',
-          goodCount: 37,
-          good: false
-        }, {
-          id: 4,
-          userId: 5,
-          user: 'バーランダー',
-          icon: '../../image/img7.jpg',
-          day: '2日前',
-          goodCount: 37,
-          good: false
-        }]
-      }, {
-        id: 4,
-        userId: 8,
-        user: '松井秀樹',
-        icon: '../../image/img4.jpg',
-        day: '2日前',
-        goodCount: 37,
-        good: false,
-        replyCount: 0,
-        replyShow: false,
-        replyFormOpened: false,
-        replyInput: '',
-        replyHeight: '31px',
-        replies: []
-      }],
+      modalPostCommentCount: null,
+      modalPostComments: [// {
+        //   id: 1,
+        //   userId: 2,
+        //   user: '鈴木誠也',
+        //   icon: '../image/img1.jpg',
+        //   day: '5日前',
+        //   goodCount: 37,
+        //   good: false,
+        //   replyCount: 4,
+        //   replyShow: false,
+        //   replyFormOpened: false,
+        //   replyInput: '',
+        //   replyErrors: [],
+        //   replyHeight: '31px',
+        //   replies: [
+        //     {
+        //       id: 2,
+        //       userId: 3,
+        //       user: '柳田',
+        //       icon: '../image/img5.jpg',
+        //       day: '4日前',
+        //       goodCount: 37,
+        //       good: false,
+        //     },
+        //   ],
+        // },
+      ],
+      newComment: {},
+      newReply: {},
+      commentErrors: [],
       // 画像モーダル
       modalImageShow: false,
       modalImage: '',
       // どんまいモーダル
       modalDonmaiShow: false,
-      modalDonmaiUsers: [{
-        id: 11,
-        icon: '../../image/img1.jpg',
-        name: 'ジェイコブ・デグロム',
-        followed: false
-      }, {
-        id: 22,
-        icon: '../../image/img2.jpg',
-        name: 'ゲリット・コール',
-        followed: false
-      }, {
-        id: 33,
-        icon: '../../image/img3.jpg',
-        name: '山本由伸',
-        followed: false
-      }, {
-        id: 44,
-        icon: '../../image/img4.jpg',
-        name: '千賀滉大',
-        followed: false
-      }, {
-        id: 55,
-        icon: '../../image/img5.jpg',
-        name: '菅野智之',
-        followed: false
-      }, {
-        id: 66,
-        icon: '../../image/img6.jpg',
-        name: 'うんこクソ野郎',
-        followed: false
-      }, {
-        id: 77,
-        icon: '../../image/img6.jpg',
-        name: 'うんこクソ野郎',
-        followed: false
-      }, {
-        id: 88,
-        icon: '../../image/img6.jpg',
-        name: 'うんこクソ野郎',
-        followed: false
-      }, {
-        id: 99,
-        icon: '../../image/img6.jpg',
-        name: 'うんこクソ野郎',
-        followed: false
-      }, {
-        id: 1010,
-        icon: '../../image/img6.jpg',
-        name: 'うんこクソ野郎',
-        followed: false
-      }],
-      // 投稿
-      posts: [{
-        id: 1,
-        userIcon: '../../image/img3.jpg',
-        user: 'あほばか',
-        user_id: 52,
-        donmai: true,
-        donmai_count: 82,
-        comment_count: 9,
-        images: ['../../image/img2.jpg'],
-        tags: ['#ばか', '#あほ', '#うんち', '#ちんちん', '#ハゲ']
-      }, {
-        id: 2,
-        userIcon: '../../image/img4.jpg',
-        user: 'ちんちん',
-        user_id: 51,
-        donmai: true,
-        donmai_count: 37,
-        comment_count: 9,
-        images: ['../../image/img6.jpg']
-      }]
+      modalDonmaiUsers: [// {
+        //   id: 11,
+        //   icon: '../image/img1.jpg',
+        //   name: 'ジェイコブ・デグロム',
+        //   followed: false,
+        // },
+      ]
     };
   },
   methods: {
+    // 初期化
+    getInitInfo: function getInitInfo(userId) {
+      var _this = this;
+
+      axios.get('/api/user/donmai/' + userId).then(function (res) {
+        // console.log(res.data);
+        // console.log(res.data.posts);
+        // console.log(res.data.authUser);
+        _this.authUser = res.data.authUser;
+
+        if (!_this.authUser.icon) {
+          _this.authUser.icon = '../../image/user.png';
+        }
+
+        _this.posts = res.data.posts;
+
+        for (var i = 0; i < _this.posts.length; i++) {
+          if (!_this.posts[i].user.icon) {
+            _this.posts[i].user.icon = '../../image/user.png';
+          }
+        } // console.log(this.authUser);
+        // console.log(this.posts);
+
+      })["catch"](function () {
+        return;
+      });
+    },
     // コメント入力欄の高さをフレキシブルに
     changeCommentHeight: function changeCommentHeight() {
-      var _this = this;
+      var _this2 = this;
 
       this.commentHeight = this.$refs.commentarea.scrollHeight + 'px';
       this.commentHeight = 18 + 'px';
       this.$nextTick(function () {
-        _this.commentHeight = _this.$refs.commentarea.scrollHeight + 'px';
+        _this2.commentHeight = _this2.$refs.commentarea.scrollHeight + 'px';
       });
     },
     // どんまい機能の処理
-    donmai: function donmai(index) {
-      var post = this.posts[index];
+    donmai: function donmai(i) {
+      var post = this.posts[i];
       post.donmai = !post.donmai;
 
       if (post.donmai == false) {
-        post.donmai_count--;
+        axios.post('/api/undonmai/' + this.posts[i].id).then(function () {
+          post.donmaiCount--;
+        })["catch"](function () {
+          return;
+        });
       } else {
-        post.donmai_count++;
+        axios.post('/api/donmai/' + this.posts[i].id).then(function () {
+          post.donmaiCount++;
+        })["catch"](function () {
+          return;
+        });
       }
     },
     // モーダルのどんまい機能
@@ -11724,29 +11765,45 @@ __webpack_require__.r(__webpack_exports__);
       this.scrollPosition = null;
     },
     // 投稿のモーダルウィンドウの開閉
-    openModalPost: function openModalPost(postIndex) {
-      this.keepScrollWhenOpen();
-      this.modalPostId = this.posts[postIndex].id;
-      this.modalPostUser = this.posts[postIndex].user;
-      this.modalPostUserId = this.posts[postIndex].user_id;
-      this.modalPostUserIcon = this.posts[postIndex].userIcon;
-      this.modalPostDonmai = this.posts[postIndex].donmai;
-      this.modalPostDonmaiCount = this.posts[postIndex].donmai_count;
-      this.modalPostImages = this.posts[postIndex].images;
-      this.modalPostTags = this.posts[postIndex].tags;
-      this.modalPostCommentCount = this.posts[postIndex].comment_count;
-      this.modalPostShow = true;
+    openModalPost: function openModalPost(i) {
+      var _this3 = this;
+
+      axios.get('/api/comments/get/' + this.posts[i].id).then(function (res) {
+        _this3.modalPostIndex = i;
+        _this3.modalPostComments = res.data;
+
+        _this3.keepScrollWhenOpen();
+
+        _this3.modalPostId = _this3.posts[i].id;
+        _this3.modalPostUserId = _this3.posts[i].user.id;
+        _this3.modalPostUserName = _this3.posts[i].user.name;
+        _this3.modalPostUserIcon = _this3.posts[i].user.icon;
+        _this3.modalPostBody = _this3.posts[i].body;
+        _this3.modalPostTags = _this3.posts[i].tags;
+        _this3.modalPostImages = _this3.posts[i].post_images;
+        _this3.modalPostDonmai = _this3.posts[i].donmai;
+        _this3.modalPostDonmaiCount = _this3.posts[i].donmaiCount;
+        _this3.modalPostCommentCount = _this3.posts[i].commentCount;
+        _this3.modalPostShow = true; // console.log(this.modalPostComments);
+        // console.log(this.modalPostUserId);
+        // console.log(this.modalPostUserIcon);
+      })["catch"](function () {
+        return;
+      });
     },
     closeModalPost: function closeModalPost() {
       this.keepScrollWhenClose();
       this.modalPostShow = false;
+      this.modalPostIndex = null;
       this.modalPostId = null;
-      this.modalPostUser = '';
       this.modalPostUserId = null;
+      this.modalPostUserName = null;
+      this.modalPostUserIcon = null;
+      this.modalPostBody = null;
+      this.modalPostTags = [];
+      this.modalPostImages = [];
       this.modalPostDonmai = false;
       this.modalPostDonmaiCount = null;
-      this.modalPostImages = [];
-      this.modalPostTags = [];
       this.modalPostCommentCount = null;
       this.modalPostComments.map(function (element) {
         element.replyShow = false;
@@ -11754,27 +11811,39 @@ __webpack_require__.r(__webpack_exports__);
     },
     // どんまいしたユーザーのモーダルウィンドウの開閉
     openModalDonmai: function openModalDonmai() {
-      this.modalDonmaiShow = true;
+      var _this4 = this;
+
+      axios.get('/api/donmai/users/' + this.modalPostId).then(function (res) {
+        _this4.modalDonmaiUsers = res.data; // console.log(this.modalDonmaiUsers);
+
+        _this4.modalDonmaiShow = true;
+      })["catch"](function () {
+        return;
+      });
     },
     closeModalDonmai: function closeModalDonmai() {
       this.modalDonmaiShow = false;
     },
     // 画像のモーダルウィンドウの開閉
     openImageModal: function openImageModal(image) {
+      var _this5 = this;
+
       if (!this.modalPostShow) {
         this.keepScrollWhenOpen();
       }
 
       this.modalImageShow = true;
       this.modalImage = image;
-      var overlayImage = document.querySelector('.overlay-image-image');
       var img = new Image();
       img.src = image;
       var img_width = img.width;
       var img_height = img.height;
 
-      if (img_height > img_width) {
-        overlayImage.classList.add('height-is-bigger');
+      if (img_height >= img_width) {
+        this.heightIsBigger = true;
+        document.querySelector('.overlay-image-image').addEventListener('load', function () {
+          _this5.tatenagaImageWidth = document.querySelector('.overlay-image-image').clientWidth; // console.log(this.tatenagaImageWidth);
+        });
       }
     },
     closeImageModal: function closeImageModal() {
@@ -11782,14 +11851,50 @@ __webpack_require__.r(__webpack_exports__);
         this.keepScrollWhenClose();
       }
 
-      var overlayImage = document.querySelector('.overlay-image-image');
-      overlayImage.classList.remove('height-is-bigger');
+      this.heightIsBigger = false;
+      this.tatenagaImageWidth = null;
       this.modalImageShow = false;
       this.modalImage = '';
     },
     // どんまいしたユーザーのフォローとアンフォロー
-    donmaiFollowToggle: function donmaiFollowToggle(i) {
-      this.modalDonmaiUsers[i].followed = !this.modalDonmaiUsers[i].followed;
+    donmaiFollow: function donmaiFollow(i) {
+      var _this6 = this;
+
+      axios.post('/api/follow', this.modalDonmaiUsers[i]).then(function () {
+        _this6.modalDonmaiUsers[i].followed = true;
+      })["catch"](function () {
+        return;
+      });
+    },
+    donmaiUnFollow: function donmaiUnFollow(i) {
+      var _this7 = this;
+
+      axios.post('/api/unfollow', this.modalDonmaiUsers[i]).then(function () {
+        _this7.modalDonmaiUsers[i].followed = false;
+      })["catch"](function () {
+        return;
+      });
+    },
+    // コメント投稿
+    commentPost: function commentPost() {
+      var _this8 = this;
+
+      var data = new FormData();
+      data.append('postId', this.modalPostId);
+      data.append('body', this.commentInput);
+      axios.post('/api/comment', data).then(function (res) {
+        // console.log(res.data);
+        _this8.modalPostComments.unshift(res.data);
+
+        _this8.commentInput = '';
+        _this8.posts[_this8.modalPostIndex].commentCount++;
+        _this8.modalPostCommentCount++;
+        _this8.commentErrors = [];
+      })["catch"](function (error) {
+        // console.log(error.response.data.errors);
+        // this.modalPostComments[i].replyErrors = [];
+        _this8.commentErrors = error.response.data.errors;
+      });
     },
     //コメントへの返信の表示と非表示
     openCommentReply: function openCommentReply(i) {
@@ -11800,16 +11905,44 @@ __webpack_require__.r(__webpack_exports__);
     },
     // コメントのいいね機能
     commentGood: function commentGood(i) {
-      var comment = this.modalPostComments.find(function (v) {
-        return v.id == i;
-      });
-      comment.good = !comment.good;
+      var comment = this.modalPostComments[i];
+      comment.gooded = !comment.gooded;
 
-      if (!comment.good) {
-        comment.goodCount--;
+      if (!comment.gooded) {
+        axios.post('/api/comment/ungood/' + comment.id).then(function () {
+          comment.goodCount--;
+        })["catch"](function () {
+          return;
+        });
       } else {
-        comment.goodCount++;
+        axios.post('/api/comment/good/' + comment.id).then(function () {
+          comment.goodCount++;
+        })["catch"](function () {
+          return;
+        });
       }
+    },
+    // コメントへの返信の投稿
+    reply: function reply(i) {
+      var _this9 = this;
+
+      var data = new FormData();
+      data.append('body', this.modalPostComments[i].replyInput);
+      data.append('commentId', this.modalPostComments[i].id);
+      axios.post('/api/comment/reply', data).then(function (res) {
+        // console.log(res.data);
+        _this9.modalPostComments[i].replies.push(res.data);
+
+        _this9.modalPostComments[i].replyCount++;
+        _this9.modalPostComments[i].replyInput = '';
+        _this9.modalPostComments[i].replyErrors = [];
+        _this9.posts[_this9.modalPostIndex].commentCount++;
+        _this9.modalPostCommentCount++;
+        _this9.modalPostComments[i].replyShow = true;
+        _this9.modalPostComments[i].replyFormOpened = false;
+      })["catch"](function (error) {
+        _this9.modalPostComments[i].replyErrors = error.response.data.errors; // console.log(this.modalPostComments[i].replyErrors)
+      });
     },
     // コメントの返信へのいいね機能
     replyGood: function replyGood(comId, repId) {
@@ -11819,12 +11952,20 @@ __webpack_require__.r(__webpack_exports__);
       var reply = comment.replies.find(function (v) {
         return v.id == repId;
       });
-      reply.good = !reply.good;
+      reply.gooded = !reply.gooded;
 
-      if (!reply.good) {
-        reply.goodCount--;
+      if (!reply.gooded) {
+        axios.post('/api/comment/reply/ungood/' + repId).then(function () {
+          reply.goodCount--;
+        })["catch"](function () {
+          return;
+        });
       } else {
-        reply.goodCount++;
+        axios.post('/api/comment/reply/good/' + repId).then(function () {
+          reply.goodCount++;
+        })["catch"](function () {
+          return;
+        });
       }
     },
     // コメントへの返信フォームの表示と非表示
@@ -11833,7 +11974,20 @@ __webpack_require__.r(__webpack_exports__);
     },
     closeReplyForm: function closeReplyForm(i) {
       this.modalPostComments[i].replyFormOpened = false;
+    },
+    // 画像のモーダルで画像が縦長だった場合の対処
+    handleResize: function handleResize() {
+      if (this.tatenagaImageWidth && this.tatenagaImageWidth > window.innerWidth) {
+        this.heightIsBigger = false;
+      } else if (this.tatenagaImageWidth && this.tatenagaImageWidth <= window.innerWidth) {
+        this.heightIsBigger = true;
+      } else {
+        return;
+      }
     }
+  },
+  mounted: function mounted() {
+    this.getInitInfo(this.$route.params.id);
   },
   computed: {
     // コメント入力欄の高さを計算
@@ -11860,6 +12014,12 @@ __webpack_require__.r(__webpack_exports__);
     // },
 
   },
+  created: function created() {
+    window.addEventListener('resize', this.handleResize);
+  },
+  destroyed: function destroyed() {
+    window.removeEventListener('resize', this.handleResize);
+  },
   beforeRouteLeave: function beforeRouteLeave(to, from, next) {
     if (this.modalPostShow || this.modalImageShow) {
       this.keepScrollWhenClose();
@@ -11867,6 +12027,17 @@ __webpack_require__.r(__webpack_exports__);
       this.modalImageShow = false;
     }
 
+    next();
+  },
+  beforeRouteUpdate: function beforeRouteUpdate(to, from, next) {
+    if (this.modalPostShow || this.modalImageShow) {
+      this.keepScrollWhenClose();
+      this.modalPostShow = false;
+      this.modalImageShow = false;
+      this.closeModalDonmai();
+    }
+
+    this.getInitInfo(to.params.id);
     next();
   }
 });
@@ -11882,9 +12053,6 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-//
-//
-//
 //
 //
 //
@@ -12107,6 +12275,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue_click_outside__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-click-outside */ "./node_modules/vue-click-outside/index.js");
+/* harmony import */ var vue_click_outside__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_click_outside__WEBPACK_IMPORTED_MODULE_0__);
 //
 //
 //
@@ -12148,49 +12318,70 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      threads: [{
-        id: 3,
-        icon: '../../image/img7.jpg',
-        genre: '仕事',
-        created_at: '2021/1/27 19:07',
-        title: '上司がうざすぎる！',
-        bookmarked: true
-      }, {
-        id: 6,
-        genre: '学校',
-        created_at: '2021/1/27 19:07',
-        title: '夏休みの宿題多過ぎない？？',
-        bookmarked: true
-      }, {
-        id: 9,
-        genre: '仕事',
-        created_at: '2021/1/27 19:07',
-        title: '上司がうざすぎる！',
-        bookmarked: true
-      }, {
-        id: 12,
-        genre: '学校',
-        created_at: '2021/1/27 19:07',
-        title: '夏休みの宿題多過ぎない？？',
-        bookmarked: true
-      }]
+      guchiRooms: [// {
+        // id
+        // icon
+        // title
+        // genre
+        // created_at
+        // user_id
+        // guchis_count
+        // bookmarked
+        // }
+      ]
     };
   },
   methods: {
-    toGuchiDetail: function toGuchiDetail(threadId) {
+    // 初期化
+    getInitInfo: function getInitInfo() {
+      var _this = this;
+
+      axios.get('/api/guchiroom/user/' + this.$route.params.id).then(function (res) {
+        console.log(res.data);
+        _this.guchiRooms = res.data;
+      }).then(function () {
+        return;
+      });
+    },
+    // グチの詳細ページへ遷移
+    toGuchiDetail: function toGuchiDetail(roomId) {
       this.$router.push({
         name: 'guchi.detail',
         params: {
-          id: threadId
+          id: roomId
         }
       })["catch"](function () {});
     },
+    // ブックマーク
     bookMark: function bookMark(i) {
-      this.threads[i].bookmarked = !this.threads[i].bookmarked;
+      var _this2 = this;
+
+      axios.post('/api/guchiroom/bookmark/' + this.guchiRooms[i].id).then(function () {
+        _this2.guchiRooms[i].bookmarked = true;
+      })["catch"](function () {
+        return;
+      });
+    },
+    unBookMark: function unBookMark(i) {
+      var _this3 = this;
+
+      axios.post('/api/guchiroom/unbookmark/' + this.guchiRooms[i].id).then(function () {
+        _this3.guchiRooms[i].bookmarked = false;
+      })["catch"](function () {
+        return;
+      });
     }
+  },
+  mounted: function mounted() {
+    this.getInitInfo();
+  },
+  directives: {
+    ClickOutside: vue_click_outside__WEBPACK_IMPORTED_MODULE_0___default.a
   }
 });
 
@@ -12692,236 +12883,178 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      // 縦長の画像の幅の調整
+      tatenagaImageWidth: null,
+      heightIsBigger: false,
+      // スクロール位置
       scrollPosition: null,
+      // 認証ユーザー
+      authUser: null,
+      // 投稿
+      posts: [// {
+        //   id: 1,
+        //   user: {
+        //     id: 5,
+        //     name: '太郎',
+        //     icon: 'https:/...'
+        //   },
+        //   body: 'こんにちは。',
+        //   genre: {
+        //     route: 'job',
+        //     name: '仕事',
+        //   },
+        //   tags: [
+        //     {
+        //       id: 1,
+        //       name: '鬼滅'
+        //     }
+        //   ],
+        //   post_images: [
+        //     {
+        //       id: 4,
+        //       path: 'https:/...'
+        //     }
+        //   ],
+        //   donmai: false,
+        //   donmaiCount: 5,
+        //   commentCount: 9,
+        // }
+      ],
+      // コメント
       commentInput: '',
       commentHeight: '31px',
       // モーダル
       modalPostShow: false,
+      modalPostIndex: null,
       modalPostId: null,
-      modalPostUser: '',
       modalPostUserId: null,
+      modalPostUserName: null,
+      modalPostUserIcon: null,
+      modalPostBody: null,
+      modalPostTags: [],
+      modalPostImages: [],
       modalPostDonmai: false,
       modalPostDonmaiCount: null,
-      modalPostImages: [],
-      modalPostTags: [],
-      modalPostCommentCount: 9,
-      modalPostComments: [{
-        id: 1,
-        userId: 2,
-        user: '鈴木誠也',
-        icon: '../../image/img1.jpg',
-        day: '5日前',
-        goodCount: 37,
-        good: false,
-        replyCount: 4,
-        replyShow: false,
-        replyFormOpened: false,
-        replyInput: '',
-        replyHeight: '31px',
-        replies: [{
-          id: 2,
-          userId: 3,
-          user: '柳田',
-          icon: '../../image/img5.jpg',
-          day: '4日前',
-          goodCount: 37,
-          good: false
-        }, {
-          id: 3,
-          userId: 4,
-          user: '筒香',
-          icon: '../../image/img6.jpg',
-          day: '3日前',
-          goodCount: 37,
-          good: false
-        }, {
-          id: 4,
-          userId: 5,
-          user: '田中将大',
-          icon: '../../image/img7.jpg',
-          day: '2日前',
-          goodCount: 37,
-          good: false
-        }, {
-          id: 5,
-          userId: 6,
-          user: 'ダルビッシュ',
-          icon: '../../image/img8.jpg',
-          day: '1日前',
-          goodCount: 37,
-          good: false
-        }]
-      }, {
-        id: 2,
-        userId: 4,
-        user: 'ジーター',
-        icon: '../../image/img2.jpg',
-        day: '4日前',
-        goodCount: 37,
-        good: false,
-        replyCount: 0,
-        replyShow: false,
-        replyFormOpened: false,
-        replyInput: '',
-        replyHeight: '31px',
-        replies: []
-      }, {
-        id: 3,
-        userId: 6,
-        user: 'ブライアント',
-        icon: '../../image/img3.jpg',
-        day: '3日前',
-        goodCount: 37,
-        good: false,
-        replyCount: 3,
-        replyShow: false,
-        replyFormOpened: false,
-        replyInput: '',
-        replyHeight: '31px',
-        replies: [{
-          id: 2,
-          userId: 3,
-          user: 'カーショウ',
-          icon: '../../image/img5.jpg',
-          day: '4日前',
-          goodCount: 37,
-          good: false
-        }, {
-          id: 3,
-          userId: 4,
-          user: 'シャーザー',
-          icon: '../../image/img6.jpg',
-          day: '3日前',
-          goodCount: 37,
-          good: false
-        }, {
-          id: 4,
-          userId: 5,
-          user: 'バーランダー',
-          icon: '../../image/img7.jpg',
-          day: '2日前',
-          goodCount: 37,
-          good: false
-        }]
-      }, {
-        id: 4,
-        userId: 8,
-        user: '松井秀樹',
-        icon: '../../image/img4.jpg',
-        day: '2日前',
-        goodCount: 37,
-        good: false,
-        replyCount: 0,
-        replyShow: false,
-        replyFormOpened: false,
-        replyInput: '',
-        replyHeight: '31px',
-        replies: []
-      }],
+      modalPostCommentCount: null,
+      modalPostComments: [// {
+        //   id: 1,
+        //   userId: 2,
+        //   user: '鈴木誠也',
+        //   icon: '../image/img1.jpg',
+        //   day: '5日前',
+        //   goodCount: 37,
+        //   good: false,
+        //   replyCount: 4,
+        //   replyShow: false,
+        //   replyFormOpened: false,
+        //   replyInput: '',
+        //   replyErrors: [],
+        //   replyHeight: '31px',
+        //   replies: [
+        //     {
+        //       id: 2,
+        //       userId: 3,
+        //       user: '柳田',
+        //       icon: '../image/img5.jpg',
+        //       day: '4日前',
+        //       goodCount: 37,
+        //       good: false,
+        //     },
+        //   ],
+        // },
+      ],
+      newComment: {},
+      newReply: {},
+      commentErrors: [],
       // 画像モーダル
       modalImageShow: false,
       modalImage: '',
       // どんまいモーダル
       modalDonmaiShow: false,
-      modalDonmaiUsers: [{
-        id: 11,
-        icon: '../../image/img1.jpg',
-        name: 'ジェイコブ・デグロム',
-        followed: false
-      }, {
-        id: 22,
-        icon: '../../image/img2.jpg',
-        name: 'ゲリット・コール',
-        followed: false
-      }, {
-        id: 33,
-        icon: '../../image/img3.jpg',
-        name: '山本由伸',
-        followed: false
-      }, {
-        id: 44,
-        icon: '../../image/img4.jpg',
-        name: '千賀滉大',
-        followed: false
-      }, {
-        id: 55,
-        icon: '../../image/img5.jpg',
-        name: '菅野智之',
-        followed: false
-      }, {
-        id: 66,
-        icon: '../../image/img6.jpg',
-        name: 'うんこクソ野郎',
-        followed: false
-      }, {
-        id: 77,
-        icon: '../../image/img6.jpg',
-        name: 'うんこクソ野郎',
-        followed: false
-      }, {
-        id: 88,
-        icon: '../../image/img6.jpg',
-        name: 'うんこクソ野郎',
-        followed: false
-      }, {
-        id: 99,
-        icon: '../../image/img6.jpg',
-        name: 'うんこクソ野郎',
-        followed: false
-      }, {
-        id: 1010,
-        icon: '../../image/img6.jpg',
-        name: 'うんこクソ野郎',
-        followed: false
-      }],
-      posts: [{
-        id: 1,
-        user: 'なおとくん',
-        donmai: false,
-        donmai_count: 57,
-        comment_count: 9,
-        images: ['../../image/img1.jpg', '../../image/img4.jpg'],
-        tags: ['#ばか', '#あほ', '#うんち', '#ちんちん', '#ハゲ']
-      }, {
-        id: 2,
-        user: 'なおとくん',
-        donmai: false,
-        donmai_count: 93,
-        comment_count: 9,
-        images: ['../../image/img5.jpg', '../../image/img7.jpg']
-      }, {
-        id: 3,
-        user: 'なおとくん',
-        donmai: false,
-        donmai_count: 17,
-        comment_count: 11,
-        images: ['../../image/img3.jpg', '../../image/img8.jpg']
-      }]
+      modalDonmaiUsers: [// {
+        //   id: 11,
+        //   icon: '../image/img1.jpg',
+        //   name: 'ジェイコブ・デグロム',
+        //   followed: false,
+        // },
+      ]
     };
   },
   methods: {
+    // 初期化
+    getInitInfo: function getInitInfo(userId) {
+      var _this = this;
+
+      axios.get('/api/user/posts/' + userId).then(function (res) {
+        // console.log(res.data);
+        // console.log(res.data.posts);
+        // console.log(res.data.authUser);
+        _this.authUser = res.data.authUser;
+
+        if (!_this.authUser.icon) {
+          _this.authUser.icon = '../../image/user.png';
+        }
+
+        _this.posts = res.data.posts;
+
+        for (var i = 0; i < _this.posts.length; i++) {
+          if (!_this.posts[i].user.icon) {
+            _this.posts[i].user.icon = '../../image/user.png';
+          }
+        } // console.log(this.authUser);
+        // console.log(this.posts);
+
+      })["catch"](function () {
+        return;
+      });
+    },
     // コメント入力欄の高さをフレキシブルに
     changeCommentHeight: function changeCommentHeight() {
-      var _this = this;
+      var _this2 = this;
 
       this.commentHeight = this.$refs.commentarea.scrollHeight + 'px';
       this.commentHeight = 18 + 'px';
       this.$nextTick(function () {
-        _this.commentHeight = _this.$refs.commentarea.scrollHeight + 'px';
+        _this2.commentHeight = _this2.$refs.commentarea.scrollHeight + 'px';
       });
     },
     // どんまい機能の処理
-    donmai: function donmai(index) {
-      var post = this.posts[index];
+    donmai: function donmai(i) {
+      var post = this.posts[i];
       post.donmai = !post.donmai;
 
       if (post.donmai == false) {
-        post.donmai_count--;
+        axios.post('/api/undonmai/' + this.posts[i].id).then(function () {
+          post.donmaiCount--;
+        })["catch"](function () {
+          return;
+        });
       } else {
-        post.donmai_count++;
+        axios.post('/api/donmai/' + this.posts[i].id).then(function () {
+          post.donmaiCount++;
+        })["catch"](function () {
+          return;
+        });
       }
     },
     // モーダルのどんまい機能
@@ -12959,28 +13092,45 @@ __webpack_require__.r(__webpack_exports__);
       this.scrollPosition = null;
     },
     // 投稿のモーダルウィンドウの開閉
-    openModalPost: function openModalPost(postIndex) {
-      this.keepScrollWhenOpen();
-      this.modalPostId = this.posts[postIndex].id;
-      this.modalPostUser = this.posts[postIndex].user;
-      this.modalPostUserId = this.$route.params.id;
-      this.modalPostDonmai = this.posts[postIndex].donmai;
-      this.modalPostDonmaiCount = this.posts[postIndex].donmai_count;
-      this.modalPostImages = this.posts[postIndex].images;
-      this.modalPostTags = this.posts[postIndex].tags;
-      this.modalPostCommentCount = this.posts[postIndex].comment_count;
-      this.modalPostShow = true;
+    openModalPost: function openModalPost(i) {
+      var _this3 = this;
+
+      axios.get('/api/comments/get/' + this.posts[i].id).then(function (res) {
+        _this3.modalPostIndex = i;
+        _this3.modalPostComments = res.data;
+
+        _this3.keepScrollWhenOpen();
+
+        _this3.modalPostId = _this3.posts[i].id;
+        _this3.modalPostUserId = _this3.posts[i].user.id;
+        _this3.modalPostUserName = _this3.posts[i].user.name;
+        _this3.modalPostUserIcon = _this3.posts[i].user.icon;
+        _this3.modalPostBody = _this3.posts[i].body;
+        _this3.modalPostTags = _this3.posts[i].tags;
+        _this3.modalPostImages = _this3.posts[i].post_images;
+        _this3.modalPostDonmai = _this3.posts[i].donmai;
+        _this3.modalPostDonmaiCount = _this3.posts[i].donmaiCount;
+        _this3.modalPostCommentCount = _this3.posts[i].commentCount;
+        _this3.modalPostShow = true; // console.log(this.modalPostComments);
+        // console.log(this.modalPostUserId);
+        // console.log(this.modalPostUserIcon);
+      })["catch"](function () {
+        return;
+      });
     },
     closeModalPost: function closeModalPost() {
       this.keepScrollWhenClose();
       this.modalPostShow = false;
+      this.modalPostIndex = null;
       this.modalPostId = null;
-      this.modalPostUser = '';
       this.modalPostUserId = null;
+      this.modalPostUserName = null;
+      this.modalPostUserIcon = null;
+      this.modalPostBody = null;
+      this.modalPostTags = [];
+      this.modalPostImages = [];
       this.modalPostDonmai = false;
       this.modalPostDonmaiCount = null;
-      this.modalPostImages = [];
-      this.modalPostTags = [];
       this.modalPostCommentCount = null;
       this.modalPostComments.map(function (element) {
         element.replyShow = false;
@@ -12988,27 +13138,39 @@ __webpack_require__.r(__webpack_exports__);
     },
     // どんまいしたユーザーのモーダルウィンドウの開閉
     openModalDonmai: function openModalDonmai() {
-      this.modalDonmaiShow = true;
+      var _this4 = this;
+
+      axios.get('/api/donmai/users/' + this.modalPostId).then(function (res) {
+        _this4.modalDonmaiUsers = res.data; // console.log(this.modalDonmaiUsers);
+
+        _this4.modalDonmaiShow = true;
+      })["catch"](function () {
+        return;
+      });
     },
     closeModalDonmai: function closeModalDonmai() {
       this.modalDonmaiShow = false;
     },
     // 画像のモーダルウィンドウの開閉
     openImageModal: function openImageModal(image) {
+      var _this5 = this;
+
       if (!this.modalPostShow) {
         this.keepScrollWhenOpen();
       }
 
       this.modalImageShow = true;
       this.modalImage = image;
-      var overlayImage = document.querySelector('.overlay-image-image');
       var img = new Image();
       img.src = image;
       var img_width = img.width;
       var img_height = img.height;
 
-      if (img_height > img_width) {
-        overlayImage.classList.add('height-is-bigger');
+      if (img_height >= img_width) {
+        this.heightIsBigger = true;
+        document.querySelector('.overlay-image-image').addEventListener('load', function () {
+          _this5.tatenagaImageWidth = document.querySelector('.overlay-image-image').clientWidth; // console.log(this.tatenagaImageWidth);
+        });
       }
     },
     closeImageModal: function closeImageModal() {
@@ -13016,14 +13178,50 @@ __webpack_require__.r(__webpack_exports__);
         this.keepScrollWhenClose();
       }
 
-      var overlayImage = document.querySelector('.overlay-image-image');
-      overlayImage.classList.remove('height-is-bigger');
+      this.heightIsBigger = false;
+      this.tatenagaImageWidth = null;
       this.modalImageShow = false;
       this.modalImage = '';
     },
     // どんまいしたユーザーのフォローとアンフォロー
-    donmaiFollowToggle: function donmaiFollowToggle(i) {
-      this.modalDonmaiUsers[i].followed = !this.modalDonmaiUsers[i].followed;
+    donmaiFollow: function donmaiFollow(i) {
+      var _this6 = this;
+
+      axios.post('/api/follow', this.modalDonmaiUsers[i]).then(function () {
+        _this6.modalDonmaiUsers[i].followed = true;
+      })["catch"](function () {
+        return;
+      });
+    },
+    donmaiUnFollow: function donmaiUnFollow(i) {
+      var _this7 = this;
+
+      axios.post('/api/unfollow', this.modalDonmaiUsers[i]).then(function () {
+        _this7.modalDonmaiUsers[i].followed = false;
+      })["catch"](function () {
+        return;
+      });
+    },
+    // コメント投稿
+    commentPost: function commentPost() {
+      var _this8 = this;
+
+      var data = new FormData();
+      data.append('postId', this.modalPostId);
+      data.append('body', this.commentInput);
+      axios.post('/api/comment', data).then(function (res) {
+        // console.log(res.data);
+        _this8.modalPostComments.unshift(res.data);
+
+        _this8.commentInput = '';
+        _this8.posts[_this8.modalPostIndex].commentCount++;
+        _this8.modalPostCommentCount++;
+        _this8.commentErrors = [];
+      })["catch"](function (error) {
+        // console.log(error.response.data.errors);
+        // this.modalPostComments[i].replyErrors = [];
+        _this8.commentErrors = error.response.data.errors;
+      });
     },
     //コメントへの返信の表示と非表示
     openCommentReply: function openCommentReply(i) {
@@ -13034,16 +13232,44 @@ __webpack_require__.r(__webpack_exports__);
     },
     // コメントのいいね機能
     commentGood: function commentGood(i) {
-      var comment = this.modalPostComments.find(function (v) {
-        return v.id == i;
-      });
-      comment.good = !comment.good;
+      var comment = this.modalPostComments[i];
+      comment.gooded = !comment.gooded;
 
-      if (!comment.good) {
-        comment.goodCount--;
+      if (!comment.gooded) {
+        axios.post('/api/comment/ungood/' + comment.id).then(function () {
+          comment.goodCount--;
+        })["catch"](function () {
+          return;
+        });
       } else {
-        comment.goodCount++;
+        axios.post('/api/comment/good/' + comment.id).then(function () {
+          comment.goodCount++;
+        })["catch"](function () {
+          return;
+        });
       }
+    },
+    // コメントへの返信の投稿
+    reply: function reply(i) {
+      var _this9 = this;
+
+      var data = new FormData();
+      data.append('body', this.modalPostComments[i].replyInput);
+      data.append('commentId', this.modalPostComments[i].id);
+      axios.post('/api/comment/reply', data).then(function (res) {
+        // console.log(res.data);
+        _this9.modalPostComments[i].replies.push(res.data);
+
+        _this9.modalPostComments[i].replyCount++;
+        _this9.modalPostComments[i].replyInput = '';
+        _this9.modalPostComments[i].replyErrors = [];
+        _this9.posts[_this9.modalPostIndex].commentCount++;
+        _this9.modalPostCommentCount++;
+        _this9.modalPostComments[i].replyShow = true;
+        _this9.modalPostComments[i].replyFormOpened = false;
+      })["catch"](function (error) {
+        _this9.modalPostComments[i].replyErrors = error.response.data.errors; // console.log(this.modalPostComments[i].replyErrors)
+      });
     },
     // コメントの返信へのいいね機能
     replyGood: function replyGood(comId, repId) {
@@ -13053,12 +13279,20 @@ __webpack_require__.r(__webpack_exports__);
       var reply = comment.replies.find(function (v) {
         return v.id == repId;
       });
-      reply.good = !reply.good;
+      reply.gooded = !reply.gooded;
 
-      if (!reply.good) {
-        reply.goodCount--;
+      if (!reply.gooded) {
+        axios.post('/api/comment/reply/ungood/' + repId).then(function () {
+          reply.goodCount--;
+        })["catch"](function () {
+          return;
+        });
       } else {
-        reply.goodCount++;
+        axios.post('/api/comment/reply/good/' + repId).then(function () {
+          reply.goodCount++;
+        })["catch"](function () {
+          return;
+        });
       }
     },
     // コメントへの返信フォームの表示と非表示
@@ -13067,7 +13301,20 @@ __webpack_require__.r(__webpack_exports__);
     },
     closeReplyForm: function closeReplyForm(i) {
       this.modalPostComments[i].replyFormOpened = false;
+    },
+    // 画像のモーダルで画像が縦長だった場合の対処
+    handleResize: function handleResize() {
+      if (this.tatenagaImageWidth && this.tatenagaImageWidth > window.innerWidth) {
+        this.heightIsBigger = false;
+      } else if (this.tatenagaImageWidth && this.tatenagaImageWidth <= window.innerWidth) {
+        this.heightIsBigger = true;
+      } else {
+        return;
+      }
     }
+  },
+  mounted: function mounted() {
+    this.getInitInfo(this.$route.params.id);
   },
   computed: {
     // コメント入力欄の高さを計算
@@ -13094,6 +13341,12 @@ __webpack_require__.r(__webpack_exports__);
     // },
 
   },
+  created: function created() {
+    window.addEventListener('resize', this.handleResize);
+  },
+  destroyed: function destroyed() {
+    window.removeEventListener('resize', this.handleResize);
+  },
   beforeRouteLeave: function beforeRouteLeave(to, from, next) {
     if (this.modalPostShow || this.modalImageShow) {
       this.keepScrollWhenClose();
@@ -13108,8 +13361,10 @@ __webpack_require__.r(__webpack_exports__);
       this.keepScrollWhenClose();
       this.modalPostShow = false;
       this.modalImageShow = false;
+      this.closeModalDonmai();
     }
 
+    this.getInitInfo(to.params.id);
     next();
   }
 });
@@ -50796,13 +51051,13 @@ var render = function() {
                     ]),
                     _vm._v(" "),
                     _c("div", { staticClass: "guchi-image-preview-area" }, [
-                      !_vm.file
+                      !_vm.form.icon
                         ? _c("div", { staticClass: "no-image" }, [
                             _vm._v("NO IMAGE")
                           ])
                         : _vm._e(),
                       _vm._v(" "),
-                      _vm.file && !_vm.$route.path.includes("/trend")
+                      _vm.form.icon && !_vm.$route.path.includes("/trend")
                         ? _c("img", {
                             staticClass: "guchi-new-batsu-icon",
                             attrs: { src: "../image/batsu.png" },
@@ -50810,7 +51065,7 @@ var render = function() {
                           })
                         : _vm._e(),
                       _vm._v(" "),
-                      _vm.file && _vm.$route.path.includes("/trend")
+                      _vm.form.icon && _vm.$route.path.includes("/trend")
                         ? _c("img", {
                             staticClass: "guchi-new-batsu-icon",
                             attrs: { src: "../../image/batsu.png" },
@@ -50845,7 +51100,17 @@ var render = function() {
                         attrs: { type: "file", accept: "image/*" },
                         on: { change: _vm.uploadFile }
                       })
-                    ])
+                    ]),
+                    _vm._v(" "),
+                    _vm.message
+                      ? _c("div", { staticClass: "user-edit-error" }, [
+                          _vm._v(
+                            "\n              " +
+                              _vm._s(_vm.message) +
+                              "\n            "
+                          )
+                        ])
+                      : _vm._e()
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "title-input" }, [
@@ -50858,22 +51123,32 @@ var render = function() {
                         {
                           name: "model",
                           rawName: "v-model",
-                          value: _vm.title,
-                          expression: "title"
+                          value: _vm.form.title,
+                          expression: "form.title"
                         }
                       ],
                       staticClass: "guchi-title-input",
                       attrs: { type: "text" },
-                      domProps: { value: _vm.title },
+                      domProps: { value: _vm.form.title },
                       on: {
                         input: function($event) {
                           if ($event.target.composing) {
                             return
                           }
-                          _vm.title = $event.target.value
+                          _vm.$set(_vm.form, "title", $event.target.value)
                         }
                       }
                     }),
+                    _vm._v(" "),
+                    _vm.errors.title
+                      ? _c("div", { staticClass: "user-edit-error" }, [
+                          _vm._v(
+                            "\n              " +
+                              _vm._s(_vm.errors.title[0]) +
+                              "\n            "
+                          )
+                        ])
+                      : _vm._e(),
                     _vm._v(" "),
                     _c("div", { staticClass: "select-genre-guchi" }, [
                       _c(
@@ -50883,8 +51158,8 @@ var render = function() {
                             {
                               name: "model",
                               rawName: "v-model",
-                              value: _vm.genre,
-                              expression: "genre"
+                              value: _vm.form.genre,
+                              expression: "form.genre"
                             }
                           ],
                           attrs: { name: "genre" },
@@ -50898,9 +51173,13 @@ var render = function() {
                                   var val = "_value" in o ? o._value : o.value
                                   return val
                                 })
-                              _vm.genre = $event.target.multiple
-                                ? $$selectedVal
-                                : $$selectedVal[0]
+                              _vm.$set(
+                                _vm.form,
+                                "genre",
+                                $event.target.multiple
+                                  ? $$selectedVal
+                                  : $$selectedVal[0]
+                              )
                             }
                           }
                         },
@@ -50921,13 +51200,40 @@ var render = function() {
                       )
                     ]),
                     _vm._v(" "),
-                    _vm._m(0)
+                    _vm.errors.genre
+                      ? _c("div", { staticClass: "user-edit-error" }, [
+                          _vm._v(
+                            "\n              " +
+                              _vm._s(_vm.errors.genre[0]) +
+                              "\n            "
+                          )
+                        ])
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "create" }, [
+                      _c(
+                        "div",
+                        { staticClass: "create-btn", on: { click: _vm.check } },
+                        [_vm._v("チェック")]
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "create" }, [
+                      _c(
+                        "div",
+                        {
+                          staticClass: "create-btn",
+                          on: { click: _vm.submit }
+                        },
+                        [_vm._v("作成")]
+                      )
+                    ])
                   ])
                 ])
               ])
             : _vm._e(),
           _vm._v(" "),
-          _c("router-view")
+          _c("router-view", { key: _vm.reloadKey })
         ],
         1
       ),
@@ -50989,16 +51295,7 @@ var render = function() {
     ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "create" }, [
-      _c("div", { staticClass: "create-btn" }, [_vm._v("作成")])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -51023,18 +51320,18 @@ var render = function() {
   return _c(
     "div",
     { staticClass: "thread-box" },
-    _vm._l(_vm.threads, function(thread, index) {
+    _vm._l(_vm.guchiRooms, function(room, index) {
       return _c(
         "a",
         {
-          key: thread.id,
+          key: room.id,
           staticClass: "guchi-thread",
           on: {
             click: function($event) {
               if ($event.target !== $event.currentTarget) {
                 return null
               }
-              return _vm.toGuchiDetail(thread.id)
+              return _vm.toGuchiDetail(room.id)
             }
           }
         },
@@ -51045,22 +51342,22 @@ var render = function() {
               staticClass: "thread-list-icon",
               on: {
                 click: function($event) {
-                  return _vm.toGuchiDetail(thread.id)
+                  return _vm.toGuchiDetail(room.id)
                 }
               }
             },
             [
-              !thread.icon
+              !room.icon
                 ? _c("div", {
                     staticClass: "thread-left-icon-image none",
                     style: { backgroundImage: "url(../image/no-image.png)" }
                   })
                 : _vm._e(),
               _vm._v(" "),
-              thread.icon
+              room.icon
                 ? _c("div", {
                     staticClass: "thread-left-icon-image",
-                    style: { backgroundImage: "url(" + thread.icon + ")" }
+                    style: { backgroundImage: "url(" + room.icon + ")" }
                   })
                 : _vm._e()
             ]
@@ -51072,24 +51369,24 @@ var render = function() {
               staticClass: "thread-left",
               on: {
                 click: function($event) {
-                  return _vm.toGuchiDetail(thread.id)
+                  return _vm.toGuchiDetail(room.id)
                 }
               }
             },
             [
               _c("div", { staticClass: "thread-left-top" }, [
                 _c("div", { staticClass: "genre-icon" }, [
-                  _vm._v(_vm._s(thread.genre))
+                  _vm._v(_vm._s(room.genre))
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "thread-time" }, [
-                  _vm._v(_vm._s(thread.created_at))
+                  _vm._v(_vm._s(room.created_at))
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "thread-comment-count" }, [
                   _c("img", { attrs: { src: "../image/comment.png" } }),
                   _vm._v(
-                    "\n          " + _vm._s(thread.comment_count) + "\n        "
+                    "\n          " + _vm._s(room.guchis_count) + "\n        "
                   )
                 ])
               ]),
@@ -51100,11 +51397,11 @@ var render = function() {
                   staticClass: "thread-title",
                   on: {
                     click: function($event) {
-                      return _vm.toGuchiDetail(thread.id)
+                      return _vm.toGuchiDetail(room.id)
                     }
                   }
                 },
-                [_vm._v(_vm._s(thread.title))]
+                [_vm._v(_vm._s(room.title))]
               )
             ]
           ),
@@ -51118,12 +51415,12 @@ var render = function() {
                   if ($event.target !== $event.currentTarget) {
                     return null
                   }
-                  return _vm.toGuchiDetail(thread.id)
+                  return _vm.toGuchiDetail(room.id)
                 }
               }
             },
             [
-              !thread.bookmarked
+              !room.bookmarked
                 ? _c("img", {
                     attrs: { src: "../image/bookmark.png" },
                     on: {
@@ -51134,12 +51431,12 @@ var render = function() {
                   })
                 : _vm._e(),
               _vm._v(" "),
-              thread.bookmarked
+              room.bookmarked
                 ? _c("img", {
                     attrs: { src: "../image/bookmarked.png" },
                     on: {
                       click: function($event) {
-                        return _vm.bookMark(index)
+                        return _vm.unBookMark(index)
                       }
                     }
                   })
@@ -51177,18 +51474,18 @@ var render = function() {
   return _c(
     "div",
     { staticClass: "thread-box" },
-    _vm._l(_vm.threads, function(thread, index) {
+    _vm._l(_vm.guchiRooms, function(room, index) {
       return _c(
         "a",
         {
-          key: thread.id,
+          key: room.id,
           staticClass: "guchi-thread",
           on: {
             click: function($event) {
               if ($event.target !== $event.currentTarget) {
                 return null
               }
-              return _vm.toGuchiDetail(thread.id)
+              return _vm.toGuchiDetail(room.id)
             }
           }
         },
@@ -51199,22 +51496,22 @@ var render = function() {
               staticClass: "thread-list-icon",
               on: {
                 click: function($event) {
-                  return _vm.toGuchiDetail(thread.id)
+                  return _vm.toGuchiDetail(room.id)
                 }
               }
             },
             [
-              !thread.icon
+              !room.icon
                 ? _c("div", {
                     staticClass: "thread-left-icon-image none",
                     style: { backgroundImage: "url(../../image/no-image.png)" }
                   })
                 : _vm._e(),
               _vm._v(" "),
-              thread.icon
+              room.icon
                 ? _c("div", {
                     staticClass: "thread-left-icon-image",
-                    style: { backgroundImage: "url(" + thread.icon + ")" }
+                    style: { backgroundImage: "url(" + room.icon + ")" }
                   })
                 : _vm._e()
             ]
@@ -51226,24 +51523,24 @@ var render = function() {
               staticClass: "thread-left",
               on: {
                 click: function($event) {
-                  return _vm.toGuchiDetail(thread.id)
+                  return _vm.toGuchiDetail(room.id)
                 }
               }
             },
             [
               _c("div", { staticClass: "thread-left-top" }, [
                 _c("div", { staticClass: "genre-icon" }, [
-                  _vm._v(_vm._s(thread.genre))
+                  _vm._v(_vm._s(room.genre))
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "thread-time" }, [
-                  _vm._v(_vm._s(thread.created_at))
+                  _vm._v(_vm._s(room.created_at))
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "thread-comment-count" }, [
                   _c("img", { attrs: { src: "../../image/comment.png" } }),
                   _vm._v(
-                    "\n          " + _vm._s(thread.comment_count) + "\n        "
+                    "\n          " + _vm._s(room.guchis_count) + "\n        "
                   )
                 ])
               ]),
@@ -51254,11 +51551,11 @@ var render = function() {
                   staticClass: "thread-title",
                   on: {
                     click: function($event) {
-                      return _vm.toGuchiDetail(thread.id)
+                      return _vm.toGuchiDetail(room.id)
                     }
                   }
                 },
-                [_vm._v(_vm._s(thread.title))]
+                [_vm._v(_vm._s(room.title))]
               )
             ]
           ),
@@ -51272,12 +51569,12 @@ var render = function() {
                   if ($event.target !== $event.currentTarget) {
                     return null
                   }
-                  return _vm.toGuchiDetail(thread.id)
+                  return _vm.toGuchiDetail(room.id)
                 }
               }
             },
             [
-              !thread.bookmarked
+              !room.bookmarked
                 ? _c("img", {
                     attrs: { src: "../../image/bookmark.png" },
                     on: {
@@ -51288,12 +51585,12 @@ var render = function() {
                   })
                 : _vm._e(),
               _vm._v(" "),
-              thread.bookmarked
+              room.bookmarked
                 ? _c("img", {
                     attrs: { src: "../../image/bookmarked.png" },
                     on: {
                       click: function($event) {
-                        return _vm.bookMark(index)
+                        return _vm.unBookMark(index)
                       }
                     }
                   })
@@ -51336,105 +51633,128 @@ var render = function() {
         [_c("img", { attrs: { src: "../../image/shita.png" } })]
       ),
       _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "thread-content" },
-        [
-          _c("div", { staticClass: "thread-title-area" }, [
-            _c("div", { staticClass: "thread-title-area-icon" }, [
-              _c("img", { attrs: { src: "../../image/unko.jpg" } })
-            ]),
+      _c("div", { staticClass: "thread-content" }, [
+        _c("div", { staticClass: "thread-title-area" }, [
+          _c("div", { staticClass: "thread-title-area-icon" }, [
+            !_vm.guchiRoom.icon
+              ? _c("div", {
+                  staticClass: "thread-title-area-icon-image none",
+                  style: { backgroundImage: "url(../../image/no-image.png)" }
+                })
+              : _vm._e(),
             _vm._v(" "),
-            _c("div", { staticClass: "thread-title-area-right" }, [
-              _vm._m(0),
-              _vm._v(" "),
-              _c("div", { staticClass: "thread-title-area-infos" }, [
-                _c("div", { staticClass: "thread-title-area-comment" }, [
-                  _c("div", { staticClass: "comment-count" }, [
-                    _c("img", { attrs: { src: "../../image/comment.png" } }),
-                    _vm._v(
-                      "\n                  " +
-                        _vm._s(_vm.comments.length) +
-                        "\n              "
-                    )
-                  ])
-                ]),
-                _vm._v(" "),
-                _vm._m(1)
-              ])
-            ])
+            _vm.guchiRoom.icon
+              ? _c("div", {
+                  staticClass: "thread-title-area-icon-image",
+                  style: { backgroundImage: "url(" + _vm.guchiRoom.icon + ")" }
+                })
+              : _vm._e()
           ]),
           _vm._v(" "),
-          _vm._l(_vm.comments, function(comment) {
+          _c("div", { staticClass: "thread-title-area-right" }, [
+            _c("div", { staticClass: "thread-title-area-title" }, [
+              _c("div", { staticClass: "thread-title" }, [
+                _vm._v(_vm._s(_vm.guchiRoom.title))
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "thread-title-area-infos" }, [
+              _c("div", { staticClass: "thread-title-area-comment" }, [
+                _c("div", { staticClass: "comment-count" }, [
+                  _c("img", { attrs: { src: "../../image/comment.png" } }),
+                  _vm._v(
+                    "\n                  " +
+                      _vm._s(_vm.guchis.length) +
+                      "\n              "
+                  )
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "thread-title-area-time" }, [
+                _c("div", { staticClass: "time" }, [
+                  _vm._v(_vm._s(_vm.guchiRoom.created_at))
+                ])
+              ])
+            ])
+          ])
+        ]),
+        _vm._v(" "),
+        _c(
+          "div",
+          { key: _vm.resetKey },
+          _vm._l(_vm.guchis, function(guchi, index) {
             return _c(
               "div",
               {
-                key: comment.id,
+                key: guchi.id,
                 staticClass: "thread-comment-area",
-                class: { "self-comment": comment.self }
+                class: { "self-comment": guchi.user_id === _vm.authUser.id }
               },
               [
                 _c("div", { staticClass: "thread-comment-area-top" }, [
                   _c(
                     "div",
-                    { staticClass: "id", class: { "self-id": comment.self } },
-                    [_vm._v(_vm._s(comment.id) + ":")]
+                    {
+                      staticClass: "id",
+                      class: { "self-id": guchi.user_id === _vm.authUser.id }
+                    },
+                    [_vm._v(_vm._s(index + 1) + ":")]
                   ),
                   _vm._v(" "),
                   _c("div", { staticClass: "time" }, [
-                    _vm._v(_vm._s(comment.created_at))
+                    _vm._v(_vm._s(guchi.created_at))
                   ])
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "thread-comment-area-comment" }, [
-                  _vm._v(
-                    "\n          " + _vm._s(comment.content) + "\n        "
-                  )
+                  _vm._v(_vm._s(guchi.body))
                 ]),
                 _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "thread-comment-area-image" },
-                  _vm._l(comment.images, function(image, index) {
-                    return _c("div", { key: index }, [
-                      _c("img", {
-                        attrs: { src: image },
-                        on: {
-                          click: function($event) {
-                            return _vm.openImageModal(image)
-                          }
-                        }
-                      })
-                    ])
-                  }),
-                  0
-                ),
+                guchi.guchi_images.length > 0
+                  ? _c(
+                      "div",
+                      { staticClass: "thread-comment-area-image" },
+                      _vm._l(guchi.guchi_images, function(image, index) {
+                        return _c("div", { key: index }, [
+                          _c("img", {
+                            attrs: { src: image.path },
+                            on: {
+                              click: function($event) {
+                                return _vm.openImageModal(image.path)
+                              }
+                            }
+                          })
+                        ])
+                      }),
+                      0
+                    )
+                  : _vm._e(),
                 _vm._v(" "),
                 _c("div", { staticClass: "thread-comment-area-bottom" }, [
                   _c("div", { staticClass: "thread-comment-area-good" }, [
                     _c("div", { staticClass: "good" }, [
                       _vm._v(
-                        "\n              " +
-                          _vm._s(comment.good_count) +
-                          "\n              "
+                        "\n                " +
+                          _vm._s(guchi.guchi_goods_count) +
+                          "\n                "
                       ),
-                      !comment.gooded
+                      !guchi.gooded
                         ? _c("img", {
                             attrs: { src: "../../image/good.png" },
                             on: {
                               click: function($event) {
-                                return _vm.goodToggle(comment.id)
+                                return _vm.good(index)
                               }
                             }
                           })
                         : _vm._e(),
                       _vm._v(" "),
-                      comment.gooded
+                      guchi.gooded
                         ? _c("img", {
                             attrs: { src: "../../image/gooded.png" },
                             on: {
                               click: function($event) {
-                                return _vm.goodToggle(comment.id)
+                                return _vm.unGood(index)
                               }
                             }
                           })
@@ -51445,91 +51765,129 @@ var render = function() {
               ]
             )
           }),
+          0
+        ),
+        _vm._v(" "),
+        _c("div", { staticClass: "thread-post-area" }, [
+          _c("div", { staticClass: "title" }, [_vm._v("投稿する")]),
           _vm._v(" "),
-          _c("div", { staticClass: "thread-post-area" }, [
-            _c("div", { staticClass: "title" }, [_vm._v("投稿する")]),
-            _vm._v(" "),
-            _vm._m(2),
+          _c("div", { staticClass: "input" }, [
+            _c("textarea", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.form.body,
+                  expression: "form.body"
+                }
+              ],
+              domProps: { value: _vm.form.body },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.form, "body", $event.target.value)
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _vm.errors.body
+            ? _c("div", { staticClass: "user-edit-error" }, [
+                _vm._v(
+                  "\n          " + _vm._s(_vm.errors.body[0]) + "\n        "
+                )
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "thread-image-preview" },
+            _vm._l(_vm.urls, function(url, index) {
+              return _c(
+                "div",
+                { key: index, staticClass: "thread-each-preview" },
+                [
+                  _c("img", {
+                    staticClass: "thread-batsu-icon",
+                    attrs: { src: "../../image/batsu.png" },
+                    on: {
+                      click: function($event) {
+                        return _vm.deletePreview(url, index)
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("img", {
+                    staticClass: "thread-each-image",
+                    attrs: { src: url }
+                  })
+                ]
+              )
+            }),
+            0
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "image-upload" }, [
+            _c("label", { attrs: { for: "comment-photo" } }, [
+              _c("img", { attrs: { src: "../../image/image.png" } }),
+              _vm._v(" "),
+              _c("input", {
+                ref: "threadPreview",
+                staticStyle: { display: "none" },
+                attrs: {
+                  type: "file",
+                  id: "comment-photo",
+                  accept: "image/*",
+                  multiple: ""
+                },
+                on: { change: _vm.uploadFile }
+              })
+            ])
+          ]),
+          _vm._v(" "),
+          _vm.message
+            ? _c("div", { staticClass: "user-edit-error" }, [
+                _vm._v("\n          " + _vm._s(_vm.message) + "\n        ")
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          _c("div", { staticClass: "check-btns" }, [
+            _c(
+              "div",
+              {
+                staticClass: "tokumei",
+                class: { selected: _vm.form.anonymous },
+                on: { click: _vm.anonymous }
+              },
+              [
+                _c("img", { attrs: { src: "../../image/check.png" } }),
+                _vm._v("\n            匿名で投稿\n          ")
+              ]
+            ),
             _vm._v(" "),
             _c(
               "div",
-              { staticClass: "thread-image-preview" },
-              _vm._l(_vm.urls, function(url, index) {
-                return _c(
-                  "div",
-                  { key: index, staticClass: "thread-each-preview" },
-                  [
-                    _c("img", {
-                      staticClass: "thread-batsu-icon",
-                      attrs: { src: "../../image/batsu.png" },
-                      on: {
-                        click: function($event) {
-                          return _vm.deletePreview(url, index)
-                        }
-                      }
-                    }),
-                    _vm._v(" "),
-                    _c("img", {
-                      staticClass: "thread-each-image",
-                      attrs: { src: url }
-                    })
-                  ]
-                )
-              }),
-              0
-            ),
-            _vm._v(" "),
-            _c("div", { staticClass: "image-upload" }, [
-              _c("label", { attrs: { for: "comment-photo" } }, [
-                _c("img", { attrs: { src: "../../image/image.png" } }),
-                _vm._v(" "),
-                _c("input", {
-                  ref: "threadPreview",
-                  staticStyle: { display: "none" },
-                  attrs: {
-                    type: "file",
-                    id: "comment-photo",
-                    accept: "image/*",
-                    multiple: ""
-                  },
-                  on: { change: _vm.uploadFile }
-                })
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "check-btns" }, [
-              _c(
-                "div",
-                {
-                  staticClass: "tokumei",
-                  class: { selected: _vm.postStyle == "anonymous" },
-                  on: { click: _vm.anonymous }
-                },
-                [
-                  _c("img", { attrs: { src: "../../image/check.png" } }),
-                  _vm._v("\n            匿名で投稿\n          ")
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                {
-                  staticClass: "show-name",
-                  class: { selected: _vm.postStyle == "showName" },
-                  on: { click: _vm.showName }
-                },
-                [
-                  _c("img", { attrs: { src: "../../image/check.png" } }),
-                  _vm._v("\n            名前とアイコンを表示\n          ")
-                ]
-              )
-            ]),
-            _vm._v(" "),
-            _vm._m(3)
+              {
+                staticClass: "show-name",
+                class: { selected: !_vm.form.anonymous },
+                on: { click: _vm.showName }
+              },
+              [
+                _c("img", { attrs: { src: "../../image/check.png" } }),
+                _vm._v("\n            名前とアイコンを表示\n          ")
+              ]
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "post" }, [
+            _c("div", { staticClass: "post-btn", on: { click: _vm.submit } }, [
+              _vm._v("投稿")
+            ])
           ])
-        ],
-        2
-      )
+        ])
+      ])
     ]),
     _vm._v(" "),
     _c(
@@ -51557,6 +51915,7 @@ var render = function() {
         _c("div", { staticClass: "overlay-image-box" }, [
           _c("img", {
             staticClass: "overlay-image-image",
+            class: { "height-is-bigger": _vm.heightIsBigger },
             attrs: { src: _vm.modalImage }
           })
         ])
@@ -51564,40 +51923,7 @@ var render = function() {
     )
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "thread-title-area-title" }, [
-      _c("div", { staticClass: "thread-title" }, [
-        _vm._v("うんこ食べたくなってこない？うんこ食べたくなってこない？")
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "thread-title-area-time" }, [
-      _c("div", { staticClass: "time" }, [_vm._v("2021/01/28 18:28")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "input" }, [_c("textarea")])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "post" }, [
-      _c("div", { staticClass: "post-btn" }, [_vm._v("投稿")])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -51622,18 +51948,18 @@ var render = function() {
   return _c(
     "div",
     { staticClass: "thread-box" },
-    _vm._l(_vm.threads, function(thread, index) {
+    _vm._l(_vm.guchiRooms, function(room, index) {
       return _c(
         "a",
         {
-          key: thread.id,
+          key: room.id,
           staticClass: "guchi-thread",
           on: {
             click: function($event) {
               if ($event.target !== $event.currentTarget) {
                 return null
               }
-              return _vm.toGuchiDetail(thread.id)
+              return _vm.toGuchiDetail(room.id)
             }
           }
         },
@@ -51644,22 +51970,22 @@ var render = function() {
               staticClass: "thread-list-icon",
               on: {
                 click: function($event) {
-                  return _vm.toGuchiDetail(thread.id)
+                  return _vm.toGuchiDetail(room.id)
                 }
               }
             },
             [
-              !thread.icon
+              !room.icon
                 ? _c("div", {
                     staticClass: "thread-left-icon-image none",
                     style: { backgroundImage: "url(../image/no-image.png)" }
                   })
                 : _vm._e(),
               _vm._v(" "),
-              thread.icon
+              room.icon
                 ? _c("div", {
                     staticClass: "thread-left-icon-image",
-                    style: { backgroundImage: "url(" + thread.icon + ")" }
+                    style: { backgroundImage: "url(" + room.icon + ")" }
                   })
                 : _vm._e()
             ]
@@ -51671,24 +51997,24 @@ var render = function() {
               staticClass: "thread-left",
               on: {
                 click: function($event) {
-                  return _vm.toGuchiDetail(thread.id)
+                  return _vm.toGuchiDetail(room.id)
                 }
               }
             },
             [
               _c("div", { staticClass: "thread-left-top" }, [
                 _c("div", { staticClass: "genre-icon" }, [
-                  _vm._v(_vm._s(thread.genre))
+                  _vm._v(_vm._s(room.genre))
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "thread-time" }, [
-                  _vm._v(_vm._s(thread.created_at))
+                  _vm._v(_vm._s(room.created_at))
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "thread-comment-count" }, [
-                  _c("img", { attrs: { src: "../../image/comment.png" } }),
+                  _c("img", { attrs: { src: "../image/comment.png" } }),
                   _vm._v(
-                    "\n          " + _vm._s(thread.comment_count) + "\n        "
+                    "\n          " + _vm._s(room.guchis_count) + "\n        "
                   )
                 ])
               ]),
@@ -51699,11 +52025,11 @@ var render = function() {
                   staticClass: "thread-title",
                   on: {
                     click: function($event) {
-                      return _vm.toGuchiDetail(thread.id)
+                      return _vm.toGuchiDetail(room.id)
                     }
                   }
                 },
-                [_vm._v(_vm._s(thread.title))]
+                [_vm._v(_vm._s(room.title))]
               )
             ]
           ),
@@ -51717,12 +52043,12 @@ var render = function() {
                   if ($event.target !== $event.currentTarget) {
                     return null
                   }
-                  return _vm.toGuchiDetail(thread.id)
+                  return _vm.toGuchiDetail(room.id)
                 }
               }
             },
             [
-              !thread.bookmarked
+              !room.bookmarked
                 ? _c("img", {
                     attrs: { src: "../image/bookmark.png" },
                     on: {
@@ -51733,12 +52059,12 @@ var render = function() {
                   })
                 : _vm._e(),
               _vm._v(" "),
-              thread.bookmarked
+              room.bookmarked
                 ? _c("img", {
                     attrs: { src: "../image/bookmarked.png" },
                     on: {
                       click: function($event) {
-                        return _vm.bookMark(index)
+                        return _vm.unBookMark(index)
                       }
                     }
                   })
@@ -51776,18 +52102,18 @@ var render = function() {
   return _c(
     "div",
     { staticClass: "thread-box" },
-    _vm._l(_vm.threads, function(thread, index) {
+    _vm._l(_vm.guchiRooms, function(room, index) {
       return _c(
         "a",
         {
-          key: thread.id,
+          key: room.id,
           staticClass: "guchi-thread",
           on: {
             click: function($event) {
               if ($event.target !== $event.currentTarget) {
                 return null
               }
-              return _vm.toGuchiDetail(thread.id)
+              return _vm.toGuchiDetail(room.id)
             }
           }
         },
@@ -51798,22 +52124,22 @@ var render = function() {
               staticClass: "thread-list-icon",
               on: {
                 click: function($event) {
-                  return _vm.toGuchiDetail(thread.id)
+                  return _vm.toGuchiDetail(room.id)
                 }
               }
             },
             [
-              !thread.icon
+              !room.icon
                 ? _c("div", {
                     staticClass: "thread-left-icon-image none",
                     style: { backgroundImage: "url(../../image/no-image.png)" }
                   })
                 : _vm._e(),
               _vm._v(" "),
-              thread.icon
+              room.icon
                 ? _c("div", {
                     staticClass: "thread-left-icon-image",
-                    style: { backgroundImage: "url(" + thread.icon + ")" }
+                    style: { backgroundImage: "url(" + room.icon + ")" }
                   })
                 : _vm._e()
             ]
@@ -51825,24 +52151,24 @@ var render = function() {
               staticClass: "thread-left",
               on: {
                 click: function($event) {
-                  return _vm.toGuchiDetail(thread.id)
+                  return _vm.toGuchiDetail(room.id)
                 }
               }
             },
             [
               _c("div", { staticClass: "thread-left-top" }, [
                 _c("div", { staticClass: "genre-icon" }, [
-                  _vm._v(_vm._s(thread.genre))
+                  _vm._v(_vm._s(room.genre))
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "thread-time" }, [
-                  _vm._v(_vm._s(thread.created_at))
+                  _vm._v(_vm._s(room.created_at))
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "thread-comment-count" }, [
                   _c("img", { attrs: { src: "../../image/comment.png" } }),
                   _vm._v(
-                    "\n          " + _vm._s(thread.comment_count) + "\n        "
+                    "\n          " + _vm._s(room.guchis_count) + "\n        "
                   )
                 ])
               ]),
@@ -51853,11 +52179,11 @@ var render = function() {
                   staticClass: "thread-title",
                   on: {
                     click: function($event) {
-                      return _vm.toGuchiDetail(thread.id)
+                      return _vm.toGuchiDetail(room.id)
                     }
                   }
                 },
-                [_vm._v(_vm._s(thread.title))]
+                [_vm._v(_vm._s(room.title))]
               )
             ]
           ),
@@ -51871,12 +52197,12 @@ var render = function() {
                   if ($event.target !== $event.currentTarget) {
                     return null
                   }
-                  return _vm.toGuchiDetail(thread.id)
+                  return _vm.toGuchiDetail(room.id)
                 }
               }
             },
             [
-              !thread.bookmarked
+              !room.bookmarked
                 ? _c("img", {
                     attrs: { src: "../../image/bookmark.png" },
                     on: {
@@ -51887,12 +52213,12 @@ var render = function() {
                   })
                 : _vm._e(),
               _vm._v(" "),
-              thread.bookmarked
+              room.bookmarked
                 ? _c("img", {
                     attrs: { src: "../../image/bookmarked.png" },
                     on: {
                       click: function($event) {
-                        return _vm.bookMark(index)
+                        return _vm.unBookMark(index)
                       }
                     }
                   })
@@ -54887,6 +55213,16 @@ var render = function() {
                           }
                         }),
                         _vm._v(" "),
+                        _vm.commentErrors.body
+                          ? _c("div", { staticClass: "user-edit-error" }, [
+                              _vm._v(
+                                "\n                " +
+                                  _vm._s(_vm.commentErrors.body[0]) +
+                                  "\n              "
+                              )
+                            ])
+                          : _vm._e(),
+                        _vm._v(" "),
                         _c(
                           "div",
                           {
@@ -55861,18 +56197,18 @@ var render = function() {
   return _c(
     "div",
     { staticClass: "thread-box" },
-    _vm._l(_vm.threads, function(thread, index) {
+    _vm._l(_vm.guchiRooms, function(room, index) {
       return _c(
         "a",
         {
-          key: thread.id,
+          key: room.id,
           staticClass: "guchi-thread",
           on: {
             click: function($event) {
               if ($event.target !== $event.currentTarget) {
                 return null
               }
-              return _vm.toGuchiDetail(thread.id)
+              return _vm.toGuchiDetail(room.id)
             }
           }
         },
@@ -55883,12 +56219,12 @@ var render = function() {
               staticClass: "thread-list-icon",
               on: {
                 click: function($event) {
-                  return _vm.toGuchiDetail(thread.id)
+                  return _vm.toGuchiDetail(room.id)
                 }
               }
             },
             [
-              !thread.icon
+              !room.icon
                 ? _c("div", {
                     staticClass: "thread-left-icon-image none",
                     style: {
@@ -55897,10 +56233,10 @@ var render = function() {
                   })
                 : _vm._e(),
               _vm._v(" "),
-              thread.icon
+              room.icon
                 ? _c("div", {
                     staticClass: "thread-left-icon-image",
-                    style: { backgroundImage: "url(" + thread.icon + ")" }
+                    style: { backgroundImage: "url(" + room.icon + ")" }
                   })
                 : _vm._e()
             ]
@@ -55912,24 +56248,24 @@ var render = function() {
               staticClass: "thread-left",
               on: {
                 click: function($event) {
-                  return _vm.toGuchiDetail(thread.id)
+                  return _vm.toGuchiDetail(room.id)
                 }
               }
             },
             [
               _c("div", { staticClass: "thread-left-top" }, [
                 _c("div", { staticClass: "genre-icon" }, [
-                  _vm._v(_vm._s(thread.genre))
+                  _vm._v(_vm._s(room.genre))
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "thread-time" }, [
-                  _vm._v(_vm._s(thread.created_at))
+                  _vm._v(_vm._s(room.created_at))
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "thread-comment-count" }, [
                   _c("img", { attrs: { src: "../../../image/comment.png" } }),
                   _vm._v(
-                    "\n          " + _vm._s(thread.comment_count) + "\n        "
+                    "\n          " + _vm._s(room.guchis_count) + "\n        "
                   )
                 ])
               ]),
@@ -55940,11 +56276,11 @@ var render = function() {
                   staticClass: "thread-title",
                   on: {
                     click: function($event) {
-                      return _vm.toGuchiDetail(thread.id)
+                      return _vm.toGuchiDetail(room.id)
                     }
                   }
                 },
-                [_vm._v(_vm._s(thread.title))]
+                [_vm._v(_vm._s(room.title))]
               )
             ]
           ),
@@ -55958,12 +56294,12 @@ var render = function() {
                   if ($event.target !== $event.currentTarget) {
                     return null
                   }
-                  return _vm.toGuchiDetail(thread.id)
+                  return _vm.toGuchiDetail(room.id)
                 }
               }
             },
             [
-              !thread.bookmarked
+              !room.bookmarked
                 ? _c("img", {
                     attrs: { src: "../../../image/bookmark.png" },
                     on: {
@@ -55974,12 +56310,12 @@ var render = function() {
                   })
                 : _vm._e(),
               _vm._v(" "),
-              thread.bookmarked
+              room.bookmarked
                 ? _c("img", {
                     attrs: { src: "../../../image/bookmarked.png" },
                     on: {
                       click: function($event) {
-                        return _vm.bookMark(index)
+                        return _vm.unBookMark(index)
                       }
                     }
                   })
@@ -56017,18 +56353,18 @@ var render = function() {
   return _c(
     "div",
     { staticClass: "thread-box" },
-    _vm._l(_vm.threads, function(thread, index) {
+    _vm._l(_vm.guchiRooms, function(room, index) {
       return _c(
         "a",
         {
-          key: thread.id,
+          key: room.id,
           staticClass: "guchi-thread",
           on: {
             click: function($event) {
               if ($event.target !== $event.currentTarget) {
                 return null
               }
-              return _vm.toGuchiDetail(thread.id)
+              return _vm.toGuchiDetail(room.id)
             }
           }
         },
@@ -56039,12 +56375,12 @@ var render = function() {
               staticClass: "thread-list-icon",
               on: {
                 click: function($event) {
-                  return _vm.toGuchiDetail(thread.id)
+                  return _vm.toGuchiDetail(room.id)
                 }
               }
             },
             [
-              !thread.icon
+              !room.icon
                 ? _c("div", {
                     staticClass: "thread-left-icon-image none",
                     style: {
@@ -56053,10 +56389,10 @@ var render = function() {
                   })
                 : _vm._e(),
               _vm._v(" "),
-              thread.icon
+              room.icon
                 ? _c("div", {
                     staticClass: "thread-left-icon-image",
-                    style: { backgroundImage: "url(" + thread.icon + ")" }
+                    style: { backgroundImage: "url(" + room.icon + ")" }
                   })
                 : _vm._e()
             ]
@@ -56068,24 +56404,24 @@ var render = function() {
               staticClass: "thread-left",
               on: {
                 click: function($event) {
-                  return _vm.toGuchiDetail(thread.id)
+                  return _vm.toGuchiDetail(room.id)
                 }
               }
             },
             [
               _c("div", { staticClass: "thread-left-top" }, [
                 _c("div", { staticClass: "genre-icon" }, [
-                  _vm._v(_vm._s(thread.genre))
+                  _vm._v(_vm._s(room.genre))
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "thread-time" }, [
-                  _vm._v(_vm._s(thread.created_at))
+                  _vm._v(_vm._s(room.created_at))
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "thread-comment-count" }, [
                   _c("img", { attrs: { src: "../../../image/comment.png" } }),
                   _vm._v(
-                    "\n          " + _vm._s(thread.comment_count) + "\n        "
+                    "\n          " + _vm._s(room.guchis_count) + "\n        "
                   )
                 ])
               ]),
@@ -56096,11 +56432,11 @@ var render = function() {
                   staticClass: "thread-title",
                   on: {
                     click: function($event) {
-                      return _vm.toGuchiDetail(thread.id)
+                      return _vm.toGuchiDetail(room.id)
                     }
                   }
                 },
-                [_vm._v(_vm._s(thread.title))]
+                [_vm._v(_vm._s(room.title))]
               )
             ]
           ),
@@ -56114,12 +56450,12 @@ var render = function() {
                   if ($event.target !== $event.currentTarget) {
                     return null
                   }
-                  return _vm.toGuchiDetail(thread.id)
+                  return _vm.toGuchiDetail(room.id)
                 }
               }
             },
             [
-              !thread.bookmarked
+              !room.bookmarked
                 ? _c("img", {
                     attrs: { src: "../../../image/bookmark.png" },
                     on: {
@@ -56130,12 +56466,12 @@ var render = function() {
                   })
                 : _vm._e(),
               _vm._v(" "),
-              thread.bookmarked
+              room.bookmarked
                 ? _c("img", {
                     attrs: { src: "../../../image/bookmarked.png" },
                     on: {
                       click: function($event) {
-                        return _vm.bookMark(index)
+                        return _vm.unBookMark(index)
                       }
                     }
                   })
@@ -56183,9 +56519,9 @@ var render = function() {
               _c(
                 "router-link",
                 {
-                  attrs: { to: { name: "user", params: { id: post.userId } } }
+                  attrs: { to: { name: "user", params: { id: post.user.id } } }
                 },
-                [_c("img", { attrs: { src: post.userIcon } })]
+                [_c("img", { attrs: { src: post.user.icon } })]
               )
             ],
             1
@@ -56193,10 +56529,12 @@ var render = function() {
           _vm._v(" "),
           _c("div", { staticClass: "input-area" }, [
             _c("div", { staticClass: "user-name-post" }, [
-              _vm._v(_vm._s(post.user))
+              _vm._v(_vm._s(post.user.name))
             ]),
             _vm._v(" "),
-            _vm._m(0, true),
+            _c("div", { staticClass: "post-body" }, [
+              _vm._v(_vm._s(post.body))
+            ]),
             _vm._v(" "),
             post.tags
               ? _c(
@@ -56208,35 +56546,36 @@ var render = function() {
                       {
                         key: index,
                         attrs: {
-                          to: {
-                            name: "tags.new",
-                            params: { name: tag.replace("#", "") }
-                          }
+                          to: { name: "tags.new", params: { name: tag.name } }
                         }
                       },
-                      [_vm._v("\n          " + _vm._s(tag) + "\n        ")]
+                      [
+                        _vm._v(
+                          "\n          #" + _vm._s(tag.name) + "\n        "
+                        )
+                      ]
                     )
                   }),
                   1
                 )
               : _vm._e(),
             _vm._v(" "),
-            post.images.length > 0
+            post.post_images.length > 0
               ? _c(
                   "div",
                   { staticClass: "post-image-view" },
-                  _vm._l(post.images, function(image, index) {
+                  _vm._l(post.post_images, function(image, index) {
                     return _c(
                       "div",
                       {
                         key: index,
                         staticClass: "each-preview",
                         class: {
-                          "one-image-pre": post.images.length == 1,
-                          "two-image-pre": post.images.length == 2,
-                          "three-image-pre": post.images.length == 3,
-                          "four-image-pre": post.images.length == 4,
-                          yokonaga: post.images.length == 3 && index == 0
+                          "one-image-pre": post.post_images.length == 1,
+                          "two-image-pre": post.post_images.length == 2,
+                          "three-image-pre": post.post_images.length == 3,
+                          "four-image-pre": post.post_images.length == 4,
+                          yokonaga: post.post_images.length == 3 && index == 0
                         }
                       },
                       [
@@ -56246,7 +56585,7 @@ var render = function() {
                             staticClass: "each-image-box",
                             on: {
                               click: function($event) {
-                                return _vm.openImageModal(image)
+                                return _vm.openImageModal(image.path)
                               }
                             }
                           },
@@ -56254,14 +56593,17 @@ var render = function() {
                             _c("div", {
                               staticClass: "each-image",
                               class: {
-                                "one-each-image": post.images.length == 1,
-                                "two-each-image": post.images.length == 2,
-                                "three-each-image": post.images.length == 3,
-                                "four-each-image": post.images.length == 4,
+                                "one-each-image": post.post_images.length == 1,
+                                "two-each-image": post.post_images.length == 2,
+                                "three-each-image":
+                                  post.post_images.length == 3,
+                                "four-each-image": post.post_images.length == 4,
                                 "yokonaga-image":
-                                  post.images.length == 3 && index == 0
+                                  post.post_images.length == 3 && index == 0
                               },
-                              style: { backgroundImage: "url(" + image + ")" }
+                              style: {
+                                backgroundImage: "url(" + image.path + ")"
+                              }
                             })
                           ]
                         )
@@ -56302,7 +56644,7 @@ var render = function() {
                       })
                     : _vm._e(),
                   _vm._v(
-                    "\n          " + _vm._s(post.donmai_count) + "\n        "
+                    "\n          " + _vm._s(post.donmaiCount) + "\n        "
                   )
                 ]
               ),
@@ -56320,7 +56662,7 @@ var render = function() {
                 [
                   _c("img", { attrs: { src: "../../../image/comment.png" } }),
                   _vm._v(
-                    "\n          " + _vm._s(post.comment_count) + "\n        "
+                    "\n          " + _vm._s(post.commentCount) + "\n        "
                   )
                 ]
               )
@@ -56371,10 +56713,12 @@ var render = function() {
                     { staticClass: "input-area" },
                     [
                       _c("div", { staticClass: "user-name-post" }, [
-                        _vm._v(_vm._s(_vm.modalPostUser))
+                        _vm._v(_vm._s(_vm.modalPostUserName))
                       ]),
                       _vm._v(" "),
-                      _vm._m(1),
+                      _c("div", { staticClass: "post-body" }, [
+                        _vm._v(_vm._s(_vm.modalPostBody))
+                      ]),
                       _vm._v(" "),
                       _vm.modalPostTags
                         ? _c(
@@ -56388,14 +56732,19 @@ var render = function() {
                                   attrs: {
                                     to: {
                                       name: "tags.new",
-                                      params: { name: tag.replace("#", "") }
+                                      params: { name: tag.name }
+                                    }
+                                  },
+                                  nativeOn: {
+                                    click: function($event) {
+                                      return _vm.fromModalTagToTag($event)
                                     }
                                   }
                                 },
                                 [
                                   _vm._v(
-                                    "\n              " +
-                                      _vm._s(tag) +
+                                    "\n              #" +
+                                      _vm._s(tag.name) +
                                       "\n            "
                                   )
                                 ]
@@ -56436,7 +56785,7 @@ var render = function() {
                                       staticClass: "each-image-box",
                                       on: {
                                         click: function($event) {
-                                          return _vm.openImageModal(image)
+                                          return _vm.openImageModal(image.path)
                                         }
                                       }
                                     },
@@ -56457,7 +56806,8 @@ var render = function() {
                                             index == 0
                                         },
                                         style: {
-                                          backgroundImage: "url(" + image + ")"
+                                          backgroundImage:
+                                            "url(" + image.path + ")"
                                         }
                                       })
                                     ]
@@ -56499,9 +56849,7 @@ var render = function() {
                       _vm._v(" "),
                       _c("div", { staticClass: "comment-post-area" }, [
                         _c("div", { staticClass: "comment-post-icon" }, [
-                          _c("img", {
-                            attrs: { src: "../../../image/unko.jpg" }
-                          })
+                          _c("img", { attrs: { src: _vm.authUser.icon } })
                         ]),
                         _vm._v(" "),
                         _c("div", { staticClass: "input-3" }, [
@@ -56529,9 +56877,28 @@ var render = function() {
                             }
                           }),
                           _vm._v(" "),
-                          _c("div", { staticClass: "comment-btn-main" }, [
-                            _vm._v("\n                コメント\n              ")
-                          ])
+                          _vm.commentErrors.body
+                            ? _c("div", { staticClass: "user-edit-error" }, [
+                                _vm._v(
+                                  "\n                " +
+                                    _vm._s(_vm.commentErrors.body[0]) +
+                                    "\n              "
+                                )
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              staticClass: "comment-btn-main",
+                              on: { click: _vm.commentPost }
+                            },
+                            [
+                              _vm._v(
+                                "\n                コメント\n              "
+                              )
+                            ]
+                          )
                         ])
                       ]),
                       _vm._v(" "),
@@ -56543,25 +56910,59 @@ var render = function() {
                             staticClass: "overlay-post-comment-area"
                           },
                           [
-                            _c(
-                              "div",
-                              { staticClass: "overlay-post-comment-left" },
-                              [
-                                _c(
-                                  "router-link",
-                                  {
-                                    attrs: {
-                                      to: {
-                                        name: "user",
-                                        params: { id: comment.userId }
-                                      }
-                                    }
-                                  },
-                                  [_c("img", { attrs: { src: comment.icon } })]
+                            comment.user.icon
+                              ? _c(
+                                  "div",
+                                  { staticClass: "overlay-post-comment-left" },
+                                  [
+                                    _c(
+                                      "router-link",
+                                      {
+                                        attrs: {
+                                          to: {
+                                            name: "user",
+                                            params: { id: comment.user.id }
+                                          }
+                                        }
+                                      },
+                                      [
+                                        _c("img", {
+                                          attrs: { src: comment.user.icon }
+                                        })
+                                      ]
+                                    )
+                                  ],
+                                  1
                                 )
-                              ],
-                              1
-                            ),
+                              : _vm._e(),
+                            _vm._v(" "),
+                            !comment.user.icon
+                              ? _c(
+                                  "div",
+                                  { staticClass: "overlay-post-comment-left" },
+                                  [
+                                    _c(
+                                      "router-link",
+                                      {
+                                        attrs: {
+                                          to: {
+                                            name: "user",
+                                            params: { id: comment.user.id }
+                                          }
+                                        }
+                                      },
+                                      [
+                                        _c("img", {
+                                          attrs: {
+                                            src: "../../../image/user.png"
+                                          }
+                                        })
+                                      ]
+                                    )
+                                  ],
+                                  1
+                                )
+                              : _vm._e(),
                             _vm._v(" "),
                             _c(
                               "div",
@@ -56577,7 +56978,7 @@ var render = function() {
                                       [
                                         _vm._v(
                                           "\n                  " +
-                                            _vm._s(comment.user) +
+                                            _vm._s(comment.user.name) +
                                             "\n                "
                                         )
                                       ]
@@ -56589,7 +56990,7 @@ var render = function() {
                                       [
                                         _vm._v(
                                           "\n                  " +
-                                            _vm._s(comment.day) +
+                                            _vm._s(comment.created_at) +
                                             "\n                "
                                         )
                                       ]
@@ -56600,11 +57001,7 @@ var render = function() {
                                 _c(
                                   "div",
                                   { staticClass: "overlay-post-comment" },
-                                  [
-                                    _vm._v(
-                                      "\n                うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。\n              "
-                                    )
-                                  ]
+                                  [_vm._v(_vm._s(comment.body))]
                                 ),
                                 _vm._v(" "),
                                 _c(
@@ -56690,31 +57087,27 @@ var render = function() {
                                             _vm._s(comment.goodCount) +
                                             "\n                  "
                                         ),
-                                        !comment.good
+                                        !comment.gooded
                                           ? _c("img", {
                                               attrs: {
                                                 src: "../../../image/good.png"
                                               },
                                               on: {
                                                 click: function($event) {
-                                                  return _vm.commentGood(
-                                                    comment.id
-                                                  )
+                                                  return _vm.commentGood(index)
                                                 }
                                               }
                                             })
                                           : _vm._e(),
                                         _vm._v(" "),
-                                        comment.good
+                                        comment.gooded
                                           ? _c("img", {
                                               attrs: {
                                                 src: "../../../image/gooded.png"
                                               },
                                               on: {
                                                 click: function($event) {
-                                                  return _vm.commentGood(
-                                                    comment.id
-                                                  )
+                                                  return _vm.commentGood(index)
                                                 }
                                               }
                                             })
@@ -56754,6 +57147,22 @@ var render = function() {
                                         }
                                       }),
                                       _vm._v(" "),
+                                      comment.replyErrors.body
+                                        ? _c(
+                                            "div",
+                                            { staticClass: "user-edit-error" },
+                                            [
+                                              _vm._v(
+                                                "\n                  " +
+                                                  _vm._s(
+                                                    comment.replyErrors.body[0]
+                                                  ) +
+                                                  "\n                "
+                                              )
+                                            ]
+                                          )
+                                        : _vm._e(),
+                                      _vm._v(" "),
                                       _c(
                                         "div",
                                         { staticClass: "comment-reply-btns" },
@@ -56779,7 +57188,14 @@ var render = function() {
                                           _vm._v(" "),
                                           _c(
                                             "div",
-                                            { staticClass: "comment-btn" },
+                                            {
+                                              staticClass: "comment-btn",
+                                              on: {
+                                                click: function($event) {
+                                                  return _vm.reply(index)
+                                                }
+                                              }
+                                            },
                                             [
                                               _vm._v(
                                                 "\n                    コメント\n                  "
@@ -56809,36 +57225,78 @@ var render = function() {
                                                   "overlay-post-comment-reply-area"
                                               },
                                               [
-                                                _c(
-                                                  "div",
-                                                  {
-                                                    staticClass:
-                                                      "overlay-post-comment-left"
-                                                  },
-                                                  [
-                                                    _c(
-                                                      "router-link",
+                                                reply.user.icon
+                                                  ? _c(
+                                                      "div",
                                                       {
-                                                        attrs: {
-                                                          to: {
-                                                            name: "user",
-                                                            params: {
-                                                              id: reply.userId
-                                                            }
-                                                          }
-                                                        }
+                                                        staticClass:
+                                                          "overlay-post-comment-left"
                                                       },
                                                       [
-                                                        _c("img", {
-                                                          attrs: {
-                                                            src: reply.icon
-                                                          }
-                                                        })
-                                                      ]
+                                                        _c(
+                                                          "router-link",
+                                                          {
+                                                            attrs: {
+                                                              to: {
+                                                                name: "user",
+                                                                params: {
+                                                                  id:
+                                                                    reply.user
+                                                                      .id
+                                                                }
+                                                              }
+                                                            }
+                                                          },
+                                                          [
+                                                            _c("img", {
+                                                              attrs: {
+                                                                src:
+                                                                  reply.user
+                                                                    .icon
+                                                              }
+                                                            })
+                                                          ]
+                                                        )
+                                                      ],
+                                                      1
                                                     )
-                                                  ],
-                                                  1
-                                                ),
+                                                  : _vm._e(),
+                                                _vm._v(" "),
+                                                !reply.user.icon
+                                                  ? _c(
+                                                      "div",
+                                                      {
+                                                        staticClass:
+                                                          "overlay-post-comment-left"
+                                                      },
+                                                      [
+                                                        _c(
+                                                          "router-link",
+                                                          {
+                                                            attrs: {
+                                                              to: {
+                                                                name: "user",
+                                                                params: {
+                                                                  id:
+                                                                    reply.user
+                                                                      .id
+                                                                }
+                                                              }
+                                                            }
+                                                          },
+                                                          [
+                                                            _c("img", {
+                                                              attrs: {
+                                                                src:
+                                                                  "../../../image/user.png"
+                                                              }
+                                                            })
+                                                          ]
+                                                        )
+                                                      ],
+                                                      1
+                                                    )
+                                                  : _vm._e(),
                                                 _vm._v(" "),
                                                 _c(
                                                   "div",
@@ -56865,6 +57323,7 @@ var render = function() {
                                                               "\n                          " +
                                                                 _vm._s(
                                                                   reply.user
+                                                                    .name
                                                                 ) +
                                                                 "\n                        "
                                                             )
@@ -56881,7 +57340,7 @@ var render = function() {
                                                             _vm._v(
                                                               "\n                          " +
                                                                 _vm._s(
-                                                                  reply.day
+                                                                  reply.created_at
                                                                 ) +
                                                                 "\n                        "
                                                             )
@@ -56898,7 +57357,7 @@ var render = function() {
                                                       },
                                                       [
                                                         _vm._v(
-                                                          "\n                        うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。\n                      "
+                                                          _vm._s(reply.body)
                                                         )
                                                       ]
                                                     ),
@@ -56924,7 +57383,7 @@ var render = function() {
                                                                 ) +
                                                                 "\n                          "
                                                             ),
-                                                            !reply.good
+                                                            !reply.gooded
                                                               ? _c("img", {
                                                                   attrs: {
                                                                     src:
@@ -56943,7 +57402,7 @@ var render = function() {
                                                                 })
                                                               : _vm._e(),
                                                             _vm._v(" "),
-                                                            reply.good
+                                                            reply.gooded
                                                               ? _c("img", {
                                                                   attrs: {
                                                                     src:
@@ -57014,6 +57473,7 @@ var render = function() {
           _c("div", { staticClass: "overlay-image-box" }, [
             _c("img", {
               staticClass: "overlay-image-image",
+              class: { "height-is-bigger": _vm.heightIsBigger },
               attrs: { src: _vm.modalImage }
             })
           ])
@@ -57049,25 +57509,55 @@ var render = function() {
                       { key: user.id, staticClass: "donmai-user-list" },
                       [
                         _c("div", { staticClass: "overlay-donmai-left" }, [
-                          _c(
-                            "div",
-                            { staticClass: "overlay-donmai-user-icon" },
-                            [
-                              _c(
-                                "router-link",
-                                {
-                                  attrs: {
-                                    to: {
-                                      name: "user",
-                                      params: { id: user.id }
-                                    }
-                                  }
-                                },
-                                [_c("img", { attrs: { src: user.icon } })]
+                          user.icon
+                            ? _c(
+                                "div",
+                                { staticClass: "overlay-donmai-user-icon" },
+                                [
+                                  _c(
+                                    "router-link",
+                                    {
+                                      attrs: {
+                                        to: {
+                                          name: "user",
+                                          params: { id: user.id }
+                                        }
+                                      }
+                                    },
+                                    [_c("img", { attrs: { src: user.icon } })]
+                                  )
+                                ],
+                                1
                               )
-                            ],
-                            1
-                          ),
+                            : _vm._e(),
+                          _vm._v(" "),
+                          !user.icon
+                            ? _c(
+                                "div",
+                                { staticClass: "overlay-donmai-user-icon" },
+                                [
+                                  _c(
+                                    "router-link",
+                                    {
+                                      attrs: {
+                                        to: {
+                                          name: "user",
+                                          params: { id: user.id }
+                                        }
+                                      }
+                                    },
+                                    [
+                                      _c("img", {
+                                        attrs: {
+                                          src: "../../../image/user.png"
+                                        }
+                                      })
+                                    ]
+                                  )
+                                ],
+                                1
+                              )
+                            : _vm._e(),
                           _vm._v(" "),
                           _c(
                             "div",
@@ -57097,14 +57587,14 @@ var render = function() {
                         ]),
                         _vm._v(" "),
                         _c("div", { staticClass: "overlay-donmai-right" }, [
-                          !user.followed
+                          !user.followed && user.id !== _vm.authUser.id
                             ? _c(
                                 "div",
                                 {
                                   staticClass: "overlay-donmai-follow",
                                   on: {
                                     click: function($event) {
-                                      return _vm.donmaiFollowToggle(index)
+                                      return _vm.donmaiFollow(index)
                                     }
                                   }
                                 },
@@ -57116,14 +57606,14 @@ var render = function() {
                               )
                             : _vm._e(),
                           _vm._v(" "),
-                          user.followed
+                          user.followed && user.id !== _vm.authUser.id
                             ? _c(
                                 "div",
                                 {
                                   staticClass: "overlay-donmai-followed",
                                   on: {
                                     click: function($event) {
-                                      return _vm.donmaiFollowToggle(index)
+                                      return _vm.donmaiUnFollow(index)
                                     }
                                   }
                                 },
@@ -57139,7 +57629,15 @@ var render = function() {
                     )
                   }),
                   0
-                )
+                ),
+                _vm._v(" "),
+                _vm.modalDonmaiUsers.length == 0
+                  ? _c("div", { staticClass: "no-follower" }, [
+                      _vm._v(
+                        "\n        どんまいしてるユーザーはいません。\n      "
+                      )
+                    ])
+                  : _vm._e()
               ])
             ]
           )
@@ -57148,34 +57646,7 @@ var render = function() {
     2
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "post-body" }, [
-      _vm._v("\n        うんちしたいな。"),
-      _c("br"),
-      _vm._v("\n        シッコもしたい。"),
-      _c("br"),
-      _vm._v("\n        もう我慢できない。\n      ")
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "post-body" }, [
-      _vm._v(
-        "\n            こんにちは。こんにちは。こんにちは。こんにちは。こんにちは。こんにちは。"
-      ),
-      _c("br"),
-      _vm._v("\n            こんにちは。こんにちは。"),
-      _c("br"),
-      _vm._v("\n            こんにちは。こんにちは。\n          ")
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -57210,9 +57681,9 @@ var render = function() {
               _c(
                 "router-link",
                 {
-                  attrs: { to: { name: "user", params: { id: post.userId } } }
+                  attrs: { to: { name: "user", params: { id: post.user.id } } }
                 },
-                [_c("img", { attrs: { src: post.userIcon } })]
+                [_c("img", { attrs: { src: post.user.icon } })]
               )
             ],
             1
@@ -57220,10 +57691,12 @@ var render = function() {
           _vm._v(" "),
           _c("div", { staticClass: "input-area" }, [
             _c("div", { staticClass: "user-name-post" }, [
-              _vm._v(_vm._s(post.user))
+              _vm._v(_vm._s(post.user.name))
             ]),
             _vm._v(" "),
-            _vm._m(0, true),
+            _c("div", { staticClass: "post-body" }, [
+              _vm._v(_vm._s(post.body))
+            ]),
             _vm._v(" "),
             post.tags
               ? _c(
@@ -57235,35 +57708,36 @@ var render = function() {
                       {
                         key: index,
                         attrs: {
-                          to: {
-                            name: "tags.new",
-                            params: { name: tag.replace("#", "") }
-                          }
+                          to: { name: "tags.new", params: { name: tag.name } }
                         }
                       },
-                      [_vm._v("\n          " + _vm._s(tag) + "\n        ")]
+                      [
+                        _vm._v(
+                          "\n          #" + _vm._s(tag.name) + "\n        "
+                        )
+                      ]
                     )
                   }),
                   1
                 )
               : _vm._e(),
             _vm._v(" "),
-            post.images.length > 0
+            post.post_images.length > 0
               ? _c(
                   "div",
                   { staticClass: "post-image-view" },
-                  _vm._l(post.images, function(image, index) {
+                  _vm._l(post.post_images, function(image, index) {
                     return _c(
                       "div",
                       {
                         key: index,
                         staticClass: "each-preview",
                         class: {
-                          "one-image-pre": post.images.length == 1,
-                          "two-image-pre": post.images.length == 2,
-                          "three-image-pre": post.images.length == 3,
-                          "four-image-pre": post.images.length == 4,
-                          yokonaga: post.images.length == 3 && index == 0
+                          "one-image-pre": post.post_images.length == 1,
+                          "two-image-pre": post.post_images.length == 2,
+                          "three-image-pre": post.post_images.length == 3,
+                          "four-image-pre": post.post_images.length == 4,
+                          yokonaga: post.post_images.length == 3 && index == 0
                         }
                       },
                       [
@@ -57273,7 +57747,7 @@ var render = function() {
                             staticClass: "each-image-box",
                             on: {
                               click: function($event) {
-                                return _vm.openImageModal(image)
+                                return _vm.openImageModal(image.path)
                               }
                             }
                           },
@@ -57281,14 +57755,17 @@ var render = function() {
                             _c("div", {
                               staticClass: "each-image",
                               class: {
-                                "one-each-image": post.images.length == 1,
-                                "two-each-image": post.images.length == 2,
-                                "three-each-image": post.images.length == 3,
-                                "four-each-image": post.images.length == 4,
+                                "one-each-image": post.post_images.length == 1,
+                                "two-each-image": post.post_images.length == 2,
+                                "three-each-image":
+                                  post.post_images.length == 3,
+                                "four-each-image": post.post_images.length == 4,
                                 "yokonaga-image":
-                                  post.images.length == 3 && index == 0
+                                  post.post_images.length == 3 && index == 0
                               },
-                              style: { backgroundImage: "url(" + image + ")" }
+                              style: {
+                                backgroundImage: "url(" + image.path + ")"
+                              }
                             })
                           ]
                         )
@@ -57329,7 +57806,7 @@ var render = function() {
                       })
                     : _vm._e(),
                   _vm._v(
-                    "\n          " + _vm._s(post.donmai_count) + "\n        "
+                    "\n          " + _vm._s(post.donmaiCount) + "\n        "
                   )
                 ]
               ),
@@ -57347,7 +57824,7 @@ var render = function() {
                 [
                   _c("img", { attrs: { src: "../../../image/comment.png" } }),
                   _vm._v(
-                    "\n          " + _vm._s(post.comment_count) + "\n        "
+                    "\n          " + _vm._s(post.commentCount) + "\n        "
                   )
                 ]
               )
@@ -57398,10 +57875,12 @@ var render = function() {
                     { staticClass: "input-area" },
                     [
                       _c("div", { staticClass: "user-name-post" }, [
-                        _vm._v(_vm._s(_vm.modalPostUser))
+                        _vm._v(_vm._s(_vm.modalPostUserName))
                       ]),
                       _vm._v(" "),
-                      _vm._m(1),
+                      _c("div", { staticClass: "post-body" }, [
+                        _vm._v(_vm._s(_vm.modalPostBody))
+                      ]),
                       _vm._v(" "),
                       _vm.modalPostTags
                         ? _c(
@@ -57415,14 +57894,19 @@ var render = function() {
                                   attrs: {
                                     to: {
                                       name: "tags.new",
-                                      params: { name: tag.replace("#", "") }
+                                      params: { name: tag.name }
+                                    }
+                                  },
+                                  nativeOn: {
+                                    click: function($event) {
+                                      return _vm.fromModalTagToTag($event)
                                     }
                                   }
                                 },
                                 [
                                   _vm._v(
-                                    "\n              " +
-                                      _vm._s(tag) +
+                                    "\n              #" +
+                                      _vm._s(tag.name) +
                                       "\n            "
                                   )
                                 ]
@@ -57463,7 +57947,7 @@ var render = function() {
                                       staticClass: "each-image-box",
                                       on: {
                                         click: function($event) {
-                                          return _vm.openImageModal(image)
+                                          return _vm.openImageModal(image.path)
                                         }
                                       }
                                     },
@@ -57484,7 +57968,8 @@ var render = function() {
                                             index == 0
                                         },
                                         style: {
-                                          backgroundImage: "url(" + image + ")"
+                                          backgroundImage:
+                                            "url(" + image.path + ")"
                                         }
                                       })
                                     ]
@@ -57526,9 +58011,7 @@ var render = function() {
                       _vm._v(" "),
                       _c("div", { staticClass: "comment-post-area" }, [
                         _c("div", { staticClass: "comment-post-icon" }, [
-                          _c("img", {
-                            attrs: { src: "../../../image/unko.jpg" }
-                          })
+                          _c("img", { attrs: { src: _vm.authUser.icon } })
                         ]),
                         _vm._v(" "),
                         _c("div", { staticClass: "input-3" }, [
@@ -57556,9 +58039,28 @@ var render = function() {
                             }
                           }),
                           _vm._v(" "),
-                          _c("div", { staticClass: "comment-btn-main" }, [
-                            _vm._v("\n                コメント\n              ")
-                          ])
+                          _vm.commentErrors.body
+                            ? _c("div", { staticClass: "user-edit-error" }, [
+                                _vm._v(
+                                  "\n                " +
+                                    _vm._s(_vm.commentErrors.body[0]) +
+                                    "\n              "
+                                )
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              staticClass: "comment-btn-main",
+                              on: { click: _vm.commentPost }
+                            },
+                            [
+                              _vm._v(
+                                "\n                コメント\n              "
+                              )
+                            ]
+                          )
                         ])
                       ]),
                       _vm._v(" "),
@@ -57570,25 +58072,59 @@ var render = function() {
                             staticClass: "overlay-post-comment-area"
                           },
                           [
-                            _c(
-                              "div",
-                              { staticClass: "overlay-post-comment-left" },
-                              [
-                                _c(
-                                  "router-link",
-                                  {
-                                    attrs: {
-                                      to: {
-                                        name: "user",
-                                        params: { id: comment.userId }
-                                      }
-                                    }
-                                  },
-                                  [_c("img", { attrs: { src: comment.icon } })]
+                            comment.user.icon
+                              ? _c(
+                                  "div",
+                                  { staticClass: "overlay-post-comment-left" },
+                                  [
+                                    _c(
+                                      "router-link",
+                                      {
+                                        attrs: {
+                                          to: {
+                                            name: "user",
+                                            params: { id: comment.user.id }
+                                          }
+                                        }
+                                      },
+                                      [
+                                        _c("img", {
+                                          attrs: { src: comment.user.icon }
+                                        })
+                                      ]
+                                    )
+                                  ],
+                                  1
                                 )
-                              ],
-                              1
-                            ),
+                              : _vm._e(),
+                            _vm._v(" "),
+                            !comment.user.icon
+                              ? _c(
+                                  "div",
+                                  { staticClass: "overlay-post-comment-left" },
+                                  [
+                                    _c(
+                                      "router-link",
+                                      {
+                                        attrs: {
+                                          to: {
+                                            name: "user",
+                                            params: { id: comment.user.id }
+                                          }
+                                        }
+                                      },
+                                      [
+                                        _c("img", {
+                                          attrs: {
+                                            src: "../../../image/user.png"
+                                          }
+                                        })
+                                      ]
+                                    )
+                                  ],
+                                  1
+                                )
+                              : _vm._e(),
                             _vm._v(" "),
                             _c(
                               "div",
@@ -57604,7 +58140,7 @@ var render = function() {
                                       [
                                         _vm._v(
                                           "\n                  " +
-                                            _vm._s(comment.user) +
+                                            _vm._s(comment.user.name) +
                                             "\n                "
                                         )
                                       ]
@@ -57616,7 +58152,7 @@ var render = function() {
                                       [
                                         _vm._v(
                                           "\n                  " +
-                                            _vm._s(comment.day) +
+                                            _vm._s(comment.created_at) +
                                             "\n                "
                                         )
                                       ]
@@ -57627,11 +58163,7 @@ var render = function() {
                                 _c(
                                   "div",
                                   { staticClass: "overlay-post-comment" },
-                                  [
-                                    _vm._v(
-                                      "\n                うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。\n              "
-                                    )
-                                  ]
+                                  [_vm._v(_vm._s(comment.body))]
                                 ),
                                 _vm._v(" "),
                                 _c(
@@ -57717,31 +58249,27 @@ var render = function() {
                                             _vm._s(comment.goodCount) +
                                             "\n                  "
                                         ),
-                                        !comment.good
+                                        !comment.gooded
                                           ? _c("img", {
                                               attrs: {
                                                 src: "../../../image/good.png"
                                               },
                                               on: {
                                                 click: function($event) {
-                                                  return _vm.commentGood(
-                                                    comment.id
-                                                  )
+                                                  return _vm.commentGood(index)
                                                 }
                                               }
                                             })
                                           : _vm._e(),
                                         _vm._v(" "),
-                                        comment.good
+                                        comment.gooded
                                           ? _c("img", {
                                               attrs: {
                                                 src: "../../../image/gooded.png"
                                               },
                                               on: {
                                                 click: function($event) {
-                                                  return _vm.commentGood(
-                                                    comment.id
-                                                  )
+                                                  return _vm.commentGood(index)
                                                 }
                                               }
                                             })
@@ -57781,6 +58309,22 @@ var render = function() {
                                         }
                                       }),
                                       _vm._v(" "),
+                                      comment.replyErrors.body
+                                        ? _c(
+                                            "div",
+                                            { staticClass: "user-edit-error" },
+                                            [
+                                              _vm._v(
+                                                "\n                  " +
+                                                  _vm._s(
+                                                    comment.replyErrors.body[0]
+                                                  ) +
+                                                  "\n                "
+                                              )
+                                            ]
+                                          )
+                                        : _vm._e(),
+                                      _vm._v(" "),
                                       _c(
                                         "div",
                                         { staticClass: "comment-reply-btns" },
@@ -57806,7 +58350,14 @@ var render = function() {
                                           _vm._v(" "),
                                           _c(
                                             "div",
-                                            { staticClass: "comment-btn" },
+                                            {
+                                              staticClass: "comment-btn",
+                                              on: {
+                                                click: function($event) {
+                                                  return _vm.reply(index)
+                                                }
+                                              }
+                                            },
                                             [
                                               _vm._v(
                                                 "\n                    コメント\n                  "
@@ -57836,36 +58387,78 @@ var render = function() {
                                                   "overlay-post-comment-reply-area"
                                               },
                                               [
-                                                _c(
-                                                  "div",
-                                                  {
-                                                    staticClass:
-                                                      "overlay-post-comment-left"
-                                                  },
-                                                  [
-                                                    _c(
-                                                      "router-link",
+                                                reply.user.icon
+                                                  ? _c(
+                                                      "div",
                                                       {
-                                                        attrs: {
-                                                          to: {
-                                                            name: "user",
-                                                            params: {
-                                                              id: reply.userId
-                                                            }
-                                                          }
-                                                        }
+                                                        staticClass:
+                                                          "overlay-post-comment-left"
                                                       },
                                                       [
-                                                        _c("img", {
-                                                          attrs: {
-                                                            src: reply.icon
-                                                          }
-                                                        })
-                                                      ]
+                                                        _c(
+                                                          "router-link",
+                                                          {
+                                                            attrs: {
+                                                              to: {
+                                                                name: "user",
+                                                                params: {
+                                                                  id:
+                                                                    reply.user
+                                                                      .id
+                                                                }
+                                                              }
+                                                            }
+                                                          },
+                                                          [
+                                                            _c("img", {
+                                                              attrs: {
+                                                                src:
+                                                                  reply.user
+                                                                    .icon
+                                                              }
+                                                            })
+                                                          ]
+                                                        )
+                                                      ],
+                                                      1
                                                     )
-                                                  ],
-                                                  1
-                                                ),
+                                                  : _vm._e(),
+                                                _vm._v(" "),
+                                                !reply.user.icon
+                                                  ? _c(
+                                                      "div",
+                                                      {
+                                                        staticClass:
+                                                          "overlay-post-comment-left"
+                                                      },
+                                                      [
+                                                        _c(
+                                                          "router-link",
+                                                          {
+                                                            attrs: {
+                                                              to: {
+                                                                name: "user",
+                                                                params: {
+                                                                  id:
+                                                                    reply.user
+                                                                      .id
+                                                                }
+                                                              }
+                                                            }
+                                                          },
+                                                          [
+                                                            _c("img", {
+                                                              attrs: {
+                                                                src:
+                                                                  "../../../image/user.png"
+                                                              }
+                                                            })
+                                                          ]
+                                                        )
+                                                      ],
+                                                      1
+                                                    )
+                                                  : _vm._e(),
                                                 _vm._v(" "),
                                                 _c(
                                                   "div",
@@ -57892,6 +58485,7 @@ var render = function() {
                                                               "\n                          " +
                                                                 _vm._s(
                                                                   reply.user
+                                                                    .name
                                                                 ) +
                                                                 "\n                        "
                                                             )
@@ -57908,7 +58502,7 @@ var render = function() {
                                                             _vm._v(
                                                               "\n                          " +
                                                                 _vm._s(
-                                                                  reply.day
+                                                                  reply.created_at
                                                                 ) +
                                                                 "\n                        "
                                                             )
@@ -57925,7 +58519,7 @@ var render = function() {
                                                       },
                                                       [
                                                         _vm._v(
-                                                          "\n                        うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。\n                      "
+                                                          _vm._s(reply.body)
                                                         )
                                                       ]
                                                     ),
@@ -57951,7 +58545,7 @@ var render = function() {
                                                                 ) +
                                                                 "\n                          "
                                                             ),
-                                                            !reply.good
+                                                            !reply.gooded
                                                               ? _c("img", {
                                                                   attrs: {
                                                                     src:
@@ -57970,7 +58564,7 @@ var render = function() {
                                                                 })
                                                               : _vm._e(),
                                                             _vm._v(" "),
-                                                            reply.good
+                                                            reply.gooded
                                                               ? _c("img", {
                                                                   attrs: {
                                                                     src:
@@ -58041,6 +58635,7 @@ var render = function() {
           _c("div", { staticClass: "overlay-image-box" }, [
             _c("img", {
               staticClass: "overlay-image-image",
+              class: { "height-is-bigger": _vm.heightIsBigger },
               attrs: { src: _vm.modalImage }
             })
           ])
@@ -58076,25 +58671,55 @@ var render = function() {
                       { key: user.id, staticClass: "donmai-user-list" },
                       [
                         _c("div", { staticClass: "overlay-donmai-left" }, [
-                          _c(
-                            "div",
-                            { staticClass: "overlay-donmai-user-icon" },
-                            [
-                              _c(
-                                "router-link",
-                                {
-                                  attrs: {
-                                    to: {
-                                      name: "user",
-                                      params: { id: user.id }
-                                    }
-                                  }
-                                },
-                                [_c("img", { attrs: { src: user.icon } })]
+                          user.icon
+                            ? _c(
+                                "div",
+                                { staticClass: "overlay-donmai-user-icon" },
+                                [
+                                  _c(
+                                    "router-link",
+                                    {
+                                      attrs: {
+                                        to: {
+                                          name: "user",
+                                          params: { id: user.id }
+                                        }
+                                      }
+                                    },
+                                    [_c("img", { attrs: { src: user.icon } })]
+                                  )
+                                ],
+                                1
                               )
-                            ],
-                            1
-                          ),
+                            : _vm._e(),
+                          _vm._v(" "),
+                          !user.icon
+                            ? _c(
+                                "div",
+                                { staticClass: "overlay-donmai-user-icon" },
+                                [
+                                  _c(
+                                    "router-link",
+                                    {
+                                      attrs: {
+                                        to: {
+                                          name: "user",
+                                          params: { id: user.id }
+                                        }
+                                      }
+                                    },
+                                    [
+                                      _c("img", {
+                                        attrs: {
+                                          src: "../../../image/user.png"
+                                        }
+                                      })
+                                    ]
+                                  )
+                                ],
+                                1
+                              )
+                            : _vm._e(),
                           _vm._v(" "),
                           _c(
                             "div",
@@ -58124,14 +58749,14 @@ var render = function() {
                         ]),
                         _vm._v(" "),
                         _c("div", { staticClass: "overlay-donmai-right" }, [
-                          !user.followed
+                          !user.followed && user.id !== _vm.authUser.id
                             ? _c(
                                 "div",
                                 {
                                   staticClass: "overlay-donmai-follow",
                                   on: {
                                     click: function($event) {
-                                      return _vm.donmaiFollowToggle(index)
+                                      return _vm.donmaiFollow(index)
                                     }
                                   }
                                 },
@@ -58143,14 +58768,14 @@ var render = function() {
                               )
                             : _vm._e(),
                           _vm._v(" "),
-                          user.followed
+                          user.followed && user.id !== _vm.authUser.id
                             ? _c(
                                 "div",
                                 {
                                   staticClass: "overlay-donmai-followed",
                                   on: {
                                     click: function($event) {
-                                      return _vm.donmaiFollowToggle(index)
+                                      return _vm.donmaiUnFollow(index)
                                     }
                                   }
                                 },
@@ -58166,7 +58791,15 @@ var render = function() {
                     )
                   }),
                   0
-                )
+                ),
+                _vm._v(" "),
+                _vm.modalDonmaiUsers.length == 0
+                  ? _c("div", { staticClass: "no-follower" }, [
+                      _vm._v(
+                        "\n        どんまいしてるユーザーはいません。\n      "
+                      )
+                    ])
+                  : _vm._e()
               ])
             ]
           )
@@ -58175,34 +58808,7 @@ var render = function() {
     2
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "post-body" }, [
-      _vm._v("\n        うんちしたいな。"),
-      _c("br"),
-      _vm._v("\n        シッコもしたい。"),
-      _c("br"),
-      _vm._v("\n        もう我慢できない。\n      ")
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "post-body" }, [
-      _vm._v(
-        "\n            こんにちは。こんにちは。こんにちは。こんにちは。こんにちは。こんにちは。"
-      ),
-      _c("br"),
-      _vm._v("\n            こんにちは。こんにちは。"),
-      _c("br"),
-      _vm._v("\n            こんにちは。こんにちは。\n          ")
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -58253,10 +58859,19 @@ var render = function() {
               }
             },
             [
-              _c("img", {
-                staticClass: "search-user-icon",
-                attrs: { src: user.icon }
-              })
+              user.icon
+                ? _c("img", {
+                    staticClass: "search-user-icon",
+                    attrs: { src: user.icon }
+                  })
+                : _vm._e(),
+              _vm._v(" "),
+              !user.icon
+                ? _c("img", {
+                    staticClass: "search-user-icon",
+                    attrs: { src: "../../../image/user.png" }
+                  })
+                : _vm._e()
             ]
           ),
           _vm._v(" "),
@@ -58304,14 +58919,14 @@ var render = function() {
                     [_vm._v("\n          " + _vm._s(user.name) + "\n        ")]
                   ),
                   _vm._v(" "),
-                  !user.followed
+                  !user.followed && user.id !== _vm.authUser.id
                     ? _c(
                         "div",
                         {
                           staticClass: "search-user-follow-btn",
                           on: {
                             click: function($event) {
-                              return _vm.toggleFollow(user)
+                              return _vm.follow(index)
                             }
                           }
                         },
@@ -58319,14 +58934,14 @@ var render = function() {
                       )
                     : _vm._e(),
                   _vm._v(" "),
-                  user.followed
+                  user.followed && user.id !== _vm.authUser.id
                     ? _c(
                         "div",
                         {
                           staticClass: "search-user-followed-btn",
                           on: {
                             click: function($event) {
-                              return _vm.toggleFollow(user)
+                              return _vm.unFollow(index)
                             }
                           }
                         },
@@ -58823,6 +59438,16 @@ var render = function() {
                               }
                             }
                           }),
+                          _vm._v(" "),
+                          _vm.commentErrors.body
+                            ? _c("div", { staticClass: "user-edit-error" }, [
+                                _vm._v(
+                                  "\n                " +
+                                    _vm._s(_vm.commentErrors.body[0]) +
+                                    "\n              "
+                                )
+                              ])
+                            : _vm._e(),
                           _vm._v(" "),
                           _c(
                             "div",
@@ -59968,6 +60593,16 @@ var render = function() {
                               }
                             }
                           }),
+                          _vm._v(" "),
+                          _vm.commentErrors.body
+                            ? _c("div", { staticClass: "user-edit-error" }, [
+                                _vm._v(
+                                  "\n                " +
+                                    _vm._s(_vm.commentErrors.body[0]) +
+                                    "\n              "
+                                )
+                              ])
+                            : _vm._e(),
                           _vm._v(" "),
                           _c(
                             "div",
@@ -61368,9 +62003,9 @@ var render = function() {
               _c(
                 "router-link",
                 {
-                  attrs: { to: { name: "user", params: { id: post.user_id } } }
+                  attrs: { to: { name: "user", params: { id: post.user.id } } }
                 },
-                [_c("img", { attrs: { src: post.userIcon } })]
+                [_c("img", { attrs: { src: post.user.icon } })]
               )
             ],
             1
@@ -61378,10 +62013,12 @@ var render = function() {
           _vm._v(" "),
           _c("div", { staticClass: "input-area" }, [
             _c("div", { staticClass: "user-name-post" }, [
-              _vm._v(_vm._s(post.user))
+              _vm._v(_vm._s(post.user.name))
             ]),
             _vm._v(" "),
-            _vm._m(0, true),
+            _c("div", { staticClass: "post-body" }, [
+              _vm._v(_vm._s(post.body))
+            ]),
             _vm._v(" "),
             post.tags
               ? _c(
@@ -61393,35 +62030,36 @@ var render = function() {
                       {
                         key: index,
                         attrs: {
-                          to: {
-                            name: "tags.new",
-                            params: { name: tag.replace("#", "") }
-                          }
+                          to: { name: "tags.new", params: { name: tag.name } }
                         }
                       },
-                      [_vm._v("\n          " + _vm._s(tag) + "\n        ")]
+                      [
+                        _vm._v(
+                          "\n          #" + _vm._s(tag.name) + "\n        "
+                        )
+                      ]
                     )
                   }),
                   1
                 )
               : _vm._e(),
             _vm._v(" "),
-            post.images.length > 0
+            post.post_images.length > 0
               ? _c(
                   "div",
                   { staticClass: "post-image-view" },
-                  _vm._l(post.images, function(image, index) {
+                  _vm._l(post.post_images, function(image, index) {
                     return _c(
                       "div",
                       {
                         key: index,
                         staticClass: "each-preview",
                         class: {
-                          "one-image-pre": post.images.length == 1,
-                          "two-image-pre": post.images.length == 2,
-                          "three-image-pre": post.images.length == 3,
-                          "four-image-pre": post.images.length == 4,
-                          yokonaga: post.images.length == 3 && index == 0
+                          "one-image-pre": post.post_images.length == 1,
+                          "two-image-pre": post.post_images.length == 2,
+                          "three-image-pre": post.post_images.length == 3,
+                          "four-image-pre": post.post_images.length == 4,
+                          yokonaga: post.post_images.length == 3 && index == 0
                         }
                       },
                       [
@@ -61431,7 +62069,7 @@ var render = function() {
                             staticClass: "each-image-box",
                             on: {
                               click: function($event) {
-                                return _vm.openImageModal(image)
+                                return _vm.openImageModal(image.path)
                               }
                             }
                           },
@@ -61439,14 +62077,17 @@ var render = function() {
                             _c("div", {
                               staticClass: "each-image",
                               class: {
-                                "one-each-image": post.images.length == 1,
-                                "two-each-image": post.images.length == 2,
-                                "three-each-image": post.images.length == 3,
-                                "four-each-image": post.images.length == 4,
+                                "one-each-image": post.post_images.length == 1,
+                                "two-each-image": post.post_images.length == 2,
+                                "three-each-image":
+                                  post.post_images.length == 3,
+                                "four-each-image": post.post_images.length == 4,
                                 "yokonaga-image":
-                                  post.images.length == 3 && index == 0
+                                  post.post_images.length == 3 && index == 0
                               },
-                              style: { backgroundImage: "url(" + image + ")" }
+                              style: {
+                                backgroundImage: "url(" + image.path + ")"
+                              }
                             })
                           ]
                         )
@@ -61484,7 +62125,7 @@ var render = function() {
                       })
                     : _vm._e(),
                   _vm._v(
-                    "\n          " + _vm._s(post.donmai_count) + "\n        "
+                    "\n          " + _vm._s(post.donmaiCount) + "\n        "
                   )
                 ]
               ),
@@ -61502,7 +62143,7 @@ var render = function() {
                 [
                   _c("img", { attrs: { src: "../../image/comment.png" } }),
                   _vm._v(
-                    "\n          " + _vm._s(post.comment_count) + "\n        "
+                    "\n          " + _vm._s(post.commentCount) + "\n        "
                   )
                 ]
               )
@@ -61553,10 +62194,12 @@ var render = function() {
                     { staticClass: "input-area" },
                     [
                       _c("div", { staticClass: "user-name-post" }, [
-                        _vm._v(_vm._s(_vm.modalPostUser))
+                        _vm._v(_vm._s(_vm.modalPostUserName))
                       ]),
                       _vm._v(" "),
-                      _vm._m(1),
+                      _c("div", { staticClass: "post-body" }, [
+                        _vm._v(_vm._s(_vm.modalPostBody))
+                      ]),
                       _vm._v(" "),
                       _vm.modalPostTags
                         ? _c(
@@ -61570,14 +62213,19 @@ var render = function() {
                                   attrs: {
                                     to: {
                                       name: "tags.new",
-                                      params: { name: tag.replace("#", "") }
+                                      params: { name: tag.name }
+                                    }
+                                  },
+                                  nativeOn: {
+                                    click: function($event) {
+                                      return _vm.fromModalTagToTag($event)
                                     }
                                   }
                                 },
                                 [
                                   _vm._v(
-                                    "\n              " +
-                                      _vm._s(tag) +
+                                    "\n              #" +
+                                      _vm._s(tag.name) +
                                       "\n            "
                                   )
                                 ]
@@ -61618,7 +62266,7 @@ var render = function() {
                                       staticClass: "each-image-box",
                                       on: {
                                         click: function($event) {
-                                          return _vm.openImageModal(image)
+                                          return _vm.openImageModal(image.path)
                                         }
                                       }
                                     },
@@ -61639,7 +62287,8 @@ var render = function() {
                                             index == 0
                                         },
                                         style: {
-                                          backgroundImage: "url(" + image + ")"
+                                          backgroundImage:
+                                            "url(" + image.path + ")"
                                         }
                                       })
                                     ]
@@ -61681,7 +62330,7 @@ var render = function() {
                       _vm._v(" "),
                       _c("div", { staticClass: "comment-post-area" }, [
                         _c("div", { staticClass: "comment-post-icon" }, [
-                          _c("img", { attrs: { src: "../../image/unko.jpg" } })
+                          _c("img", { attrs: { src: _vm.authUser.icon } })
                         ]),
                         _vm._v(" "),
                         _c("div", { staticClass: "input-3" }, [
@@ -61709,9 +62358,28 @@ var render = function() {
                             }
                           }),
                           _vm._v(" "),
-                          _c("div", { staticClass: "comment-btn-main" }, [
-                            _vm._v("\n                コメント\n              ")
-                          ])
+                          _vm.commentErrors.body
+                            ? _c("div", { staticClass: "user-edit-error" }, [
+                                _vm._v(
+                                  "\n                " +
+                                    _vm._s(_vm.commentErrors.body[0]) +
+                                    "\n              "
+                                )
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              staticClass: "comment-btn-main",
+                              on: { click: _vm.commentPost }
+                            },
+                            [
+                              _vm._v(
+                                "\n                コメント\n              "
+                              )
+                            ]
+                          )
                         ])
                       ]),
                       _vm._v(" "),
@@ -61723,25 +62391,57 @@ var render = function() {
                             staticClass: "overlay-post-comment-area"
                           },
                           [
-                            _c(
-                              "div",
-                              { staticClass: "overlay-post-comment-left" },
-                              [
-                                _c(
-                                  "router-link",
-                                  {
-                                    attrs: {
-                                      to: {
-                                        name: "user",
-                                        params: { id: comment.userId }
-                                      }
-                                    }
-                                  },
-                                  [_c("img", { attrs: { src: comment.icon } })]
+                            comment.user.icon
+                              ? _c(
+                                  "div",
+                                  { staticClass: "overlay-post-comment-left" },
+                                  [
+                                    _c(
+                                      "router-link",
+                                      {
+                                        attrs: {
+                                          to: {
+                                            name: "user",
+                                            params: { id: comment.user.id }
+                                          }
+                                        }
+                                      },
+                                      [
+                                        _c("img", {
+                                          attrs: { src: comment.user.icon }
+                                        })
+                                      ]
+                                    )
+                                  ],
+                                  1
                                 )
-                              ],
-                              1
-                            ),
+                              : _vm._e(),
+                            _vm._v(" "),
+                            !comment.user.icon
+                              ? _c(
+                                  "div",
+                                  { staticClass: "overlay-post-comment-left" },
+                                  [
+                                    _c(
+                                      "router-link",
+                                      {
+                                        attrs: {
+                                          to: {
+                                            name: "user",
+                                            params: { id: comment.user.id }
+                                          }
+                                        }
+                                      },
+                                      [
+                                        _c("img", {
+                                          attrs: { src: "../../image/user.png" }
+                                        })
+                                      ]
+                                    )
+                                  ],
+                                  1
+                                )
+                              : _vm._e(),
                             _vm._v(" "),
                             _c(
                               "div",
@@ -61757,7 +62457,7 @@ var render = function() {
                                       [
                                         _vm._v(
                                           "\n                  " +
-                                            _vm._s(comment.user) +
+                                            _vm._s(comment.user.name) +
                                             "\n                "
                                         )
                                       ]
@@ -61769,7 +62469,7 @@ var render = function() {
                                       [
                                         _vm._v(
                                           "\n                  " +
-                                            _vm._s(comment.day) +
+                                            _vm._s(comment.created_at) +
                                             "\n                "
                                         )
                                       ]
@@ -61780,11 +62480,7 @@ var render = function() {
                                 _c(
                                   "div",
                                   { staticClass: "overlay-post-comment" },
-                                  [
-                                    _vm._v(
-                                      "\n                うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。\n              "
-                                    )
-                                  ]
+                                  [_vm._v(_vm._s(comment.body))]
                                 ),
                                 _vm._v(" "),
                                 _c(
@@ -61870,31 +62566,27 @@ var render = function() {
                                             _vm._s(comment.goodCount) +
                                             "\n                  "
                                         ),
-                                        !comment.good
+                                        !comment.gooded
                                           ? _c("img", {
                                               attrs: {
                                                 src: "../../image/good.png"
                                               },
                                               on: {
                                                 click: function($event) {
-                                                  return _vm.commentGood(
-                                                    comment.id
-                                                  )
+                                                  return _vm.commentGood(index)
                                                 }
                                               }
                                             })
                                           : _vm._e(),
                                         _vm._v(" "),
-                                        comment.good
+                                        comment.gooded
                                           ? _c("img", {
                                               attrs: {
                                                 src: "../../image/gooded.png"
                                               },
                                               on: {
                                                 click: function($event) {
-                                                  return _vm.commentGood(
-                                                    comment.id
-                                                  )
+                                                  return _vm.commentGood(index)
                                                 }
                                               }
                                             })
@@ -61934,6 +62626,22 @@ var render = function() {
                                         }
                                       }),
                                       _vm._v(" "),
+                                      comment.replyErrors.body
+                                        ? _c(
+                                            "div",
+                                            { staticClass: "user-edit-error" },
+                                            [
+                                              _vm._v(
+                                                "\n                  " +
+                                                  _vm._s(
+                                                    comment.replyErrors.body[0]
+                                                  ) +
+                                                  "\n                "
+                                              )
+                                            ]
+                                          )
+                                        : _vm._e(),
+                                      _vm._v(" "),
                                       _c(
                                         "div",
                                         { staticClass: "comment-reply-btns" },
@@ -61959,7 +62667,14 @@ var render = function() {
                                           _vm._v(" "),
                                           _c(
                                             "div",
-                                            { staticClass: "comment-btn" },
+                                            {
+                                              staticClass: "comment-btn",
+                                              on: {
+                                                click: function($event) {
+                                                  return _vm.reply(index)
+                                                }
+                                              }
+                                            },
                                             [
                                               _vm._v(
                                                 "\n                    コメント\n                  "
@@ -61989,36 +62704,78 @@ var render = function() {
                                                   "overlay-post-comment-reply-area"
                                               },
                                               [
-                                                _c(
-                                                  "div",
-                                                  {
-                                                    staticClass:
-                                                      "overlay-post-comment-left"
-                                                  },
-                                                  [
-                                                    _c(
-                                                      "router-link",
+                                                reply.user.icon
+                                                  ? _c(
+                                                      "div",
                                                       {
-                                                        attrs: {
-                                                          to: {
-                                                            name: "user",
-                                                            params: {
-                                                              id: reply.userId
-                                                            }
-                                                          }
-                                                        }
+                                                        staticClass:
+                                                          "overlay-post-comment-left"
                                                       },
                                                       [
-                                                        _c("img", {
-                                                          attrs: {
-                                                            src: reply.icon
-                                                          }
-                                                        })
-                                                      ]
+                                                        _c(
+                                                          "router-link",
+                                                          {
+                                                            attrs: {
+                                                              to: {
+                                                                name: "user",
+                                                                params: {
+                                                                  id:
+                                                                    reply.user
+                                                                      .id
+                                                                }
+                                                              }
+                                                            }
+                                                          },
+                                                          [
+                                                            _c("img", {
+                                                              attrs: {
+                                                                src:
+                                                                  reply.user
+                                                                    .icon
+                                                              }
+                                                            })
+                                                          ]
+                                                        )
+                                                      ],
+                                                      1
                                                     )
-                                                  ],
-                                                  1
-                                                ),
+                                                  : _vm._e(),
+                                                _vm._v(" "),
+                                                !reply.user.icon
+                                                  ? _c(
+                                                      "div",
+                                                      {
+                                                        staticClass:
+                                                          "overlay-post-comment-left"
+                                                      },
+                                                      [
+                                                        _c(
+                                                          "router-link",
+                                                          {
+                                                            attrs: {
+                                                              to: {
+                                                                name: "user",
+                                                                params: {
+                                                                  id:
+                                                                    reply.user
+                                                                      .id
+                                                                }
+                                                              }
+                                                            }
+                                                          },
+                                                          [
+                                                            _c("img", {
+                                                              attrs: {
+                                                                src:
+                                                                  "../../image/user.png"
+                                                              }
+                                                            })
+                                                          ]
+                                                        )
+                                                      ],
+                                                      1
+                                                    )
+                                                  : _vm._e(),
                                                 _vm._v(" "),
                                                 _c(
                                                   "div",
@@ -62045,6 +62802,7 @@ var render = function() {
                                                               "\n                          " +
                                                                 _vm._s(
                                                                   reply.user
+                                                                    .name
                                                                 ) +
                                                                 "\n                        "
                                                             )
@@ -62061,7 +62819,7 @@ var render = function() {
                                                             _vm._v(
                                                               "\n                          " +
                                                                 _vm._s(
-                                                                  reply.day
+                                                                  reply.created_at
                                                                 ) +
                                                                 "\n                        "
                                                             )
@@ -62078,7 +62836,7 @@ var render = function() {
                                                       },
                                                       [
                                                         _vm._v(
-                                                          "\n                        うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。\n                      "
+                                                          _vm._s(reply.body)
                                                         )
                                                       ]
                                                     ),
@@ -62104,11 +62862,11 @@ var render = function() {
                                                                 ) +
                                                                 "\n                          "
                                                             ),
-                                                            !reply.good
+                                                            !reply.gooded
                                                               ? _c("img", {
                                                                   attrs: {
                                                                     src:
-                                                                      "../image/good.png"
+                                                                      "../../image/good.png"
                                                                   },
                                                                   on: {
                                                                     click: function(
@@ -62123,11 +62881,11 @@ var render = function() {
                                                                 })
                                                               : _vm._e(),
                                                             _vm._v(" "),
-                                                            reply.good
+                                                            reply.gooded
                                                               ? _c("img", {
                                                                   attrs: {
                                                                     src:
-                                                                      "../image/gooded.png"
+                                                                      "../../image/gooded.png"
                                                                   },
                                                                   on: {
                                                                     click: function(
@@ -62194,6 +62952,7 @@ var render = function() {
           _c("div", { staticClass: "overlay-image-box" }, [
             _c("img", {
               staticClass: "overlay-image-image",
+              class: { "height-is-bigger": _vm.heightIsBigger },
               attrs: { src: _vm.modalImage }
             })
           ])
@@ -62229,25 +62988,53 @@ var render = function() {
                       { key: user.id, staticClass: "donmai-user-list" },
                       [
                         _c("div", { staticClass: "overlay-donmai-left" }, [
-                          _c(
-                            "div",
-                            { staticClass: "overlay-donmai-user-icon" },
-                            [
-                              _c(
-                                "router-link",
-                                {
-                                  attrs: {
-                                    to: {
-                                      name: "user",
-                                      params: { id: user.id }
-                                    }
-                                  }
-                                },
-                                [_c("img", { attrs: { src: user.icon } })]
+                          user.icon
+                            ? _c(
+                                "div",
+                                { staticClass: "overlay-donmai-user-icon" },
+                                [
+                                  _c(
+                                    "router-link",
+                                    {
+                                      attrs: {
+                                        to: {
+                                          name: "user",
+                                          params: { id: user.id }
+                                        }
+                                      }
+                                    },
+                                    [_c("img", { attrs: { src: user.icon } })]
+                                  )
+                                ],
+                                1
                               )
-                            ],
-                            1
-                          ),
+                            : _vm._e(),
+                          _vm._v(" "),
+                          !user.icon
+                            ? _c(
+                                "div",
+                                { staticClass: "overlay-donmai-user-icon" },
+                                [
+                                  _c(
+                                    "router-link",
+                                    {
+                                      attrs: {
+                                        to: {
+                                          name: "user",
+                                          params: { id: user.id }
+                                        }
+                                      }
+                                    },
+                                    [
+                                      _c("img", {
+                                        attrs: { src: "../../image/user.png" }
+                                      })
+                                    ]
+                                  )
+                                ],
+                                1
+                              )
+                            : _vm._e(),
                           _vm._v(" "),
                           _c(
                             "div",
@@ -62277,14 +63064,14 @@ var render = function() {
                         ]),
                         _vm._v(" "),
                         _c("div", { staticClass: "overlay-donmai-right" }, [
-                          !user.followed
+                          !user.followed && user.id !== _vm.authUser.id
                             ? _c(
                                 "div",
                                 {
                                   staticClass: "overlay-donmai-follow",
                                   on: {
                                     click: function($event) {
-                                      return _vm.donmaiFollowToggle(index)
+                                      return _vm.donmaiFollow(index)
                                     }
                                   }
                                 },
@@ -62296,14 +63083,14 @@ var render = function() {
                               )
                             : _vm._e(),
                           _vm._v(" "),
-                          user.followed
+                          user.followed && user.id !== _vm.authUser.id
                             ? _c(
                                 "div",
                                 {
                                   staticClass: "overlay-donmai-followed",
                                   on: {
                                     click: function($event) {
-                                      return _vm.donmaiFollowToggle(index)
+                                      return _vm.donmaiUnFollow(index)
                                     }
                                   }
                                 },
@@ -62319,7 +63106,15 @@ var render = function() {
                     )
                   }),
                   0
-                )
+                ),
+                _vm._v(" "),
+                _vm.modalDonmaiUsers.length == 0
+                  ? _c("div", { staticClass: "no-follower" }, [
+                      _vm._v(
+                        "\n        どんまいしてるユーザーはいません。\n      "
+                      )
+                    ])
+                  : _vm._e()
               ])
             ]
           )
@@ -62328,34 +63123,7 @@ var render = function() {
     2
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "post-body" }, [
-      _vm._v("\n        うんち臭いですね。"),
-      _c("br"),
-      _vm._v("\n        だってうんち漏らしたんだもん。"),
-      _c("br"),
-      _vm._v("\n        ついでにおしっこしていいですか？\n      ")
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "post-body" }, [
-      _vm._v(
-        "\n            こんにちは。こんにちは。こんにちは。こんにちは。こんにちは。こんにちは。"
-      ),
-      _c("br"),
-      _vm._v("\n            こんにちは。こんにちは。"),
-      _c("br"),
-      _vm._v("\n            こんにちは。こんにちは。\n          ")
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -62577,19 +63345,19 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "user-thread-box" },
-    _vm._l(_vm.threads, function(thread, index) {
+    { staticClass: "thread-box" },
+    _vm._l(_vm.guchiRooms, function(room, index) {
       return _c(
         "a",
         {
-          key: thread.id,
+          key: room.id,
           staticClass: "guchi-thread",
           on: {
             click: function($event) {
               if ($event.target !== $event.currentTarget) {
                 return null
               }
-              return _vm.toGuchiDetail(thread.id)
+              return _vm.toGuchiDetail(room.id)
             }
           }
         },
@@ -62600,22 +63368,22 @@ var render = function() {
               staticClass: "thread-list-icon",
               on: {
                 click: function($event) {
-                  return _vm.toGuchiDetail(thread.id)
+                  return _vm.toGuchiDetail(room.id)
                 }
               }
             },
             [
-              !thread.icon
+              !room.icon
                 ? _c("div", {
                     staticClass: "thread-left-icon-image none",
                     style: { backgroundImage: "url(../../image/no-image.png)" }
                   })
                 : _vm._e(),
               _vm._v(" "),
-              thread.icon
+              room.icon
                 ? _c("div", {
                     staticClass: "thread-left-icon-image",
-                    style: { backgroundImage: "url(" + thread.icon + ")" }
+                    style: { backgroundImage: "url(" + room.icon + ")" }
                   })
                 : _vm._e()
             ]
@@ -62627,26 +63395,24 @@ var render = function() {
               staticClass: "thread-left",
               on: {
                 click: function($event) {
-                  return _vm.toGuchiDetail(thread.id)
+                  return _vm.toGuchiDetail(room.id)
                 }
               }
             },
             [
               _c("div", { staticClass: "thread-left-top" }, [
                 _c("div", { staticClass: "genre-icon" }, [
-                  _vm._v(_vm._s(thread.genre))
+                  _vm._v(_vm._s(room.genre))
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "thread-time" }, [
-                  _vm._v(_vm._s(thread.created_at))
+                  _vm._v(_vm._s(room.created_at))
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "thread-comment-count" }, [
                   _c("img", { attrs: { src: "../../image/comment.png" } }),
                   _vm._v(
-                    "\n            " +
-                      _vm._s(thread.comment_count) +
-                      "\n          "
+                    "\n          " + _vm._s(room.guchis_count) + "\n        "
                   )
                 ])
               ]),
@@ -62657,11 +63423,11 @@ var render = function() {
                   staticClass: "thread-title",
                   on: {
                     click: function($event) {
-                      return _vm.toGuchiDetail(thread.id)
+                      return _vm.toGuchiDetail(room.id)
                     }
                   }
                 },
-                [_vm._v(_vm._s(thread.title))]
+                [_vm._v(_vm._s(room.title))]
               )
             ]
           ),
@@ -62675,12 +63441,12 @@ var render = function() {
                   if ($event.target !== $event.currentTarget) {
                     return null
                   }
-                  return _vm.toGuchiDetail(thread.id)
+                  return _vm.toGuchiDetail(room.id)
                 }
               }
             },
             [
-              !thread.bookmarked
+              !room.bookmarked
                 ? _c("img", {
                     attrs: { src: "../../image/bookmark.png" },
                     on: {
@@ -62691,12 +63457,12 @@ var render = function() {
                   })
                 : _vm._e(),
               _vm._v(" "),
-              thread.bookmarked
+              room.bookmarked
                 ? _c("img", {
                     attrs: { src: "../../image/bookmarked.png" },
                     on: {
                       click: function($event) {
-                        return _vm.bookMark(index)
+                        return _vm.unBookMark(index)
                       }
                     }
                   })
@@ -62925,11 +63691,9 @@ var render = function() {
               _c(
                 "router-link",
                 {
-                  attrs: {
-                    to: { name: "user", params: { id: _vm.$route.params.id } }
-                  }
+                  attrs: { to: { name: "user", params: { id: post.user.id } } }
                 },
-                [_c("img", { attrs: { src: "../../image/unko.jpg" } })]
+                [_c("img", { attrs: { src: post.user.icon } })]
               )
             ],
             1
@@ -62937,10 +63701,12 @@ var render = function() {
           _vm._v(" "),
           _c("div", { staticClass: "input-area" }, [
             _c("div", { staticClass: "user-name-post" }, [
-              _vm._v("ユーザー" + _vm._s(_vm.$route.params.id))
+              _vm._v(_vm._s(post.user.name))
             ]),
             _vm._v(" "),
-            _vm._m(0, true),
+            _c("div", { staticClass: "post-body" }, [
+              _vm._v(_vm._s(post.body))
+            ]),
             _vm._v(" "),
             post.tags
               ? _c(
@@ -62952,35 +63718,36 @@ var render = function() {
                       {
                         key: index,
                         attrs: {
-                          to: {
-                            name: "tags.new",
-                            params: { name: tag.replace("#", "") }
-                          }
+                          to: { name: "tags.new", params: { name: tag.name } }
                         }
                       },
-                      [_vm._v("\n          " + _vm._s(tag) + "\n        ")]
+                      [
+                        _vm._v(
+                          "\n          #" + _vm._s(tag.name) + "\n        "
+                        )
+                      ]
                     )
                   }),
                   1
                 )
               : _vm._e(),
             _vm._v(" "),
-            post.images.length > 0
+            post.post_images.length > 0
               ? _c(
                   "div",
                   { staticClass: "post-image-view" },
-                  _vm._l(post.images, function(image, index) {
+                  _vm._l(post.post_images, function(image, index) {
                     return _c(
                       "div",
                       {
                         key: index,
                         staticClass: "each-preview",
                         class: {
-                          "one-image-pre": post.images.length == 1,
-                          "two-image-pre": post.images.length == 2,
-                          "three-image-pre": post.images.length == 3,
-                          "four-image-pre": post.images.length == 4,
-                          yokonaga: post.images.length == 3 && index == 0
+                          "one-image-pre": post.post_images.length == 1,
+                          "two-image-pre": post.post_images.length == 2,
+                          "three-image-pre": post.post_images.length == 3,
+                          "four-image-pre": post.post_images.length == 4,
+                          yokonaga: post.post_images.length == 3 && index == 0
                         }
                       },
                       [
@@ -62990,7 +63757,7 @@ var render = function() {
                             staticClass: "each-image-box",
                             on: {
                               click: function($event) {
-                                return _vm.openImageModal(image)
+                                return _vm.openImageModal(image.path)
                               }
                             }
                           },
@@ -62998,14 +63765,17 @@ var render = function() {
                             _c("div", {
                               staticClass: "each-image",
                               class: {
-                                "one-each-image": post.images.length == 1,
-                                "two-each-image": post.images.length == 2,
-                                "three-each-image": post.images.length == 3,
-                                "four-each-image": post.images.length == 4,
+                                "one-each-image": post.post_images.length == 1,
+                                "two-each-image": post.post_images.length == 2,
+                                "three-each-image":
+                                  post.post_images.length == 3,
+                                "four-each-image": post.post_images.length == 4,
                                 "yokonaga-image":
-                                  post.images.length == 3 && index == 0
+                                  post.post_images.length == 3 && index == 0
                               },
-                              style: { backgroundImage: "url(" + image + ")" }
+                              style: {
+                                backgroundImage: "url(" + image.path + ")"
+                              }
                             })
                           ]
                         )
@@ -63043,7 +63813,7 @@ var render = function() {
                       })
                     : _vm._e(),
                   _vm._v(
-                    "\n          " + _vm._s(post.donmai_count) + "\n        "
+                    "\n          " + _vm._s(post.donmaiCount) + "\n        "
                   )
                 ]
               ),
@@ -63061,7 +63831,7 @@ var render = function() {
                 [
                   _c("img", { attrs: { src: "../../image/comment.png" } }),
                   _vm._v(
-                    "\n          " + _vm._s(post.comment_count) + "\n        "
+                    "\n          " + _vm._s(post.commentCount) + "\n        "
                   )
                 ]
               )
@@ -63097,11 +63867,11 @@ var render = function() {
                           attrs: {
                             to: {
                               name: "user",
-                              params: { id: _vm.$route.params.id }
+                              params: { id: _vm.modalPostUserId }
                             }
                           }
                         },
-                        [_c("img", { attrs: { src: "../../image/unko.jpg" } })]
+                        [_c("img", { attrs: { src: _vm.modalPostUserIcon } })]
                       )
                     ],
                     1
@@ -63112,10 +63882,12 @@ var render = function() {
                     { staticClass: "input-area" },
                     [
                       _c("div", { staticClass: "user-name-post" }, [
-                        _vm._v(_vm._s(_vm.modalPostUser))
+                        _vm._v(_vm._s(_vm.modalPostUserName))
                       ]),
                       _vm._v(" "),
-                      _vm._m(1),
+                      _c("div", { staticClass: "post-body" }, [
+                        _vm._v(_vm._s(_vm.modalPostBody))
+                      ]),
                       _vm._v(" "),
                       _vm.modalPostTags
                         ? _c(
@@ -63129,14 +63901,19 @@ var render = function() {
                                   attrs: {
                                     to: {
                                       name: "tags.new",
-                                      params: { name: tag.replace("#", "") }
+                                      params: { name: tag.name }
+                                    }
+                                  },
+                                  nativeOn: {
+                                    click: function($event) {
+                                      return _vm.fromModalTagToTag($event)
                                     }
                                   }
                                 },
                                 [
                                   _vm._v(
-                                    "\n              " +
-                                      _vm._s(tag) +
+                                    "\n              #" +
+                                      _vm._s(tag.name) +
                                       "\n            "
                                   )
                                 ]
@@ -63177,7 +63954,7 @@ var render = function() {
                                       staticClass: "each-image-box",
                                       on: {
                                         click: function($event) {
-                                          return _vm.openImageModal(image)
+                                          return _vm.openImageModal(image.path)
                                         }
                                       }
                                     },
@@ -63198,7 +63975,8 @@ var render = function() {
                                             index == 0
                                         },
                                         style: {
-                                          backgroundImage: "url(" + image + ")"
+                                          backgroundImage:
+                                            "url(" + image.path + ")"
                                         }
                                       })
                                     ]
@@ -63240,7 +64018,7 @@ var render = function() {
                       _vm._v(" "),
                       _c("div", { staticClass: "comment-post-area" }, [
                         _c("div", { staticClass: "comment-post-icon" }, [
-                          _c("img", { attrs: { src: "../../image/unko.jpg" } })
+                          _c("img", { attrs: { src: _vm.authUser.icon } })
                         ]),
                         _vm._v(" "),
                         _c("div", { staticClass: "input-3" }, [
@@ -63268,9 +64046,28 @@ var render = function() {
                             }
                           }),
                           _vm._v(" "),
-                          _c("div", { staticClass: "comment-btn-main" }, [
-                            _vm._v("\n                コメント\n              ")
-                          ])
+                          _vm.commentErrors.body
+                            ? _c("div", { staticClass: "user-edit-error" }, [
+                                _vm._v(
+                                  "\n                " +
+                                    _vm._s(_vm.commentErrors.body[0]) +
+                                    "\n              "
+                                )
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              staticClass: "comment-btn-main",
+                              on: { click: _vm.commentPost }
+                            },
+                            [
+                              _vm._v(
+                                "\n                コメント\n              "
+                              )
+                            ]
+                          )
                         ])
                       ]),
                       _vm._v(" "),
@@ -63282,25 +64079,57 @@ var render = function() {
                             staticClass: "overlay-post-comment-area"
                           },
                           [
-                            _c(
-                              "div",
-                              { staticClass: "overlay-post-comment-left" },
-                              [
-                                _c(
-                                  "router-link",
-                                  {
-                                    attrs: {
-                                      to: {
-                                        name: "user",
-                                        params: { id: comment.userId }
-                                      }
-                                    }
-                                  },
-                                  [_c("img", { attrs: { src: comment.icon } })]
+                            comment.user.icon
+                              ? _c(
+                                  "div",
+                                  { staticClass: "overlay-post-comment-left" },
+                                  [
+                                    _c(
+                                      "router-link",
+                                      {
+                                        attrs: {
+                                          to: {
+                                            name: "user",
+                                            params: { id: comment.user.id }
+                                          }
+                                        }
+                                      },
+                                      [
+                                        _c("img", {
+                                          attrs: { src: comment.user.icon }
+                                        })
+                                      ]
+                                    )
+                                  ],
+                                  1
                                 )
-                              ],
-                              1
-                            ),
+                              : _vm._e(),
+                            _vm._v(" "),
+                            !comment.user.icon
+                              ? _c(
+                                  "div",
+                                  { staticClass: "overlay-post-comment-left" },
+                                  [
+                                    _c(
+                                      "router-link",
+                                      {
+                                        attrs: {
+                                          to: {
+                                            name: "user",
+                                            params: { id: comment.user.id }
+                                          }
+                                        }
+                                      },
+                                      [
+                                        _c("img", {
+                                          attrs: { src: "../../image/user.png" }
+                                        })
+                                      ]
+                                    )
+                                  ],
+                                  1
+                                )
+                              : _vm._e(),
                             _vm._v(" "),
                             _c(
                               "div",
@@ -63316,7 +64145,7 @@ var render = function() {
                                       [
                                         _vm._v(
                                           "\n                  " +
-                                            _vm._s(comment.user) +
+                                            _vm._s(comment.user.name) +
                                             "\n                "
                                         )
                                       ]
@@ -63328,7 +64157,7 @@ var render = function() {
                                       [
                                         _vm._v(
                                           "\n                  " +
-                                            _vm._s(comment.day) +
+                                            _vm._s(comment.created_at) +
                                             "\n                "
                                         )
                                       ]
@@ -63339,11 +64168,7 @@ var render = function() {
                                 _c(
                                   "div",
                                   { staticClass: "overlay-post-comment" },
-                                  [
-                                    _vm._v(
-                                      "\n                うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。\n              "
-                                    )
-                                  ]
+                                  [_vm._v(_vm._s(comment.body))]
                                 ),
                                 _vm._v(" "),
                                 _c(
@@ -63429,31 +64254,27 @@ var render = function() {
                                             _vm._s(comment.goodCount) +
                                             "\n                  "
                                         ),
-                                        !comment.good
+                                        !comment.gooded
                                           ? _c("img", {
                                               attrs: {
                                                 src: "../../image/good.png"
                                               },
                                               on: {
                                                 click: function($event) {
-                                                  return _vm.commentGood(
-                                                    comment.id
-                                                  )
+                                                  return _vm.commentGood(index)
                                                 }
                                               }
                                             })
                                           : _vm._e(),
                                         _vm._v(" "),
-                                        comment.good
+                                        comment.gooded
                                           ? _c("img", {
                                               attrs: {
                                                 src: "../../image/gooded.png"
                                               },
                                               on: {
                                                 click: function($event) {
-                                                  return _vm.commentGood(
-                                                    comment.id
-                                                  )
+                                                  return _vm.commentGood(index)
                                                 }
                                               }
                                             })
@@ -63493,6 +64314,22 @@ var render = function() {
                                         }
                                       }),
                                       _vm._v(" "),
+                                      comment.replyErrors.body
+                                        ? _c(
+                                            "div",
+                                            { staticClass: "user-edit-error" },
+                                            [
+                                              _vm._v(
+                                                "\n                  " +
+                                                  _vm._s(
+                                                    comment.replyErrors.body[0]
+                                                  ) +
+                                                  "\n                "
+                                              )
+                                            ]
+                                          )
+                                        : _vm._e(),
+                                      _vm._v(" "),
                                       _c(
                                         "div",
                                         { staticClass: "comment-reply-btns" },
@@ -63518,7 +64355,14 @@ var render = function() {
                                           _vm._v(" "),
                                           _c(
                                             "div",
-                                            { staticClass: "comment-btn" },
+                                            {
+                                              staticClass: "comment-btn",
+                                              on: {
+                                                click: function($event) {
+                                                  return _vm.reply(index)
+                                                }
+                                              }
+                                            },
                                             [
                                               _vm._v(
                                                 "\n                    コメント\n                  "
@@ -63548,36 +64392,78 @@ var render = function() {
                                                   "overlay-post-comment-reply-area"
                                               },
                                               [
-                                                _c(
-                                                  "div",
-                                                  {
-                                                    staticClass:
-                                                      "overlay-post-comment-left"
-                                                  },
-                                                  [
-                                                    _c(
-                                                      "router-link",
+                                                reply.user.icon
+                                                  ? _c(
+                                                      "div",
                                                       {
-                                                        attrs: {
-                                                          to: {
-                                                            name: "user",
-                                                            params: {
-                                                              id: reply.userId
-                                                            }
-                                                          }
-                                                        }
+                                                        staticClass:
+                                                          "overlay-post-comment-left"
                                                       },
                                                       [
-                                                        _c("img", {
-                                                          attrs: {
-                                                            src: reply.icon
-                                                          }
-                                                        })
-                                                      ]
+                                                        _c(
+                                                          "router-link",
+                                                          {
+                                                            attrs: {
+                                                              to: {
+                                                                name: "user",
+                                                                params: {
+                                                                  id:
+                                                                    reply.user
+                                                                      .id
+                                                                }
+                                                              }
+                                                            }
+                                                          },
+                                                          [
+                                                            _c("img", {
+                                                              attrs: {
+                                                                src:
+                                                                  reply.user
+                                                                    .icon
+                                                              }
+                                                            })
+                                                          ]
+                                                        )
+                                                      ],
+                                                      1
                                                     )
-                                                  ],
-                                                  1
-                                                ),
+                                                  : _vm._e(),
+                                                _vm._v(" "),
+                                                !reply.user.icon
+                                                  ? _c(
+                                                      "div",
+                                                      {
+                                                        staticClass:
+                                                          "overlay-post-comment-left"
+                                                      },
+                                                      [
+                                                        _c(
+                                                          "router-link",
+                                                          {
+                                                            attrs: {
+                                                              to: {
+                                                                name: "user",
+                                                                params: {
+                                                                  id:
+                                                                    reply.user
+                                                                      .id
+                                                                }
+                                                              }
+                                                            }
+                                                          },
+                                                          [
+                                                            _c("img", {
+                                                              attrs: {
+                                                                src:
+                                                                  "../../image/user.png"
+                                                              }
+                                                            })
+                                                          ]
+                                                        )
+                                                      ],
+                                                      1
+                                                    )
+                                                  : _vm._e(),
                                                 _vm._v(" "),
                                                 _c(
                                                   "div",
@@ -63604,6 +64490,7 @@ var render = function() {
                                                               "\n                          " +
                                                                 _vm._s(
                                                                   reply.user
+                                                                    .name
                                                                 ) +
                                                                 "\n                        "
                                                             )
@@ -63620,7 +64507,7 @@ var render = function() {
                                                             _vm._v(
                                                               "\n                          " +
                                                                 _vm._s(
-                                                                  reply.day
+                                                                  reply.created_at
                                                                 ) +
                                                                 "\n                        "
                                                             )
@@ -63637,7 +64524,7 @@ var render = function() {
                                                       },
                                                       [
                                                         _vm._v(
-                                                          "\n                        うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。うんちあほ。\n                      "
+                                                          _vm._s(reply.body)
                                                         )
                                                       ]
                                                     ),
@@ -63663,11 +64550,11 @@ var render = function() {
                                                                 ) +
                                                                 "\n                          "
                                                             ),
-                                                            !reply.good
+                                                            !reply.gooded
                                                               ? _c("img", {
                                                                   attrs: {
                                                                     src:
-                                                                      "../image/good.png"
+                                                                      "../../image/good.png"
                                                                   },
                                                                   on: {
                                                                     click: function(
@@ -63682,11 +64569,11 @@ var render = function() {
                                                                 })
                                                               : _vm._e(),
                                                             _vm._v(" "),
-                                                            reply.good
+                                                            reply.gooded
                                                               ? _c("img", {
                                                                   attrs: {
                                                                     src:
-                                                                      "../image/gooded.png"
+                                                                      "../../image/gooded.png"
                                                                   },
                                                                   on: {
                                                                     click: function(
@@ -63753,6 +64640,7 @@ var render = function() {
           _c("div", { staticClass: "overlay-image-box" }, [
             _c("img", {
               staticClass: "overlay-image-image",
+              class: { "height-is-bigger": _vm.heightIsBigger },
               attrs: { src: _vm.modalImage }
             })
           ])
@@ -63788,25 +64676,53 @@ var render = function() {
                       { key: user.id, staticClass: "donmai-user-list" },
                       [
                         _c("div", { staticClass: "overlay-donmai-left" }, [
-                          _c(
-                            "div",
-                            { staticClass: "overlay-donmai-user-icon" },
-                            [
-                              _c(
-                                "router-link",
-                                {
-                                  attrs: {
-                                    to: {
-                                      name: "user",
-                                      params: { id: user.id }
-                                    }
-                                  }
-                                },
-                                [_c("img", { attrs: { src: user.icon } })]
+                          user.icon
+                            ? _c(
+                                "div",
+                                { staticClass: "overlay-donmai-user-icon" },
+                                [
+                                  _c(
+                                    "router-link",
+                                    {
+                                      attrs: {
+                                        to: {
+                                          name: "user",
+                                          params: { id: user.id }
+                                        }
+                                      }
+                                    },
+                                    [_c("img", { attrs: { src: user.icon } })]
+                                  )
+                                ],
+                                1
                               )
-                            ],
-                            1
-                          ),
+                            : _vm._e(),
+                          _vm._v(" "),
+                          !user.icon
+                            ? _c(
+                                "div",
+                                { staticClass: "overlay-donmai-user-icon" },
+                                [
+                                  _c(
+                                    "router-link",
+                                    {
+                                      attrs: {
+                                        to: {
+                                          name: "user",
+                                          params: { id: user.id }
+                                        }
+                                      }
+                                    },
+                                    [
+                                      _c("img", {
+                                        attrs: { src: "../../image/user.png" }
+                                      })
+                                    ]
+                                  )
+                                ],
+                                1
+                              )
+                            : _vm._e(),
                           _vm._v(" "),
                           _c(
                             "div",
@@ -63836,14 +64752,14 @@ var render = function() {
                         ]),
                         _vm._v(" "),
                         _c("div", { staticClass: "overlay-donmai-right" }, [
-                          !user.followed
+                          !user.followed && user.id !== _vm.authUser.id
                             ? _c(
                                 "div",
                                 {
                                   staticClass: "overlay-donmai-follow",
                                   on: {
                                     click: function($event) {
-                                      return _vm.donmaiFollowToggle(index)
+                                      return _vm.donmaiFollow(index)
                                     }
                                   }
                                 },
@@ -63855,14 +64771,14 @@ var render = function() {
                               )
                             : _vm._e(),
                           _vm._v(" "),
-                          user.followed
+                          user.followed && user.id !== _vm.authUser.id
                             ? _c(
                                 "div",
                                 {
                                   staticClass: "overlay-donmai-followed",
                                   on: {
                                     click: function($event) {
-                                      return _vm.donmaiFollowToggle(index)
+                                      return _vm.donmaiUnFollow(index)
                                     }
                                   }
                                 },
@@ -63878,7 +64794,15 @@ var render = function() {
                     )
                   }),
                   0
-                )
+                ),
+                _vm._v(" "),
+                _vm.modalDonmaiUsers.length == 0
+                  ? _c("div", { staticClass: "no-follower" }, [
+                      _vm._v(
+                        "\n        どんまいしてるユーザーはいません。\n      "
+                      )
+                    ])
+                  : _vm._e()
               ])
             ]
           )
@@ -63887,36 +64811,7 @@ var render = function() {
     2
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "post-body" }, [
-      _vm._v(
-        "\n        こんにちは。こんにちは。こんにちは。こんにちは。こんにちは。こんにちは。"
-      ),
-      _c("br"),
-      _vm._v("\n        こんにちは。こんにちは。"),
-      _c("br"),
-      _vm._v("\n        こんにちは。こんにちは。\n      ")
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "post-body" }, [
-      _vm._v(
-        "\n            こんにちは。こんにちは。こんにちは。こんにちは。こんにちは。こんにちは。"
-      ),
-      _c("br"),
-      _vm._v("\n            こんにちは。こんにちは。"),
-      _c("br"),
-      _vm._v("\n            こんにちは。こんにちは。\n          ")
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
