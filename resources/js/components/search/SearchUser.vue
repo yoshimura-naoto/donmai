@@ -60,18 +60,55 @@ export default {
         //   pr: 'うんちが大好き。うんちが大好き。うんちが大好き。うんちが大好き。うんちが大好き。うんちが大好き。うんちが大好き。うんちが大好き。うんちが大好き。うんちが大好き。'
         // },
       ],
+      // 無限スクロール用
+      itemLoading: false,
+      loadMore: true,
+      page: 1,
+      isLastPage: false,
     }
   },
+
   methods: {
-    getInitInfo() {
-      axios.get('/api/search/users/' + this.$route.params.word)
+    // 認証ユーザー情報、ユーザーを取得
+    getInitInfo(word) {
+      axios.get('/api/user')
         .then((res) => {
           console.log(res.data);
-          this.authUser = res.data.authUser;
-          this.users = res.data.users;
-        }).catch(() => {
-          return;
+          this.authUser = res.data;
+          if (!this.authUser.icon) {
+            this.authUser.icon = '../../../image/user.png';
+          }
+          this.getUsers(word);
+        }).catch((error) => {
+          console.log(error);
         });
+    },
+    // ユーザーの取得（無限スクロール）
+    getUsers(word) {
+      if (this.isLastPage) return;
+      if (this.itemLoading) return;
+      this.itemLoading = true;
+      axios.get('/api/search/users/' + word + '?page=' + this.page)
+        .then((res) => {
+          console.log(res.data);
+          this.users.push(...res.data.data);
+          this.itemLoading = false;
+          if (this.page === res.data.last_page) {
+            this.isLastPage = true;
+          }
+          this.page++;
+        }).catch((error) => {
+          console.log(error);
+          this.itemLoading = false;
+        });
+    },
+    // 無限スクロールのリセット
+    resetPaginate() {
+      this.users = [];
+      this.itemLoading = false;
+      this.loadMore = true;
+      this.page = 1;
+      this.isLastPage = false;
     },
     // フォローボタンの処理
     follow(i) {
@@ -97,9 +134,26 @@ export default {
   },
 
   mounted() {
-    this.getInitInfo();
+    this.getInitInfo(this.$route.params.word);
+    // 投稿の無限スクロール
+    window.onscroll = () => {
+      // スクロール位置が一番下ならtrue
+      let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight;
+      if (bottomOfWindow) {
+        this.getUsers(this.$route.params.word);
+      }
+    }
   },
 
+  beforeRouteLeave (to, from, next) {
+    this.isLastPage = true;
+    next();
+  },
 
+  beforeRouteUpdate (to, from, next) {
+    this.resetPaginate();
+    this.getUsers(to.params.word);
+    next();
+  },
 }
 </script>

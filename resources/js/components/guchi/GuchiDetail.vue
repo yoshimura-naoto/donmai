@@ -22,16 +22,18 @@
 
           <div class="thread-title-area-right">
 
+            <!-- スレッドタイトル -->
             <div class="thread-title-area-title">
               <div class="thread-title">{{ guchiRoom.title }}</div>
             </div>
 
             <div class="thread-title-area-infos">
 
+              <!-- コメント数 -->
               <div class="thread-title-area-comment">
                 <div class="comment-count">
                     <img :src="'../../image/comment.png'">
-                    {{ guchis.length }}
+                    {{ guchiRoom.guchis_count }}
                 </div>
               </div>
 
@@ -49,12 +51,18 @@
         <!-- コメント一覧 -->
         <div :key="resetKey">
 
-          <div v-for="(guchi, index) in guchis" :key="guchi.id" class="thread-comment-area"  :class="{ 'self-comment': guchi.user_id === authUser.id }">
+          <div v-for="(guchi, index) in guchis" :key="guchi.id" class="thread-comment-area"  :class="{ 'self-comment': guchi.isSelf }">
 
             <!-- IDと投稿日時 -->
-            <div class="thread-comment-area-top">
-              <div class="id" :class="{ 'self-id': guchi.user_id === authUser.id }">{{ index + 1 }}:</div>
+            <div v-if="!guchi.user_id" class="thread-comment-area-top">
+              <div class="id" :class="{ 'self-id': guchi.isSelf }">{{ index + 1 }}:</div>
               <div class="time">{{ guchi.created_at }}</div>
+            </div>
+
+            <div v-if="guchi.user_id" class="thread-comment-area-top">
+              <div class="id" :class="{ 'self-id': guchi.isSelf }">
+                <img v-if="guchi.user.icon" :src="guchi.user.icon"><img v-if="!guchi.user.icon" :src="'../../image/user.png'"> {{ guchi.user.name }} {{ guchi.created_at }}
+              </div>
             </div>
 
             <!-- コメント本文 -->
@@ -80,10 +88,26 @@
 
             </div>
 
+            <!-- グチ削除ボタン -->
+            <img v-if="guchi.isSelf" :src="'../../image/batsu.png'" @click="deleteGuchiModalOpen(index)" class="guchi-delete-icon">
+
           </div>
 
         </div>
 
+        <!-- ページネーション -->
+        <div v-if="guchis.length > 0" class="guchi-detail-paginate">
+          <div class="guchi-detail-paginate-box">
+            <div class="guchiroom-paginate">
+              <div @click="changePage(1)" class="gechiroom-paginate-first" :class="{'change-page-disabled': currentPage <= 1}">&laquo;</div>
+              <div @click="changePage(currentPage - 1)" class="gechiroom-paginate-prev" :class="{'change-page-disabled': currentPage <= 1}">&lt;</div>
+              <div v-for="page in pages" :key="page" @click="changePage(page)" class="guchiroom-paginate-page" :class="{'current-page': page === currentPage}">{{ page }}</div>
+              <div @click="changePage(currentPage + 1)" class="gechiroom-paginate-next" :class="{'change-page-disabled': currentPage >= lastPage}">&gt;</div>
+              <div @click="changePage(lastPage)" class="gechiroom-paginate-last" :class="{'change-page-disabled': currentPage >= lastPage}">&raquo;</div>
+            </div>
+            <div class="guchiroom-paginate-info">全{{ total }}件中{{ from }}〜{{ to }}件表示</div>
+          </div>
+        </div>
 
         <!-- コメント投稿エリア -->
         <div class="thread-post-area">
@@ -123,7 +147,7 @@
           <div class="check-btns">
             <div class="tokumei" :class="{ 'selected': form.anonymous }" @click="anonymous">
               <img :src="'../../image/check.png'">
-              匿名で投稿
+              匿名で投稿（投稿の削除不可）
             </div>
             <div class="show-name" :class="{ 'selected': !form.anonymous }" @click="showName">
               <img :src="'../../image/check.png'">
@@ -157,6 +181,18 @@
 
     </div>
 
+
+    <!-- 削除確認モーダル -->
+    <div v-if="deleteGuchiModalOpened" @click.self="deleteGuchiModalClose" class="delete-post-modal-cover">
+      <div class="post-delete-check">
+        <div class="post-delete-really">削除しますか？</div>
+        <div class="post-delete-btns">
+          <div class="post-delete-cancel" @click="deleteGuchiModalClose">キャンセル</div>
+          <div class="post-delete-delete" @click="deleteGuchi">削除</div>
+        </div>
+      </div>
+    </div>
+
   </div>
 
 </template>
@@ -166,14 +202,14 @@
 export default {
   data() {
     return {
+      // 認証ユーザー情報
+      authUser: null,
       // 縦長の画像の幅の調整
       tatenagaImageWidth: null,
       heightIsBigger: false,
       // モーダル
       modalImageShow: false,
       modalImage: '',
-      // 認証ユーザー情報
-      authUser: null,
       // このグチ部屋の情報
       guchiRoom: {
         // id:
@@ -195,6 +231,7 @@ export default {
         // {
           // id:
           // user_id:
+          // isSelf:
           // body:
           // anonymous:
           // created_at:
@@ -209,8 +246,23 @@ export default {
         // }
       ],
       urls: [],
+      guchiCreated: false, // グチを投稿したかどうか
+      // スクロール位置の記憶
+      scrollPosition: null,
+      // 削除確認モーダル
+      deleteGuchiModalOpened: false,
+      // 削除する予定の部屋のid
+      deleteGuchiIndex: null,
+      // 削除中
+      guchiDeleting: false,
       // リロードの用のキー
       resetKey: 0,
+      // ページネーション
+      currentPage: 1,
+      lastPage: 1,
+      total: 1,
+      from: 0,
+      to: 0,
     }
   },
 
@@ -225,11 +277,37 @@ export default {
         .then((res) => {
           this.authUser = res.data.authUser;
           this.guchiRoom = res.data.guchiRoom;
-          this.guchis = res.data.guchis;
-          console.log(this.guchis);
+          this.getGuchis(1, roomId);
         }).catch(() => {
           return;
         });
+    },
+    // グチの取得（ページネーション）
+    getGuchis(page, roomId) {
+      axios.get('/api/guchi/get/' + roomId + '?page=' + page)
+        .then((res) => {
+          console.log(res.data);
+          this.guchis = res.data.data;
+          this.currentPage = res.data.current_page;
+          this.lastPage = res.data.last_page;
+          this.total = res.data.total;
+          this.from = res.data.from;
+          this.to = res.data.to;
+          if (!this.guchiCreated) {
+            window.scrollTo(0, 0);
+          } else {
+            this.$nextTick(function() {
+              this.scrollToEnd();
+            });
+          }
+          this.guchiCreated = false;
+        }).catch((error) => {
+          console.log(error);
+        });
+    },
+    // ページ遷移
+    changePage(page) {
+      if (page >= 1 && page <= this.lastPage) this.getGuchis(page, this.$route.params.id);
     },
     // グッドの切り替え
     good(i) {
@@ -311,17 +389,12 @@ export default {
           this.errors = [];
           this.urls = [];
           this.message = null;
-          axios.get('/api/guchi/get/' + this.$route.params.id)
-            .then((res) => {
-              console.log(res.data);
-              this.guchis = res.data;
-              this.resetKey++;
-              this.$nextTick(function() {
-                this.scrollToEnd();
-              });
-            }).catch(() => {
-              return;
-            });
+          this.guchiCreated = true;
+          if (this.total % 5 === 0 && this.total > 0) {
+            this.getGuchis(this.lastPage + 1, this.$route.params.id);
+          } else {
+            this.getGuchis(this.lastPage, this.$route.params.id);
+          }
         }).catch((error) => {
           this.errors = error.response.data.errors;
         });
@@ -329,7 +402,6 @@ export default {
     // ページ最下部へスクロール
     scrollToEnd() {
       const element = document.documentElement;
-      // const bottom = element.scrollHeight - element.clientHeight - 319;
       const bottom = element.scrollHeight - element.clientHeight;
       window.scroll(0, bottom);
     },
@@ -353,9 +425,7 @@ export default {
     },
     // 画像のモーダルウィンドウの開閉
     openImageModal(image) {
-      if (!this.modalPostShow) {
-        this.keepScrollWhenOpen();
-      }
+      this.keepScrollWhenOpen();
       this.modalImageShow = true;
       this.modalImage = image;
       const img = new Image();
@@ -371,9 +441,7 @@ export default {
       }
     },
     closeImageModal() {
-      if (!this.modalPostShow) {
-        this.keepScrollWhenClose();
-      }
+      this.keepScrollWhenClose();
       this.heightIsBigger = false;
       this.tatenagaImageWidth = null;
       this.modalImageShow = false;
@@ -389,6 +457,32 @@ export default {
         return;
       }
     },
+    // グチ削除モーダルの開閉
+    deleteGuchiModalOpen(i) {
+      this.keepScrollWhenOpen();
+      this.deleteGuchiIndex = i;
+      this.deleteGuchiModalOpened = true;
+      console.log(this.guchis[this.deleteGuchiIndex].id);
+    },
+    deleteGuchiModalClose() {
+      this.keepScrollWhenClose();
+      this.deleteGuchiIndex = null;
+      this.deleteGuchiModalOpened = false;
+    },
+    // グチの削除
+    deleteGuchi() {
+      if (this.guchiDeleting) return;
+      this.guchiDeleting = true;
+      axios.post('/api/guchi/delete/' + this.guchis[this.deleteGuchiIndex].id)
+        .then(() => {
+          this.guchis.splice(this.deleteGuchiIndex, 1);
+          this.deleteGuchiModalClose();
+          this.guchiDeleting = false;
+        }).catch((error) => {
+          console.log(error);
+          this.guchiDeleting = false;
+        });
+    },
   },
 
   created() {
@@ -401,14 +495,33 @@ export default {
 
   mounted() {
     this.getInitInfo(this.$route.params.id);
-    this.scrollToEnd();
+  },
+
+  computed: {
+    pages() {
+      let start = _.max([this.currentPage - 2, 1]);
+      let end = _.min([start + 5, this.lastPage + 1]);
+      start = _.max([end - 5, 1]);
+      return _.range(start, end);
+    },
   },
 
   beforeRouteLeave (to, from, next) {
-    if (this.modalImageShow) {
+    if (this.modalImageShow || this.deleteGuchiModalOpened) {
       this.keepScrollWhenClose();
       this.modalImageShow = false;
+      this.deleteGuchiModalClose();
     }
+    next();
+  },
+
+  beforeRouteUpdate (to, from, next) {
+    if (this.modalImageShow || this.deleteGuchiModalOpened) {
+      this.keepScrollWhenClose();
+      this.modalImageShow = false;
+      this.deleteGuchiModalClose();
+    }
+    this.getInitInfo(to.params.id)
     next();
   },
 }

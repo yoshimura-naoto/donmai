@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Database\Eloquent\Builder;
 use InterventionImage;
 
 use App\User;
@@ -15,30 +16,29 @@ use Storage;
 
 class UserController extends Controller
 {
-    // ユーザー表示
+    // idからユーザー情報取得
     public function show($id)
     {
-        $authId = Auth::id();
-        $user = User::where('id', $id)->first();
-
-        // 認証ユーザーがそのユーザーをフォローしているかどうかチェック
-        $followedByMe = Follow::where('user_id', $authId)
-                ->where('following_user_id', $user->id)
-                ->exists();
-        if (!$followedByMe) {
-            $user->followed = false;
-        } else {
+        $user = User::select(['id', 'icon', 'name', 'pr'])
+                    ->where('id', $id)
+                    ->withCount(['posts',
+                                 'follows',
+                                 'followers',
+                                 'followers as followed_by_me_count' => function (Builder $query) {
+                                     $query->where('user_id', Auth::id());
+                                 }])
+                    ->first();
+        
+        // 認証ユーザーがフォローしているかどうか
+        if ($user->followed_by_me_count > 0) {
             $user->followed = true;
+        } else {
+            $user->followed = false;
         }
-
-        // フォロー数とフォロワー数を取得
-        $followingCount = Follow::where('user_id', $user->id)->count();
-        $followerCount = Follow::where('following_user_id', $user->id)->count();
-        $user->follow = $followingCount;
-        $user->follower = $followerCount;
 
         return $user;
     }
+
 
 
     // ユーザーのプロフィール更新
@@ -49,20 +49,14 @@ class UserController extends Controller
         $user = User::where('id', $request->id)->first();
 
         // アイコン画像アップロードの処理
-        // $imageExistense = $request->hasFile('iconImage');
-
-        var_dump($request->hasFile('iconImage'));
-        var_dump($request->icon);
-        var_dump($request->iconImage);
-        
         if ($request->hasFile('iconImage')) {
-            // 画像を正方形にリサイズして保存
             $image = $request->file('iconImage');
+            // アイコン画像を正方形にリサイズして保存
             InterventionImage::make($image)
                 ->fit(200, 200)
                 ->save($image);
             $path = Storage::disk('s3')->putFile('user_icon', $image, 'public');
-            // 現在のアイコン画像の削除して新たに画像を保存
+            // 現在のアイコン画像の削除して新たなアイコン画像のパスを取得
             Storage::disk('s3')->delete(parse_url($user->icon, PHP_URL_PATH));
             $user->icon = Storage::disk('s3')->url($path);
         } else if (!$request->icon) {
@@ -77,6 +71,10 @@ class UserController extends Controller
         $user->pr = $request->pr;
 
         $user->save();
+
+        return response()->json([
+            'userIcon' => $user->icon,
+        ]);
     }
 
 
@@ -86,9 +84,6 @@ class UserController extends Controller
         $request->validate(User::$passwordRules, User::$passwordValMessages);
 
         $user = User::find($request->id);
-
-        print_r($user->password);
-        print_r($request->currentPassword);
 
         if (Hash::check($request->currentPassword, $user->password)) {
             $user->password = Hash::make($request->newPassword);
@@ -110,8 +105,9 @@ class UserController extends Controller
                     ->with(['followers' => function ($query) {
                         $query->where('user_id', Auth::id());
                     }])
-                    ->get();
+                    ->paginate(10);
 
+        // 認証ユーザーがフォローしているかどうか
         foreach ($users as $user) {
             if (count($user->followers) > 0) {
                 $user->followed = true;
@@ -120,11 +116,6 @@ class UserController extends Controller
             }
         }
 
-        $data = [
-            'authUser' => Auth::user(),
-            'users' => $users,
-        ];
-
-        return $data;
+        return $users;
     }
 }

@@ -97,6 +97,12 @@
               </a>
             </li>
 
+            <li v-if="$route.path !== '/register' && $route.path !== '/login'">
+              <a @click="unsubscribe">
+                <div class="menu-set-btn">退会</div>
+              </a>
+            </li>
+
             <li v-if="$route.path == '/register' || $route.path == '/login'">
               <router-link :to="{ name: 'auth.login' }">
                 <div class="menu-set-btn" :class="{ 'current-2': $route.path == '/login' }">
@@ -164,7 +170,7 @@
 
         <div v-if="$route.path !== '/register' && $route.path !== '/login' && authUser" class="icon each-menu">
 
-          <img :src="authUser.icon" @click="toggle" v-click-outside="close" :class="{'clicked':opened}">
+          <img :src="authUser.icon" @click="toggle" v-click-outside="close" :class="{'clicked':opened}" id="header-icon">
 
           <ul v-if="opened">
 
@@ -177,6 +183,12 @@
             <li>
               <a @click="logout">
                 ログアウト
+              </a>
+            </li>
+
+            <li>
+              <a @click="unsubscribe">
+                退会
               </a>
             </li>
 
@@ -211,6 +223,10 @@ export default {
     return {
       // 認証ユーザー情報
       authUser: null,
+      // 認証ユーザーID
+      authId: null,
+      // ジャンルの取得
+      genres: [],
       // メニューの開閉
       opened: false,
       genreOpened: false,
@@ -218,7 +234,8 @@ export default {
       searchOpened: false,
       canSearchClose: false,
       keyword: '',
-      genres: [],
+      // 退会処理中
+      unsubscribing: false,
     }
   },
 
@@ -278,24 +295,37 @@ export default {
           localStorage.removeItem('auth');
           this.$router.push({ name: 'auth.login' });
         });
+    },
+    // 退会
+    unsubscribe() {
+      if (this.unsubscribing) return;
+      this.unsubscribing = true;
+      if (window.confirm('退会しますか？')) {
+        axios.post('/api/unsubscribe/' + this.authUser.id)
+          .then(() => {
+            localStorage.removeItem('auth');
+            this.$router.push({ name: 'auth.register' });
+            this.unsubscribing = false;
+          }).catch((error) => {
+            console.log(error);
+            this.unsubscribing = false;
+          });
+      }
     }
   },
 
   mounted() {
     // 認証ユーザー情報取得
     if (this.$route.path !== '/login' && this.$route.path !== '/register') {
-      axios.get('/api/headinit')
+      axios.get('/api/authandgenre')
         .then((res) => {
-          // console.log('ちんこ');
-          // console.log(res.data);
           this.authUser = res.data.authUser;
           this.genres = res.data.genres;
           if (!this.authUser.icon) {
             this.authUser.icon = '/image/user.png';
           }
-          // console.log(this.genres);
         }).catch(() => {
-          // console.log('うんこ');
+          return;
         });
     }
   },

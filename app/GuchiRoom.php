@@ -51,6 +51,14 @@ class GuchiRoom extends Model
         return $this->hasMany('App\Guchi');
     }
 
+
+    // グチの画像とのリレーション
+    public function guchiImages()
+    {
+        return $this->hasManyThrough('App\GuchiImage', 'App\Guchi');
+    }
+
+
     // グチへのいいねとのリレーション
     public function guchiGoods()
     {

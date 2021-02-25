@@ -11,34 +11,36 @@ use App\User;
 
 class CommentController extends Controller
 {
-    // コメントの取得
+    // 投稿のコメントを取得
     public function getComments($id)
     {
         $comments = Comment::where('post_id', $id)
-                            ->with(['user', 'commentGoods', 'replies.user', 'replies.replyGoods'])
+                            ->with(['user', 'commentGoods' => function ($query) {
+                                $query->where('user_id', Auth::id());
+                            }])
+                            ->withCount('commentGoods', 'replies')
                             ->orderBy('created_at', 'desc')
-                            ->get();
+                            ->paginate(4);
 
         foreach ($comments as $comment) {
-            $comment->goodCount = count($comment->commentGoods);
-            if ($comment->commentGoods->contains('user_id', Auth::id())) {
+            $comment->goodCount = $comment->comment_goods_count;
+            // 認証ユーザーがコメントにいいねしているかどうか
+            if (count($comment->commentGoods) > 0) {
                 $comment->gooded = true;
             } else {
                 $comment->gooded = false;
             }
+            $comment->replyCount = $comment->replies_count;
+            // フロントエンド用データの初期化
+            $comment->replies = [];
             $comment->replyShow = false;
-            $comment->replyCount = count($comment->replies);
             $comment->replyFormOpened = false;
             $comment->replyInput = '';
             $comment->replyErrors = [];
-            foreach ($comment->replies as $reply) {
-                $reply->goodCount = count($reply->replyGoods);
-                if ($reply->replyGoods->contains('user_id', Auth::id())) {
-                    $reply->gooded = true;
-                } else {
-                    $reply->gooded = false;
-                }
-            }
+            $comment->repliesLoading = false;
+            $comment->loadRepliesMore = true;
+            $comment->repliesPage = 1;
+            $comment->isRepliesLastPage = false;
         }
 
         return $comments;
@@ -57,6 +59,7 @@ class CommentController extends Controller
             'body' => $request->body,
         ]);
 
+        // 投稿したコメントをレスポンスとして返す
         $newComment = Comment::where('id', $comment->id)
                             ->with(['user', 'commentGoods', 'replies.user', 'replies.replyGoods'])
                             ->first();
@@ -79,9 +82,14 @@ class CommentController extends Controller
         }
 
         return response()->json($newComment, 200);
-        // return response()->json([
-        //     'commentId' => $comment->id,
-        // ]);
+    }
+
+
+
+    // コメントの削除
+    public function delete($id)
+    {
+        Comment::where('id', $id)->delete();
     }
 
 
@@ -96,7 +104,7 @@ class CommentController extends Controller
     }
 
 
-    // コメントへのいいねの削除
+    // コメントへのいいねのキャンセル
     public function ungood($id)
     {
         CommentGood::where('user_id', Auth::id())
