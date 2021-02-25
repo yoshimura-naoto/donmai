@@ -118,6 +118,12 @@ class User extends Authenticatable
         return $this->hasMany('App\Post');
     }
 
+    // 投稿の画像とのリレーション
+    public function postImages()
+    {
+        return $this->hasManyThrough('App\PostImage', 'App\Post');
+    }
+
     // どんまい（donmai）とのリレーション
     public function donmais()
     {
@@ -130,7 +136,7 @@ class User extends Authenticatable
         return $this->hasMany('App\Follow');
     }
 
-    // （follows）とのリレーション（フォロワーたち）
+    // フォロワー（follows）とのリレーション（フォロワーたち）
     public function followers()
     {
         return $this->hasMany('App\Follow', 'following_user_id');

@@ -14,12 +14,40 @@
   background: #ffe973;
 }
 
+.hot-page .post-menu-btn:hover {
+  background: yellow;
+}
+
+.hot-page .post-menu-edit {
+  background: yellow;
+}
+
+.hot-page .post-menu-edit:hover {
+  background: #dede04;
+}
+
+.hot-page .post-menu-delete {
+  background: yellow;
+}
+
+.hot-page .post-menu-delete:hover {
+  background: #dede04;
+}
+
 .hot-page .post-action-icon:hover {
   background: yellow;
 }
 
 .hot-page .posts-overlay {
   background: #ffe973;
+}
+
+.hot-page .flex-textarea {
+  background: #ffe973;
+}
+
+.hot-page .input-tag input {
+  background: #fdfdb3;
 }
 
 .hot-page .flex-textarea-2 {
@@ -37,6 +65,15 @@
 .hot-page .reply-cancel-btn,
 .hot-page .comment-btn {
   background: #f1dc2a;
+}
+
+.hot-page .comment-delete,
+.hot-page .reply-delete {
+  background: #f1dc26;
+}
+
+.hot-page .posts-edit-overlay {
+  background: #ffe973;
 }
 
 

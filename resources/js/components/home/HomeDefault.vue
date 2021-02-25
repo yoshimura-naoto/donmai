@@ -14,8 +14,8 @@
 
         <!-- テキスト入力エリア -->
         <div class="input-1">
-          <!-- <textarea v-model="newPost.body" ref="area" :style="styles" class="flex-textarea" placeholder="なんかあった？"></textarea> -->
           <textarea v-model="newPost.body" ref="area" :style="styles" class="flex-textarea" placeholder="なんかあった？"></textarea>
+          <!-- <textarea @keydown="changeHeight" v-model="newPost.body" ref="area" class="flex-textarea" placeholder="なんかあった？"></textarea> -->
         </div>
 
         <div v-if="errors.body" class="user-edit-error">
@@ -80,58 +80,78 @@
     </div>
 
   
-
     <!-- 投稿一覧 -->
-    <div v-for="(post, index) in posts" :key="post.id" class="posts">
+    <div :key="reloadKey">
 
-      <!-- アイコン画像 -->
-      <div class="logo-area">
-        <router-link :to="{ name: 'user', params: { id: post.user.id }}">
-          <img :src="post.user.icon">
-        </router-link>
-      </div>
+      <div v-for="(post, index) in posts" :key="post.id" class="posts">
 
-      <!-- 内容表示エリア -->
-      <div class="input-area">
-
-        <!-- ユーザー名 -->
-        <div class="user-name-post">{{ post.user.name }}</div>
-
-        <!-- テキスト -->
-        <div class="post-body">{{ post.body }}</div>
-
-        <!-- タグ -->
-        <div v-if="post.tags" class="post-tags">
-          <router-link :to="{ name: 'tags.new', params: { name: tag.name }}" v-for="(tag, index) in post.tags" :key="index">
-            #{{ tag.name }}
+        <!-- アイコン画像 -->
+        <div class="logo-area">
+          <router-link :to="{ name: 'user', params: { id: post.user.id }}">
+            <img v-if="post.user.icon" :src="post.user.icon">
+            <img v-if="!post.user.icon" :src="'../image/user.png'">
           </router-link>
         </div>
 
-        <!-- 画像たち -->
-        <div v-if="post.post_images && post.post_images.length > 0" class="post-image-view">
-          <div v-for="(image, index) in post.post_images" :key="index" class="each-preview" :class="{ 'one-image-pre': post.post_images.length == 1, 'two-image-pre': post.post_images.length == 2, 'three-image-pre': post.post_images.length == 3, 'four-image-pre': post.post_images.length == 4, 'yokonaga': post.post_images.length == 3 && index == 0 }">
-            <div @click="openImageModal(image.path)" class="each-image-box">
-              <div class="each-image" :style="{ backgroundImage: 'url(' + image.path + ')' }" :class="{ 'one-each-image': post.post_images.length == 1, 'two-each-image': post.post_images.length == 2, 'three-each-image': post.post_images.length == 3, 'four-each-image': post.post_images.length == 4, 'yokonaga-image': post.post_images.length == 3 && index == 0 }"></div>
+        <!-- 内容表示エリア -->
+        <div class="input-area">
+
+          <div class="post-name-menu">
+            <!-- ユーザー名 -->
+            <div class="user-name-post">{{ post.user.name }}</div>
+            <!-- メニューボタン -->
+            <div v-if="post.user.id === authUser.id && !post.postMenuOpened" @click="openPostMenu(index)" class="post-menu-btn">
+              ...
+            </div>
+            <!-- メニュー -->
+            <div v-if="post.postMenuOpened" class="post-menus">
+              <div class="post-menu-edit" @click="editPostModalOpen(index)">編集</div>
+              <div class="post-menu-delete" @click="deletePostModalOpen(index)">削除</div>
+            </div>
+            <!-- メニューのモーダルカバー -->
+            <div v-if="post.postMenuOpened" @click="closePostMenu(index)" class="post-menu-cover"></div>
+          </div>
+
+          <!-- テキスト -->
+          <div class="post-body">{{ post.body }}</div>
+
+          <!-- タグ -->
+          <div v-if="post.tags" class="post-tags">
+            <router-link :to="{ name: 'tags.new', params: { name: tag.name }}" v-for="(tag, index) in post.tags" :key="index">
+              #{{ tag.name }}
+            </router-link>
+          </div>
+
+          <!-- 画像たち -->
+          <div v-if="post.post_images && post.post_images.length > 0" class="post-image-view">
+            <div v-for="(image, index) in post.post_images" :key="index" class="each-preview" :class="{ 'one-image-pre': post.post_images.length == 1, 'two-image-pre': post.post_images.length == 2, 'three-image-pre': post.post_images.length == 3, 'four-image-pre': post.post_images.length == 4, 'yokonaga': post.post_images.length == 3 && index == 0 }">
+              <div @click="openImageModal(image.path)" class="each-image-box">
+                <div class="each-image" :style="{ backgroundImage: 'url(' + image.path + ')' }" :class="{ 'one-each-image': post.post_images.length == 1, 'two-each-image': post.post_images.length == 2, 'three-each-image': post.post_images.length == 3, 'four-each-image': post.post_images.length == 4, 'yokonaga-image': post.post_images.length == 3 && index == 0 }"></div>
+              </div>
             </div>
           </div>
-        </div>
 
-        <!-- どんまいボタンとコメントボタンエリア -->
-        <div class="post-btns">
-          <!-- どんまいボタン -->
-          <div class="post-donmai post-action-icon" @click="donmai(index)">
-            <img v-if="!post.donmai" :src="'../image/donmai.png'" width="30px">
-            <img v-if="post.donmai" :src="'../image/donmaied.png'" width="30px">
-            {{ post.donmaiCount }}
+          <!-- どんまいボタンとコメントボタンエリア -->
+          <div class="post-btns">
+            <!-- どんまいボタン -->
+            <div class="post-donmai post-action-icon" @click="donmai(index)">
+              <img v-if="!post.donmai" :src="'../image/donmai.png'" width="30px">
+              <img v-if="post.donmai" :src="'../image/donmaied.png'" width="30px">
+              {{ post.donmaiCount }}
+            </div>
+            <!-- コメントボタン -->
+            <div @click="openModalPost(index)" class="post-comment-icon post-action-icon">
+              <img :src="'../image/comment.png'">
+              {{ post.commentCount }}
+            </div>
           </div>
-          <!-- コメントボタン -->
-          <div @click="openModalPost(index)" class="post-comment-icon post-action-icon">
-            <img :src="'../image/comment.png'">
-            {{ post.commentCount }}
-          </div>
-        </div>
 
+        </div>
       </div>
+
+      <!-- 読み込み中 -->
+      <div v-if="itemLoading" class="loading">読み込み中...</div>
+
     </div>
 
 
@@ -142,12 +162,13 @@
       <div class="overlay-post-content">
 
         <!-- 投稿 -->
-        <div class="posts-overlay">
+        <div class="posts-overlay" @scroll="commentsPaginate"> 
 
           <!-- アイコン画像 -->
           <div class="logo-area">
             <router-link :to="{ name: 'user', params: { id: modalPostUserId }}">
-              <img :src="modalPostUserIcon">
+              <img v-if="modalPostUserIcon" :src="modalPostUserIcon">
+              <img v-if="!modalPostUserIcon" :src="'../image/user.png'">
             </router-link>
           </div>
 
@@ -282,9 +303,6 @@
                   <div v-if="comment.replyErrors.body" class="user-edit-error">
                     {{ comment.replyErrors.body[0] }}
                   </div>
-                  <!-- <div v-if="modalPostComments[0].replyErrors" class="user-edit-error">
-                    {{ modalPostComments[0].replyErrors.body[0] }}
-                  </div> -->
 
                   <div class="comment-reply-btns">
 
@@ -293,7 +311,7 @@
                     </div>
 
                     <div class="comment-btn" @click="reply(index)">
-                      コメント
+                      返信
                     </div>
 
                   </div>
@@ -336,10 +354,15 @@
 
                         </div>
 
-                        <!-- コメント内容 -->
+                        <!-- 返信の内容 -->
                         <div class="overlay-post-comment">{{ reply.body }}</div>
 
                         <div class="overlay-post-bottom">
+
+                          <!-- 返信の削除ボタン -->
+                          <div v-if="reply.user.id === authUser.id" @click="deleteReply(comment.id, reply.id)" class="reply-delete">
+                            削除
+                          </div>
 
                           <!-- コメントへの返信へのいいね -->
                           <div class="overlay-post-good">
@@ -356,11 +379,19 @@
 
                   </div>
 
+                  <div v-if="!comment.isRepliesLastPage && !comment.repliesLoading" @click="getReplies(index)" class="reply-read-more">↪︎さらに読み込む</div>
+
                 </div>
 
               </div>
 
+              <div v-if="comment.user.id === authUser.id" @click="deleteComment(index)" class="comment-delete">
+                削除
+              </div>
+
             </div>
+
+            <div v-if="commentsLoading" class="comments-loading">読み込み中...</div>
 
           </div>
 
@@ -381,6 +412,102 @@
     </div>
 
 
+    <!-- 投稿編集モーダル -->
+    <div v-if="modalPostEditShow" @click.self="editPostModalClose" class="overlay-post">
+
+      <!-- <div class="new-post"> -->
+      <div class="posts-edit-overlay">
+
+        <!-- アイコン画像 -->
+        <div class="logo-area" v-if="authUser">
+          <img :src="authUser.icon">
+        </div>
+
+        <!-- 入力エリア -->
+        <div class="input-area">
+
+          <!-- テキスト入力エリア -->
+          <div class="input-1">
+            <textarea v-model="editPost.body" ref="editarea" :style="editStyles" class="flex-textarea"></textarea>
+          </div>
+
+          <div v-if="editErrors.body" class="user-edit-error">
+            {{ editErrors.body[0] }}
+          </div>
+
+          <!-- ジャンル選択エリア -->
+          <div class="select-genre">
+            <select name="genre" v-model="editPost.genreIndex">
+              <option value='' selected>ジャンルを選択してください</option>
+              <option v-for="(genre, index) in genres" :key="index" :value="index">{{ genre.name }}</option>
+            </select>
+
+            <div v-if="editErrors.genreIndex" class="user-edit-error">
+              {{ editErrors.genreIndex[0] }}
+            </div>
+          </div>
+
+          <!-- タグ入力エリア -->
+          <div class="input-tag">
+            <input type="text" placeholder="タグ（例: #ああ #いい）" v-model="editPost.tags">
+          </div>
+
+          <div v-if="editErrors.tags" class="user-edit-error">
+            {{ editErrors.tags[0] }}
+          </div>
+
+          <!-- 画像のプレビューエリア -->
+          <div v-if="editUrls.length > 0" class="image-preview" >
+            <div v-for="(url, index) in editUrls" :key="index" class="each-preview" :class="{ 'one-image-pre': editUrls.length == 1, 'two-image-pre': editUrls.length == 2, 'three-image-pre': editUrls.length == 3, 'four-image-pre': editUrls.length == 4, 'yokonaga': editUrls.length == 3 && index == 0 }">
+              <div class="delete-image">
+                <img class="batsu-icon" :src="'../image/batsu.png'" @click="deleteEditPreview(url.id, url.path, index)">
+              </div>
+              <div class="each-image-box">
+                <div class="each-image" :style="{ backgroundImage: 'url(' + url.path + ')' }" :class="{ 'one-each-image': editUrls.length == 1, 'two-each-image': editUrls.length == 2, 'three-each-image': editUrls.length == 3, 'four-each-image': editUrls.length == 4, 'yokonaga-image': editUrls.length == 3 && index == 0 }"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 画像追加ボタンと投稿ボタン -->
+          <div class="input-2">
+
+            <div class="image-add">
+              <label>
+                <img class="image-icon" :src="'../image/image.png'" alt="画像追加">
+                <input class="file-upload" type="file" ref="editpreview" @change="uploadEditFile" accept="image/*" multiple>
+              </label>
+            </div>
+
+            <div class="submit">
+              <div class="submit-btn" @click="editSubmit">更新</div>
+            </div>
+
+            <!-- テスト用 -->
+            <!-- <div class="submit">
+              <div class="submit-btn" @click="editCheck">チェック</div>
+            </div> -->
+            
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- 削除の確認モーダル -->
+    <div v-if="deletePostModalOpened" @click.self="deletePostModalClose" class="delete-post-modal-cover">
+      <div class="post-delete-check">
+        <div class="post-delete-really">投稿を削除しますか？</div>
+        <div class="post-delete-btns">
+          <div class="post-delete-cancel" @click="deletePostModalClose">キャンセル</div>
+          <div class="post-delete-delete" @click="deletePost">削除</div>
+        </div>
+      </div>
+    </div>
+
+
     <!-- 「どんまい」モーダル -->
     <div v-if="modalDonmaiShow" @click.self="closeModalDonmai" class="overlay-post">
 
@@ -390,7 +517,7 @@
           どんまい！
         </div>
 
-        <div class="donmai-user-box">
+        <div class="donmai-user-box" @scroll="donmaiPaginate">
 
           <div v-for="(user, index) in modalDonmaiUsers" :key="user.id" class="donmai-user-list">
 
@@ -446,6 +573,8 @@
 
 
 <script>
+import ClickOutside from 'vue-click-outside';
+
 export default {
   inject: ['reload'],
 
@@ -453,8 +582,8 @@ export default {
     return {
       // 認証ユーザー情報
       authUser: null,
-      // コンポーネントのリロード用
-      // isRouterShow: true,
+      // 投稿一覧部分のみリロードするためのキー
+      reloadKey: 0,
       // ウィンドウ幅
       windowWidth: window.innerWidth,
       // 縦長画像の調整
@@ -467,6 +596,7 @@ export default {
       height: '20px',
       commentInput: '',
       commentHeight: '31px',
+      editHeight: '20px',
       // ジャンル
       genres: [],
       // 新規投稿
@@ -478,6 +608,35 @@ export default {
       },
       errors: [],
       urls: [],
+      // 投稿の編集
+      editPost: {
+        id: null,
+        body: '',
+        genreIndex: '',
+        tags: '',
+        deleteOldImagesId: [], // 削除する既存の画像のidたち
+        newImageFiles: [], // 新たに追加する画像ファイルたち
+      },
+      newImages: [
+          // {
+            // id: (マイナス値)
+            // file: (File)
+          // }
+        ], 
+      nextNewImageId: -1, // 新たに追加する画像のid（マイナス値）
+      // 投稿編集の画像プレビュー用のURL
+      editUrls: [
+        // {
+        //   id: null, (マイナス値なら新しいイメージ、プラス値なら既存のイメージ)
+        //   path: '',
+        // }
+      ],
+      editErrors: [],
+      // 無限スクロール用
+      itemLoading: false,
+      loadMore: true,
+      page: 1,
+      isLastPage: false,
       // 投稿
       posts: [
         // {
@@ -507,6 +666,7 @@ export default {
         //   donmai: false,
         //   donmaiCount: 5,
         //   commentCount: 9,
+        //   postMenuOpened: false,
         // }
       ],
       // モーダル
@@ -548,14 +708,31 @@ export default {
         //       good: false,
         //     },
         //   ],
+        //   コメントへの返信の無限スクロール用
+        //   repliesLoading: false,
+        //   loadRepliesMore: true,
+        //   repliesPage: 1,
+        //   isRepliesLastPage: false,
         // },
       ],
+      // コメントの無限スクロール用
+      commentsLoading: false,
+      loadCommentsMore: true,
+      commentsPage: 1,
+      isCommentsLastPage: false,
+      // 新規コメント、返信
       newComment: {},
       newReply: {},
       commentErrors: [],
       // 画像モーダル
       modalImageShow: false,
       modalImage: '',
+      // 削除の確認のモーダル
+      deletePostModalOpened: false,
+      deletePostIndex: null,
+      // 投稿編集モーダル
+      modalPostEditShow: false,
+      editPostIndex: null,
       // どんまいモーダル
       modalDonmaiShow: false,
       modalDonmaiUsers: [
@@ -566,6 +743,11 @@ export default {
           // followed: false,
         // },
       ],
+      // どんまいモーダルの無限スクロール用
+      donmaiLoading: false,
+      donmaiLoadMore: true,
+      donmaiPage: 1,
+      isLastDonmaiPage: false,
     };
   },
 
@@ -574,25 +756,44 @@ export default {
     check() {
       console.log(this.newPost);
     },
+    // 投稿編集のチェックのテスト
+    editCheck() {
+      console.log(this.editPost);
+      console.log(this.newImages);
+    },
     // 認証ユーザー情報、全ジャンル、投稿を取得
     getInitInfo() {
-      axios.get('/api/home/init')
+      axios.get('/api/authandgenre')
         .then((res) => {
           console.log(res.data);
-          this.genres = res.data.genres;
           this.authUser = res.data.authUser;
-          this.posts = res.data.posts;
+          this.genres = res.data.genres;
           if (!this.authUser.icon) {
             this.authUser.icon = '../image/user.png';
           }
-          for (let i = 0; i < this.posts.length; i++) {
-            if (!this.posts[i].user.icon) {
-              this.posts[i].user.icon = '../image/user.png';
-            }
+          this.getPosts();
+        }).catch((error) => {
+          console.log(error);
+        });
+    },
+    // 投稿の取得（無限スクロール）
+    getPosts() {
+      // 読み込み中か最後のページなら読み込まない
+      if (this.isLastPage) return;
+      if (this.itemLoading) return;
+      this.itemLoading = true;
+      axios.get('/api/post/get?page=' + this.page)
+        .then((res) => {
+          console.log(res.data);
+          this.posts.push(...res.data.data);
+          this.itemLoading = false;
+          if (this.page === res.data.last_page) {
+            this.isLastPage = true;
           }
-          // console.log(this.posts);
-        }).catch(() => {
-          return;
+          this.page++;
+        }).catch((error) => {
+          console.log(error);
+          this.itemLoading = false;
         });
     },
     // 投稿のテキストエリアの高さをフレキシブルに
@@ -603,6 +804,43 @@ export default {
         this.height = this.$refs.area.scrollHeight + 'px';
       });
     },
+    // changeHeight() {
+    //   const textarea = this.$refs.area;
+    //   const resetHeight = new Promise(function(resolve) {
+    //     resolve(textarea.style.height = 25 + 'px');
+    //   });
+    //   resetHeight.then(function() {
+    //     textarea.style.height = textarea.scrollHeight + 'px';
+    //   });
+    // },
+    // 投稿編集のテキストエリアの高さをフレキシブルに
+    changeEditHeight() {
+      if (this.$refs.editarea) {
+        this.editHeight = this.$refs.editarea.scrollHeight + 'px';
+        this.editHeight = 25 + 'px';
+        this.$nextTick(() => {
+          this.editHeight = this.$refs.editarea.scrollHeight + 'px';
+        });
+      }
+    },
+    // コメント入力欄の高さをフレキシブルに
+    changeCommentHeight() {
+      if (this.$refs.commentarea) {
+        this.commentHeight = this.$refs.commentarea.scrollHeight + 'px';
+        this.commentHeight = 18 + 'px';
+        this.$nextTick(() => {
+          this.commentHeight = this.$refs.commentarea.scrollHeight + 'px';
+        });
+      }
+    },
+    // コメントへの返信フォームの高さをフレキシブルに変更するメソッド（いやこれちょっとむずい）
+    // changeReplyHeight(i) {
+    //   this.modalPostComments[i].replyHeight = this.$refs.replyarea[i].scrollHeight + 'px';
+    //   this.modalPostComments[i].replyHeight = 18 + 'px';
+    //   this.$nextTick(() => {
+    //     this.modalPostComments[i].replyHeight = this.$refs.replyarea[i].scrollHeight + 'px';
+    //   });
+    // },
     // 投稿
     submit() {
       let data = new FormData();
@@ -623,22 +861,6 @@ export default {
           // console.log(this.errors);
         });
     },
-    // コメント入力欄の高さをフレキシブルに
-    changeCommentHeight() {
-      this.commentHeight = this.$refs.commentarea.scrollHeight + 'px';
-      this.commentHeight = 18 + 'px';
-      this.$nextTick(() => {
-        this.commentHeight = this.$refs.commentarea.scrollHeight + 'px';
-      });
-    },
-    // コメントへの返信フォームの高さをフレキシブルに変更するメソッド
-    // changeReplyHeight(i) {
-    //   this.modalPostComments[i].replyHeight = this.$refs.replyarea[i].scrollHeight + 'px';
-    //   this.modalPostComments[i].replyHeight = 18 + 'px';
-    //   this.$nextTick(() => {
-    //     this.modalPostComments[i].replyHeight = this.$refs.replyarea[i].scrollHeight + 'px';
-    //   });
-    // },
     // 画像アップロードでプレビュー
     uploadFile() {
       const files = this.$refs.preview.files;
@@ -674,11 +896,176 @@ export default {
       // console.log(this.files);
       // console.log(this.imageCount);
     },
+    // 投稿の編集・削除メニューの開閉
+    openPostMenu(i) {
+      this.posts.splice(i, 1, {
+        ...this.posts[i],
+        postMenuOpened: true
+      });
+    },
+    closePostMenu(i) {
+      this.posts.splice(i, 1, {
+        ...this.posts[i],
+        postMenuOpened: false
+      });
+    },
+    // 投稿の削除確認モーダルの開閉
+    deletePostModalOpen(i) {
+      this.keepScrollWhenOpen();
+      this.deletePostIndex = i;
+      this.deletePostModalOpened = true;
+    },
+    deletePostModalClose() {
+      this.keepScrollWhenClose();
+      this.deletePostModalOpened = false;
+      this.closePostMenu(this.deletePostIndex);
+      this.deletePostIndex = null;
+    },
+    // 投稿の削除
+    deletePost() {
+      axios.post('/api/post/delete/' + this.posts[this.deletePostIndex].id)
+        .then(() => {
+          this.posts.splice(this.deletePostIndex, 1);
+          this.deletePostModalClose();
+        }).catch(() => {
+          return;
+        });
+    },
+    // 投稿編集モーダルの開閉
+    editPostModalOpen(i) {
+      // スクロール位置の維持
+      this.keepScrollWhenOpen();
+      // 投稿のidを取得
+      this.editPost.id = this.posts[i].id;
+      // 本文を取得
+      this.editPost.body = this.posts[i].body;
+      // ジャンルのインデックスを取得
+      const genreRoutes = this.genres.map((obj) => {
+        return obj.route;
+      });
+      this.editPost.genreIndex = genreRoutes.indexOf(this.posts[i].genre.route);
+      // タグを文字列化して取得
+      if (this.posts[i].tags.length > 0) {
+        const tagNames = this.posts[i].tags.map((obj) => {
+          return obj.name;
+        });
+        this.editPost.tags = '#' + tagNames.join(' #');
+      }
+      // 既存の画像のid、urlを取得
+      for (let j = 0; j < this.posts[i].post_images.length; j++) {
+        const addEditUrl = new Object();
+        addEditUrl.id = this.posts[i].post_images[j].id;
+        addEditUrl.path = this.posts[i].post_images[j].path;
+        this.editUrls.push(addEditUrl);
+      }
+      // モーダルを開く
+      this.modalPostEditShow = true;
+      // テキストエリアの高さをフレキシブルに
+      this.$nextTick(() => {
+        this.editHeight = this.$refs.editarea.scrollHeight + 'px';
+      });
+      // 今編集してるpostsのインデックスを記憶
+      this.editPostIndex = i;
+      console.log(this.editPost);
+      console.log(this.editUrls);
+    },
+    editPostModalClose() {
+      this.keepScrollWhenClose();
+      this.editPost.id = null;
+      this.editPost.body = '';
+      this.editPost.genreIndex = '';
+      this.editPost.tags = '';
+      this.editPost.deleteOldImagesId = [];
+      this.editPost.newImageFiles = [];
+      this.newImages = [];
+      this.editUrls = [];
+      this.editErrors = [];
+      this.nextNewImageId = -1;
+      this.editHeight = '20px';
+      this.closePostMenu(this.editPostIndex);
+      this.modalPostEditShow = false;
+      console.log(this.editPost);
+      console.log(this.posts);
+    },
+    // 投稿編集の画像アップロード
+    uploadEditFile() {
+      const files = this.$refs.editpreview.files;
+      // 画像ファイルじゃないものを除外
+      for (let i = 0; i < files.length; i++) {
+        if (!files[i].type.match('image.*')) {
+          files.splice(i, 1);
+        }
+      }
+      // ４枚以上アップロードしようとするとアラート
+      if (this.editUrls.length + files.length > 4) {
+        window.alert('画像は４枚までです！');
+      } else {
+        for (let i = 0; i < files.length; i++) {
+          const addFile = new Object();
+          addFile.id = this.nextNewImageId; // 新しく追加する画像にはマイナス値のidを付与（既存の画像と区別するため）
+          addFile.file = files[i];
+          this.newImages.push(addFile);
+          // プレビュー用URLをプッシュ
+          const addUrl = new Object();
+          addUrl.id = this.nextNewImageId;
+          addUrl.path = URL.createObjectURL(files[i]);
+          this.editUrls.push(addUrl);
+          this.nextNewImageId--;
+        }
+        this.$refs.editpreview.value = '';
+        console.log(this.editPost.deleteOldImagesId);
+        console.log(this.newImages);
+        console.log(this.editUrls);
+      }
+    },
+    // 投稿編集の画像プレビューの削除
+    deleteEditPreview(id, path, index) {
+      if (id < 0) {
+        // idがマイナス値（新しく追加する画像）の場合はnewImagesから削除
+        const arrayId = this.newImages.map((obj) => {
+          return obj.id;
+        });
+        this.newImages.splice(arrayId.indexOf(id), 1);
+      } else {
+        // 削除する既存の画像のidをdeleteOldImagesIdに追加
+        this.editPost.deleteOldImagesId.push(id);
+      }
+      // プレビュー用URLの削除
+      URL.revokeObjectURL(path);
+      this.editUrls.splice(index, 1);
+      console.log(this.editPost.deleteOldImagesId);
+      console.log(this.newImages);
+      console.log(this.editUrls);
+    },
+    // 編集した投稿を送信
+    editSubmit() {
+      this.editPost.newImageFiles = this.newImages.map((obj) => {
+        return obj.file;
+      });
+      let data = new FormData();
+      Object.entries(this.editPost).forEach(([key, value]) => {
+        if (Array.isArray(value)) {
+          value.forEach((v, i) => {
+            data.append(key + '[]', v);
+          })
+        } else {
+          data.append(key, value);
+        }
+      });
+      axios.post('/api/post/edit', data)
+        .then((res) => {
+          this.posts.splice(this.editPostIndex, 1, res.data.post);
+          this.posts[this.editPostIndex].postMenuOpened = false;
+          this.editPostModalClose();
+        }).catch((error) => {
+          this.editErrors = error.response.data.errors;
+        });
+    },
     // どんまい機能の処理
     donmai(i) {
       const post = this.posts[i];
       post.donmai = !post.donmai;
-      if (post.donmai == false) {
+      if (!post.donmai) {
         axios.post('/api/undonmai/' + this.posts[i].id)
           .then(() => {
             post.donmaiCount--;
@@ -727,28 +1114,20 @@ export default {
     },
     // 投稿のモーダルウィンドウの開閉
     openModalPost(i) {
-      axios.get('/api/comments/get/' + this.posts[i].id)
-        .then((res) => {
-          this.modalPostIndex = i;
-          this.modalPostComments = res.data;
-          this.keepScrollWhenOpen();
-          this.modalPostId = this.posts[i].id;
-          this.modalPostUserId = this.posts[i].user.id;
-          this.modalPostUserName = this.posts[i].user.name;
-          this.modalPostUserIcon = this.posts[i].user.icon;
-          this.modalPostBody = this.posts[i].body;
-          this.modalPostTags = this.posts[i].tags;
-          this.modalPostImages = this.posts[i].post_images;
-          this.modalPostDonmai = this.posts[i].donmai;
-          this.modalPostDonmaiCount = this.posts[i].donmaiCount;
-          this.modalPostCommentCount = this.posts[i].commentCount;
-          this.modalPostShow = true;
-          // console.log(this.modalPostComments);
-          // console.log(this.modalPostUserId);
-          // console.log(this.modalPostUserIcon);
-        }).catch(() => {
-          return;
-        });
+      this.modalPostIndex = i;
+      this.keepScrollWhenOpen();
+      this.modalPostId = this.posts[i].id;
+      this.modalPostUserId = this.posts[i].user.id;
+      this.modalPostUserName = this.posts[i].user.name;
+      this.modalPostUserIcon = this.posts[i].user.icon;
+      this.modalPostBody = this.posts[i].body;
+      this.modalPostTags = this.posts[i].tags;
+      this.modalPostImages = this.posts[i].post_images;
+      this.modalPostDonmai = this.posts[i].donmai;
+      this.modalPostDonmaiCount = this.posts[i].donmaiCount;
+      this.modalPostCommentCount = this.posts[i].commentCount;
+      this.modalPostShow = true;
+      this.getComments(); //コメント取得
     },
     closeModalPost() {
       this.keepScrollWhenClose();
@@ -764,23 +1143,90 @@ export default {
       this.modalPostDonmai = false;
       this.modalPostDonmaiCount = null;
       this.modalPostCommentCount = null;
+      this.modalPostComments = [];
       this.modalPostComments.map(function(element) {
         element.replyShow = false;
       });
+      // 無限スクロール設定の初期化
+      this.commentsLoading = false;
+      this.loadCommentsMore = true;
+      this.commentsPage = 1;
+      this.isCommentsLastPage = false;
     },
-    // どんまいしたユーザーのモーダルウィンドウの開閉
-    openModalDonmai() {
-      axios.get('/api/donmai/users/' + this.modalPostId)
+    // コメントの取得
+    getComments() {
+      if (this.isCommentsLastPage) return;
+      if (this.commentsLoading) return;
+      this.commentsLoading = true;
+      axios.get('/api/comments/get/' + this.modalPostId + '?page=' + this.commentsPage)
         .then((res) => {
-          this.modalDonmaiUsers = res.data;
-          // console.log(this.modalDonmaiUsers);
-          this.modalDonmaiShow = true;
-        }).catch(() => {
-          return;
+          console.log(res.data);
+          this.modalPostComments.push(...res.data.data);
+          this.commentsLoading = false;
+          if (this.commentsPage === res.data.last_page) {
+            this.isCommentsLastPage = true;
+          }
+          this.commentsPage++;
+          // 確認用
+          // const postsOverlay = document.querySelector('.posts-overlay');
+          // console.log(postsOverlay.clientHeight);
+          // console.log(postsOverlay.scrollHeight);
+        }).catch((error) => {
+          console.log(error);
+          this.commentsLoading = false;
         });
+    },
+    // コメントの無限スクロールページネーション
+    commentsPaginate() {
+      const postsOverlay = document.querySelector('.posts-overlay');
+      let bottomOfModal = postsOverlay.scrollTop + postsOverlay.clientHeight >= postsOverlay.scrollHeight - 1;
+      if (bottomOfModal) {
+        this.getComments();
+      }
+      // console.log(postsOverlay.scrollTop);
+      // console.log(postsOverlay.clientHeight);
+      // console.log(postsOverlay.scrollHeight);
+    },
+    // どんまいしたユーザーの取得
+    getDonmaiUsers() {
+      if (this.isLastDonmaiPage) return;
+      if (this.donmaiLoading) return;
+      this.donmaiLoading = true;
+      axios.get('/api/donmai/users/' + this.modalPostId + '?page=' + this.donmaiPage)
+        .then((res) => {
+          console.log(res.data);
+          this.modalDonmaiUsers.push(...res.data.data);
+          this.donmaiLoading = false;
+          if (this.donmaiPage === res.data.last_page) {
+            this.isLastDonmaiPage = true;
+          }
+          this.donmaiPage++;
+        }).catch((error) => {
+          console.log(error);
+          this.donmaiLoading = false;
+        });
+    },
+    // どんまいしたユーザー一覧のモーダルを開く
+    openModalDonmai() {
+      this.modalDonmaiShow = true;
+      this.getDonmaiUsers();
     },
     closeModalDonmai() {
       this.modalDonmaiShow = false;
+      this.modalDonmaiUsers = [];
+      // 無限スクロール設定のリセット
+      this.donmaiLoading = false;
+      this.donmaiLoadMore = true;
+      this.donmaiPage = 1;
+      this.isLastDonmaiPage = false;
+    },
+    // どんまいしたユーザー一覧モーダルの無限スクロール
+    donmaiPaginate() {
+      const donmaiModal = document.querySelector('.donmai-user-box');
+      let bottomOfModal = donmaiModal.scrollTop + donmaiModal.clientHeight >= donmaiModal.scrollHeight - 1;
+      if (bottomOfModal) {
+        this.getDonmaiUsers();
+      }
     },
     // 画像のモーダルウィンドウの開閉
     openImageModal(image) {
@@ -845,37 +1291,39 @@ export default {
           this.commentErrors = error.response.data.errors;
         });
     },
-    // commentPost() {
-    //   let data = new FormData();
-    //   data.append('postId', this.modalPostId);
-    //   data.append('body', this.commentInput);
-    //   axios.post('/api/comment', data)
-    //     .then((res) => {
-    //       console.log(res.data.commentId);
-    //       this.newComment.id = res.data.commentId;
-    //       this.newComment.created_at = 'たった今';
-    //       this.newComment.body = this.commentInput;
-    //       this.newComment.user = this.authUser;
-    //       this.newComment.goodCount = 0;
-    //       this.newComment.gooded = false;
-    //       this.newComment.replyCount = 0;
-    //       this.newComment.replyFormOpened = false;
-    //       this.newComment.replyInput = '';
-    //       this.newComment.replies = [];
-    //       console.log(this.newComment);
-    //       this.modalPostComments.unshift(this.newComment);
-    //       console.log(this.modalPostComments);
-    //       this.newComment = {};
-    //       this.commentInput = '';
-    //       this.posts[this.modalPostIndex].commentCount++;
-    //       this.modalPostCommentCount++;
-    //     }).catch((error) => {
-    //       console.log(error.response.data.errors);
-    //       this.commentErrors = error.response.data.errors;
-    //     });
-    // },
-    //コメントへの返信の表示と非表示
+    // コメント削除
+    deleteComment(i) {
+      if (window.confirm('削除しますか？')) {
+        axios.post('/api/comment/delete/' + this.modalPostComments[i].id)
+          .then(() => {
+            this.modalPostComments.splice(i, 1);
+            this.modalPostCommentCount--;
+            this.posts[this.modalPostIndex].commentCount--;
+          }).catch((error) => {
+            console.log(error);
+          });
+      }
+    },
+    // コメントへの返信の取得
+    getReplies(i) {
+      this.modalPostComments[i].repliesLoading = true;
+      axios.get('/api/replies/get/' + this.modalPostComments[i].id + '?page=' + this.modalPostComments[i].repliesPage)
+        .then((res) => {
+          console.log(res.data);
+          this.modalPostComments[i].replies.push(...res.data.data);
+          this.modalPostComments[i].repliesLoading = false;
+          // if (this.modalPostComments[i].repliesPage === res.data.last_page) {
+          if (res.data.current_page === res.data.last_page) {
+            this.modalPostComments[i].isRepliesLastPage = true;
+          }
+          this.modalPostComments[i].repliesPage++;
+        }).catch((error) => {
+          console.log(error);
+        });
+    },
+    //コメントへの返信の取得と表示と非表示
     openCommentReply(i) {
+      this.getReplies(i);
       this.modalPostComments[i].replyShow = true;
     },
     closeCommentReply(i) {
@@ -884,13 +1332,11 @@ export default {
     // コメントへのいいね機能
     commentGood(i) {
       const comment = this.modalPostComments[i];
-      // comment.gooded = !comment.gooded;
       if (!comment.gooded) {
         axios.post('/api/comment/good/' + comment.id)
           .then(() => {
             this.$set(comment, 'gooded', true);
             this.$set(comment, 'goodCount', comment.goodCount + 1);
-            // comment.goodCount++;
           }).catch(() => {
             return;
           });
@@ -899,7 +1345,6 @@ export default {
           .then(() => {
             this.$set(comment, 'gooded', false);
             this.$set(comment, 'goodCount', comment.goodCount - 1);
-            // comment.goodCount--;
           }).catch(() => {
             return;
           });
@@ -913,49 +1358,39 @@ export default {
       axios.post('/api/comment/reply', data)
         .then((res) => {
           console.log(res.data);
-          this.modalPostComments[i].replies.push(res.data);
+          if (this.modalPostComments[i].isRepliesLastPage) {
+            this.modalPostComments[i].replies.push(res.data);
+          }
           this.modalPostComments[i].replyCount++;
           this.modalPostComments[i].replyInput = '';
           this.modalPostComments[i].replyErrors = [];
           this.posts[this.modalPostIndex].commentCount++;
           this.modalPostCommentCount++;
-          this.modalPostComments[i].replyShow = true;
           this.modalPostComments[i].replyFormOpened = false;
         }).catch((error) => {
           this.modalPostComments[i].replyErrors = error.response.data.errors;
           console.log(this.modalPostComments[0]);
         });
     },
-    // reply(i) {
-    //   let data = new FormData();
-    //   data.append('body', this.modalPostComments[i].replyInput);
-    //   data.append('commentId', this.modalPostComments[i].id);
-    //   axios.post('/api/comment/reply', data)
-    //     .then((res) => {
-    //       console.log(res);
-    //       this.newReply.id = res.data.replyId;
-    //       this.newReply.created_at = 'たった今';
-    //       this.newReply.body = this.modalPostComments[i].replyInput;
-    //       this.newReply.user = this.authUser;
-    //       this.newReply.goodCount = 0;
-    //       this.newReply.gooded = false;
-    //       console.log(this.newReply);
-    //       this.modalPostComments[i].replies.push(this.newReply);
-    //       this.modalPostComments[i].replyCount++;
-    //       this.modalPostComments[i].replyInput = '';
-    //       this.modalPostComments[i].replyErrors = [];
-    //       this.newReply = {};
-    //       this.posts[this.modalPostIndex].commentCount++;
-    //       this.modalPostCommentCount++;
-    //       this.modalPostComments[i].replyShow = true;
-    //       this.modalPostComments[i].replyFormOpened = false;
-    //     }).catch((error) => {
-    //       console.log(error.response.data.errors.body[0]);
-    //       this.modalPostComments[i].replyErrors = error.response.data.errors;
-    //       // console.log(this.modalPostComments[i].replyErrors);
-    //       console.log(this.modalPostComments[0]);
-    //     });
-    // },
+    // コメントへの返信の削除
+    deleteReply(comId, repId) {
+      if (window.confirm('削除しますか？')) {
+        axios.post('/api/reply/delete/' + repId)
+          .then(() => {
+            const comment = this.modalPostComments.find((v) => v.id === comId);
+            const repliesId = comment.replies.map((obj) => {
+              return obj.id;
+            })
+            let replyIndex = repliesId.indexOf(repId); // リプライのインデックスを取得
+            comment.replies.splice(replyIndex, 1);
+            comment.replyCount--;
+            this.modalPostCommentCount--;
+            this.posts[this.modalPostIndex].commentCount--;
+          }).catch((error) => {
+            console.log(error);
+          });
+      }
+    },
     // コメントの返信へのいいね機能
     replyGood(comId, repId) {
       const comment = this.modalPostComments.find((v) => v.id == comId);
@@ -1003,6 +1438,11 @@ export default {
         'height': this.height,
       }
     },
+    editStyles() {
+      return {
+        'height': this.editHeight,
+      }
+    },
     commentStyles() {
       return {
         'height': this.commentHeight,
@@ -1023,6 +1463,11 @@ export default {
     commentInput() {
       this.changeCommentHeight();
     },
+    'editPost.body': function(val) {
+      if (this.modalPostEditShow) {
+        this.changeEditHeight();
+      }
+    },
     // modalPostComments: {
     //   handler: function() {
     //     this.changeReplyHeight();
@@ -1033,35 +1478,48 @@ export default {
 
   created() {
     window.addEventListener('resize', this.handleResize);
+    window.addEventListener('resize', this.changeHeight);
+    window.addEventListener('resize', this.changeEditHeight);
+    window.addEventListener('resize', this.changeCommentHeight);
   },
 
   destroyed() {
     window.removeEventListener('resize', this.handleResize);
+    window.removeEventListener('resize', this.changeHeight);
+    window.removeEventListener('resize', this.changeEditHeight);
+    window.removeEventListener('resize', this.changeCommentHeight);
+    
   },
 
   mounted() {
-    // 初期化
+    // 認証ユーザー情報、全ジャンルを取得
     this.getInitInfo();
+    // 投稿の無限スクロール
+    window.onscroll = () => {
+      // スクロール位置が一番下ならtrue
+      let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight;
+      if (bottomOfWindow && !this.modalPostShow && !this.modalPostEditShow && !this.deletePostModalOpened && !this.modalImageShow) {
+        this.getPosts();
+      }
+    }
     // マウント時にもテキストエリアの高さをフレキシブルに
     this.changeHeight();
   },
 
   beforeRouteLeave (to, from, next) {
-    if (this.modalPostShow || this.modalImageShow) {
+    if (this.modalPostShow || this.modalImageShow || this.deletePostModalOpened || this.modalPostEditShow) {
       this.keepScrollWhenClose();
       this.modalPostShow = false;
       this.modalImageShow = false;
+      this.deletePostModalOpened = false;
+      this.modalPostEditShow = false;
     }
+    this.isLastPage = true;
     next();
   },
 
-  // beforeRouteUpdate (to, from, next) {
-  //   if (this.modalPostShow || this.modalImageShow) {
-  //     this.keepScrollWhenClose();
-  //     this.modalPostShow = false;
-  //     this.modalImageShow = false;
-  //   }
-  //   next();
-  // },
+  directives: {
+    ClickOutside
+  },
 }
 </script>

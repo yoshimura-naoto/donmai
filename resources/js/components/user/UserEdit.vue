@@ -172,7 +172,13 @@ export default {
         data.append('iconImage', this.form.iconImage);
       }
       axios.post('/api/user/edit', data)
-        .then(() => {
+        .then((res) => {
+          const userIcon = res.data.userIcon;
+          if (userIcon) {
+            document.getElementById('header-icon').src = userIcon;
+          } else {
+            document.getElementById('header-icon').src = '/image/user.png';
+          }
           this.$router.push({ name: 'user', params: { id: this.form.id }});
         }).catch((error) => {
           this.errors = error.response.data.errors;

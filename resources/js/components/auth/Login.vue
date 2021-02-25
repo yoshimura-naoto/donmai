@@ -74,10 +74,15 @@ export default {
     return {
       form: {},
       errors: [],
+      // ログイン処理中
+      loginProcessing: false,
     }
   },
   methods: {
     login() {
+      // ログイン処理中は操作できなくする
+      if (this.loginProcessing) return;
+      this.loginProcessing = true;
       axios.get('/sanctum/csrf-cookie')
         .then((res) => {
           axios.post('/api/login', this.form)
@@ -86,6 +91,7 @@ export default {
               window.location.href = '/';
             }).catch((error) => {
               this.errors = error.response.data.errors;
+              this.loginProcessing = false;
             });
         });
     }

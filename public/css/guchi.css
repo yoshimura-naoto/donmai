@@ -13,6 +13,10 @@
   position: relative;
 }
 
+/* .guchi-main-when-overlay {
+  position: inherit;
+} */
+
 /* トップのボタンたち */
 .guchi-top-btns {
   display: flex;
@@ -349,10 +353,81 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
+}
+
+.room-delete-icon {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 18px;
+  height: 18px;
+  background: white;
+  border-radius: 50%;
 }
 
 .guchi-genre-wide {
   display: none;
+}
+
+.guchiroom-paginate {
+  display: flex;
+  margin-bottom: 5px;
+  margin-top: 20px;
+  color: #4b4b4b;
+}
+
+.gechiroom-paginate-first,
+.gechiroom-paginate-last {
+  background: skyblue;
+  width: 25px;
+  height: 30px;
+  line-height: 27px;
+  text-align: center;
+  font-size: 30px;
+  border: 1px solid #4b4b4b;
+  cursor: pointer;
+}
+
+.gechiroom-paginate-prev,
+.gechiroom-paginate-next {
+  background: skyblue;
+  width: 25px;
+  height: 30px;
+  line-height: 27px;
+  text-align: center;
+  font-size: 20px;
+  border: 1px solid #4b4b4b;
+  cursor: pointer;
+}
+
+.guchiroom-paginate-page {
+  background: skyblue;
+  min-width: 25px;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  /* font-size: 30px; */
+  border: 1px solid #4b4b4b;
+  cursor: pointer;
+}
+
+.change-page-disabled {
+  opacity: 0.5;
+}
+
+.current-page {
+  background: rgb(53, 185, 238);
+}
+
+.guchiroom-paginate-info {
+  color: #2d2d2d;
+  margin-bottom: 10px;
+}
+
+.guchi-detail-paginate {
+  display: flex;
+  justify-content: center;
 }
 
 
@@ -372,6 +447,7 @@
   border-radius: 8px;
   opacity: 0.3;
   cursor: pointer;
+  z-index: 2;
 }
 
 .thread-scroll-btn:hover {
@@ -444,11 +520,12 @@
 .thread-title-area-right {
   flex: 1;
   margin: 5px 0 0 10px;
+  position: relative;
 }
 
-.thread-title-area-title {
+/* .thread-title-area-title {
   margin-bottom: 20px;
-}
+} */
 
 .thread-title {
   font-size: 20px;
@@ -458,6 +535,9 @@
 .thread-title-area-infos {
   display: flex;
   justify-content: space-between;
+  width: 100%;
+  position: absolute;
+  bottom: 0px;
 }
 
 .thread-title-area-comment .comment-count {
@@ -486,11 +566,23 @@
   margin-bottom: 10px;
   border-radius: 12px;
   /* border-bottom: 1px solid #d8d8d8; */
+  position: relative;
 }
 
 .self-comment {
   background: #f5d0d6;
   margin-left: auto;
+}
+
+.guchi-delete-icon {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  width: 18px;
+  height: 18px;
+  background: white;
+  border-radius: 50%;
+  cursor: pointer;
 }
 
 .thread-comment-area-top {
@@ -501,6 +593,14 @@
 
 .thread-comment-area-top .id {
   margin-right: 15px;
+}
+
+.thread-comment-area-top .id img {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: white;
+  vertical-align: -3px;
 }
 
 .thread-comment-area-top .self-id {
@@ -683,6 +783,10 @@
 
   .guchi {
     width: 100%;
+  }
+
+  .guchi-main-when-overlay {
+    position: inherit;
   }
 
   .thread-scroll-btn {

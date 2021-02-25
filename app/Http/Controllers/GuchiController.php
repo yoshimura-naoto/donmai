@@ -50,6 +50,25 @@ class GuchiController extends Controller
 
 
 
+    // グチ部屋の削除
+    public function roomDelete($id)
+    {
+        $guchiRoom = GuchiRoom::where('id', $id)
+                            ->with(['guchiImages'])
+                            ->first();
+
+        // アイコン画像削除
+        if (count($guchiRoom->guchiImages) > 0) {
+            foreach ($guchiRoom->guchiImages as $image) {
+                Storage::disk('s3')->delete(parse_url($image->path, PHP_URL_PATH));
+            }
+        }
+
+        $guchiRoom->delete();
+    }
+
+
+
     // グチ部屋全部を新着順で取得
     public function getRoomsNew()
     {
@@ -58,13 +77,14 @@ class GuchiController extends Controller
                             }])
                             ->withCount(['guchis'])
                             ->orderBy('created_at', 'desc')
-                            ->get();
+                            ->paginate(10);
 
         // 全ジャンルを取得
         $genres = Post::$genres;
 
         foreach ($rooms as $room) {
             $room->genre = array_column($genres, 'name', 'route')[$room->genre];
+            // 認証ユーザーがブックマークしているかどうか
             if (count($room->guchiBookmarks) > 0) {
                 $room->bookmarked = true;
             } else {
@@ -85,14 +105,12 @@ class GuchiController extends Controller
                             }])
                             ->withCount(['guchis'])
                             ->orderBy('guchis_count', 'desc')
-                            ->get();
+                            ->paginate(10);
 
         $genres = Post::$genres;
 
         foreach ($rooms as $room) {
-            // $room->genre = $genres[array_search($room->genre, array_column($genres, 'route'))]['name'];
             $room->genre = array_column($genres, 'name', 'route')[$room->genre];
-            // $room->guchis_count = 5;
             if (count($room->guchiBookmarks) > 0) {
                 $room->bookmarked = true;
             } else {
@@ -114,14 +132,12 @@ class GuchiController extends Controller
                             }])
                             ->withCount(['guchis'])
                             ->orderBy('created_at', 'desc')
-                            ->get();
+                            ->paginate(10);
 
         $genres = Post::$genres;
 
         foreach ($rooms as $room) {
-            // $room->genre = $genres[array_search($name, array_column($genres, 'route'))]['name'];
             $room->genre = array_column($genres, 'name', 'route')[$room->genre];
-            // $room->guchis_count = 314;
             if (count($room->guchiBookmarks) > 0) {
                 $room->bookmarked = true;
             } else {
@@ -143,7 +159,7 @@ class GuchiController extends Controller
                             }])
                             ->withCount(['guchis'])
                             ->orderBy('guchis_count', 'desc')
-                            ->get();
+                            ->paginate(10);
 
         $genres = Post::$genres;
 
@@ -171,7 +187,7 @@ class GuchiController extends Controller
                                 $query->where('user_id', $authId);
                             }])
                             ->orderBy('created_at', 'desc')
-                            ->get();
+                            ->paginate(10);
 
         $genres = Post::$genres;
 
@@ -199,7 +215,7 @@ class GuchiController extends Controller
                                 $query->where('user_id', $authId);
                             }])
                             ->orderBy('guchis_count', 'desc')
-                            ->get();
+                            ->paginate(10);
 
         $genres = Post::$genres;
 
@@ -223,14 +239,22 @@ class GuchiController extends Controller
         $rooms = GuchiRoom::whereHas('guchiBookmarks', function (Builder $query) use ($id) {
                             $query->where('user_id', $id);
                         })
+                        ->with(['guchiBookmarks' => function ($query) {
+                            $query->where('user_id', Auth::id());
+                        }])
                         ->withCount(['guchis'])
-                        ->get();
+                        ->orderBy('created_at', 'desc')
+                        ->paginate(10);
 
         $genres = Post::$genres;
 
         foreach ($rooms as $room) {
             $room->genre = array_column($genres, 'name', 'route')[$room->genre];
-            $room->bookmarked = true;
+            if (count($room->guchiBookmarks) > 0) {
+                $room->bookmarked = true;
+            } else {
+                $room->bookmarked = false;
+            }
         }
 
         return $rooms;
@@ -247,6 +271,7 @@ class GuchiController extends Controller
         ]);
     }
 
+
     // グチ部屋のブックマークのキャンセル
     public function unBookmark($id)
     {
@@ -257,54 +282,43 @@ class GuchiController extends Controller
 
 
 
-    // グチ詳細ページの初期化
+    // グチ詳細ページ用に認証ユーザー情報とグチ部屋情報を取得する
     public function init($id)
     {
-        $guchiRoom = GuchiRoom::where('id', $id)
-                            ->with(['guchis.user', 'guchis.guchiImages', 'guchis' => function ($query) {
-                                $query->withCount(['guchiGoods',
-                                                   'guchiGoods as guchi_good_by_user' => function (Builder $query) {
-                                                       $query->where('user_id', Auth::id());
-                                                   }]);
-                            }])
-                            ->first();
-
-        foreach ($guchiRoom->guchis as $guchi) {
-            if ($guchi->guchi_good_by_user) {
-                $guchi->gooded = true;
-            } else {
-                $guchi->gooded = false;
-            }
-        }
+        $guchiRoom = GuchiRoom::where('id', $id)->first();
 
         $data = [
             'authUser' => Auth::user(),
             'guchiRoom' => $guchiRoom,
-            'guchis' => $guchiRoom->guchis,
         ];
 
         return $data;
     }
 
 
-
     // グチのみを取得
     public function guchiGet($id)
     {
         $guchis = Guchi::where('guchi_room_id', $id)
-                        ->with(['user', 'guchiImages',])
+                        ->with(['user:id,name,icon', 'guchiImages',])
                         ->withCount(['guchiGoods',
                                      'guchiGoods as guchi_good_by_user' => function (Builder $query) {
                                         $query->where('user_id', Auth::id());
                                     }])
-                        ->get();
+                        ->paginate(5);
 
         foreach ($guchis as $guchi) {
-            // $guchi->guchiGoods_count = 0;
+            // 認証ユーザーがいいねしてるかどうか
             if ($guchi->guchi_good_by_user) {
                 $guchi->gooded = true;
             } else {
                 $guchi->gooded = false;
+            }
+            // 自分のグチかどうか
+            if ($guchi->user_id === Auth::id()) {
+                $guchi->isSelf = true;
+            } else {
+                $guchi->isSelf = false;
             }
         }
 
@@ -318,16 +332,18 @@ class GuchiController extends Controller
     {
         $request->validate(Guchi::$guchiRules, Guchi::$guchiValMessages);
 
-        // 匿名の決定
+        // 匿名かどうかの決定
         $anonymous = false;
-
         if ($request->anonymous) {
             $anonymous = true;
+            $userId = null;
+        } else {
+            $userId = Auth::id();
         }
 
         // グチのレコード作成
         $guchi = Guchi::create([
-            'user_id' => Auth::id(),
+            'user_id' => $userId,
             'guchi_room_id' => $request->roomId,
             'body' => $request->body,
             'anonymous' => $anonymous,
@@ -347,7 +363,24 @@ class GuchiController extends Controller
             }
         }
     }
-    
+
+
+
+    // グチの削除
+    public function guchiDelete($id)
+    {
+        $guchi = Guchi::where('id', $id)
+                    ->with(['guchiImages'])
+                    ->first();
+        
+        if (count($guchi->guchiImages) > 0) {
+            foreach ($guchi->guchiImages as $image) {
+                Storage::disk('s3')->delete(parse_url($image->path, PHP_URL_PATH));
+            }
+        }
+
+        $guchi->delete();
+    }
 
 
     // グチにいいね

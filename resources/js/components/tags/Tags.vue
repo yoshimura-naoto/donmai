@@ -54,6 +54,16 @@ export default {
       }).catch(() => {
         return;
       });
+  },
+
+  beforeRouteUpdate (to, from, next) {
+    axios.get('/api/tag/count/' + to.params.name)
+      .then((res) => {
+        this.postsCount = res.data;
+        next();
+      }).catch(() => {
+        return;
+      });
   }
 }
 </script>
