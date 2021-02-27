@@ -119,6 +119,7 @@ export default {
     getGuchiRooms(page) {
       axios.get('/api/guchiroom/all/new?page=' + page)
         .then((res) => {
+          console.log(res.data);
           this.guchiRooms = res.data.data;
           this.currentPage = res.data.current_page;
           this.lastPage = res.data.last_page;
@@ -191,9 +192,13 @@ export default {
       this.roomDeleting = true;
       axios.post('/api/guchiroom/delete/' + this.guchiRooms[this.deleteRoomIndex].id)
         .then(() => {
-          this.guchiRooms.splice(this.deleteRoomIndex, 1);
-          this.deleteRoomModalClose();
+          if (this.currentPage === this.lastPage && this.guchiRooms.length === 1 && this.currentPage !== 1) {
+            this.changePage(this.currentPage - 1);
+          } else {
+            this.changePage(this.currentPage);
+          }
           this.roomDeleting = false;
+          this.deleteRoomModalClose();
         }).catch((error) => {
           console.log(error);
           this.roomDeleting = false;

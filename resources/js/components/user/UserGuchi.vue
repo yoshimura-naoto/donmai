@@ -93,6 +93,8 @@ export default {
       deleteRoomModalOpened: false,
       // 削除する予定の部屋のid
       deleteRoomIndex: null,
+      // グチ部屋削除中
+      roomDeleting: false,
       // ページネーション
       currentPage: 1,
       lastPage: 1,
@@ -116,6 +118,7 @@ export default {
     getGuchiRooms(page, userId) {
       axios.get('/api/guchiroom/user/' + userId + '?page=' + page)
         .then((res) => {
+          console.log(res.data);
           this.guchiRooms = res.data.data;
           this.currentPage = res.data.current_page;
           this.lastPage = res.data.last_page;
@@ -184,12 +187,20 @@ export default {
     },
     // 部屋の削除
     deleteRoom() {
+      if (this.roomDeleting) return;
+      this.roomDeleting = true;
       axios.post('/api/guchiroom/delete/' + this.guchiRooms[this.deleteRoomIndex].id)
         .then(() => {
-          this.guchiRooms.splice(this.deleteRoomIndex, 1);
+          if (this.currentPage === this.lastPage && this.guchiRooms.length === 1 && this.currentPage !== 1) {
+            this.changePage(this.currentPage - 1);
+          } else {
+            this.changePage(this.currentPage);
+          }
           this.deleteRoomModalClose();
-        }).catch(() => {
-          return;
+          this.roomDeleting = false;
+        }).catch((error) => {
+          console.log(error);
+          this.roomDeleting = false;
         });
     }
   },

@@ -2983,6 +2983,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       axios.get('/api/guchiroom/all/new?page=' + page).then(function (res) {
+        console.log(res.data);
         _this2.guchiRooms = res.data.data;
         _this2.currentPage = res.data.current_page;
         _this2.lastPage = res.data.last_page;
@@ -3063,11 +3064,15 @@ __webpack_require__.r(__webpack_exports__);
       if (this.roomDeleting) return;
       this.roomDeleting = true;
       axios.post('/api/guchiroom/delete/' + this.guchiRooms[this.deleteRoomIndex].id).then(function () {
-        _this5.guchiRooms.splice(_this5.deleteRoomIndex, 1);
-
-        _this5.deleteRoomModalClose();
+        if (_this5.currentPage === _this5.lastPage && _this5.guchiRooms.length === 1 && _this5.currentPage !== 1) {
+          _this5.changePage(_this5.currentPage - 1);
+        } else {
+          _this5.changePage(_this5.currentPage);
+        }
 
         _this5.roomDeleting = false;
+
+        _this5.deleteRoomModalClose();
       })["catch"](function (error) {
         console.log(error);
         _this5.roomDeleting = false;
@@ -3232,6 +3237,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       axios.get('/api/guchiroom/all/trend?page=' + page).then(function (res) {
+        console.log(res.data);
         _this2.guchiRooms = res.data.data;
         _this2.currentPage = res.data.current_page;
         _this2.lastPage = res.data.last_page;
@@ -3312,7 +3318,11 @@ __webpack_require__.r(__webpack_exports__);
       if (this.roomDeleting) return;
       this.roomDeleting = true;
       axios.post('/api/guchiroom/delete/' + this.guchiRooms[this.deleteRoomIndex].id).then(function () {
-        _this5.guchiRooms.splice(_this5.deleteRoomIndex, 1);
+        if (_this5.currentPage === _this5.lastPage && _this5.guchiRooms.length === 1 && _this5.currentPage !== 1) {
+          _this5.changePage(_this5.currentPage - 1);
+        } else {
+          _this5.changePage(_this5.currentPage);
+        }
 
         _this5.deleteRoomModalClose();
 
@@ -3641,7 +3651,9 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       lastPage: 1,
       total: 1,
       from: 0,
-      to: 0
+      to: 0,
+      // 一番下にスクロールするかどうか
+      scrollToBottom: false
     };
   },
   methods: {
@@ -3675,15 +3687,17 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         _this2.from = res.data.from;
         _this2.to = res.data.to;
 
-        if (!_this2.guchiCreated) {
+        if (!_this2.guchiCreated && !_this2.guchiDeleting) {
           window.scrollTo(0, 0);
-        } else {
+        } else if (_this2.guchiCreated || _this2.scrollToBottom) {
           _this2.$nextTick(function () {
             this.scrollToEnd();
           });
         }
 
         _this2.guchiCreated = false;
+        _this2.guchiDeleting = false;
+        _this2.scrollToBottom = false;
       })["catch"](function (error) {
         console.log(error);
       });
@@ -3876,11 +3890,15 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       if (this.guchiDeleting) return;
       this.guchiDeleting = true;
       axios.post('/api/guchi/delete/' + this.guchis[this.deleteGuchiIndex].id).then(function () {
-        _this7.guchis.splice(_this7.deleteGuchiIndex, 1);
+        if (_this7.currentPage === _this7.lastPage && _this7.guchis.length === 1 && _this7.currentPage !== 1) {
+          _this7.changePage(_this7.currentPage - 1);
+
+          _this7.scrollToBottom = true;
+        } else {
+          _this7.changePage(_this7.currentPage);
+        }
 
         _this7.deleteGuchiModalClose();
-
-        _this7.guchiDeleting = false;
       })["catch"](function (error) {
         console.log(error);
         _this7.guchiDeleting = false;
@@ -4060,6 +4078,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       axios.get('/api/guchiroom/genre/new/' + genreName + '?page=' + page).then(function (res) {
+        console.log(res.data);
         _this2.guchiRooms = res.data.data;
         _this2.currentPage = res.data.current_page;
         _this2.lastPage = res.data.last_page;
@@ -4140,7 +4159,11 @@ __webpack_require__.r(__webpack_exports__);
       if (this.roomDeleting) return;
       this.roomDeleting = true;
       axios.post('/api/guchiroom/delete/' + this.guchiRooms[this.deleteRoomIndex].id).then(function () {
-        _this5.guchiRooms.splice(_this5.deleteRoomIndex, 1);
+        if (_this5.currentPage === _this5.lastPage && _this5.guchiRooms.length === 1 && _this5.currentPage !== 1) {
+          _this5.changePage(_this5.currentPage - 1);
+        } else {
+          _this5.changePage(_this5.currentPage);
+        }
 
         _this5.deleteRoomModalClose();
 
@@ -4317,6 +4340,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       axios.get('/api/guchiroom/genre/trend/' + genreName + '?page=' + page).then(function (res) {
+        console.log(res.data);
         _this2.guchiRooms = res.data.data;
         _this2.currentPage = res.data.current_page;
         _this2.lastPage = res.data.last_page;
@@ -4397,7 +4421,11 @@ __webpack_require__.r(__webpack_exports__);
       if (this.roomDeleting) return;
       this.roomDeleting = true;
       axios.post('/api/guchiroom/delete/' + this.guchiRooms[this.deleteRoomIndex].id).then(function () {
-        _this5.guchiRooms.splice(_this5.deleteRoomIndex, 1);
+        if (_this5.currentPage === _this5.lastPage && _this5.guchiRooms.length === 1 && _this5.currentPage !== 1) {
+          _this5.changePage(_this5.currentPage - 1);
+        } else {
+          _this5.changePage(_this5.currentPage);
+        }
 
         _this5.deleteRoomModalClose();
 
@@ -5220,10 +5248,12 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       ],
       editErrors: [],
       // 無限スクロール用
-      itemLoading: false,
-      loadMore: true,
-      page: 1,
-      isLastPage: false,
+      postsLoading: false,
+      loadMorePosts: true,
+      // itemLoading: false,
+      // loadMore: true,
+      // page: 1,
+      // isLastPage: false,
       // 投稿
       posts: [// {
         //   id: 1,
@@ -5296,15 +5326,13 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         //   コメントへの返信の無限スクロール用
         //   repliesLoading: false,
         //   loadRepliesMore: true,
-        //   repliesPage: 1,
-        //   isRepliesLastPage: false,
         // },
       ],
       // コメントの無限スクロール用
       commentsLoading: false,
       loadCommentsMore: true,
-      commentsPage: 1,
-      isCommentsLastPage: false,
+      // commentsPage: 1,
+      // isCommentsLastPage: false,
       // 新規コメント、返信
       newComment: {},
       newReply: {},
@@ -5366,27 +5394,27 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     getPosts: function getPosts() {
       var _this2 = this;
 
-      // 読み込み中か最後のページなら読み込まない
-      if (this.isLastPage) return;
-      if (this.itemLoading) return;
-      this.itemLoading = true;
-      axios.get('/api/post/get?page=' + this.page).then(function (res) {
+      if (!this.loadMorePosts) return; // 全てのレコードを読み込んでいたら無効に
+
+      if (this.postsLoading) return; // ロード中は無効に
+
+      this.postsLoading = true;
+      axios.get('/api/post/get?loaded_posts_count=' + this.posts.length).then(function (res) {
         var _this2$posts;
 
         console.log(res.data);
 
-        (_this2$posts = _this2.posts).push.apply(_this2$posts, _toConsumableArray(res.data.data));
+        (_this2$posts = _this2.posts).push.apply(_this2$posts, _toConsumableArray(res.data.posts));
 
-        _this2.itemLoading = false;
-
-        if (_this2.page === res.data.last_page) {
-          _this2.isLastPage = true;
+        if (_this2.posts.length === res.data.postsTotal) {
+          _this2.loadMorePosts = false;
         }
 
-        _this2.page++;
+        _this2.postsLoading = false;
+        console.log(_this2.posts.length);
       })["catch"](function (error) {
         console.log(error);
-        _this2.itemLoading = false;
+        _this2.postsLoading = false;
       });
     },
     // 投稿のテキストエリアの高さをフレキシブルに
@@ -5774,34 +5802,29 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       }); // 無限スクロール設定の初期化
 
       this.commentsLoading = false;
-      this.loadCommentsMore = true;
-      this.commentsPage = 1;
-      this.isCommentsLastPage = false;
+      this.loadCommentsMore = true; // this.commentsPage = 1;
+      // this.isCommentsLastPage = false;
     },
     // コメントの取得
     getComments: function getComments() {
       var _this10 = this;
 
-      if (this.isCommentsLastPage) return;
+      if (!this.loadCommentsMore) return;
       if (this.commentsLoading) return;
       this.commentsLoading = true;
-      axios.get('/api/comments/get/' + this.modalPostId + '?page=' + this.commentsPage).then(function (res) {
+      axios.get('/api/comments/get/' + this.modalPostId + '?loaded_comments_count=' + this.modalPostComments.length).then(function (res) {
         var _this10$modalPostComm;
 
         console.log(res.data);
 
-        (_this10$modalPostComm = _this10.modalPostComments).push.apply(_this10$modalPostComm, _toConsumableArray(res.data.data));
+        (_this10$modalPostComm = _this10.modalPostComments).push.apply(_this10$modalPostComm, _toConsumableArray(res.data.comments));
 
-        _this10.commentsLoading = false;
-
-        if (_this10.commentsPage === res.data.last_page) {
-          _this10.isCommentsLastPage = true;
+        if (_this10.modalPostComments.length === res.data.commentsTotal) {
+          _this10.loadCommentsMore = false;
         }
 
-        _this10.commentsPage++; // 確認用
-        // const postsOverlay = document.querySelector('.posts-overlay');
-        // console.log(postsOverlay.clientHeight);
-        // console.log(postsOverlay.scrollHeight);
+        _this10.commentsLoading = false;
+        console.log(_this10.modalPostComments.length);
       })["catch"](function (error) {
         console.log(error);
         _this10.commentsLoading = false;
@@ -5959,23 +5982,25 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     getReplies: function getReplies(i) {
       var _this17 = this;
 
+      if (!this.modalPostComments[i].loadRepliesMore) return;
+      if (this.modalPostComments[i].repliesLoading) return;
       this.modalPostComments[i].repliesLoading = true;
-      axios.get('/api/replies/get/' + this.modalPostComments[i].id + '?page=' + this.modalPostComments[i].repliesPage).then(function (res) {
+      axios.get('/api/replies/get/' + this.modalPostComments[i].id + '?loaded_replies_count=' + this.modalPostComments[i].replies.length).then(function (res) {
         var _this17$modalPostComm;
 
         console.log(res.data);
 
-        (_this17$modalPostComm = _this17.modalPostComments[i].replies).push.apply(_this17$modalPostComm, _toConsumableArray(res.data.data));
+        (_this17$modalPostComm = _this17.modalPostComments[i].replies).push.apply(_this17$modalPostComm, _toConsumableArray(res.data.replies));
 
-        _this17.modalPostComments[i].repliesLoading = false; // if (this.modalPostComments[i].repliesPage === res.data.last_page) {
-
-        if (res.data.current_page === res.data.last_page) {
-          _this17.modalPostComments[i].isRepliesLastPage = true;
+        if (_this17.modalPostComments[i].replies.length === res.data.repliesTotal) {
+          _this17.modalPostComments[i].loadRepliesMore = false;
         }
 
-        _this17.modalPostComments[i].repliesPage++;
+        _this17.modalPostComments[i].repliesLoading = false;
+        console.log(_this17.modalPostComments[i].replies.length);
       })["catch"](function (error) {
         console.log(error);
+        _this17.modalPostComments[i].repliesLoading = false;
       });
     },
     //コメントへの返信の取得と表示と非表示
@@ -6020,7 +6045,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       axios.post('/api/comment/reply', data).then(function (res) {
         console.log(res.data);
 
-        if (_this19.modalPostComments[i].isRepliesLastPage) {
+        if (!_this19.modalPostComments[i].loadRepliesMore) {
           _this19.modalPostComments[i].replies.push(res.data);
         }
 
@@ -6183,7 +6208,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       this.modalPostEditShow = false;
     }
 
-    this.isLastPage = true;
+    this.loadMorePosts = false;
     next();
   },
   directives: {
@@ -6773,10 +6798,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       editProcessing: false,
       // 編集の処理中
       // 無限スクロール用
-      itemLoading: false,
-      loadMore: true,
-      page: 1,
-      isLastPage: false,
+      postsLoading: false,
+      loadMorePosts: true,
       // 投稿
       posts: [// {
         //   id: 1,
@@ -6848,15 +6871,13 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         //   コメントへの返信の無限スクロール用
         //   repliesLoading: false,
         //   loadRepliesMore: true,
-        //   repliesPage: 1,
-        //   isRepliesLastPage: false,
         // },
       ],
       // コメントの無限スクロール用
       commentsLoading: false,
       loadCommentsMore: true,
-      commentsPage: 1,
-      isCommentsLastPage: false,
+      // commentsPage: 1,
+      // isCommentsLastPage: false,
       // 新規コメント、返信
       newComment: {},
       newReply: {},
@@ -6918,36 +6939,32 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     getPosts: function getPosts(genreName) {
       var _this2 = this;
 
-      // 読み込み中か最後のページなら読み込まない。
-      if (this.isLastPage) return;
-      if (this.itemLoading) return;
-      this.itemLoading = true;
-      axios.get('/api/post/genre/get/' + genreName + '?page=' + this.page).then(function (res) {
+      if (!this.loadMorePosts) return;
+      if (this.postsLoading) return;
+      this.postsLoading = true;
+      axios.get('/api/post/genre/get/' + genreName + '?loaded_posts_count=' + this.posts.length).then(function (res) {
         var _this2$posts;
 
         console.log(res.data);
 
-        (_this2$posts = _this2.posts).push.apply(_this2$posts, _toConsumableArray(res.data.data));
+        (_this2$posts = _this2.posts).push.apply(_this2$posts, _toConsumableArray(res.data.posts));
 
-        _this2.itemLoading = false;
-
-        if (_this2.page === res.data.last_page) {
-          _this2.isLastPage = true;
+        if (_this2.posts.length === res.data.postsTotal) {
+          _this2.loadMorePosts = false;
         }
 
-        _this2.page++;
+        _this2.postsLoading = false;
+        console.log(_this2.posts.length);
       })["catch"](function (error) {
         console.log(error);
-        _this2.itemLoading = false;
+        _this2.postsLoading = false;
       });
     },
     // 無限スクロールのリセット
     resetPaginate: function resetPaginate() {
       this.posts = [];
-      this.itemLoading = false;
-      this.loadMore = true;
-      this.page = 1;
-      this.isLastPage = false;
+      this.postsLoading = false;
+      this.loadMorePosts = true;
     },
     // 投稿編集のテキストエリアの高さをフレキシブルに
     changeEditHeight: function changeEditHeight() {
@@ -7259,34 +7276,29 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       }); // 無限スクロール設定の初期化
 
       this.commentsLoading = false;
-      this.loadCommentsMore = true;
-      this.commentsPage = 1;
-      this.isCommentsLastPage = false;
+      this.loadCommentsMore = true; // this.commentsPage = 1;
+      // this.isCommentsLastPage = false;
     },
     // コメントの取得
     getComments: function getComments() {
       var _this8 = this;
 
-      if (this.isCommentsLastPage) return;
+      if (!this.loadCommentsMore) return;
       if (this.commentsLoading) return;
       this.commentsLoading = true;
-      axios.get('/api/comments/get/' + this.modalPostId + '?page=' + this.commentsPage).then(function (res) {
+      axios.get('/api/comments/get/' + this.modalPostId + '?loaded_comments_count=' + this.modalPostComments.length).then(function (res) {
         var _this8$modalPostComme;
 
         console.log(res.data);
 
-        (_this8$modalPostComme = _this8.modalPostComments).push.apply(_this8$modalPostComme, _toConsumableArray(res.data.data));
+        (_this8$modalPostComme = _this8.modalPostComments).push.apply(_this8$modalPostComme, _toConsumableArray(res.data.comments));
 
-        _this8.commentsLoading = false;
-
-        if (_this8.commentsPage === res.data.last_page) {
-          _this8.isCommentsLastPage = true;
+        if (_this8.modalPostComments.length === res.data.commentsTotal) {
+          _this8.loadCommentsMore = false;
         }
 
-        _this8.commentsPage++; // 確認用
-        // const postsOverlay = document.querySelector('.posts-overlay');
-        // console.log(postsOverlay.clientHeight);
-        // console.log(postsOverlay.scrollHeight);
+        _this8.commentsLoading = false;
+        console.log(_this8.modalPostComments.length);
       })["catch"](function (error) {
         console.log(error);
         _this8.commentsLoading = false;
@@ -7442,23 +7454,25 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     getReplies: function getReplies(i) {
       var _this15 = this;
 
+      if (!this.modalPostComments[i].loadRepliesMore) return;
+      if (this.modalPostComments[i].repliesLoading) return;
       this.modalPostComments[i].repliesLoading = true;
-      axios.get('/api/replies/get/' + this.modalPostComments[i].id + '?page=' + this.modalPostComments[i].repliesPage).then(function (res) {
+      axios.get('/api/replies/get/' + this.modalPostComments[i].id + '?loaded_replies_count=' + this.modalPostComments[i].replies.length).then(function (res) {
         var _this15$modalPostComm;
 
         console.log(res.data);
 
-        (_this15$modalPostComm = _this15.modalPostComments[i].replies).push.apply(_this15$modalPostComm, _toConsumableArray(res.data.data));
+        (_this15$modalPostComm = _this15.modalPostComments[i].replies).push.apply(_this15$modalPostComm, _toConsumableArray(res.data.replies));
 
-        _this15.modalPostComments[i].repliesLoading = false; // if (this.modalPostComments[i].repliesPage === res.data.last_page) {
-
-        if (res.data.current_page === res.data.last_page) {
-          _this15.modalPostComments[i].isRepliesLastPage = true;
+        if (_this15.modalPostComments[i].replies.length === res.data.repliesTotal) {
+          _this15.modalPostComments[i].loadRepliesMore = false;
         }
 
-        _this15.modalPostComments[i].repliesPage++;
+        _this15.modalPostComments[i].repliesLoading = false;
+        console.log(_this15.modalPostComments[i].replies.length);
       })["catch"](function (error) {
         console.log(error);
+        _this15.modalPostComments[i].repliesLoading = false;
       });
     },
     //コメントへの返信の表示と非表示
@@ -7498,7 +7512,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       axios.post('/api/comment/reply', data).then(function (res) {
         console.log(res.data);
 
-        if (_this16.modalPostComments[i].isRepliesLastPage) {
+        if (!_this16.modalPostComments[i].loadRepliesMore) {
           _this16.modalPostComments[i].replies.push(res.data);
         }
 
@@ -7650,7 +7664,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       this.modalPostEditShow = false;
     }
 
-    this.isLastPage = true;
+    this.loadMorePosts = false;
     next();
   },
   beforeRouteUpdate: function beforeRouteUpdate(to, from, next) {
@@ -8254,10 +8268,12 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       editProcessing: false,
       // 編集の処理中
       // 無限スクロール用
-      itemLoading: false,
-      loadMore: true,
-      page: 1,
-      isLastPage: false,
+      postsLoading: false,
+      loadMorePosts: true,
+      // itemLoading: false,
+      // loadMore: true,
+      // page: 1,
+      // isLastPage: false,
       // 投稿
       posts: [// {
         //   id: 1,
@@ -8332,15 +8348,13 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         //   コメントへの返信の無限スクロール用
         //   repliesLoading: false,
         //   loadRepliesMore: true,
-        //   repliesPage: 1,
-        //   isRepliesLastPage: false,
         // },
       ],
       // コメントの無限スクロール用
       commentsLoading: false,
       loadCommentsMore: true,
-      commentsPage: 1,
-      isCommentsLastPage: false,
+      // commentsPage: 1,
+      // isCommentsLastPage: false,
       // 新規コメント、返信
       newComment: {},
       newReply: {},
@@ -8402,36 +8416,36 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     getPosts: function getPosts() {
       var _this2 = this;
 
-      // 読み込み中か最後のページなら読み込まない。
-      if (this.isLastPage) return;
-      if (this.itemLoading) return;
-      this.itemLoading = true;
-      axios.get('/api/post/hot/get' + '?page=' + this.page).then(function (res) {
+      if (!this.loadMorePosts) return;
+      if (this.postsLoading) return;
+      this.postsLoading = true;
+      axios.get('/api/post/hot/get?loaded_posts_count=' + this.posts.length).then(function (res) {
         var _this2$posts;
 
         console.log(res.data);
 
-        (_this2$posts = _this2.posts).push.apply(_this2$posts, _toConsumableArray(res.data.data));
+        (_this2$posts = _this2.posts).push.apply(_this2$posts, _toConsumableArray(res.data.posts));
 
-        _this2.itemLoading = false;
-
-        if (_this2.page === res.data.last_page) {
-          _this2.isLastPage = true;
+        if (_this2.posts.length === res.data.postsTotal) {
+          _this2.loadMorePosts = false;
         }
 
-        _this2.page++;
+        _this2.postsLoading = false;
+        console.log(_this2.posts.length);
+        console.log(_this2.loadMorePosts);
       })["catch"](function (error) {
         console.log(error);
-        _this2.itemLoading = false;
+        _this2.postsLoading = false;
       });
     },
     // 無限スクロールのリセット
     resetPaginate: function resetPaginate() {
       this.posts = [];
-      this.itemLoading = false;
-      this.loadMore = true;
-      this.page = 1;
-      this.isLastPage = false;
+      this.postsLoading = false;
+      this.loadMorePosts = true; // this.itemLoading = false;
+      // this.loadMore = true;
+      // this.page = 1;
+      // this.isLastPage = false;
     },
     // 投稿編集のテキストエリアの高さをフレキシブルに
     changeEditHeight: function changeEditHeight() {
@@ -8738,34 +8752,29 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       }); // 無限スクロール設定の初期化
 
       this.commentsLoading = false;
-      this.loadCommentsMore = true;
-      this.commentsPage = 1;
-      this.isCommentsLastPage = false;
+      this.loadCommentsMore = true; // this.commentsPage = 1;
+      // this.isCommentsLastPage = false;
     },
     // コメントの取得
     getComments: function getComments() {
       var _this8 = this;
 
-      if (this.isCommentsLastPage) return;
+      if (!this.loadCommentsMore) return;
       if (this.commentsLoading) return;
       this.commentsLoading = true;
-      axios.get('/api/comments/get/' + this.modalPostId + '?page=' + this.commentsPage).then(function (res) {
+      axios.get('/api/comments/get/' + this.modalPostId + '?loaded_comments_count=' + this.modalPostComments.length).then(function (res) {
         var _this8$modalPostComme;
 
         console.log(res.data);
 
-        (_this8$modalPostComme = _this8.modalPostComments).push.apply(_this8$modalPostComme, _toConsumableArray(res.data.data));
+        (_this8$modalPostComme = _this8.modalPostComments).push.apply(_this8$modalPostComme, _toConsumableArray(res.data.comments));
 
-        _this8.commentsLoading = false;
-
-        if (_this8.commentsPage === res.data.last_page) {
-          _this8.isCommentsLastPage = true;
+        if (_this8.modalPostComments.length === res.data.commentsTotal) {
+          _this8.loadCommentsMore = false;
         }
 
-        _this8.commentsPage++; // 確認用
-        // const postsOverlay = document.querySelector('.posts-overlay');
-        // console.log(postsOverlay.clientHeight);
-        // console.log(postsOverlay.scrollHeight);
+        _this8.commentsLoading = false;
+        console.log(_this8.modalPostComments.length);
       })["catch"](function (error) {
         console.log(error);
         _this8.commentsLoading = false;
@@ -8920,23 +8929,25 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     getReplies: function getReplies(i) {
       var _this15 = this;
 
+      if (!this.modalPostComments[i].loadRepliesMore) return;
+      if (this.modalPostComments[i].repliesLoading) return;
       this.modalPostComments[i].repliesLoading = true;
-      axios.get('/api/replies/get/' + this.modalPostComments[i].id + '?page=' + this.modalPostComments[i].repliesPage).then(function (res) {
+      axios.get('/api/replies/get/' + this.modalPostComments[i].id + '?loaded_replies_count=' + this.modalPostComments[i].replies.length).then(function (res) {
         var _this15$modalPostComm;
 
         console.log(res.data);
 
-        (_this15$modalPostComm = _this15.modalPostComments[i].replies).push.apply(_this15$modalPostComm, _toConsumableArray(res.data.data));
+        (_this15$modalPostComm = _this15.modalPostComments[i].replies).push.apply(_this15$modalPostComm, _toConsumableArray(res.data.replies));
 
-        _this15.modalPostComments[i].repliesLoading = false; // if (this.modalPostComments[i].repliesPage === res.data.last_page) {
-
-        if (res.data.current_page === res.data.last_page) {
-          _this15.modalPostComments[i].isRepliesLastPage = true;
+        if (_this15.modalPostComments[i].replies.length === res.data.repliesTotal) {
+          _this15.modalPostComments[i].loadRepliesMore = false;
         }
 
-        _this15.modalPostComments[i].repliesPage++;
+        _this15.modalPostComments[i].repliesLoading = false;
+        console.log(_this15.modalPostComments[i].replies.length);
       })["catch"](function (error) {
         console.log(error);
+        _this15.modalPostComments[i].repliesLoading = false;
       });
     },
     //コメントへの返信の表示と非表示
@@ -8975,7 +8986,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       data.append('commentId', this.modalPostComments[i].id);
       axios.post('/api/comment/reply', data).then(function (res) {
         // console.log(res.data);
-        if (_this16.modalPostComments[i].isRepliesLastPage) {
+        if (!_this16.modalPostComments[i].loadRepliesMore) {
           _this16.modalPostComments[i].replies.push(res.data);
         }
 
@@ -9126,7 +9137,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       this.modalPostEditShow = false;
     }
 
-    this.isLastPage = true;
+    this.loadMorePosts = false;
     next();
   },
   beforeRouteUpdate: function beforeRouteUpdate(to, from, next) {
@@ -9329,6 +9340,8 @@ __webpack_require__.r(__webpack_exports__);
       deleteRoomModalOpened: false,
       // 削除する予定の部屋のid
       deleteRoomIndex: null,
+      // グチ部屋削除中
+      roomDeleting: false,
       // ページネーション
       currentPage: 1,
       lastPage: 1,
@@ -9355,6 +9368,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       axios.get('/api/search/guchiroom/new/' + word + '?page=' + page).then(function (res) {
+        console.log(res.data);
         _this2.guchiRooms = res.data.data;
         _this2.currentPage = res.data.current_page;
         _this2.lastPage = res.data.last_page;
@@ -9432,12 +9446,21 @@ __webpack_require__.r(__webpack_exports__);
     deleteRoom: function deleteRoom() {
       var _this5 = this;
 
+      if (this.roomDeleting) return;
+      this.roomDeleting = true;
       axios.post('/api/guchiroom/delete/' + this.guchiRooms[this.deleteRoomIndex].id).then(function () {
-        _this5.guchiRooms.splice(_this5.deleteRoomIndex, 1);
+        if (_this5.currentPage === _this5.lastPage && _this5.guchiRooms.length === 1 && _this5.currentPage !== 1) {
+          _this5.changePage(_this5.currentPage - 1);
+        } else {
+          _this5.changePage(_this5.currentPage);
+        }
 
         _this5.deleteRoomModalClose();
-      })["catch"](function () {
-        return;
+
+        _this5.roomDeleting = false;
+      })["catch"](function (error) {
+        console.log(error);
+        _this5.roomDeleting = false;
       });
     }
   },
@@ -9579,6 +9602,8 @@ __webpack_require__.r(__webpack_exports__);
       deleteRoomModalOpened: false,
       // 削除する予定の部屋のid
       deleteRoomIndex: null,
+      // グチ部屋削除中
+      roomDeleting: false,
       // ページネーション
       currentPage: 1,
       lastPage: 1,
@@ -9605,6 +9630,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       axios.get('/api/search/guchiroom/popular/' + word + '?page=' + page).then(function (res) {
+        console.log(res.data);
         _this2.guchiRooms = res.data.data;
         _this2.currentPage = res.data.current_page;
         _this2.lastPage = res.data.last_page;
@@ -9682,12 +9708,21 @@ __webpack_require__.r(__webpack_exports__);
     deleteRoom: function deleteRoom() {
       var _this5 = this;
 
+      if (this.roomDeleting) return;
+      this.roomDeleting = true;
       axios.post('/api/guchiroom/delete/' + this.guchiRooms[this.deleteRoomIndex].id).then(function () {
-        _this5.guchiRooms.splice(_this5.deleteRoomIndex, 1);
+        if (_this5.currentPage === _this5.lastPage && _this5.guchiRooms.length === 1 && _this5.currentPage !== 1) {
+          _this5.changePage(_this5.currentPage - 1);
+        } else {
+          _this5.changePage(_this5.currentPage);
+        }
 
         _this5.deleteRoomModalClose();
-      })["catch"](function () {
-        return;
+
+        _this5.roomDeleting = false;
+      })["catch"](function (error) {
+        console.log(error);
+        _this5.roomDeleting = false;
       });
     }
   },
@@ -10305,10 +10340,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       editProcessing: false,
       // 編集の処理中
       // 無限スクロール用
-      itemLoading: false,
-      loadMore: true,
-      page: 1,
-      isLastPage: false,
+      postsLoading: false,
+      loadMorePosts: true,
       // 投稿
       posts: [// {
         //   id: 1,
@@ -10383,15 +10416,11 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         //   コメントへの返信の無限スクロール用
         //   repliesLoading: false,
         //   loadRepliesMore: true,
-        //   repliesPage: 1,
-        //   isRepliesLastPage: false,
         // },
       ],
       // コメントの無限スクロール用
       commentsLoading: false,
       loadCommentsMore: true,
-      commentsPage: 1,
-      isCommentsLastPage: false,
       // 新規コメント、返信
       newComment: {},
       newReply: {},
@@ -10449,29 +10478,46 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     getPosts: function getPosts(word) {
       var _this2 = this;
 
-      // 読み込み中か最後のページなら読み込まない。
-      if (this.isLastPage) return;
-      if (this.itemLoading) return;
-      this.itemLoading = true;
-      axios.get('/api/post/search/new/' + word + '?page=' + this.page).then(function (res) {
+      if (!this.loadMorePosts) return;
+      if (this.postsLoading) return;
+      this.postsLoading = true;
+      axios.get('/api/post/search/new/' + word + '?loaded_posts_count=' + this.posts.length).then(function (res) {
         var _this2$posts;
 
         console.log(res.data);
 
-        (_this2$posts = _this2.posts).push.apply(_this2$posts, _toConsumableArray(res.data.data));
+        (_this2$posts = _this2.posts).push.apply(_this2$posts, _toConsumableArray(res.data.posts));
 
-        _this2.itemLoading = false;
-
-        if (_this2.page === res.data.last_page) {
-          _this2.isLastPage = true;
+        if (_this2.posts.length === res.data.postsTotal) {
+          _this2.loadMorePosts = false;
         }
 
-        _this2.page++;
+        _this2.postsLoading = false;
+        console.log(_this2.posts.length);
       })["catch"](function (error) {
         console.log(error);
-        _this2.itemLoading = false;
+        _this2.postsLoading = false;
       });
     },
+    // getPosts(word) {
+    //   // 読み込み中か最後のページなら読み込まない。
+    //   if (this.isLastPage) return;
+    //   if (this.itemLoading) return;
+    //   this.itemLoading = true;
+    //   axios.get('/api/post/search/new/' + word + '?page=' + this.page)
+    //     .then((res) => {
+    //       console.log(res.data);
+    //       this.posts.push(...res.data.data);
+    //       this.itemLoading = false;
+    //       if (this.page === res.data.last_page) {
+    //         this.isLastPage = true;
+    //       }
+    //       this.page++;
+    //     }).catch((error) => {
+    //       console.log(error);
+    //       this.itemLoading = false;
+    //     });
+    // },
     // 無限スクロールのリセット
     resetPaginate: function resetPaginate() {
       this.posts = [];
@@ -11027,7 +11073,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       data.append('commentId', this.modalPostComments[i].id);
       axios.post('/api/comment/reply', data).then(function (res) {
         // console.log(res.data);
-        if (_this16.modalPostComments[i].isRepliesLastPage) {
+        if (!_this16.modalPostComments[i].isRepliesLastPage) {
           _this16.modalPostComments[i].replies.push(res.data);
         }
 
@@ -11188,7 +11234,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       this.modalPostEditShow = false;
     }
 
-    this.isLastPage = true;
+    this.loadMorePosts = false;
     next();
   },
   beforeRouteUpdate: function beforeRouteUpdate(to, from, next) {
@@ -11788,10 +11834,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       editProcessing: false,
       // 編集の処理中
       // 無限スクロール用
-      itemLoading: false,
-      loadMore: true,
-      page: 1,
-      isLastPage: false,
+      postsLoading: false,
+      loadMorePosts: true,
       // 投稿
       posts: [// {
         //   id: 1,
@@ -11866,15 +11910,11 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         //   コメントへの返信の無限スクロール用
         //   repliesLoading: false,
         //   loadRepliesMore: true,
-        //   repliesPage: 1,
-        //   isRepliesLastPage: false,
         // },
       ],
       // コメントの無限スクロール用
       commentsLoading: false,
       loadCommentsMore: true,
-      commentsPage: 1,
-      isCommentsLastPage: false,
       // 新規コメント、返信
       newComment: {},
       newReply: {},
@@ -11932,36 +11972,51 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     getPosts: function getPosts(word) {
       var _this2 = this;
 
-      // 読み込み中か最後のページなら読み込まない。
-      if (this.isLastPage) return;
-      if (this.itemLoading) return;
-      this.itemLoading = true;
-      axios.get('/api/post/search/popular/' + word + '?page=' + this.page).then(function (res) {
+      if (!this.loadMorePosts) return;
+      if (this.postsLoading) return;
+      this.postsLoading = true;
+      axios.get('/api/post/search/popular/' + word + '?loaded_posts_count=' + this.posts.length).then(function (res) {
         var _this2$posts;
 
         console.log(res.data);
 
-        (_this2$posts = _this2.posts).push.apply(_this2$posts, _toConsumableArray(res.data.data));
+        (_this2$posts = _this2.posts).push.apply(_this2$posts, _toConsumableArray(res.data.posts));
 
-        _this2.itemLoading = false;
-
-        if (_this2.page === res.data.last_page) {
-          _this2.isLastPage = true;
+        if (_this2.posts.length === res.data.postsTotal) {
+          _this2.loadMorePosts = false;
         }
 
-        _this2.page++;
+        _this2.postsLoading = false;
+        console.log(_this2.posts.length);
       })["catch"](function (error) {
         console.log(error);
-        _this2.itemLoading = false;
+        _this2.postsLoading = false;
       });
     },
+    // getPosts(word) {
+    //   // 読み込み中か最後のページなら読み込まない。
+    //   if (this.isLastPage) return;
+    //   if (this.itemLoading) return;
+    //   this.itemLoading = true;
+    //   axios.get('/api/post/search/popular/' + word + '?page=' + this.page)
+    //     .then((res) => {
+    //       console.log(res.data);
+    //       this.posts.push(...res.data.data);
+    //       this.itemLoading = false;
+    //       if (this.page === res.data.last_page) {
+    //         this.isLastPage = true;
+    //       }
+    //       this.page++;
+    //     }).catch((error) => {
+    //       console.log(error);
+    //       this.itemLoading = false;
+    //     });
+    // },
     // 無限スクロールのリセット
     resetPaginate: function resetPaginate() {
       this.posts = [];
-      this.itemLoading = false;
-      this.loadMore = true;
-      this.page = 1;
-      this.isLastPage = false;
+      this.postsLoading = false;
+      this.loadMorePosts = true;
     },
     // 投稿編集のテキストエリアの高さをフレキシブルに
     changeEditHeight: function changeEditHeight() {
@@ -12274,33 +12329,27 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
       this.commentsLoading = false;
       this.loadCommentsMore = true;
-      this.commentsPage = 1;
-      this.isCommentsLastPage = false;
     },
     // コメントの取得
     getComments: function getComments() {
       var _this8 = this;
 
-      if (this.isCommentsLastPage) return;
+      if (!this.loadCommentsMore) return;
       if (this.commentsLoading) return;
       this.commentsLoading = true;
-      axios.get('/api/comments/get/' + this.modalPostId + '?page=' + this.commentsPage).then(function (res) {
+      axios.get('/api/comments/get/' + this.modalPostId + '?loaded_comments_count=' + this.modalPostComments.length).then(function (res) {
         var _this8$modalPostComme;
 
         console.log(res.data);
 
-        (_this8$modalPostComme = _this8.modalPostComments).push.apply(_this8$modalPostComme, _toConsumableArray(res.data.data));
+        (_this8$modalPostComme = _this8.modalPostComments).push.apply(_this8$modalPostComme, _toConsumableArray(res.data.comments));
 
-        _this8.commentsLoading = false;
-
-        if (_this8.commentsPage === res.data.last_page) {
-          _this8.isCommentsLastPage = true;
+        if (_this8.modalPostComments.length === res.data.commentsTotal) {
+          _this8.loadCommentsMore = false;
         }
 
-        _this8.commentsPage++; // 確認用
-        // const postsOverlay = document.querySelector('.posts-overlay');
-        // console.log(postsOverlay.clientHeight);
-        // console.log(postsOverlay.scrollHeight);
+        _this8.commentsLoading = false;
+        console.log(_this8.modalPostComments.length);
       })["catch"](function (error) {
         console.log(error);
         _this8.commentsLoading = false;
@@ -12455,23 +12504,25 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     getReplies: function getReplies(i) {
       var _this15 = this;
 
+      if (!this.modalPostComments[i].loadRepliesMore) return;
+      if (this.modalPostComments[i].repliesLoading) return;
       this.modalPostComments[i].repliesLoading = true;
-      axios.get('/api/replies/get/' + this.modalPostComments[i].id + '?page=' + this.modalPostComments[i].repliesPage).then(function (res) {
+      axios.get('/api/replies/get/' + this.modalPostComments[i].id + '?loaded_replies_count=' + this.modalPostComments[i].replies.length).then(function (res) {
         var _this15$modalPostComm;
 
         console.log(res.data);
 
-        (_this15$modalPostComm = _this15.modalPostComments[i].replies).push.apply(_this15$modalPostComm, _toConsumableArray(res.data.data));
+        (_this15$modalPostComm = _this15.modalPostComments[i].replies).push.apply(_this15$modalPostComm, _toConsumableArray(res.data.replies));
 
-        _this15.modalPostComments[i].repliesLoading = false; // if (this.modalPostComments[i].repliesPage === res.data.last_page) {
-
-        if (res.data.current_page === res.data.last_page) {
-          _this15.modalPostComments[i].isRepliesLastPage = true;
+        if (_this15.modalPostComments[i].replies.length === res.data.repliesTotal) {
+          _this15.modalPostComments[i].loadRepliesMore = false;
         }
 
-        _this15.modalPostComments[i].repliesPage++;
+        _this15.modalPostComments[i].repliesLoading = false;
+        console.log(_this15.modalPostComments[i].replies.length);
       })["catch"](function (error) {
         console.log(error);
+        _this15.modalPostComments[i].repliesLoading = false;
       });
     },
     //コメントへの返信の表示と非表示
@@ -12510,7 +12561,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       data.append('commentId', this.modalPostComments[i].id);
       axios.post('/api/comment/reply', data).then(function (res) {
         // console.log(res.data);
-        if (_this16.modalPostComments[i].isRepliesLastPage) {
+        if (!_this16.modalPostComments[i].loadRepliesMore) {
           _this16.modalPostComments[i].replies.push(res.data);
         }
 
@@ -12671,7 +12722,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       this.modalPostEditShow = false;
     }
 
-    this.isLastPage = true;
+    this.loadMorePosts = false;
     next();
   },
   beforeRouteUpdate: function beforeRouteUpdate(to, from, next) {
@@ -13543,10 +13594,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       editErrors: [],
       edited: false,
       // 無限スクロール用
-      itemLoading: false,
-      loadMore: true,
-      page: 1,
-      isLastPage: false,
+      postsLoading: false,
+      loadMorePosts: true,
       // 投稿
       posts: [// {
         //   id: 1,
@@ -13621,15 +13670,11 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         //   コメントへの返信の無限スクロール用
         //   repliesLoading: false,
         //   loadRepliesMore: true,
-        //   repliesPage: 1,
-        //   isRepliesLastPage: false,
         // },
       ],
       // コメントの無限スクロール用
       commentsLoading: false,
       loadCommentsMore: true,
-      commentsPage: 1,
-      isCommentsLastPage: false,
       // 新規コメント、返信
       newComment: {},
       newReply: {},
@@ -13691,36 +13736,51 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     getPosts: function getPosts(tagName) {
       var _this2 = this;
 
-      // 読み込み中か最後のページなら読み込まない。
-      if (this.isLastPage) return;
-      if (this.itemLoading) return;
-      this.itemLoading = true;
-      axios.get('/api/post/tags/new/' + tagName + '?page=' + this.page).then(function (res) {
+      if (!this.loadMorePosts) return;
+      if (this.postsLoading) return;
+      this.postsLoading = true;
+      axios.get('/api/post/tags/new/' + tagName + '?loaded_posts_count=' + this.posts.length).then(function (res) {
         var _this2$posts;
 
         console.log(res.data);
 
-        (_this2$posts = _this2.posts).push.apply(_this2$posts, _toConsumableArray(res.data.data));
+        (_this2$posts = _this2.posts).push.apply(_this2$posts, _toConsumableArray(res.data.posts));
 
-        _this2.itemLoading = false;
-
-        if (_this2.page === res.data.last_page) {
-          _this2.isLastPage = true;
+        if (_this2.posts.length === res.data.postsTotal) {
+          _this2.loadMorePosts = false;
         }
 
-        _this2.page++;
+        _this2.postsLoading = false;
+        console.log(_this2.posts.length);
       })["catch"](function (error) {
         console.log(error);
-        _this2.itemLoading = false;
+        _this2.postsLoading = false;
       });
     },
+    // getPosts(tagName) {
+    //   // 読み込み中か最後のページなら読み込まない。
+    //   if (this.isLastPage) return;
+    //   if (this.itemLoading) return;
+    //   this.itemLoading = true;
+    //   axios.get('/api/post/tags/new/' + tagName + '?page=' + this.page)
+    //     .then((res) => {
+    //       console.log(res.data);
+    //       this.posts.push(...res.data.data);
+    //       this.itemLoading = false;
+    //       if (this.page === res.data.last_page) {
+    //         this.isLastPage = true;
+    //       }
+    //       this.page++;
+    //     }).catch((error) => {
+    //       console.log(error);
+    //       this.itemLoading = false;
+    //     });
+    // },
     // 無限スクロールのリセット
     resetPaginate: function resetPaginate() {
       this.posts = [];
-      this.itemLoading = false;
-      this.loadMore = true;
-      this.page = 1;
-      this.isLastPage = false;
+      this.postsLoading = false;
+      this.loadMorePosts = true;
     },
     // 投稿編集のテキストエリアの高さをフレキシブルに
     changeEditHeight: function changeEditHeight() {
@@ -13924,10 +13984,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         }
       });
       axios.post('/api/post/edit', data).then(function (res) {
-        // なんかバグるからあらかじめ次のページネートを実行しておく
-        _this7.getPosts(_this7.$route.params.name); // このページのタグを削除していたらこのページの投稿一覧から削除
-
-
+        // このページのタグを削除していたらこのページの投稿一覧から削除
         if (_this7.editPost.tags.includes(_this7.$route.params.name)) {
           _this7.posts.splice(_this7.editPostIndex, 1, res.data.post);
         } else {
@@ -14036,33 +14093,27 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
       this.commentsLoading = false;
       this.loadCommentsMore = true;
-      this.commentsPage = 1;
-      this.isCommentsLastPage = false;
     },
     // コメントの取得
     getComments: function getComments() {
       var _this8 = this;
 
-      if (this.isCommentsLastPage) return;
+      if (!this.loadCommentsMore) return;
       if (this.commentsLoading) return;
       this.commentsLoading = true;
-      axios.get('/api/comments/get/' + this.modalPostId + '?page=' + this.commentsPage).then(function (res) {
+      axios.get('/api/comments/get/' + this.modalPostId + '?loaded_comments_count=' + this.modalPostComments.length).then(function (res) {
         var _this8$modalPostComme;
 
         console.log(res.data);
 
-        (_this8$modalPostComme = _this8.modalPostComments).push.apply(_this8$modalPostComme, _toConsumableArray(res.data.data));
+        (_this8$modalPostComme = _this8.modalPostComments).push.apply(_this8$modalPostComme, _toConsumableArray(res.data.comments));
 
-        _this8.commentsLoading = false;
-
-        if (_this8.commentsPage === res.data.last_page) {
-          _this8.isCommentsLastPage = true;
+        if (_this8.modalPostComments.length === res.data.commentsTotal) {
+          _this8.loadCommentsMore = false;
         }
 
-        _this8.commentsPage++; // 確認用
-        // const postsOverlay = document.querySelector('.posts-overlay');
-        // console.log(postsOverlay.clientHeight);
-        // console.log(postsOverlay.scrollHeight);
+        _this8.commentsLoading = false;
+        console.log(_this8.modalPostComments.length);
       })["catch"](function (error) {
         console.log(error);
         _this8.commentsLoading = false;
@@ -14217,23 +14268,25 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     getReplies: function getReplies(i) {
       var _this15 = this;
 
+      if (!this.modalPostComments[i].loadRepliesMore) return;
+      if (this.modalPostComments[i].repliesLoading) return;
       this.modalPostComments[i].repliesLoading = true;
-      axios.get('/api/replies/get/' + this.modalPostComments[i].id + '?page=' + this.modalPostComments[i].repliesPage).then(function (res) {
+      axios.get('/api/replies/get/' + this.modalPostComments[i].id + '?loaded_replies_count=' + this.modalPostComments[i].replies.length).then(function (res) {
         var _this15$modalPostComm;
 
         console.log(res.data);
 
-        (_this15$modalPostComm = _this15.modalPostComments[i].replies).push.apply(_this15$modalPostComm, _toConsumableArray(res.data.data));
+        (_this15$modalPostComm = _this15.modalPostComments[i].replies).push.apply(_this15$modalPostComm, _toConsumableArray(res.data.replies));
 
-        _this15.modalPostComments[i].repliesLoading = false; // if (this.modalPostComments[i].repliesPage === res.data.last_page) {
-
-        if (res.data.current_page === res.data.last_page) {
-          _this15.modalPostComments[i].isRepliesLastPage = true;
+        if (_this15.modalPostComments[i].replies.length === res.data.repliesTotal) {
+          _this15.modalPostComments[i].loadRepliesMore = false;
         }
 
-        _this15.modalPostComments[i].repliesPage++;
+        _this15.modalPostComments[i].repliesLoading = false;
+        console.log(_this15.modalPostComments[i].replies.length);
       })["catch"](function (error) {
         console.log(error);
+        _this15.modalPostComments[i].repliesLoading = false;
       });
     },
     //コメントへの返信の表示と非表示
@@ -14272,7 +14325,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       data.append('commentId', this.modalPostComments[i].id);
       axios.post('/api/comment/reply', data).then(function (res) {
         // console.log(res.data);
-        if (_this16.modalPostComments[i].isRepliesLastPage) {
+        if (!_this16.modalPostComments[i].loadRepliesMore) {
           _this16.modalPostComments[i].replies.push(res.data);
         }
 
@@ -14432,7 +14485,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       this.modalPostEditShow = false;
     }
 
-    this.isLastPage = true;
+    this.loadMorePosts = false;
     next();
   },
   beforeRouteUpdate: function beforeRouteUpdate(to, from, next) {
@@ -15032,10 +15085,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       editProcessing: false,
       // 編集の処理中
       // 無限スクロール用
-      itemLoading: false,
-      loadMore: true,
-      page: 1,
-      isLastPage: false,
+      postsLoading: false,
+      loadMorePosts: true,
       // 投稿
       posts: [// {
         //   id: 1,
@@ -15110,15 +15161,11 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         //   コメントへの返信の無限スクロール用
         //   repliesLoading: false,
         //   loadRepliesMore: true,
-        //   repliesPage: 1,
-        //   isRepliesLastPage: false,
         // },
       ],
       // コメントの無限スクロール用
       commentsLoading: false,
       loadCommentsMore: true,
-      commentsPage: 1,
-      isCommentsLastPage: false,
       // 新規コメント、返信
       newComment: {},
       newReply: {},
@@ -15180,36 +15227,51 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     getPosts: function getPosts(tagName) {
       var _this2 = this;
 
-      // 読み込み中か最後のページなら読み込まない。
-      if (this.isLastPage) return;
-      if (this.itemLoading) return;
-      this.itemLoading = true;
-      axios.get('/api/post/tags/popular/' + tagName + '?page=' + this.page).then(function (res) {
+      if (!this.loadMorePosts) return;
+      if (this.postsLoading) return;
+      this.postsLoading = true;
+      axios.get('/api/post/tags/popular/' + tagName + '?loaded_posts_count=' + this.posts.length).then(function (res) {
         var _this2$posts;
 
         console.log(res.data);
 
-        (_this2$posts = _this2.posts).push.apply(_this2$posts, _toConsumableArray(res.data.data));
+        (_this2$posts = _this2.posts).push.apply(_this2$posts, _toConsumableArray(res.data.posts));
 
-        _this2.itemLoading = false;
-
-        if (_this2.page === res.data.last_page) {
-          _this2.isLastPage = true;
+        if (_this2.posts.length === res.data.postsTotal) {
+          _this2.loadMorePosts = false;
         }
 
-        _this2.page++;
+        _this2.postsLoading = false;
+        console.log(_this2.posts.length);
       })["catch"](function (error) {
         console.log(error);
-        _this2.itemLoading = false;
+        _this2.postsLoading = false;
       });
     },
+    // getPosts(tagName) {
+    //   // 読み込み中か最後のページなら読み込まない。
+    //   if (this.isLastPage) return;
+    //   if (this.itemLoading) return;
+    //   this.itemLoading = true;
+    //   axios.get('/api/post/tags/popular/' + tagName + '?page=' + this.page)
+    //     .then((res) => {
+    //       console.log(res.data);
+    //       this.posts.push(...res.data.data);
+    //       this.itemLoading = false;
+    //       if (this.page === res.data.last_page) {
+    //         this.isLastPage = true;
+    //       }
+    //       this.page++;
+    //     }).catch((error) => {
+    //       console.log(error);
+    //       this.itemLoading = false;
+    //     });
+    // },
     // 無限スクロールのリセット
     resetPaginate: function resetPaginate() {
       this.posts = [];
-      this.itemLoading = false;
-      this.loadMore = true;
-      this.page = 1;
-      this.isLastPage = false;
+      this.postsLoading = false;
+      this.loadMorePosts = true;
     },
     // 投稿編集のテキストエリアの高さをフレキシブルに
     changeEditHeight: function changeEditHeight() {
@@ -15525,33 +15587,27 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
       this.commentsLoading = false;
       this.loadCommentsMore = true;
-      this.commentsPage = 1;
-      this.isCommentsLastPage = false;
     },
     // コメントの取得
     getComments: function getComments() {
       var _this8 = this;
 
-      if (this.isCommentsLastPage) return;
+      if (!this.loadCommentsMore) return;
       if (this.commentsLoading) return;
       this.commentsLoading = true;
-      axios.get('/api/comments/get/' + this.modalPostId + '?page=' + this.commentsPage).then(function (res) {
+      axios.get('/api/comments/get/' + this.modalPostId + '?loaded_comments_count=' + this.modalPostComments.length).then(function (res) {
         var _this8$modalPostComme;
 
         console.log(res.data);
 
-        (_this8$modalPostComme = _this8.modalPostComments).push.apply(_this8$modalPostComme, _toConsumableArray(res.data.data));
+        (_this8$modalPostComme = _this8.modalPostComments).push.apply(_this8$modalPostComme, _toConsumableArray(res.data.comments));
 
-        _this8.commentsLoading = false;
-
-        if (_this8.commentsPage === res.data.last_page) {
-          _this8.isCommentsLastPage = true;
+        if (_this8.modalPostComments.length === res.data.commentsTotal) {
+          _this8.loadCommentsMore = false;
         }
 
-        _this8.commentsPage++; // 確認用
-        // const postsOverlay = document.querySelector('.posts-overlay');
-        // console.log(postsOverlay.clientHeight);
-        // console.log(postsOverlay.scrollHeight);
+        _this8.commentsLoading = false;
+        console.log(_this8.modalPostComments.length);
       })["catch"](function (error) {
         console.log(error);
         _this8.commentsLoading = false;
@@ -15706,23 +15762,25 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     getReplies: function getReplies(i) {
       var _this15 = this;
 
+      if (!this.modalPostComments[i].loadRepliesMore) return;
+      if (this.modalPostComments[i].repliesLoading) return;
       this.modalPostComments[i].repliesLoading = true;
-      axios.get('/api/replies/get/' + this.modalPostComments[i].id + '?page=' + this.modalPostComments[i].repliesPage).then(function (res) {
+      axios.get('/api/replies/get/' + this.modalPostComments[i].id + '?loaded_replies_count=' + this.modalPostComments[i].replies.length).then(function (res) {
         var _this15$modalPostComm;
 
         console.log(res.data);
 
-        (_this15$modalPostComm = _this15.modalPostComments[i].replies).push.apply(_this15$modalPostComm, _toConsumableArray(res.data.data));
+        (_this15$modalPostComm = _this15.modalPostComments[i].replies).push.apply(_this15$modalPostComm, _toConsumableArray(res.data.replies));
 
-        _this15.modalPostComments[i].repliesLoading = false; // if (this.modalPostComments[i].repliesPage === res.data.last_page) {
-
-        if (res.data.current_page === res.data.last_page) {
-          _this15.modalPostComments[i].isRepliesLastPage = true;
+        if (_this15.modalPostComments[i].replies.length === res.data.repliesTotal) {
+          _this15.modalPostComments[i].loadRepliesMore = false;
         }
 
-        _this15.modalPostComments[i].repliesPage++;
+        _this15.modalPostComments[i].repliesLoading = false;
+        console.log(_this15.modalPostComments[i].replies.length);
       })["catch"](function (error) {
         console.log(error);
+        _this15.modalPostComments[i].repliesLoading = false;
       });
     },
     //コメントへの返信の表示と非表示
@@ -15761,7 +15819,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       data.append('commentId', this.modalPostComments[i].id);
       axios.post('/api/comment/reply', data).then(function (res) {
         // console.log(res.data);
-        if (_this16.modalPostComments[i].isRepliesLastPage) {
+        if (!_this16.modalPostComments[i].loadRepliesMore) {
           _this16.modalPostComments[i].replies.push(res.data);
         }
 
@@ -15921,7 +15979,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       this.modalPostEditShow = false;
     }
 
-    this.isLastPage = true;
+    this.loadMorePosts = false;
     next();
   },
   beforeRouteUpdate: function beforeRouteUpdate(to, from, next) {
@@ -17184,10 +17242,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       editProcessing: false,
       // 編集の処理中
       // 無限スクロール用
-      itemLoading: false,
-      loadMore: true,
-      page: 1,
-      isLastPage: false,
+      postsLoading: false,
+      loadMorePosts: true,
       // 投稿
       posts: [// {
         //   id: 1,
@@ -17262,15 +17318,11 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         //   コメントへの返信の無限スクロール用
         //   repliesLoading: false,
         //   loadRepliesMore: true,
-        //   repliesPage: 1,
-        //   isRepliesLastPage: false,
         // },
       ],
       // コメントの無限スクロール用
       commentsLoading: false,
       loadCommentsMore: true,
-      commentsPage: 1,
-      isCommentsLastPage: false,
       // 新規コメント、返信
       newComment: {},
       newReply: {},
@@ -17328,36 +17380,51 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     getPosts: function getPosts(userId) {
       var _this2 = this;
 
-      // 読み込み中か最後のページなら読み込まない。
-      if (this.isLastPage) return;
-      if (this.itemLoading) return;
-      this.itemLoading = true;
-      axios.get('/api/post/user/donmai/' + userId + '?page=' + this.page).then(function (res) {
+      if (!this.loadMorePosts) return;
+      if (this.postsLoading) return;
+      this.postsLoading = true;
+      axios.get('/api/post/user/donmai/' + userId + '?loaded_posts_count=' + this.posts.length).then(function (res) {
         var _this2$posts;
 
         console.log(res.data);
 
-        (_this2$posts = _this2.posts).push.apply(_this2$posts, _toConsumableArray(res.data.data));
+        (_this2$posts = _this2.posts).push.apply(_this2$posts, _toConsumableArray(res.data.posts));
 
-        _this2.itemLoading = false;
-
-        if (_this2.page === res.data.last_page) {
-          _this2.isLastPage = true;
+        if (_this2.posts.length === res.data.postsTotal) {
+          _this2.loadMorePosts = false;
         }
 
-        _this2.page++;
+        _this2.postsLoading = false;
+        console.log(_this2.posts.length);
       })["catch"](function (error) {
         console.log(error);
-        _this2.itemLoading = false;
+        _this2.postsLoading = false;
       });
     },
+    // getPosts(userId) {
+    //   // 読み込み中か最後のページなら読み込まない。
+    //   if (this.isLastPage) return;
+    //   if (this.itemLoading) return;
+    //   this.itemLoading = true;
+    //   axios.get('/api/post/user/donmai/' + userId + '?page=' + this.page)
+    //     .then((res) => {
+    //       console.log(res.data);
+    //       this.posts.push(...res.data.data);
+    //       this.itemLoading = false;
+    //       if (this.page === res.data.last_page) {
+    //         this.isLastPage = true;
+    //       }
+    //       this.page++;
+    //     }).catch((error) => {
+    //       console.log(error);
+    //       this.itemLoading = false;
+    //     });
+    // },
     // 無限スクロールのリセット
     resetPaginate: function resetPaginate() {
       this.posts = [];
-      this.itemLoading = false;
-      this.loadMore = true;
-      this.page = 1;
-      this.isLastPage = false;
+      this.postsLoading = false;
+      this.loadMorePosts = true;
     },
     // 投稿編集のテキストエリアの高さをフレキシブルに
     changeEditHeight: function changeEditHeight() {
@@ -17665,33 +17732,27 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
       this.commentsLoading = false;
       this.loadCommentsMore = true;
-      this.commentsPage = 1;
-      this.isCommentsLastPage = false;
     },
     // コメントの取得
     getComments: function getComments() {
       var _this8 = this;
 
-      if (this.isCommentsLastPage) return;
+      if (!this.loadCommentsMore) return;
       if (this.commentsLoading) return;
       this.commentsLoading = true;
-      axios.get('/api/comments/get/' + this.modalPostId + '?page=' + this.commentsPage).then(function (res) {
+      axios.get('/api/comments/get/' + this.modalPostId + '?loaded_comments_count=' + this.modalPostComments.length).then(function (res) {
         var _this8$modalPostComme;
 
         console.log(res.data);
 
-        (_this8$modalPostComme = _this8.modalPostComments).push.apply(_this8$modalPostComme, _toConsumableArray(res.data.data));
+        (_this8$modalPostComme = _this8.modalPostComments).push.apply(_this8$modalPostComme, _toConsumableArray(res.data.comments));
 
-        _this8.commentsLoading = false;
-
-        if (_this8.commentsPage === res.data.last_page) {
-          _this8.isCommentsLastPage = true;
+        if (_this8.modalPostComments.length === res.data.commentsTotal) {
+          _this8.loadCommentsMore = false;
         }
 
-        _this8.commentsPage++; // 確認用
-        // const postsOverlay = document.querySelector('.posts-overlay');
-        // console.log(postsOverlay.clientHeight);
-        // console.log(postsOverlay.scrollHeight);
+        _this8.commentsLoading = false;
+        console.log(_this8.modalPostComments.length);
       })["catch"](function (error) {
         console.log(error);
         _this8.commentsLoading = false;
@@ -17846,23 +17907,25 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     getReplies: function getReplies(i) {
       var _this15 = this;
 
+      if (!this.modalPostComments[i].loadRepliesMore) return;
+      if (this.modalPostComments[i].repliesLoading) return;
       this.modalPostComments[i].repliesLoading = true;
-      axios.get('/api/replies/get/' + this.modalPostComments[i].id + '?page=' + this.modalPostComments[i].repliesPage).then(function (res) {
+      axios.get('/api/replies/get/' + this.modalPostComments[i].id + '?loaded_replies_count=' + this.modalPostComments[i].replies.length).then(function (res) {
         var _this15$modalPostComm;
 
         console.log(res.data);
 
-        (_this15$modalPostComm = _this15.modalPostComments[i].replies).push.apply(_this15$modalPostComm, _toConsumableArray(res.data.data));
+        (_this15$modalPostComm = _this15.modalPostComments[i].replies).push.apply(_this15$modalPostComm, _toConsumableArray(res.data.replies));
 
-        _this15.modalPostComments[i].repliesLoading = false; // if (this.modalPostComments[i].repliesPage === res.data.last_page) {
-
-        if (res.data.current_page === res.data.last_page) {
-          _this15.modalPostComments[i].isRepliesLastPage = true;
+        if (_this15.modalPostComments[i].replies.length === res.data.repliesTotal) {
+          _this15.modalPostComments[i].loadRepliesMore = false;
         }
 
-        _this15.modalPostComments[i].repliesPage++;
+        _this15.modalPostComments[i].repliesLoading = false;
+        console.log(_this15.modalPostComments[i].replies.length);
       })["catch"](function (error) {
         console.log(error);
+        _this15.modalPostComments[i].repliesLoading = false;
       });
     },
     //コメントへの返信の表示と非表示
@@ -17900,8 +17963,9 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       data.append('body', this.modalPostComments[i].replyInput);
       data.append('commentId', this.modalPostComments[i].id);
       axios.post('/api/comment/reply', data).then(function (res) {
-        // console.log(res.data);
-        if (_this16.modalPostComments[i].isRepliesLastPage) {
+        console.log(res.data);
+
+        if (!_this16.modalPostComments[i].loadRepliesMore) {
           _this16.modalPostComments[i].replies.push(res.data);
         }
 
@@ -18052,7 +18116,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       this.modalPostEditShow = false;
     }
 
-    this.isLastPage = true;
+    this.loadMorePosts = false;
     next();
   },
   beforeRouteUpdate: function beforeRouteUpdate(to, from, next) {
@@ -18406,6 +18470,8 @@ __webpack_require__.r(__webpack_exports__);
       deleteRoomModalOpened: false,
       // 削除する予定の部屋のid
       deleteRoomIndex: null,
+      // グチ部屋削除中
+      roomDeleting: false,
       // ページネーション
       currentPage: 1,
       lastPage: 1,
@@ -18432,6 +18498,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       axios.get('/api/guchiroom/user/' + userId + '?page=' + page).then(function (res) {
+        console.log(res.data);
         _this2.guchiRooms = res.data.data;
         _this2.currentPage = res.data.current_page;
         _this2.lastPage = res.data.last_page;
@@ -18509,12 +18576,21 @@ __webpack_require__.r(__webpack_exports__);
     deleteRoom: function deleteRoom() {
       var _this5 = this;
 
+      if (this.roomDeleting) return;
+      this.roomDeleting = true;
       axios.post('/api/guchiroom/delete/' + this.guchiRooms[this.deleteRoomIndex].id).then(function () {
-        _this5.guchiRooms.splice(_this5.deleteRoomIndex, 1);
+        if (_this5.currentPage === _this5.lastPage && _this5.guchiRooms.length === 1 && _this5.currentPage !== 1) {
+          _this5.changePage(_this5.currentPage - 1);
+        } else {
+          _this5.changePage(_this5.currentPage);
+        }
 
         _this5.deleteRoomModalClose();
-      })["catch"](function () {
-        return;
+
+        _this5.roomDeleting = false;
+      })["catch"](function (error) {
+        console.log(error);
+        _this5.roomDeleting = false;
       });
     }
   },
@@ -19273,10 +19349,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       editProcessing: false,
       // 編集の処理中
       // 無限スクロール用
-      itemLoading: false,
-      loadMore: true,
-      page: 1,
-      isLastPage: false,
+      postsLoading: false,
+      loadMorePosts: true,
       // 投稿
       posts: [// {
         //   id: 1,
@@ -19351,15 +19425,11 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         //   コメントへの返信の無限スクロール用
         //   repliesLoading: false,
         //   loadRepliesMore: true,
-        //   repliesPage: 1,
-        //   isRepliesLastPage: false,
         // },
       ],
       // コメントの無限スクロール用
       commentsLoading: false,
       loadCommentsMore: true,
-      commentsPage: 1,
-      isCommentsLastPage: false,
       // 新規コメント、返信
       newComment: {},
       newReply: {},
@@ -19417,36 +19487,51 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     getPosts: function getPosts(userId) {
       var _this2 = this;
 
-      // 読み込み中か最後のページなら読み込まない。
-      if (this.isLastPage) return;
-      if (this.itemLoading) return;
-      this.itemLoading = true;
-      axios.get('/api/post/user/get/' + userId + '?page=' + this.page).then(function (res) {
+      if (!this.loadMorePosts) return;
+      if (this.postsLoading) return;
+      this.postsLoading = true;
+      axios.get('/api/post/user/get/' + userId + '?loaded_posts_count=' + this.posts.length).then(function (res) {
         var _this2$posts;
 
         console.log(res.data);
 
-        (_this2$posts = _this2.posts).push.apply(_this2$posts, _toConsumableArray(res.data.data));
+        (_this2$posts = _this2.posts).push.apply(_this2$posts, _toConsumableArray(res.data.posts));
 
-        _this2.itemLoading = false;
-
-        if (_this2.page === res.data.last_page) {
-          _this2.isLastPage = true;
+        if (_this2.posts.length === res.data.postsTotal) {
+          _this2.loadMorePosts = false;
         }
 
-        _this2.page++;
+        _this2.postsLoading = false;
+        console.log(_this2.posts.length);
       })["catch"](function (error) {
         console.log(error);
-        _this2.itemLoading = false;
+        _this2.postsLoading = false;
       });
     },
+    // getPosts(userId) {
+    //   // 読み込み中か最後のページなら読み込まない。
+    //   if (this.isLastPage) return;
+    //   if (this.itemLoading) return;
+    //   this.itemLoading = true;
+    //   axios.get('/api/post/user/get/' + userId + '?page=' + this.page)
+    //     .then((res) => {
+    //       console.log(res.data);
+    //       this.posts.push(...res.data.data);
+    //       this.itemLoading = false;
+    //       if (this.page === res.data.last_page) {
+    //         this.isLastPage = true;
+    //       }
+    //       this.page++;
+    //     }).catch((error) => {
+    //       console.log(error);
+    //       this.itemLoading = false;
+    //     });
+    // },
     // 無限スクロールのリセット
     resetPaginate: function resetPaginate() {
       this.posts = [];
-      this.itemLoading = false;
-      this.loadMore = true;
-      this.page = 1;
-      this.isLastPage = false;
+      this.postsLoading = false;
+      this.loadMorePosts = true;
     },
     // 投稿編集のテキストエリアの高さをフレキシブルに
     changeEditHeight: function changeEditHeight() {
@@ -19754,33 +19839,27 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
       this.commentsLoading = false;
       this.loadCommentsMore = true;
-      this.commentsPage = 1;
-      this.isCommentsLastPage = false;
     },
     // コメントの取得
     getComments: function getComments() {
       var _this8 = this;
 
-      if (this.isCommentsLastPage) return;
+      if (!this.loadCommentsMore) return;
       if (this.commentsLoading) return;
       this.commentsLoading = true;
-      axios.get('/api/comments/get/' + this.modalPostId + '?page=' + this.commentsPage).then(function (res) {
+      axios.get('/api/comments/get/' + this.modalPostId + '?loaded_comments_count=' + this.modalPostComments.length).then(function (res) {
         var _this8$modalPostComme;
 
         console.log(res.data);
 
-        (_this8$modalPostComme = _this8.modalPostComments).push.apply(_this8$modalPostComme, _toConsumableArray(res.data.data));
+        (_this8$modalPostComme = _this8.modalPostComments).push.apply(_this8$modalPostComme, _toConsumableArray(res.data.comments));
 
-        _this8.commentsLoading = false;
-
-        if (_this8.commentsPage === res.data.last_page) {
-          _this8.isCommentsLastPage = true;
+        if (_this8.modalPostComments.length === res.data.commentsTotal) {
+          _this8.loadCommentsMore = false;
         }
 
-        _this8.commentsPage++; // 確認用
-        // const postsOverlay = document.querySelector('.posts-overlay');
-        // console.log(postsOverlay.clientHeight);
-        // console.log(postsOverlay.scrollHeight);
+        _this8.commentsLoading = false;
+        console.log(_this8.modalPostComments.length);
       })["catch"](function (error) {
         console.log(error);
         _this8.commentsLoading = false;
@@ -19935,23 +20014,25 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     getReplies: function getReplies(i) {
       var _this15 = this;
 
+      if (!this.modalPostComments[i].loadRepliesMore) return;
+      if (this.modalPostComments[i].repliesLoading) return;
       this.modalPostComments[i].repliesLoading = true;
-      axios.get('/api/replies/get/' + this.modalPostComments[i].id + '?page=' + this.modalPostComments[i].repliesPage).then(function (res) {
+      axios.get('/api/replies/get/' + this.modalPostComments[i].id + '?loaded_replies_count=' + this.modalPostComments[i].replies.length).then(function (res) {
         var _this15$modalPostComm;
 
         console.log(res.data);
 
-        (_this15$modalPostComm = _this15.modalPostComments[i].replies).push.apply(_this15$modalPostComm, _toConsumableArray(res.data.data));
+        (_this15$modalPostComm = _this15.modalPostComments[i].replies).push.apply(_this15$modalPostComm, _toConsumableArray(res.data.replies));
 
-        _this15.modalPostComments[i].repliesLoading = false; // if (this.modalPostComments[i].repliesPage === res.data.last_page) {
-
-        if (res.data.current_page === res.data.last_page) {
-          _this15.modalPostComments[i].isRepliesLastPage = true;
+        if (_this15.modalPostComments[i].replies.length === res.data.repliesTotal) {
+          _this15.modalPostComments[i].loadRepliesMore = false;
         }
 
-        _this15.modalPostComments[i].repliesPage++;
+        _this15.modalPostComments[i].repliesLoading = false;
+        console.log(_this15.modalPostComments[i].replies.length);
       })["catch"](function (error) {
         console.log(error);
+        _this15.modalPostComments[i].repliesLoading = false;
       });
     },
     //コメントへの返信の表示と非表示
@@ -19990,7 +20071,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       data.append('commentId', this.modalPostComments[i].id);
       axios.post('/api/comment/reply', data).then(function (res) {
         // console.log(res.data);
-        if (_this16.modalPostComments[i].isRepliesLastPage) {
+        if (!_this16.modalPostComments[i].loadRepliesMore) {
           _this16.modalPostComments[i].replies.push(res.data);
         }
 
@@ -20141,7 +20222,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       this.modalPostEditShow = false;
     }
 
-    this.isLastPage = true;
+    this.loadMorePosts = false;
     next();
   },
   beforeRouteUpdate: function beforeRouteUpdate(to, from, next) {
@@ -58793,7 +58874,7 @@ var render = function() {
                   _c("img", { attrs: { src: "../../image/comment.png" } }),
                   _vm._v(
                     "\n                  " +
-                      _vm._s(_vm.guchiRoom.guchis_count) +
+                      _vm._s(_vm.total) +
                       "\n              "
                   )
                 ])
@@ -58822,14 +58903,7 @@ var render = function() {
               [
                 !guchi.user_id
                   ? _c("div", { staticClass: "thread-comment-area-top" }, [
-                      _c(
-                        "div",
-                        {
-                          staticClass: "id",
-                          class: { "self-id": guchi.isSelf }
-                        },
-                        [_vm._v(_vm._s(index + 1) + ":")]
-                      ),
+                      _c("div", { staticClass: "id" }, [_vm._v("匿名:")]),
                       _vm._v(" "),
                       _c("div", { staticClass: "time" }, [
                         _vm._v(_vm._s(guchi.created_at))
@@ -60428,7 +60502,7 @@ var render = function() {
           ])
         }),
         _vm._v(" "),
-        _vm.itemLoading
+        _vm.postsLoading
           ? _c("div", { staticClass: "loading" }, [_vm._v("読み込み中...")])
           : _vm._e()
       ],
@@ -61234,7 +61308,7 @@ var render = function() {
                                           )
                                         }),
                                         _vm._v(" "),
-                                        !comment.isRepliesLastPage &&
+                                        comment.loadRepliesMore &&
                                         !comment.repliesLoading
                                           ? _c(
                                               "div",
@@ -62054,7 +62128,7 @@ var render = function() {
           ])
         }),
         _vm._v(" "),
-        _vm.itemLoading
+        _vm.postsLoading
           ? _c("div", { staticClass: "loading" }, [_vm._v("読み込み中...")])
           : _vm._e()
       ],
@@ -62860,7 +62934,7 @@ var render = function() {
                                           )
                                         }),
                                         _vm._v(" "),
-                                        !comment.isRepliesLastPage &&
+                                        comment.loadRepliesMore &&
                                         !comment.repliesLoading
                                           ? _c(
                                               "div",
@@ -63698,7 +63772,7 @@ var render = function() {
             ])
           }),
           _vm._v(" "),
-          _vm.itemLoading
+          _vm.postsLoading
             ? _c("div", { staticClass: "loading" }, [_vm._v("読み込み中...")])
             : _vm._e()
         ],
@@ -64512,7 +64586,7 @@ var render = function() {
                                           )
                                         }),
                                         _vm._v(" "),
-                                        !comment.isRepliesLastPage &&
+                                        comment.loadRepliesMore &&
                                         !comment.repliesLoading
                                           ? _c(
                                               "div",
@@ -66195,7 +66269,7 @@ var render = function() {
           ])
         }),
         _vm._v(" "),
-        _vm.itemLoading
+        _vm.postsLoading
           ? _c("div", { staticClass: "loading" }, [_vm._v("読み込み中...")])
           : _vm._e()
       ],
@@ -67010,7 +67084,7 @@ var render = function() {
                                           )
                                         }),
                                         _vm._v(" "),
-                                        !comment.isRepliesLastPage &&
+                                        comment.loadRepliesMore &&
                                         !comment.repliesLoading
                                           ? _c(
                                               "div",
@@ -67848,7 +67922,7 @@ var render = function() {
           ])
         }),
         _vm._v(" "),
-        _vm.itemLoading
+        _vm.postsLoading
           ? _c("div", { staticClass: "loading" }, [_vm._v("読み込み中...")])
           : _vm._e()
       ],
@@ -68663,7 +68737,7 @@ var render = function() {
                                           )
                                         }),
                                         _vm._v(" "),
-                                        !comment.isRepliesLastPage &&
+                                        comment.loadRepliesMore &&
                                         !comment.repliesLoading
                                           ? _c(
                                               "div",
@@ -69742,7 +69816,7 @@ var render = function() {
           ])
         }),
         _vm._v(" "),
-        _vm.itemLoading
+        _vm.postsLoading
           ? _c("div", { staticClass: "loading" }, [_vm._v("読み込み中...")])
           : _vm._e()
       ],
@@ -70555,7 +70629,7 @@ var render = function() {
                                           )
                                         }),
                                         _vm._v(" "),
-                                        !comment.isRepliesLastPage &&
+                                        comment.loadRepliesMore &&
                                         !comment.repliesLoading
                                           ? _c(
                                               "div",
@@ -71390,7 +71464,7 @@ var render = function() {
           ])
         }),
         _vm._v(" "),
-        _vm.itemLoading
+        _vm.postsLoading
           ? _c("div", { staticClass: "loading" }, [_vm._v("読み込み中...")])
           : _vm._e()
       ],
@@ -72203,7 +72277,7 @@ var render = function() {
                                           )
                                         }),
                                         _vm._v(" "),
-                                        !comment.isRepliesLastPage &&
+                                        comment.loadRepliesMore &&
                                         !comment.repliesLoading
                                           ? _c(
                                               "div",
@@ -73673,7 +73747,7 @@ var render = function() {
           ])
         }),
         _vm._v(" "),
-        _vm.itemLoading
+        _vm.postsLoading
           ? _c("div", { staticClass: "loading" }, [_vm._v("読み込み中...")])
           : _vm._e()
       ],
@@ -74486,7 +74560,7 @@ var render = function() {
                                           )
                                         }),
                                         _vm._v(" "),
-                                        !comment.isRepliesLastPage &&
+                                        comment.loadRepliesMore &&
                                         !comment.repliesLoading
                                           ? _c(
                                               "div",
@@ -76016,7 +76090,7 @@ var render = function() {
           ])
         }),
         _vm._v(" "),
-        _vm.itemLoading
+        _vm.postsLoading
           ? _c("div", { staticClass: "loading" }, [_vm._v("読み込み中...")])
           : _vm._e()
       ],
@@ -76829,7 +76903,7 @@ var render = function() {
                                           )
                                         }),
                                         _vm._v(" "),
-                                        !comment.isRepliesLastPage &&
+                                        comment.loadRepliesMore &&
                                         !comment.repliesLoading
                                           ? _c(
                                               "div",

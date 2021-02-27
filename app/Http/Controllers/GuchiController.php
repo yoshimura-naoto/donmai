@@ -70,13 +70,13 @@ class GuchiController extends Controller
 
 
     // グチ部屋全部を新着順で取得
-    public function getRoomsNew()
+    public function getRoomsNew(Request $request)
     {
         $rooms = GuchiRoom::with(['guchiBookmarks' => function ($query) {
                                 $query->where('user_id', Auth::id());
                             }])
                             ->withCount(['guchis'])
-                            ->orderBy('created_at', 'desc')
+                            ->orderBy('id', 'desc')
                             ->paginate(10);
 
         // 全ジャンルを取得
@@ -132,7 +132,7 @@ class GuchiController extends Controller
                             }])
                             ->withCount(['guchis'])
                             ->orderBy('created_at', 'desc')
-                            ->paginate(10);
+                            ->paginate(5);
 
         $genres = Post::$genres;
 
@@ -159,7 +159,7 @@ class GuchiController extends Controller
                             }])
                             ->withCount(['guchis'])
                             ->orderBy('guchis_count', 'desc')
-                            ->paginate(10);
+                            ->paginate(5);
 
         $genres = Post::$genres;
 
@@ -187,7 +187,7 @@ class GuchiController extends Controller
                                 $query->where('user_id', $authId);
                             }])
                             ->orderBy('created_at', 'desc')
-                            ->paginate(10);
+                            ->paginate(5);
 
         $genres = Post::$genres;
 
@@ -215,7 +215,7 @@ class GuchiController extends Controller
                                 $query->where('user_id', $authId);
                             }])
                             ->orderBy('guchis_count', 'desc')
-                            ->paginate(10);
+                            ->paginate(5);
 
         $genres = Post::$genres;
 
@@ -244,7 +244,7 @@ class GuchiController extends Controller
                         }])
                         ->withCount(['guchis'])
                         ->orderBy('created_at', 'desc')
-                        ->paginate(10);
+                        ->paginate(5);
 
         $genres = Post::$genres;
 
@@ -296,7 +296,7 @@ class GuchiController extends Controller
     }
 
 
-    // グチのみを取得
+    // グチ部屋のグチを取得
     public function guchiGet($id)
     {
         $guchis = Guchi::where('guchi_room_id', $id)
