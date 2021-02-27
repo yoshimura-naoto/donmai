@@ -11,19 +11,19 @@ use App\Follow;
 
 class FollowController extends Controller
 {
-    // フォロー中の人たちのデータを返す
+    // あるユーザーのフォロー中の人たちを返す（８件ずつ無限スクロール）
     public function followingShow($id)
     {
-        // あるユーザーがフォローしてる人々と自分がフォローしてる人々
+        // そのユーザーがフォローしてる人々と自分（認証ユーザー）がフォローしてる人々
         $users = User::whereHas('followers', function (Builder $query) use ($id) {
                         $query->where('user_id', $id);
                     })
                     ->with(['followers' => function ($query) {
                         $query->where('user_id', Auth::id());
                     }])
-                    ->paginate(10);
+                    ->paginate(8);
 
-        // 認証ユーザーがそのユーザーがフォロー中のユーザーをフォローしているかどうか
+        // 認証ユーザーが、そのユーザーがフォローしているユーザーをフォローしているかどうか
         foreach ($users as $user) {
             if (count($user->followers) > 0) {
                 $user->followed = true;
@@ -37,10 +37,10 @@ class FollowController extends Controller
 
 
 
-    // フォロワーたちを返す
+    // あるユーザーのフォロワーたちを返す（８件ずつ無限スクロール）
     public function followerShow($id)
     {
-        // あるユーザーのフォロワーと自分がフォローしてる人たち
+        // あるユーザーのフォロワーと自分（認証ユーザー）がフォローしてる人たち
         $users = User::whereHas('follows', function (Builder $query) use ($id) {
                         $query->where('following_user_id', $id);
                     })

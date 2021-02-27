@@ -25,7 +25,7 @@ class GuchiController extends Controller
     }
 
 
-    // グチ部屋の作成
+    // グチ部屋（掲示板のスレ）の作成
     public function roomCreate(Request $request)
     {
         // バリデーション
@@ -282,7 +282,7 @@ class GuchiController extends Controller
 
 
 
-    // グチ詳細ページ用に認証ユーザー情報とグチ部屋情報を取得する
+    // グチ詳細ページ（各スレ）用に認証ユーザー情報とグチ部屋情報を取得する
     public function init($id)
     {
         $guchiRoom = GuchiRoom::where('id', $id)->first();
@@ -296,7 +296,7 @@ class GuchiController extends Controller
     }
 
 
-    // グチ部屋のグチを取得
+    // グチ部屋のグチ（発言）を取得
     public function guchiGet($id)
     {
         $guchis = Guchi::where('guchi_room_id', $id)

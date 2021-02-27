@@ -60,16 +60,16 @@ class TagController extends Controller
     {
         // 投稿一覧の取得
         $posts = Post::whereHas('tags', function (Builder $query) use ($name) {
-                    $query->where('name', $name);
-                })
-                ->with(['user', 'tags', 'postImages', 'donmais' => function ($query) {
-                    $query->where('user_id', Auth::id());
-                }])
-                ->withCount('donmais', 'comments', 'replies')
-                ->orderBy('id', 'desc')
-                ->offset($request->loaded_posts_count)
-                ->limit(3)
-                ->get();
+                        $query->where('name', $name);
+                    })
+                    ->with(['user:id,name,icon', 'tags', 'postImages', 'donmais' => function ($query) {
+                        $query->where('user_id', Auth::id());
+                    }])
+                    ->withCount('donmais', 'comments', 'replies')
+                    ->orderBy('id', 'desc')
+                    ->offset($request->loaded_posts_count)
+                    ->limit(3)
+                    ->get();
 
         foreach ($posts as $post) {
             $post->genre = Post::$genres[$post->genre_index];

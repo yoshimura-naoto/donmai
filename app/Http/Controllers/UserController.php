@@ -30,7 +30,7 @@ class UserController extends Controller
                     ->first();
         
         // 認証ユーザーがフォローしているかどうか
-        if ($user->followed_by_me_count > 0) {
+        if ($user->followed_by_me_count) {
             $user->followed = true;
         } else {
             $user->followed = false;

@@ -41,8 +41,6 @@ class CommentController extends Controller
             $comment->replyErrors = [];
             $comment->repliesLoading = false;
             $comment->loadRepliesMore = true;
-            // $comment->repliesPage = 1;
-            // $comment->isRepliesLastPage = false;
         }
 
         $data = [
@@ -79,14 +77,6 @@ class CommentController extends Controller
         $newComment->replyInput = '';
         $newComment->replies = [];
         $newComment->replyErrors = [];
-        foreach ($newComment->replies as $reply) {
-            $reply->goodCount = count($reply->replyGoods);
-            if ($reply->replyGoods->contains('user_id', Auth::id())) {
-                $reply->gooded = true;
-            } else {
-                $reply->gooded = false;
-            }
-        }
 
         return response()->json($newComment, 200);
     }
