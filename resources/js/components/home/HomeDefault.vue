@@ -150,7 +150,7 @@
       </div>
 
       <!-- 読み込み中 -->
-      <div v-if="itemLoading" class="loading">読み込み中...</div>
+      <div v-if="postsLoading" class="loading">読み込み中...</div>
 
     </div>
 
@@ -379,7 +379,7 @@
 
                   </div>
 
-                  <div v-if="!comment.isRepliesLastPage && !comment.repliesLoading" @click="getReplies(index)" class="reply-read-more">↪︎さらに読み込む</div>
+                  <div v-if="comment.loadRepliesMore && !comment.repliesLoading" @click="getReplies(index)" class="reply-read-more">↪︎さらに読み込む</div>
 
                 </div>
 
@@ -633,10 +633,12 @@ export default {
       ],
       editErrors: [],
       // 無限スクロール用
-      itemLoading: false,
-      loadMore: true,
-      page: 1,
-      isLastPage: false,
+      postsLoading: false,
+      loadMorePosts: true,
+      // itemLoading: false,
+      // loadMore: true,
+      // page: 1,
+      // isLastPage: false,
       // 投稿
       posts: [
         // {
@@ -711,15 +713,13 @@ export default {
         //   コメントへの返信の無限スクロール用
         //   repliesLoading: false,
         //   loadRepliesMore: true,
-        //   repliesPage: 1,
-        //   isRepliesLastPage: false,
         // },
       ],
       // コメントの無限スクロール用
       commentsLoading: false,
       loadCommentsMore: true,
-      commentsPage: 1,
-      isCommentsLastPage: false,
+      // commentsPage: 1,
+      // isCommentsLastPage: false,
       // 新規コメント、返信
       newComment: {},
       newReply: {},
@@ -778,22 +778,21 @@ export default {
     },
     // 投稿の取得（無限スクロール）
     getPosts() {
-      // 読み込み中か最後のページなら読み込まない
-      if (this.isLastPage) return;
-      if (this.itemLoading) return;
-      this.itemLoading = true;
-      axios.get('/api/post/get?page=' + this.page)
+      if (!this.loadMorePosts) return;  // 全てのレコードを読み込んでいたら無効に
+      if (this.postsLoading) return;  // ロード中は無効に
+      this.postsLoading = true;
+      axios.get('/api/post/get?loaded_posts_count=' + this.posts.length)
         .then((res) => {
           console.log(res.data);
-          this.posts.push(...res.data.data);
-          this.itemLoading = false;
-          if (this.page === res.data.last_page) {
-            this.isLastPage = true;
+          this.posts.push(...res.data.posts);
+          if (this.posts.length === res.data.postsTotal) {
+            this.loadMorePosts = false;
           }
-          this.page++;
+          this.postsLoading = false;
+          console.log(this.posts.length);
         }).catch((error) => {
           console.log(error);
-          this.itemLoading = false;
+          this.postsLoading = false;
         });
     },
     // 投稿のテキストエリアの高さをフレキシブルに
@@ -1150,27 +1149,23 @@ export default {
       // 無限スクロール設定の初期化
       this.commentsLoading = false;
       this.loadCommentsMore = true;
-      this.commentsPage = 1;
-      this.isCommentsLastPage = false;
+      // this.commentsPage = 1;
+      // this.isCommentsLastPage = false;
     },
     // コメントの取得
     getComments() {
-      if (this.isCommentsLastPage) return;
+      if (!this.loadCommentsMore) return;
       if (this.commentsLoading) return;
       this.commentsLoading = true;
-      axios.get('/api/comments/get/' + this.modalPostId + '?page=' + this.commentsPage)
+      axios.get('/api/comments/get/' + this.modalPostId + '?loaded_comments_count=' + this.modalPostComments.length)
         .then((res) => {
           console.log(res.data);
-          this.modalPostComments.push(...res.data.data);
-          this.commentsLoading = false;
-          if (this.commentsPage === res.data.last_page) {
-            this.isCommentsLastPage = true;
+          this.modalPostComments.push(...res.data.comments);
+          if (this.modalPostComments.length === res.data.commentsTotal) {
+            this.loadCommentsMore = false;
           }
-          this.commentsPage++;
-          // 確認用
-          // const postsOverlay = document.querySelector('.posts-overlay');
-          // console.log(postsOverlay.clientHeight);
-          // console.log(postsOverlay.scrollHeight);
+          this.commentsLoading = false;
+          console.log(this.modalPostComments.length);
         }).catch((error) => {
           console.log(error);
           this.commentsLoading = false;
@@ -1306,19 +1301,21 @@ export default {
     },
     // コメントへの返信の取得
     getReplies(i) {
+      if (!this.modalPostComments[i].loadRepliesMore) return;
+      if (this.modalPostComments[i].repliesLoading) return;
       this.modalPostComments[i].repliesLoading = true;
-      axios.get('/api/replies/get/' + this.modalPostComments[i].id + '?page=' + this.modalPostComments[i].repliesPage)
+      axios.get('/api/replies/get/' + this.modalPostComments[i].id + '?loaded_replies_count=' + this.modalPostComments[i].replies.length)
         .then((res) => {
           console.log(res.data);
-          this.modalPostComments[i].replies.push(...res.data.data);
-          this.modalPostComments[i].repliesLoading = false;
-          // if (this.modalPostComments[i].repliesPage === res.data.last_page) {
-          if (res.data.current_page === res.data.last_page) {
-            this.modalPostComments[i].isRepliesLastPage = true;
+          this.modalPostComments[i].replies.push(...res.data.replies);
+          if (this.modalPostComments[i].replies.length === res.data.repliesTotal) {
+            this.modalPostComments[i].loadRepliesMore = false;
           }
-          this.modalPostComments[i].repliesPage++;
+          this.modalPostComments[i].repliesLoading = false;
+          console.log(this.modalPostComments[i].replies.length);
         }).catch((error) => {
           console.log(error);
+          this.modalPostComments[i].repliesLoading = false;
         });
     },
     //コメントへの返信の取得と表示と非表示
@@ -1358,7 +1355,7 @@ export default {
       axios.post('/api/comment/reply', data)
         .then((res) => {
           console.log(res.data);
-          if (this.modalPostComments[i].isRepliesLastPage) {
+          if (!this.modalPostComments[i].loadRepliesMore) {
             this.modalPostComments[i].replies.push(res.data);
           }
           this.modalPostComments[i].replyCount++;
@@ -1514,7 +1511,7 @@ export default {
       this.deletePostModalOpened = false;
       this.modalPostEditShow = false;
     }
-    this.isLastPage = true;
+    this.loadMorePosts = false;
     next();
   },
 

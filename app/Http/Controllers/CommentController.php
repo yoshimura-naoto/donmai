@@ -11,16 +11,18 @@ use App\User;
 
 class CommentController extends Controller
 {
-    // 投稿のコメントを取得
-    public function getComments($id)
+    // 投稿のコメントを取得（５件ずつ無限スクロール）
+    public function getComments($id, Request $request)
     {
         $comments = Comment::where('post_id', $id)
                             ->with(['user', 'commentGoods' => function ($query) {
                                 $query->where('user_id', Auth::id());
                             }])
                             ->withCount('commentGoods', 'replies')
-                            ->orderBy('created_at', 'desc')
-                            ->paginate(4);
+                            ->orderBy('id', 'desc')
+                            ->offset($request->loaded_comments_count)
+                            ->limit(5)
+                            ->get();
 
         foreach ($comments as $comment) {
             $comment->goodCount = $comment->comment_goods_count;
@@ -39,11 +41,16 @@ class CommentController extends Controller
             $comment->replyErrors = [];
             $comment->repliesLoading = false;
             $comment->loadRepliesMore = true;
-            $comment->repliesPage = 1;
-            $comment->isRepliesLastPage = false;
+            // $comment->repliesPage = 1;
+            // $comment->isRepliesLastPage = false;
         }
 
-        return $comments;
+        $data = [
+            'comments' => $comments,
+            'commentsTotal' => Comment::where('post_id', $id)->count(),
+        ];
+
+        return $data;
     }
 
 

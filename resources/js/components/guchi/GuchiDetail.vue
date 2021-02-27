@@ -33,7 +33,7 @@
               <div class="thread-title-area-comment">
                 <div class="comment-count">
                     <img :src="'../../image/comment.png'">
-                    {{ guchiRoom.guchis_count }}
+                    {{ total }}
                 </div>
               </div>
 
@@ -55,7 +55,7 @@
 
             <!-- IDと投稿日時 -->
             <div v-if="!guchi.user_id" class="thread-comment-area-top">
-              <div class="id" :class="{ 'self-id': guchi.isSelf }">{{ index + 1 }}:</div>
+              <div class="id">匿名:</div>
               <div class="time">{{ guchi.created_at }}</div>
             </div>
 
@@ -263,6 +263,8 @@ export default {
       total: 1,
       from: 0,
       to: 0,
+      // 一番下にスクロールするかどうか
+      scrollToBottom: false,
     }
   },
 
@@ -293,14 +295,16 @@ export default {
           this.total = res.data.total;
           this.from = res.data.from;
           this.to = res.data.to;
-          if (!this.guchiCreated) {
+          if (!this.guchiCreated && !this.guchiDeleting) {
             window.scrollTo(0, 0);
-          } else {
+          } else if (this.guchiCreated || this.scrollToBottom) {
             this.$nextTick(function() {
               this.scrollToEnd();
             });
           }
           this.guchiCreated = false;
+          this.guchiDeleting = false;
+          this.scrollToBottom = false;
         }).catch((error) => {
           console.log(error);
         });
@@ -475,9 +479,13 @@ export default {
       this.guchiDeleting = true;
       axios.post('/api/guchi/delete/' + this.guchis[this.deleteGuchiIndex].id)
         .then(() => {
-          this.guchis.splice(this.deleteGuchiIndex, 1);
+          if (this.currentPage === this.lastPage && this.guchis.length === 1 && this.currentPage !== 1) {
+            this.changePage(this.currentPage - 1);
+            this.scrollToBottom = true;
+          } else {
+            this.changePage(this.currentPage);
+          }
           this.deleteGuchiModalClose();
-          this.guchiDeleting = false;
         }).catch((error) => {
           console.log(error);
           this.guchiDeleting = false;

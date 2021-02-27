@@ -79,7 +79,7 @@
       </div>
 
       <!-- 読み込み中 -->
-      <div v-if="itemLoading" class="loading">読み込み中...</div>
+      <div v-if="postsLoading" class="loading">読み込み中...</div>
 
     </div>
 
@@ -303,7 +303,7 @@
 
                   </div>
 
-                  <div v-if="!comment.isRepliesLastPage && !comment.repliesLoading" @click="getReplies(index)" class="reply-read-more">↪︎さらに読み込む</div>
+                  <div v-if="comment.loadRepliesMore && !comment.repliesLoading" @click="getReplies(index)" class="reply-read-more">↪︎さらに読み込む</div>
 
                 </div>
 
@@ -540,10 +540,8 @@ export default {
       edited: false,  // 編集したかどうか
       editProcessing: false,  // 編集の処理中
       // 無限スクロール用
-      itemLoading: false,
-      loadMore: true,
-      page: 1,
-      isLastPage: false,
+      postsLoading: false,
+      loadMorePosts: true,
       // 投稿
       posts: [
         // {
@@ -620,15 +618,11 @@ export default {
         //   コメントへの返信の無限スクロール用
         //   repliesLoading: false,
         //   loadRepliesMore: true,
-        //   repliesPage: 1,
-        //   isRepliesLastPage: false,
         // },
       ],
       // コメントの無限スクロール用
       commentsLoading: false,
       loadCommentsMore: true,
-      commentsPage: 1,
-      isCommentsLastPage: false,
       // 新規コメント、返信
       newComment: {},
       newReply: {},
@@ -683,24 +677,42 @@ export default {
     },
     // 投稿の取得（無限スクロール）
     getPosts(word) {
-      // 読み込み中か最後のページなら読み込まない。
-      if (this.isLastPage) return;
-      if (this.itemLoading) return;
-      this.itemLoading = true;
-      axios.get('/api/post/search/new/' + word + '?page=' + this.page)
+      if (!this.loadMorePosts) return;
+      if (this.postsLoading) return;
+      this.postsLoading = true;
+      axios.get('/api/post/search/new/' + word + '?loaded_posts_count=' + this.posts.length)
         .then((res) => {
           console.log(res.data);
-          this.posts.push(...res.data.data);
-          this.itemLoading = false;
-          if (this.page === res.data.last_page) {
-            this.isLastPage = true;
+          this.posts.push(...res.data.posts);
+          if (this.posts.length === res.data.postsTotal) {
+            this.loadMorePosts = false;
           }
-          this.page++;
+          this.postsLoading = false;
+          console.log(this.posts.length);
         }).catch((error) => {
           console.log(error);
-          this.itemLoading = false;
+          this.postsLoading = false;
         });
     },
+    // getPosts(word) {
+    //   // 読み込み中か最後のページなら読み込まない。
+    //   if (this.isLastPage) return;
+    //   if (this.itemLoading) return;
+    //   this.itemLoading = true;
+    //   axios.get('/api/post/search/new/' + word + '?page=' + this.page)
+    //     .then((res) => {
+    //       console.log(res.data);
+    //       this.posts.push(...res.data.data);
+    //       this.itemLoading = false;
+    //       if (this.page === res.data.last_page) {
+    //         this.isLastPage = true;
+    //       }
+    //       this.page++;
+    //     }).catch((error) => {
+    //       console.log(error);
+    //       this.itemLoading = false;
+    //     });
+    // },
     // 無限スクロールのリセット
     resetPaginate() {
       this.posts = [];
@@ -1201,7 +1213,7 @@ export default {
       axios.post('/api/comment/reply', data)
         .then((res) => {
           // console.log(res.data);
-          if (this.modalPostComments[i].isRepliesLastPage) {
+          if (!this.modalPostComments[i].isRepliesLastPage) {
             this.modalPostComments[i].replies.push(res.data);
           }
           this.modalPostComments[i].replyCount++;
@@ -1356,7 +1368,7 @@ export default {
       this.deletePostModalOpened = false;
       this.modalPostEditShow = false;
     }
-    this.isLastPage = true;
+    this.loadMorePosts = false;
     next();
   },
 

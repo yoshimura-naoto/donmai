@@ -12,16 +12,18 @@ use App\Comment;
 
 class ReplyController extends Controller
 {
-    // コメントへの返信の取得
-    public function get($id)
+    // コメントへの返信の取得（５件ずつ）
+    public function get($id, Request $request)
     {
         $replies = Reply::where('comment_id', $id)
-            ->with(['user:id,name,icon', 'replyGoods' => function ($query) {
-                $query->where('user_id', Auth::id());
-            }])
-            ->withCount('replyGoods')
-            ->orderBy('created_at', 'asc')
-            ->paginate(5);
+                        ->with(['user:id,name,icon', 'replyGoods' => function ($query) {
+                            $query->where('user_id', Auth::id());
+                        }])
+                        ->withCount('replyGoods')
+                        ->orderBy('id', 'asc')
+                        ->offset($request->loaded_replies_count)
+                        ->limit(5)
+                        ->get();
 
         foreach ($replies as $reply) {
             $reply->goodCount = $reply->reply_goods_count;
@@ -33,7 +35,12 @@ class ReplyController extends Controller
             }
         }
 
-        return $replies;
+        $data = [
+            'replies' => $replies,
+            'repliesTotal' => Reply::where('comment_id', $id)->count(),
+        ];
+
+        return $data;
     }
 
 

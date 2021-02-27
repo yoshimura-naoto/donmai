@@ -56,7 +56,7 @@ class TagController extends Controller
 
 
     // そのタグを関連づけた投稿を新着順で取得
-    public function getTagsNewPosts($name)
+    public function getTagsNewPosts($name, Request $request)
     {
         // 投稿一覧の取得
         $posts = Post::whereHas('tags', function (Builder $query) use ($name) {
@@ -66,8 +66,10 @@ class TagController extends Controller
                     $query->where('user_id', Auth::id());
                 }])
                 ->withCount('donmais', 'comments', 'replies')
-                ->orderBy('created_at', 'desc')
-                ->paginate(3);
+                ->orderBy('id', 'desc')
+                ->offset($request->loaded_posts_count)
+                ->limit(3)
+                ->get();
 
         foreach ($posts as $post) {
             $post->genre = Post::$genres[$post->genre_index];
@@ -81,12 +83,20 @@ class TagController extends Controller
             $post->postMenuOpened = false;
         }
 
-        return $posts;
+        $data = [
+            'posts' => $posts,
+            'postsTotal' => Post::whereHas('tags', function (Builder $query) use ($name) {
+                                $query->where('name', $name);
+                            })
+                            ->count(),
+        ];
+
+        return $data;
     }
 
 
     // タグページで投稿のみをどんまい数が多い順で取得
-    public function getTagsPopularPosts($name)
+    public function getTagsPopularPosts($name, Request $request)
     {
         // 投稿一覧の取得
         $posts = Post::whereHas('tags', function (Builder $query) use ($name) {
@@ -97,7 +107,11 @@ class TagController extends Controller
                     }])
                     ->withCount('donmais', 'comments', 'replies')
                     ->orderBy('donmais_count', 'desc')
-                    ->paginate(3);
+                    ->orderBy('comments_count', 'desc')
+                    ->orderBy('id', 'desc')
+                    ->offset($request->loaded_posts_count)
+                    ->limit(3)
+                    ->get();
 
         foreach ($posts as $post) {
             $post->genre = Post::$genres[$post->genre_index];
@@ -111,6 +125,14 @@ class TagController extends Controller
             $post->postMenuOpened = false;
         }
 
-        return $posts;
+        $data = [
+            'posts' => $posts,
+            'postsTotal' => Post::whereHas('tags', function (Builder $query) use ($name) {
+                                $query->where('name', $name);
+                            })
+                            ->count(),
+        ];
+
+        return $data;
     }
 }

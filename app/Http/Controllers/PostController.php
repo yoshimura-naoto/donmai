@@ -7,6 +7,8 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
 
+use Carbon\Carbon;
+
 use App\User;
 use App\Post;
 use App\PostImage;
@@ -38,16 +40,19 @@ class PostController extends Controller
     }
 
 
-    // 投稿を新着順で全て取得
-    public function getPosts()
+
+    // 投稿を新着順で全て取得（３件ずつ無限スクロール）
+    public function getPosts(Request $request)
     {
         // 投稿一覧の取得
         $posts = Post::with(['user', 'tags', 'postImages', 'donmais' => function ($query) {
                         $query->where('user_id', Auth::id());
                     }])
                     ->withCount('donmais', 'comments', 'replies')
-                    ->orderBy('created_at', 'desc')
-                    ->paginate(3);
+                    ->orderBy('id', 'desc')
+                    ->offset($request->loaded_posts_count)
+                    ->limit(3)
+                    ->get();
 
         // 投稿のジャンル、認証ユーザーがどんまいしているか、どんまい数、コメント数を取得
         foreach ($posts as $post) {
@@ -62,12 +67,17 @@ class PostController extends Controller
             $post->postMenuOpened = false;
         }
 
-        return $posts;
+        $data = [
+            'posts' => $posts,
+            'postsTotal' => Post::count(),
+        ];
+
+        return $data;
     }
 
 
     // ジャンル別で投稿を取得
-    public function getGenrePosts($name)
+    public function getGenrePosts($name, Request $request)
     {
         // ジャンルのインデックスを取得
         $genreRoutes = array_column(Post::$genres, 'route');
@@ -79,8 +89,10 @@ class PostController extends Controller
                     $query->where('user_id', Auth::id());
                 }])
                 ->withCount('donmais', 'comments', 'replies')
-                ->orderBy('created_at', 'desc')
-                ->paginate(3);
+                ->orderBy('id', 'desc')
+                ->offset($request->loaded_posts_count)
+                ->limit(3)
+                ->get();
 
         foreach ($posts as $post) {
             $post->genre = Post::$genres[$post->genre_index];
@@ -94,22 +106,33 @@ class PostController extends Controller
             $post->postMenuOpened = false;
         }
 
-        return $posts;
+        $data = [
+            'posts' => $posts,
+            'postsTotal' => Post::where('genre_index', $genreIndex)->count(),
+        ];
+
+        return $data;
     }
 
 
 
-    // 話題の投稿ページで投稿を取得
-    public function getHotPosts()
+    // 話題の投稿ページで投稿を取得（ここ１週間）
+    public function getHotPosts(Request $request)
     {
+        $lastWeek = new Carbon('-7 day', 'Asia/Tokyo');
+
         // 投稿一覧をdonmais数が多い順で取得
-        $posts = Post::with(['user', 'tags', 'postImages', 'donmais' => function ($query) {
+        $posts = Post::where('created_at', '>', $lastWeek)
+                    ->with(['user', 'tags', 'postImages', 'donmais' => function ($query) {
                         $query->where('user_id', Auth::id());
                     }])
                     ->withCount('donmais', 'comments', 'replies')
                     ->orderBy('donmais_count', 'desc')
                     ->orderBy('comments_count', 'desc')
-                    ->paginate(3);
+                    ->orderBy('id', 'desc')
+                    ->offset($request->loaded_posts_count)
+                    ->limit(3)
+                    ->get();
 
         foreach ($posts as $post) {
             $post->genre = Post::$genres[$post->genre_index];
@@ -123,13 +146,19 @@ class PostController extends Controller
             $post->postMenuOpened = false;
         }
 
-        return $posts;
+        $data = [
+            'posts' => $posts,
+            'postsTotal' => Post::where('created_at', '>', $lastWeek)->count(),
+            // 'postsTotal' => Post::count(),
+        ];
+
+        return $data;
     }
 
 
 
     // ユーザーページでユーザーの投稿を取得
-    public function getUserPostsOnly($id)
+    public function getUserPostsOnly($id, Request $request)
     {
         $posts = Post::where('user_id', $id)
                     ->with(['user', 'tags', 'postImages'])
@@ -137,8 +166,10 @@ class PostController extends Controller
                                  'donmais as donmai_by_user' => function (Builder $query) {
                                     $query->where('user_id', Auth::id());
                                 }])
-                    ->orderBy('created_at', 'desc')
-                    ->paginate(3);
+                    ->orderBy('id', 'desc')
+                    ->offset($request->loaded_posts_count)
+                    ->limit(3)
+                    ->get();
 
         foreach ($posts as $post) {
             $post->genre = Post::$genres[$post->genre_index];
@@ -153,13 +184,18 @@ class PostController extends Controller
             $post->postMenuOpened = false;
         }
 
-        return $posts;
+        $data = [
+            'posts' => $posts,
+            'postsTotal' => Post::where('user_id', $id)->count(),
+        ];
+
+        return $data;
     }
 
 
 
     // ユーザーがどんまいした投稿を取得
-    public function getUserDonmaiPostsOnly($id)
+    public function getUserDonmaiPostsOnly($id, Request $request)
     {
         $posts = Post::whereHas('donmais', function (Builder $query) use ($id) {
                         $query->where('user_id', $id);
@@ -169,8 +205,10 @@ class PostController extends Controller
                                 'donmais as donmai_by_user' => function (Builder $query) {
                                     $query->where('user_id', Auth::id());
                                 }])
-                    ->orderBy('created_at', 'desc')
-                    ->paginate(3);
+                    ->orderBy('id', 'desc')
+                    ->offset($request->loaded_posts_count)
+                    ->limit(3)
+                    ->get();
 
         foreach ($posts as $post) {
             $post->genre = Post::$genres[$post->genre_index];
@@ -185,13 +223,21 @@ class PostController extends Controller
             $post->postMenuOpened = false;
         }
 
-        return $posts;
+        $data = [
+            'posts' => $posts,
+            'postsTotal' => Post::whereHas('donmais', function (Builder $query) use ($id) {
+                                    $query->where('user_id', $id);
+                                })
+                                ->count(),
+        ];
+
+        return $data;
     }
 
 
 
     // 検索したワードをタグに含む投稿を新着順で取得
-    public function getSearchNewPostsOnly($word)
+    public function getSearchNewPostsOnly($word, Request $request)
     {
         $posts = Post::whereHas('tags', function (Builder $query) use ($word) {
                         $query->where('name', $word);
@@ -201,8 +247,10 @@ class PostController extends Controller
                                 'donmais as donmai_by_user' => function (Builder $query) {
                                     $query->where('user_id', Auth::id());
                                 }])
-                    ->orderBy('created_at', 'desc')
-                    ->paginate(3);
+                    ->orderBy('id', 'desc')
+                    ->offset($request->loaded_posts_count)
+                    ->limit(3)
+                    ->get();
 
         foreach ($posts as $post) {
             $post->genre = Post::$genres[$post->genre_index];
@@ -217,13 +265,21 @@ class PostController extends Controller
             $post->postMenuOpened = false;
         }
 
-        return $posts;
+        $data = [
+            'posts' => $posts,
+            'postsTotal' => Post::whereHas('tags', function (Builder $query) use ($word) {
+                                $query->where('name', $word);
+                            })
+                            ->count(),
+        ];
+
+        return $data;
     }
 
 
 
     // 検索したワードをタグに含む投稿をどんまい数が多い順で取得
-    public function getSearchPopularPostsOnly($word)
+    public function getSearchPopularPostsOnly($word, Request $request)
     {
         $posts = Post::whereHas('tags', function (Builder $query) use ($word) {
                         $query->where('name', $word);
@@ -234,7 +290,10 @@ class PostController extends Controller
                                     $query->where('user_id', Auth::id());
                                 }])
                     ->orderBy('donmais_count', 'desc')
-                    ->paginate(3);
+                    ->orderBy('comments_count', 'desc')
+                    ->offset($request->loaded_posts_count)
+                    ->limit(3)
+                    ->get();
 
         foreach ($posts as $post) {
             $post->genre = Post::$genres[$post->genre_index];
@@ -249,7 +308,15 @@ class PostController extends Controller
             $post->postMenuOpened = false;
         }
 
-        return $posts;
+        $data = [
+            'posts' => $posts,
+            'postsTotal' => Post::whereHas('tags', function (Builder $query) use ($word) {
+                                $query->where('name', $word);
+                            })
+                            ->count(),
+        ];
+
+        return $data;
     }
 
 
