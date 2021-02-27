@@ -76,7 +76,7 @@ class PostController extends Controller
     }
 
 
-    // ジャンル別で投稿を取得
+    // ジャンル別で投稿を取得（３件ずつ無限スクロール）
     public function getGenrePosts($name, Request $request)
     {
         // ジャンルのインデックスを取得
@@ -116,12 +116,12 @@ class PostController extends Controller
 
 
 
-    // 話題の投稿ページで投稿を取得（ここ１週間）
+    // 話題の投稿ページで投稿を取得（ここ１週間以内）
     public function getHotPosts(Request $request)
     {
         $lastWeek = new Carbon('-7 day', 'Asia/Tokyo');
 
-        // 投稿一覧をdonmais数が多い順で取得
+        // 投稿一覧をdonmais数が多い順で取得（３件ずつ無限スクロール）
         $posts = Post::where('created_at', '>', $lastWeek)
                     ->with(['user', 'tags', 'postImages', 'donmais' => function ($query) {
                         $query->where('user_id', Auth::id());
@@ -149,7 +149,6 @@ class PostController extends Controller
         $data = [
             'posts' => $posts,
             'postsTotal' => Post::where('created_at', '>', $lastWeek)->count(),
-            // 'postsTotal' => Post::count(),
         ];
 
         return $data;
@@ -157,7 +156,7 @@ class PostController extends Controller
 
 
 
-    // ユーザーページでユーザーの投稿を取得
+    // ユーザーページでユーザーの投稿を取得（３件ずつ無限スクロール）
     public function getUserPostsOnly($id, Request $request)
     {
         $posts = Post::where('user_id', $id)
@@ -194,7 +193,7 @@ class PostController extends Controller
 
 
 
-    // ユーザーがどんまいした投稿を取得
+    // ユーザーがどんまいした投稿を取得（３件ずつ無限スクロール）
     public function getUserDonmaiPostsOnly($id, Request $request)
     {
         $posts = Post::whereHas('donmais', function (Builder $query) use ($id) {
@@ -202,9 +201,9 @@ class PostController extends Controller
                     })
                     ->with(['user', 'tags', 'postImages'])
                     ->withCount(['donmais', 'comments', 'replies',
-                                'donmais as donmai_by_user' => function (Builder $query) {
+                                 'donmais as donmai_by_user' => function (Builder $query) {
                                     $query->where('user_id', Auth::id());
-                                }])
+                                 }])
                     ->orderBy('id', 'desc')
                     ->offset($request->loaded_posts_count)
                     ->limit(3)
@@ -236,7 +235,7 @@ class PostController extends Controller
 
 
 
-    // 検索したワードをタグに含む投稿を新着順で取得
+    // 検索したワードをタグに含む投稿を新着順で取得（３件ずつ無限スクロール）
     public function getSearchNewPostsOnly($word, Request $request)
     {
         $posts = Post::whereHas('tags', function (Builder $query) use ($word) {
@@ -244,9 +243,9 @@ class PostController extends Controller
                     })
                     ->with(['user', 'tags', 'postImages'])
                     ->withCount(['donmais', 'comments', 'replies',
-                                'donmais as donmai_by_user' => function (Builder $query) {
+                                 'donmais as donmai_by_user' => function (Builder $query) {
                                     $query->where('user_id', Auth::id());
-                                }])
+                                 }])
                     ->orderBy('id', 'desc')
                     ->offset($request->loaded_posts_count)
                     ->limit(3)
@@ -278,7 +277,7 @@ class PostController extends Controller
 
 
 
-    // 検索したワードをタグに含む投稿をどんまい数が多い順で取得
+    // 検索したワードをタグに含む投稿をどんまい数が多い順で取得（３件ずつ無限スクロール）
     public function getSearchPopularPostsOnly($word, Request $request)
     {
         $posts = Post::whereHas('tags', function (Builder $query) use ($word) {
@@ -286,9 +285,9 @@ class PostController extends Controller
                     })
                     ->with(['user', 'tags', 'postImages'])
                     ->withCount(['donmais', 'comments', 'replies',
-                                'donmais as donmai_by_user' => function (Builder $query) {
+                                 'donmais as donmai_by_user' => function (Builder $query) {
                                     $query->where('user_id', Auth::id());
-                                }])
+                                 }])
                     ->orderBy('donmais_count', 'desc')
                     ->orderBy('comments_count', 'desc')
                     ->offset($request->loaded_posts_count)
@@ -327,19 +326,10 @@ class PostController extends Controller
         // バリデーション
         $request->validate(Post::$postRules, Post::$postValMessages);
 
-        // 投稿者のidを取得
-        $userId = Auth::id();
-
-        // bodyを取得
-        $body = $request->body;
-
-        // genre_indexを取得
-        $genreIndex = $request->genreIndex;
-
         // タグの保存
-        $tagsText = $request->tags;
-        $tagsList = preg_match_all('/#([^\s#]+)/', str_replace('　', ' ', $tagsText), $m) ? $m[1] : [];     // タグ名の配列
-        $tags = [];     // タグのレコードの配列
+        $tagsText = $request->tags;   // ユーザーが入力したタグを文字列の状態（'#りんご #バナナ'）で取得
+        $tagsList = preg_match_all('/#([^\s#]+)/', str_replace('　', ' ', $tagsText), $m) ? $m[1] : [];  // $tagsTextを配列に変換（ハッシュタグから始まる単語を取得して配列に）
+        $tags = [];     // タグのレコード（tagsテーブルのレコード）の配列
         foreach ($tagsList as $tag) {
             $record = Tag::firstOrCreate(['name' => $tag]);
             array_push($tags, $record);
@@ -351,9 +341,9 @@ class PostController extends Controller
 
         // 投稿作成
         $post = new Post;
-        $post->user_id = $userId;
-        $post->body = $body;
-        $post->genre_index = $genreIndex;
+        $post->user_id = Auth::id();
+        $post->body = $request->body;
+        $post->genre_index = $request->genreIndex;
         $post->save();
         
         // タグと投稿の紐つけ（post_tagレコード作成）
@@ -396,7 +386,7 @@ class PostController extends Controller
         // タグの更新
         $tagsText = $request->tags;
         $newTags = preg_match_all('/#([^\s#]+)/', str_replace('　', ' ', $tagsText), $m) ? $m[1] : [];  // リクエストで取得したタグの配列
-        $oldTags = array_column($post->tags->all(), 'name'); //  今までのタグの配列
+        $oldTags = array_column($post->tags->all(), 'name');  // 今までこの投稿に紐ついていたタグの配列
         // 今までのタグで削除するものがあれば削除
         $deleteOldTags = array_values(array_diff($oldTags, $newTags)); // oldTagsにあってnewTagsにないタグ名の配列（消すタグ名の配列）
         $deleteOldTagRecords = $post->tags
@@ -409,9 +399,7 @@ class PostController extends Controller
             }
         }
         // 中間テーブルpost_tagで削除するものを削除
-        PostTag::where('post_id', $request->id)
-                ->whereIn('tag_id', array_column($deleteOldTagRecords, 'id'))
-                ->delete();
+        $post->tags()->detach(array_column($deleteOldTagRecords, 'id'));
         // 新しく追加するタグを作成
         $newAddTag = array_values(array_diff($newTags, $oldTags));  // newTagsにあってoldTagsにないタグ名の配列（新しく追加するタグ名の配列）
         $tags = [];  // タグ(tagsテーブル)のレコードの配列
