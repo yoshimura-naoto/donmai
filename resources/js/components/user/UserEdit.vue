@@ -50,6 +50,7 @@
           <!-- 現在のユーザー名表示 -->
           <div class="user-edit-current-user-name">
             {{ form.name }}
+          <div class="user-email">{{ email }}</div>
           </div>
 
         </div>
@@ -96,10 +97,10 @@
           変更
         </div>
 
-        <!-- テスト -->
-        <div class="user-edit-modify-btn" @click="checkForm">
+        <!-- テスト用 -->
+        <!-- <div class="user-edit-modify-btn" @click="checkForm">
           チェック
-        </div>
+        </div> -->
 
       </div>
 
@@ -114,6 +115,7 @@
 export default {
   data () {
     return {
+      email: '',
       // 送信データ
       form: {
         id: null,
@@ -127,9 +129,10 @@ export default {
       errors: [],
       // プレビュー用データ
       url: '',
-      // file: '',
-      // ここでだけ使うデータ
+      // 画像アップロードエラーメッセージ
       message: '',
+      // 変更処理中
+      editProcessing: false,
     }
   },
 
@@ -161,6 +164,8 @@ export default {
     },
     // 変更を送信
     submit() {
+      if (this.editProcessing) return;
+      this.editProcessing = true;
       let data = new FormData();
       data.append('id', this.form.id);
       data.append('name', this.form.name);
@@ -179,9 +184,11 @@ export default {
           } else {
             document.getElementById('header-icon').src = '/image/user.png';
           }
+          this.editProcessing = false;
           this.$router.push({ name: 'user', params: { id: this.form.id }});
         }).catch((error) => {
           this.errors = error.response.data.errors;
+          this.editProcessing = false;
         });
     },
     // フォームの値をチェック
@@ -194,11 +201,18 @@ export default {
     axios.get('/api/user')
       .then((res) => {
         console.log(res.data);
+        this.email = res.data.email;
         this.$set(this.form, 'id', res.data.id);
         this.$set(this.form, 'icon', res.data.icon);
         this.$set(this.form, 'name', res.data.name);
         this.$set(this.form, 'pr', res.data.pr);
       });
+  },
+
+  beforeRouteLeave (to, from, next) {
+    if (!this.editProcessing) {
+      next();
+    }
   },
 }
 </script>

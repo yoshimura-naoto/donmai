@@ -632,6 +632,7 @@ export default {
       // 削除の確認のモーダル
       deletePostModalOpened: false,
       deletePostIndex: null,
+      deleteProssesing: false,
       // 投稿編集モーダル
       modalPostEditShow: false,
       editPostIndex: null,
@@ -682,7 +683,10 @@ export default {
       axios.get('/api/post/user/donmai/' + userId + '?loaded_posts_count=' + this.posts.length)
         .then((res) => {
           console.log(res.data);
-          this.posts.push(...res.data.posts);
+          const posts = res.data.donmais.map((obj) => {
+            return obj.post;
+          });
+          this.posts.push(...posts);
           if (this.posts.length === res.data.postsTotal) {
             this.loadMorePosts = false;
           }
@@ -693,25 +697,6 @@ export default {
           this.postsLoading = false;
         });
     },
-    // getPosts(userId) {
-    //   // 読み込み中か最後のページなら読み込まない。
-    //   if (this.isLastPage) return;
-    //   if (this.itemLoading) return;
-    //   this.itemLoading = true;
-    //   axios.get('/api/post/user/donmai/' + userId + '?page=' + this.page)
-    //     .then((res) => {
-    //       console.log(res.data);
-    //       this.posts.push(...res.data.data);
-    //       this.itemLoading = false;
-    //       if (this.page === res.data.last_page) {
-    //         this.isLastPage = true;
-    //       }
-    //       this.page++;
-    //     }).catch((error) => {
-    //       console.log(error);
-    //       this.itemLoading = false;
-    //     });
-    // },
     // 無限スクロールのリセット
     resetPaginate() {
       this.posts = [];
@@ -765,12 +750,16 @@ export default {
     },
     // 投稿の削除
     deletePost() {
+      if (this.deleteProssesing) return;
+      this.deleteProssesing = true;
       axios.post('/api/post/delete/' + this.posts[this.deletePostIndex].id)
         .then(() => {
           this.posts.splice(this.deletePostIndex, 1);
           this.deletePostModalClose();
-        }).catch(() => {
-          return;
+          this.deleteProssesing = false;
+        }).catch((error) => {
+          console.log(error);
+          this.deleteProssesing = false;
         });
     },
     // 投稿編集モーダルを開く
@@ -825,7 +814,7 @@ export default {
       this.editErrors = [];
       this.nextNewImageId = -1;
       this.editHeight = '20px';
-      if (!this.edited) {
+      if (!this.editProcessing) {
         this.closePostMenu(this.editPostIndex);
       }
       this.modalPostEditShow = false;
@@ -902,9 +891,7 @@ export default {
       axios.post('/api/post/edit', data)
         .then((res) => {
           this.posts.splice(this.editPostIndex, 1, res.data.post);
-          this.edited = true;
           this.editPostModalClose();
-          this.edited = false;
           this.editProcessing = false;
         }).catch((error) => {
           this.editErrors = error.response.data.errors;
@@ -1036,7 +1023,10 @@ export default {
       axios.get('/api/donmai/users/' + this.modalPostId + '?page=' + this.donmaiPage)
         .then((res) => {
           console.log(res.data);
-          this.modalDonmaiUsers.push(...res.data.data);
+          const users = res.data.data.map((obj) => {
+            return obj.user;
+          });
+          this.modalDonmaiUsers.push(...users);
           this.donmaiLoading = false;
           if (this.donmaiPage === res.data.last_page) {
             this.isLastDonmaiPage = true;
@@ -1082,9 +1072,10 @@ export default {
       const img_height = img.height;
       if (img_height >= img_width) {
         this.heightIsBigger = true;
-        document.querySelector('.overlay-image-image').addEventListener('load', () => {
-          this.tatenagaImageWidth = document.querySelector('.overlay-image-image').clientWidth;
-          // console.log(this.tatenagaImageWidth);
+        this.$nextTick(function() {
+            this.tatenagaImageWidth = document.querySelector('.overlay-image-image').clientWidth;
+            this.handleResize();
+            // console.log(this.tatenagaImageWidth);
         });
       }
     },
@@ -1347,7 +1338,9 @@ export default {
       this.modalPostEditShow = false;
     }
     this.loadMorePosts = false;
-    next();
+    if (!this.editProcessing && !this.deleteProssesing) {
+      next();
+    }
   },
 
   beforeRouteUpdate (to, from, next) {
@@ -1359,9 +1352,13 @@ export default {
       this.deletePostModalOpened = false;
       this.editPostModalClose(); ///////////////!!!!!!!!!!!!!
     }
+    // this.editProcessing = false;
+    // this.deleteProssesing = false;
     this.resetPaginate();
     this.getPosts(to.params.id);
-    next();
+    if (!this.editProcessing && !this.deleteProssesing) {
+      next();
+    }
   },
 }
 </script>

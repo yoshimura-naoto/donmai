@@ -633,6 +633,7 @@ export default {
       // 削除の確認のモーダル
       deletePostModalOpened: false,
       deletePostIndex: null,
+      deleteProssesing: false,
       // 投稿編集モーダル
       modalPostEditShow: false,
       editPostIndex: null,
@@ -694,32 +695,11 @@ export default {
           this.postsLoading = false;
         });
     },
-    // getPosts(word) {
-    //   // 読み込み中か最後のページなら読み込まない。
-    //   if (this.isLastPage) return;
-    //   if (this.itemLoading) return;
-    //   this.itemLoading = true;
-    //   axios.get('/api/post/search/new/' + word + '?page=' + this.page)
-    //     .then((res) => {
-    //       console.log(res.data);
-    //       this.posts.push(...res.data.data);
-    //       this.itemLoading = false;
-    //       if (this.page === res.data.last_page) {
-    //         this.isLastPage = true;
-    //       }
-    //       this.page++;
-    //     }).catch((error) => {
-    //       console.log(error);
-    //       this.itemLoading = false;
-    //     });
-    // },
     // 無限スクロールのリセット
     resetPaginate() {
       this.posts = [];
-      this.itemLoading = false;
-      this.loadMore = true;
-      this.page = 1;
-      this.isLastPage = false;
+      this.postsLoading = false;
+      this.loadMorePosts = true;
     },
     // 投稿編集のテキストエリアの高さをフレキシブルに
     changeEditHeight() {
@@ -768,12 +748,16 @@ export default {
     },
     // 投稿の削除
     deletePost() {
+      if (this.deleteProssesing) return;
+      this.deleteProssesing = true;
       axios.post('/api/post/delete/' + this.posts[this.deletePostIndex].id)
         .then(() => {
           this.posts.splice(this.deletePostIndex, 1);
           this.deletePostModalClose();
-        }).catch(() => {
-          return;
+          this.deleteProssesing = false;
+         }).catch((error) => {
+          console.log(error);
+          this.deleteProssesing = false;
         });
     },
     // 投稿編集モーダルを開く
@@ -828,7 +812,7 @@ export default {
       this.editErrors = [];
       this.nextNewImageId = -1;
       this.editHeight = '20px';
-      if (!this.edited) {
+      if (!this.editProcessing) {
         this.closePostMenu(this.editPostIndex);
       }
       this.modalPostEditShow = false;
@@ -910,9 +894,7 @@ export default {
           } else {
             this.posts.splice(this.editPostIndex, 1);
           }
-          this.edited = true;
           this.editPostModalClose();
-          this.edited = false;
           this.editProcessing = false;
         }).catch((error) => {
           this.editErrors = error.response.data.errors;
@@ -1008,27 +990,21 @@ export default {
       // 無限スクロール設定の初期化
       this.commentsLoading = false;
       this.loadCommentsMore = true;
-      this.commentsPage = 1;
-      this.isCommentsLastPage = false;
     },
     // コメントの取得
     getComments() {
-      if (this.isCommentsLastPage) return;
+      if (!this.loadCommentsMore) return;
       if (this.commentsLoading) return;
       this.commentsLoading = true;
-      axios.get('/api/comments/get/' + this.modalPostId + '?page=' + this.commentsPage)
+      axios.get('/api/comments/get/' + this.modalPostId + '?loaded_comments_count=' + this.modalPostComments.length)
         .then((res) => {
           console.log(res.data);
-          this.modalPostComments.push(...res.data.data);
-          this.commentsLoading = false;
-          if (this.commentsPage === res.data.last_page) {
-            this.isCommentsLastPage = true;
+          this.modalPostComments.push(...res.data.comments);
+          if (this.modalPostComments.length === res.data.commentsTotal) {
+            this.loadCommentsMore = false;
           }
-          this.commentsPage++;
-          // 確認用
-          // const postsOverlay = document.querySelector('.posts-overlay');
-          // console.log(postsOverlay.clientHeight);
-          // console.log(postsOverlay.scrollHeight);
+          this.commentsLoading = false;
+          console.log(this.modalPostComments.length);
         }).catch((error) => {
           console.log(error);
           this.commentsLoading = false;
@@ -1050,7 +1026,10 @@ export default {
       axios.get('/api/donmai/users/' + this.modalPostId + '?page=' + this.donmaiPage)
         .then((res) => {
           console.log(res.data);
-          this.modalDonmaiUsers.push(...res.data.data);
+          const users = res.data.data.map((obj) => {
+            return obj.user;
+          });
+          this.modalDonmaiUsers.push(...users);
           this.donmaiLoading = false;
           if (this.donmaiPage === res.data.last_page) {
             this.isLastDonmaiPage = true;
@@ -1096,9 +1075,10 @@ export default {
       const img_height = img.height;
       if (img_height >= img_width) {
         this.heightIsBigger = true;
-        document.querySelector('.overlay-image-image').addEventListener('load', () => {
-          this.tatenagaImageWidth = document.querySelector('.overlay-image-image').clientWidth;
-          // console.log(this.tatenagaImageWidth);
+        this.$nextTick(function() {
+            this.tatenagaImageWidth = document.querySelector('.overlay-image-image').clientWidth;
+            this.handleResize();
+            // console.log(this.tatenagaImageWidth);
         });
       }
     },
@@ -1162,19 +1142,21 @@ export default {
     },
     // コメントへの返信の取得
     getReplies(i) {
+      if (!this.modalPostComments[i].loadRepliesMore) return;
+      if (this.modalPostComments[i].repliesLoading) return;
       this.modalPostComments[i].repliesLoading = true;
-      axios.get('/api/replies/get/' + this.modalPostComments[i].id + '?page=' + this.modalPostComments[i].repliesPage)
+      axios.get('/api/replies/get/' + this.modalPostComments[i].id + '?loaded_replies_count=' + this.modalPostComments[i].replies.length)
         .then((res) => {
           console.log(res.data);
-          this.modalPostComments[i].replies.push(...res.data.data);
-          this.modalPostComments[i].repliesLoading = false;
-          // if (this.modalPostComments[i].repliesPage === res.data.last_page) {
-          if (res.data.current_page === res.data.last_page) {
-            this.modalPostComments[i].isRepliesLastPage = true;
+          this.modalPostComments[i].replies.push(...res.data.replies);
+          if (this.modalPostComments[i].replies.length === res.data.repliesTotal) {
+            this.modalPostComments[i].loadRepliesMore = false;
           }
-          this.modalPostComments[i].repliesPage++;
+          this.modalPostComments[i].repliesLoading = false;
+          console.log(this.modalPostComments[i].replies.length);
         }).catch((error) => {
           console.log(error);
+          this.modalPostComments[i].repliesLoading = false;
         });
     },
     //コメントへの返信の表示と非表示
@@ -1369,7 +1351,9 @@ export default {
       this.modalPostEditShow = false;
     }
     this.loadMorePosts = false;
-    next();
+    if (!this.editProcessing && !this.deleteProssesing) {
+      next();
+    }
   },
 
   beforeRouteUpdate (to, from, next) {
@@ -1381,9 +1365,13 @@ export default {
       this.deletePostModalOpened = false;
       this.editPostModalClose(); ///////////////!!!!!!!!!!!!!
     }
+    // this.editProcessing = false;
+    // this.deleteProssesing = false;
     this.resetPaginate();
     this.getPosts(to.params.word);
-    next();
+    if (!this.editProcessing && !this.deleteProssesing) {
+      next();
+    }
   },
 }
 </script>

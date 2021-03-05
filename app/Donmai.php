@@ -20,4 +20,10 @@ class Donmai extends Model
     {
         return $this->belongsTo('App\User');
     }
+
+    // 投稿（posts）とのリレーション
+    public function post()
+    {
+        return $this->belongsTo('App\Post');
+    }
 }

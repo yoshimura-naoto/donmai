@@ -379,7 +379,7 @@
 
 .gechiroom-paginate-first,
 .gechiroom-paginate-last {
-  background: skyblue;
+  background: #a1efa7;
   width: 25px;
   height: 30px;
   line-height: 27px;
@@ -391,7 +391,7 @@
 
 .gechiroom-paginate-prev,
 .gechiroom-paginate-next {
-  background: skyblue;
+  background: #a1efa7;
   width: 25px;
   height: 30px;
   line-height: 27px;
@@ -402,7 +402,7 @@
 }
 
 .guchiroom-paginate-page {
-  background: skyblue;
+  background: #a1efa7;
   min-width: 25px;
   height: 30px;
   line-height: 30px;
@@ -417,7 +417,7 @@
 }
 
 .current-page {
-  background: rgb(53, 185, 238);
+  background: rgb(86 255 99);
 }
 
 .guchiroom-paginate-info {
@@ -465,7 +465,7 @@
 }
 
 .thread-back-btn {
-  background: #fda7b6;
+  background: #80fb89;
   color: #656565;
   width: 72px;
   font-size: 18px;
@@ -478,7 +478,8 @@
 }
 
 .thread-back-btn:hover {
-  background: #ff92a5;
+  /* background: rgb(86 255 99); */
+  opacity: 0.7;
 }
 
 .thread-content {
@@ -492,9 +493,9 @@
 .thread-title-area {
   /* background: springgreen; */
   display: flex;
-  margin-bottom: 10px;
+  /* margin-bottom: 10px; */
   padding-bottom: 10px;
-  border-bottom: 1px solid #d8d8d8;
+  /* border-bottom: 1px solid #d8d8d8; */
 }
 
 .thread-title-area-icon {
@@ -559,6 +560,16 @@
 }
 
 /* コメント一覧 */
+.guchis-chat-area {
+  min-height: 150px;
+  max-height: 500px;
+  overflow: scroll;
+  padding: 10px 10px 0px 10px;
+  background: #cecaaf;
+  border-radius: 5px;
+}
+
+
 .thread-comment-area {
   background: #d0eaf5;
   width: 80%;
@@ -574,10 +585,18 @@
   margin-left: auto;
 }
 
+.anonymous {
+  background: #b9ffb9;
+}
+
+.cant-see {
+  opacity: 0;
+}
+
 .guchi-delete-icon {
   position: absolute;
-  top: -5px;
-  right: -5px;
+  top: -3px;
+  right: 0px;
   width: 18px;
   height: 18px;
   background: white;
@@ -592,7 +611,8 @@
 }
 
 .thread-comment-area-top .id {
-  margin-right: 15px;
+  /* margin-right: 15px; */
+  margin-right: 6px;
 }
 
 .thread-comment-area-top .id img {
@@ -662,7 +682,7 @@
 /* コメント投稿エリア */
 .thread-post-area {
   padding-top: 10px;
-  border-top: 1px solid #d8d8d8;
+  /* border-top: 1px solid #d8d8d8; */
 }
 
 .thread-post-area .title {
@@ -673,7 +693,7 @@
 
 .thread-post-area .input textarea {
   width: calc(100% - 10px);
-  height: 100px;
+  height: 65px;
   resize: none;
   border: none;
   border-radius: 8px;

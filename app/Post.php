@@ -13,6 +13,7 @@ class Post extends Model
         'user_id',
         'body',
         'genre_id',
+        'created_at',
     ];
 
     // ジャンル
@@ -51,7 +52,7 @@ class Post extends Model
 
     // 投稿のバリデーション（create）
     public static $postRules = [
-        'body' => 'required | max:300',
+        'body' => 'required | max:250',
         'genreIndex' => 'required',
         'tags' => 'max:100',
     ];
@@ -59,7 +60,7 @@ class Post extends Model
     // 投稿のバリデーションメッセージ（create）
     public static $postValMessages = [
         'body.required' => '本文を入力してください！',
-        'body.max' => '本文は300文字以内にしてください！',
+        'body.max' => '本文は250文字以内にしてください！',
         'genreIndex.required' => 'ジャンルを選択してください！',
         'tags.max' => 'タグ欄は100字以内にしてください！',
     ];

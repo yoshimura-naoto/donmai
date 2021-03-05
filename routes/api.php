@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -18,10 +20,12 @@ use Illuminate\Http\Request;
 Route::middleware('auth:sanctum')->group(function(){
     // 認証ユーザー情報取得
     Route::get('/user', function (Request $request) {
-        return $request->user();
+        $user = Auth::user()->makeVisible(['email']);
+        return $user;
+        // return $request->user();
     });
 
-    // 認証ユーザー情報とジャンルに取得
+    // 認証ユーザー情報とジャンルを取得
     Route::get('/authandgenre', 'PostController@getAuthAndGenre');
 
     // ユーザー関連
@@ -31,18 +35,13 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::get('/post/user/get/{id}', 'PostController@getUserPostsOnly');
     Route::get('/post/user/donmai/{id}', 'PostController@getUserDonmaiPostsOnly');
     Route::get('/guchiroom/user/{id}', 'GuchiController@getUserGuchiroom');
-    // Route::get('/user/posts/{id}', 'PostController@getUserPosts');
-    // Route::get('/user/donmai/{id}', 'PostController@getUserDonmaiPosts');
     
     // フォロー関連
     Route::get('/following/{id}', 'FollowController@followingShow');
     Route::get('/follower/{id}', 'FollowController@followerShow');
     Route::post('/follow', 'FollowController@follow');
     Route::post('/unfollow', 'FollowController@unfollow');
-    
-    // ヘッダー
-    // Route::get('/headinit', 'PostController@headInit');
-    
+        
     // ホーム
     Route::get('/genre', 'PostController@getGenres');
     Route::get('/post/get', 'PostController@getPosts');
@@ -50,8 +49,6 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::post('/post/add', 'PostController@create');
     Route::post('/post/edit', 'PostController@update');
     Route::post('/post/delete/{id}', 'PostController@delete');
-    // Route::get('/home/init', 'PostController@homeInit');
-    // Route::get('/home/genre/{name}', 'PostController@homeGnereInit');
 
     // どんまい
     Route::get('/donmai/users/{id}', 'DonmaiController@getDonmaiUser');
@@ -79,12 +76,9 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::get('/tag/count/{name}', 'TagController@tagCount');
     Route::get('/post/tags/new/{name}', 'TagController@getTagsNewPosts');
     Route::get('/post/tags/popular/{name}', 'TagController@getTagsPopularPosts');
-    // Route::get('/tags/new/{name}', 'TagController@tagsNewGet');
-    // Route::get('/tags/popular/{name}', 'TagController@tagsPopularGet');
 
     // 話題の投稿
     Route::get('/post/hot/get', 'PostController@getHotPosts');
-    // Route::get('/hot', 'PostController@getHot');
 
     // みんなでグチ
     Route::get('/guchiroom/genres', 'GuchiController@guchiRoomGenreGet');
@@ -98,6 +92,7 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::post('/guchiroom/unbookmark/{id}', 'GuchiController@unBookmark');
     Route::get('/guchi/init/{id}', 'GuchiController@init');
     Route::get('/guchi/get/{id}', 'GuchiController@guchiGet');
+    Route::get('/guchi/latest/{id}', 'GuchiController@getLatestGuchi');
     Route::post('/guchi/create', 'GuchiController@guchiCreate');
     Route::post('/guchi/delete/{id}', 'GuchiController@guchiDelete');
     Route::post('/guchi/good/{id}', 'GuchiController@good');
@@ -109,8 +104,6 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::get('/search/guchiroom/new/{word}','GuchiController@getSearchGuchiroomNew');
     Route::get('/search/guchiroom/popular/{word}','GuchiController@getSearchGuchiroomPopular');
     Route::get('/search/users/{word}','UserController@getSearchUsers');
-    // Route::get('/search/posts/new/{word}','PostController@getSearchPostsNew');
-    // Route::get('/search/posts/popular/{word}','PostController@getSearchPostsPopular');
 });
 
 // 登録

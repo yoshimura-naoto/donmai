@@ -4,11 +4,6 @@
 
     <div class="thread-page-container">
 
-      <!-- 下ボタン -->
-      <div class="thread-scroll-btn" @click="scrollToEnd">
-        <img :src="'../../image/shita.png'">
-      </div>
-
       <div class="thread-content">
 
         <!-- スレッドタイトル -->
@@ -33,7 +28,7 @@
               <div class="thread-title-area-comment">
                 <div class="comment-count">
                     <img :src="'../../image/comment.png'">
-                    {{ total }}
+                    {{ guchisTotal }}
                 </div>
               </div>
 
@@ -49,9 +44,11 @@
 
 
         <!-- コメント一覧 -->
-        <div :key="resetKey">
+        <div :key="resetKey" class="guchis-chat-area" @scroll="guchisPaginate">
 
-          <div v-for="(guchi, index) in guchis" :key="guchi.id" class="thread-comment-area"  :class="{ 'self-comment': guchi.isSelf }">
+          <div v-if="guchisLoading">読み込み中...</div>
+
+          <div v-for="(guchi, index) in guchis" :key="guchi.id" class="thread-comment-area" :class="[{'self-comment': guchi.isSelf}, {'anonymous': !guchi.user_id}]">
 
             <!-- IDと投稿日時 -->
             <div v-if="!guchi.user_id" class="thread-comment-area-top">
@@ -69,9 +66,10 @@
             <div class="thread-comment-area-comment">{{ guchi.body }}</div>
 
             <!-- 画像表示 -->
-            <div v-if="guchi.guchi_images.length > 0" class="thread-comment-area-image">
+            <!-- <div v-if="guchi.guchi_images.length > 0" class="thread-comment-area-image"> -->
+            <div v-if="guchi.guchi_images.length > 0" class="thread-comment-area-image" :class="{'cant-see': guchisLoading}">
               <div v-for="(image, index) in guchi.guchi_images" :key="index">
-                <img :src="image.path" @click="openImageModal(image.path)">
+                <img :src="image.path" @click="openImageModal(image.path)" @load="imgLoaded()">
               </div>
             </div>
 
@@ -95,19 +93,6 @@
 
         </div>
 
-        <!-- ページネーション -->
-        <div v-if="guchis.length > 0" class="guchi-detail-paginate">
-          <div class="guchi-detail-paginate-box">
-            <div class="guchiroom-paginate">
-              <div @click="changePage(1)" class="gechiroom-paginate-first" :class="{'change-page-disabled': currentPage <= 1}">&laquo;</div>
-              <div @click="changePage(currentPage - 1)" class="gechiroom-paginate-prev" :class="{'change-page-disabled': currentPage <= 1}">&lt;</div>
-              <div v-for="page in pages" :key="page" @click="changePage(page)" class="guchiroom-paginate-page" :class="{'current-page': page === currentPage}">{{ page }}</div>
-              <div @click="changePage(currentPage + 1)" class="gechiroom-paginate-next" :class="{'change-page-disabled': currentPage >= lastPage}">&gt;</div>
-              <div @click="changePage(lastPage)" class="gechiroom-paginate-last" :class="{'change-page-disabled': currentPage >= lastPage}">&raquo;</div>
-            </div>
-            <div class="guchiroom-paginate-info">全{{ total }}件中{{ from }}〜{{ to }}件表示</div>
-          </div>
-        </div>
 
         <!-- コメント投稿エリア -->
         <div class="thread-post-area">
@@ -162,7 +147,7 @@
 
           <!-- 投稿ボタン -->
           <div class="post">
-            <div class="post-btn" @click="submit">投稿</div>
+            <div class="post-btn" @click="submit">送信</div>
           </div>
 
         </div>
@@ -226,7 +211,9 @@ export default {
       },
       message: null,
       errors: [],
+      postProsessing: false,
       // グチたち
+      guchisTotal: 0,
       guchis: [
         // {
           // id:
@@ -257,14 +244,16 @@ export default {
       guchiDeleting: false,
       // リロードの用のキー
       resetKey: 0,
-      // ページネーション
-      currentPage: 1,
-      lastPage: 1,
-      total: 1,
-      from: 0,
-      to: 0,
+      // 無限スクロール用
+      guchisLoading: false,
+      loadMoreGuchis: true,
+      chatScrollHeight: 0,
       // 一番下にスクロールするかどうか
       scrollToBottom: false,
+      // すでに読み込み完了している画像の数
+      loadedImgCount: 0,
+      // 新たに読み込む画像の数
+      newImageCount: 0,
     }
   },
 
@@ -279,39 +268,101 @@ export default {
         .then((res) => {
           this.authUser = res.data.authUser;
           this.guchiRoom = res.data.guchiRoom;
-          this.getGuchis(1, roomId);
+          this.scrollToBottom = true;
+          this.getGuchis(roomId);
         }).catch(() => {
           return;
         });
     },
-    // グチの取得（ページネーション）
-    getGuchis(page, roomId) {
-      axios.get('/api/guchi/get/' + roomId + '?page=' + page)
+    // グチの取得（無限スクロール）
+    getGuchis(roomId) {
+      if (!this.loadMoreGuchis) return;
+      if (this.guchisLoading) return;
+      this.guchisLoading = true;
+      axios.get('/api/guchi/get/' + roomId + '?loaded_guchis_count=' + this.guchis.length)
         .then((res) => {
           console.log(res.data);
-          this.guchis = res.data.data;
-          this.currentPage = res.data.current_page;
-          this.lastPage = res.data.last_page;
-          this.total = res.data.total;
-          this.from = res.data.from;
-          this.to = res.data.to;
-          if (!this.guchiCreated && !this.guchiDeleting) {
-            window.scrollTo(0, 0);
-          } else if (this.guchiCreated || this.scrollToBottom) {
-            this.$nextTick(function() {
-              this.scrollToEnd();
-            });
+          this.guchisTotal = res.data.guchisTotal;
+          this.newImageCount = res.data.imagesCount;
+          this.guchis.unshift(...res.data.guchis);
+          if (this.guchis.length === res.data.guchisTotal) {
+            this.loadMoreGuchis = false;
           }
-          this.guchiCreated = false;
-          this.guchiDeleting = false;
-          this.scrollToBottom = false;
+          console.log(this.guchis.length);
+          this.$nextTick(function() {
+            const guchiChatArea = document.querySelector('.guchis-chat-area');
+            if (this.scrollToBottom && this.newImageCount === 0) {
+              guchiChatArea.scrollTop = guchiChatArea.scrollHeight - guchiChatArea.clientHeight;
+              this.scrollToBottom = false;
+              this.chatScrollHeight = guchiChatArea.scrollHeight;
+              this.guchisLoading = false;
+            } else if (!this.scrollToBottom && this.newImageCount === 0) {
+              guchiChatArea.scrollTop = guchiChatArea.scrollHeight - this.chatScrollHeight;
+              this.chatScrollHeight = guchiChatArea.scrollHeight;
+              this.guchisLoading = false;
+            }
+          });
+        }).catch((error) => {
+          console.log(error);
+          this.guchisLoading = false;
+        });
+    },
+    // 最新のグチを１件取得
+    getLatestGuchi() {
+      const guchiChatArea = document.querySelector('.guchis-chat-area');
+      console.log(guchiChatArea.scrollTop);
+      console.log(guchiChatArea.scrollHeight);
+      console.log(guchiChatArea.clientHeight);
+      if (guchiChatArea.scrollTop >= guchiChatArea.scrollHeight - guchiChatArea.clientHeight * 2) {
+        this.scrollToBottom = true;
+      }
+      axios.get('/api/guchi/latest/' + this.$route.params.id)
+        .then((res) => {
+          console.log(res.data);
+          this.newImageCount = res.data.guchi_images_count;
+          this.guchis.push(res.data);
+          // スクロール位置が底の方にあるときだけ、最新のグチを取得した際に一番下にスクロールされる
+          this.$nextTick(function() {
+            if (this.chatScrollHeight < 510) {
+              this.scrollToEnd();
+            }
+            if (this.scrollToBottom && this.newImageCount === 0) {
+              guchiChatArea.scrollTop = guchiChatArea.scrollHeight - guchiChatArea.clientHeight;
+              this.chatScrollHeight = guchiChatArea.scrollHeight;
+              this.scrollToBottom = false;
+            }
+          });
         }).catch((error) => {
           console.log(error);
         });
     },
-    // ページ遷移
-    changePage(page) {
-      if (page >= 1 && page <= this.lastPage) this.getGuchis(page, this.$route.params.id);
+    // グチの無限スクロールページネーション
+    guchisPaginate() {
+      const guchiChatArea = document.querySelector('.guchis-chat-area');
+      if (guchiChatArea.scrollTop === 0) {
+        this.getGuchis(this.$route.params.id);
+      }
+    },
+    // 画像を全て読み込んでからスクロール位置決定
+    imgLoaded() {
+      this.loadedImgCount++;
+      const guchiChatArea = document.querySelector('.guchis-chat-area');
+      if (this.loadedImgCount === this.newImageCount && this.scrollToBottom) {
+        if (this.chatScrollHeight < 510) {
+          this.scrollToEnd();
+        }
+        guchiChatArea.scrollTop = guchiChatArea.scrollHeight - guchiChatArea.clientHeight;
+        this.scrollToBottom = false;
+        this.loadedImgCount = 0;
+        this.chatScrollHeight = guchiChatArea.scrollHeight;
+        this.guchisLoading = false;
+      } else if (this.loadedImgCount === this.newImageCount && !this.scrollToBottom && this.guchisLoading) {
+        guchiChatArea.scrollTop = guchiChatArea.scrollHeight - this.chatScrollHeight;
+        this.chatScrollHeight = guchiChatArea.scrollHeight;
+        this.loadedImgCount = 0;
+        this.chatScrollHeight = guchiChatArea.scrollHeight;
+        this.guchisLoading = false;
+      }
     },
     // グッドの切り替え
     good(i) {
@@ -371,6 +422,8 @@ export default {
     },
     // グチの送信
     submit() {
+      if (this.postProsessing) return;
+      this.postProsessing = true;
       let data = new FormData();
       Object.entries(this.form).forEach(([key, value]) => {
         if (Array.isArray(value)) {
@@ -393,14 +446,10 @@ export default {
           this.errors = [];
           this.urls = [];
           this.message = null;
-          this.guchiCreated = true;
-          if (this.total % 5 === 0 && this.total > 0) {
-            this.getGuchis(this.lastPage + 1, this.$route.params.id);
-          } else {
-            this.getGuchis(this.lastPage, this.$route.params.id);
-          }
+          this.postProsessing = false;
         }).catch((error) => {
           this.errors = error.response.data.errors;
+          this.postProsessing = false;
         });
     },
     // ページ最下部へスクロール
@@ -438,9 +487,10 @@ export default {
       const img_height = img.height;
       if (img_height >= img_width) {
         this.heightIsBigger = true;
-        document.querySelector('.overlay-image-image').addEventListener('load', () => {
-          this.tatenagaImageWidth = document.querySelector('.overlay-image-image').clientWidth;
-          // console.log(this.tatenagaImageWidth);
+        this.$nextTick(function() {
+            this.tatenagaImageWidth = document.querySelector('.overlay-image-image').clientWidth;
+            this.handleResize();
+            // console.log(this.tatenagaImageWidth);
         });
       }
     },
@@ -479,17 +529,25 @@ export default {
       this.guchiDeleting = true;
       axios.post('/api/guchi/delete/' + this.guchis[this.deleteGuchiIndex].id)
         .then(() => {
-          if (this.currentPage === this.lastPage && this.guchis.length === 1 && this.currentPage !== 1) {
-            this.changePage(this.currentPage - 1);
-            this.scrollToBottom = true;
-          } else {
-            this.changePage(this.currentPage);
-          }
           this.deleteGuchiModalClose();
+          this.guchiDeleting = false;
         }).catch((error) => {
           console.log(error);
           this.guchiDeleting = false;
         });
+    },
+    // グチをリアルタイムで削除
+    deleteGuchiRealTime(guchiId) {
+      const guchiIds = this.guchis.map((obj) => {
+        return obj.id;
+      });
+      console.log(guchiId);
+      if (guchiIds.includes(guchiId)) {
+        let guchiIndex = guchiIds.indexOf(guchiId);
+        this.guchis.splice(guchiIndex, 1);
+        const guchiChatArea = document.querySelector('.guchis-chat-area');
+        this.chatScrollHeight = guchiChatArea.scrollHeight;
+      }
     },
   },
 
@@ -502,7 +560,28 @@ export default {
   },
 
   mounted() {
+    // ページ初期化
     this.getInitInfo(this.$route.params.id);
+    // 最新のグチを取得
+    Echo.private('chat')
+      .listen('GuchiCreated', (e) => {
+        console.log(e.guchi.guchi_room_id);
+        console.log(this.$route.params.id);
+        if (e.guchi.guchi_room_id == this.$route.params.id) {
+          this.guchisTotal++;
+          this.getLatestGuchi();
+        }
+      });
+    // グチを削除
+    Echo.private('guchiDeleted')
+      .listen('GuchiDeleted', (e) => {
+        console.log(e.guchiData.guchi_room_id);
+        if (e.guchiData.guchi_room_id == this.$route.params.id) {
+          this.guchisTotal--;
+          this.deleteGuchiRealTime(e.guchiData.id);
+          console.log(e.guchiData.id);
+        }
+      });
   },
 
   computed: {
@@ -520,7 +599,9 @@ export default {
       this.modalImageShow = false;
       this.deleteGuchiModalClose();
     }
-    next();
+    if (!this.postProsessing && !this.guchiDeleting) {
+      next();
+    }
   },
 
   beforeRouteUpdate (to, from, next) {
@@ -530,7 +611,9 @@ export default {
       this.deleteGuchiModalClose();
     }
     this.getInitInfo(to.params.id)
-    next();
+    if (!this.postProsessing && !this.guchiDeleting) {
+      next();
+    }
   },
 }
 </script>

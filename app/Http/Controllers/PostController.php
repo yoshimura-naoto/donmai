@@ -41,305 +41,16 @@ class PostController extends Controller
 
 
 
-    // 投稿を新着順で全て取得（３件ずつ無限スクロール）
-    public function getPosts(Request $request)
-    {
-        // 投稿一覧の取得
-        $posts = Post::with(['user', 'tags', 'postImages', 'donmais' => function ($query) {
-                        $query->where('user_id', Auth::id());
-                    }])
-                    ->withCount('donmais', 'comments', 'replies')
-                    ->orderBy('id', 'desc')
-                    ->offset($request->loaded_posts_count)
-                    ->limit(3)
-                    ->get();
-
-        // 投稿のジャンル、認証ユーザーがどんまいしているか、どんまい数、コメント数を取得
-        foreach ($posts as $post) {
-            $post->genre = Post::$genres[$post->genre_index];
-            if (count($post->donmais) > 0) {
-                $post->donmai = true;
-            } else {
-                $post->donmai = false;
-            }
-            $post->donmaiCount = $post->donmais_count;
-            $post->commentCount = $post->comments_count + $post->replies_count;
-            $post->postMenuOpened = false;
-        }
-
-        $data = [
-            'posts' => $posts,
-            'postsTotal' => Post::count(),
-        ];
-
-        return $data;
-    }
-
-
-    // ジャンル別で投稿を取得
-    public function getGenrePosts($name, Request $request)
-    {
-        // ジャンルのインデックスを取得
-        $genreRoutes = array_column(Post::$genres, 'route');
-        $genreIndex = array_search($name, $genreRoutes);
-
-        // そのジャンルの投稿、投稿したユーザー、タグ、画像、を取得
-        $posts = Post::where('genre_index', $genreIndex)
-                ->with(['user', 'tags', 'postImages', 'donmais' => function ($query) {
-                    $query->where('user_id', Auth::id());
-                }])
-                ->withCount('donmais', 'comments', 'replies')
-                ->orderBy('id', 'desc')
-                ->offset($request->loaded_posts_count)
-                ->limit(3)
-                ->get();
-
-        foreach ($posts as $post) {
-            $post->genre = Post::$genres[$post->genre_index];
-            if (count($post->donmais) > 0) {
-                $post->donmai = true;
-            } else {
-                $post->donmai = false;
-            }
-            $post->donmaiCount = $post->donmais_count;
-            $post->commentCount = $post->comments_count + $post->replies_count;
-            $post->postMenuOpened = false;
-        }
-
-        $data = [
-            'posts' => $posts,
-            'postsTotal' => Post::where('genre_index', $genreIndex)->count(),
-        ];
-
-        return $data;
-    }
-
-
-
-    // 話題の投稿ページで投稿を取得（ここ１週間）
-    public function getHotPosts(Request $request)
-    {
-        $lastWeek = new Carbon('-7 day', 'Asia/Tokyo');
-
-        // 投稿一覧をdonmais数が多い順で取得
-        $posts = Post::where('created_at', '>', $lastWeek)
-                    ->with(['user', 'tags', 'postImages', 'donmais' => function ($query) {
-                        $query->where('user_id', Auth::id());
-                    }])
-                    ->withCount('donmais', 'comments', 'replies')
-                    ->orderBy('donmais_count', 'desc')
-                    ->orderBy('comments_count', 'desc')
-                    ->orderBy('id', 'desc')
-                    ->offset($request->loaded_posts_count)
-                    ->limit(3)
-                    ->get();
-
-        foreach ($posts as $post) {
-            $post->genre = Post::$genres[$post->genre_index];
-            if (count($post->donmais) > 0) {
-                $post->donmai = true;
-            } else {
-                $post->donmai = false;
-            }
-            $post->donmaiCount = $post->donmais_count;
-            $post->commentCount = $post->comments_count + $post->replies_count;
-            $post->postMenuOpened = false;
-        }
-
-        $data = [
-            'posts' => $posts,
-            'postsTotal' => Post::where('created_at', '>', $lastWeek)->count(),
-            // 'postsTotal' => Post::count(),
-        ];
-
-        return $data;
-    }
-
-
-
-    // ユーザーページでユーザーの投稿を取得
-    public function getUserPostsOnly($id, Request $request)
-    {
-        $posts = Post::where('user_id', $id)
-                    ->with(['user', 'tags', 'postImages'])
-                    ->withCount(['donmais', 'comments', 'replies',
-                                 'donmais as donmai_by_user' => function (Builder $query) {
-                                    $query->where('user_id', Auth::id());
-                                }])
-                    ->orderBy('id', 'desc')
-                    ->offset($request->loaded_posts_count)
-                    ->limit(3)
-                    ->get();
-
-        foreach ($posts as $post) {
-            $post->genre = Post::$genres[$post->genre_index];
-            // 認証ユーザーがどんまいしているかチェック
-            if ($post->donmai_by_user) {
-                $post->donmai = true;
-            } else {
-                $post->donmai = false;
-            }
-            $post->donmaiCount = $post->donmais_count;
-            $post->commentCount = $post->comments_count + $post->replies_count;
-            $post->postMenuOpened = false;
-        }
-
-        $data = [
-            'posts' => $posts,
-            'postsTotal' => Post::where('user_id', $id)->count(),
-        ];
-
-        return $data;
-    }
-
-
-
-    // ユーザーがどんまいした投稿を取得
-    public function getUserDonmaiPostsOnly($id, Request $request)
-    {
-        $posts = Post::whereHas('donmais', function (Builder $query) use ($id) {
-                        $query->where('user_id', $id);
-                    })
-                    ->with(['user', 'tags', 'postImages'])
-                    ->withCount(['donmais', 'comments', 'replies',
-                                'donmais as donmai_by_user' => function (Builder $query) {
-                                    $query->where('user_id', Auth::id());
-                                }])
-                    ->orderBy('id', 'desc')
-                    ->offset($request->loaded_posts_count)
-                    ->limit(3)
-                    ->get();
-
-        foreach ($posts as $post) {
-            $post->genre = Post::$genres[$post->genre_index];
-            // 認証ユーザーがどんまいしているかチェック
-            if ($post->donmai_by_user) {
-                $post->donmai = true;
-            } else {
-                $post->donmai = false;
-            }
-            $post->donmaiCount = $post->donmais_count;
-            $post->commentCount = $post->comments_count + $post->replies_count;
-            $post->postMenuOpened = false;
-        }
-
-        $data = [
-            'posts' => $posts,
-            'postsTotal' => Post::whereHas('donmais', function (Builder $query) use ($id) {
-                                    $query->where('user_id', $id);
-                                })
-                                ->count(),
-        ];
-
-        return $data;
-    }
-
-
-
-    // 検索したワードをタグに含む投稿を新着順で取得
-    public function getSearchNewPostsOnly($word, Request $request)
-    {
-        $posts = Post::whereHas('tags', function (Builder $query) use ($word) {
-                        $query->where('name', $word);
-                    })
-                    ->with(['user', 'tags', 'postImages'])
-                    ->withCount(['donmais', 'comments', 'replies',
-                                'donmais as donmai_by_user' => function (Builder $query) {
-                                    $query->where('user_id', Auth::id());
-                                }])
-                    ->orderBy('id', 'desc')
-                    ->offset($request->loaded_posts_count)
-                    ->limit(3)
-                    ->get();
-
-        foreach ($posts as $post) {
-            $post->genre = Post::$genres[$post->genre_index];
-            // 認証ユーザーがどんまいしているかチェック
-            if ($post->donmai_by_user) {
-                $post->donmai = true;
-            } else {
-                $post->donmai = false;
-            }
-            $post->donmaiCount = $post->donmais_count;
-            $post->commentCount = $post->comments_count + $post->replies_count;
-            $post->postMenuOpened = false;
-        }
-
-        $data = [
-            'posts' => $posts,
-            'postsTotal' => Post::whereHas('tags', function (Builder $query) use ($word) {
-                                $query->where('name', $word);
-                            })
-                            ->count(),
-        ];
-
-        return $data;
-    }
-
-
-
-    // 検索したワードをタグに含む投稿をどんまい数が多い順で取得
-    public function getSearchPopularPostsOnly($word, Request $request)
-    {
-        $posts = Post::whereHas('tags', function (Builder $query) use ($word) {
-                        $query->where('name', $word);
-                    })
-                    ->with(['user', 'tags', 'postImages'])
-                    ->withCount(['donmais', 'comments', 'replies',
-                                'donmais as donmai_by_user' => function (Builder $query) {
-                                    $query->where('user_id', Auth::id());
-                                }])
-                    ->orderBy('donmais_count', 'desc')
-                    ->orderBy('comments_count', 'desc')
-                    ->offset($request->loaded_posts_count)
-                    ->limit(3)
-                    ->get();
-
-        foreach ($posts as $post) {
-            $post->genre = Post::$genres[$post->genre_index];
-            // 認証ユーザーがどんまいしているかチェック
-            if ($post->donmai_by_user) {
-                $post->donmai = true;
-            } else {
-                $post->donmai = false;
-            }
-            $post->donmaiCount = $post->donmais_count;
-            $post->commentCount = $post->comments_count + $post->replies_count;
-            $post->postMenuOpened = false;
-        }
-
-        $data = [
-            'posts' => $posts,
-            'postsTotal' => Post::whereHas('tags', function (Builder $query) use ($word) {
-                                $query->where('name', $word);
-                            })
-                            ->count(),
-        ];
-
-        return $data;
-    }
-
-
-
     // 投稿
     public function create(Request $request)
     {
         // バリデーション
         $request->validate(Post::$postRules, Post::$postValMessages);
 
-        // 投稿者のidを取得
-        $userId = Auth::id();
-
-        // bodyを取得
-        $body = $request->body;
-
-        // genre_indexを取得
-        $genreIndex = $request->genreIndex;
-
         // タグの保存
-        $tagsText = $request->tags;
-        $tagsList = preg_match_all('/#([^\s#]+)/', str_replace('　', ' ', $tagsText), $m) ? $m[1] : [];     // タグ名の配列
-        $tags = [];     // タグのレコードの配列
+        $tagsText = $request->tags;   // ユーザーが入力したタグを文字列の状態（'#りんご #バナナ'）で取得
+        $tagsList = preg_match_all('/#([^\s#]+)/', str_replace('　', ' ', $tagsText), $m) ? $m[1] : [];  // $tagsTextを配列に変換（ハッシュタグから始まる単語を取得して配列に）
+        $tags = [];     // タグのレコード（tagsテーブルのレコード）の配列
         foreach ($tagsList as $tag) {
             $record = Tag::firstOrCreate(['name' => $tag]);
             array_push($tags, $record);
@@ -351,9 +62,9 @@ class PostController extends Controller
 
         // 投稿作成
         $post = new Post;
-        $post->user_id = $userId;
-        $post->body = $body;
-        $post->genre_index = $genreIndex;
+        $post->user_id = Auth::id();
+        $post->body = $request->body;
+        $post->genre_index = $request->genreIndex;
         $post->save();
         
         // タグと投稿の紐つけ（post_tagレコード作成）
@@ -396,7 +107,7 @@ class PostController extends Controller
         // タグの更新
         $tagsText = $request->tags;
         $newTags = preg_match_all('/#([^\s#]+)/', str_replace('　', ' ', $tagsText), $m) ? $m[1] : [];  // リクエストで取得したタグの配列
-        $oldTags = array_column($post->tags->all(), 'name'); //  今までのタグの配列
+        $oldTags = array_column($post->tags->all(), 'name');  // 今までこの投稿に紐ついていたタグの配列
         // 今までのタグで削除するものがあれば削除
         $deleteOldTags = array_values(array_diff($oldTags, $newTags)); // oldTagsにあってnewTagsにないタグ名の配列（消すタグ名の配列）
         $deleteOldTagRecords = $post->tags
@@ -409,9 +120,7 @@ class PostController extends Controller
             }
         }
         // 中間テーブルpost_tagで削除するものを削除
-        PostTag::where('post_id', $request->id)
-                ->whereIn('tag_id', array_column($deleteOldTagRecords, 'id'))
-                ->delete();
+        $post->tags()->detach(array_column($deleteOldTagRecords, 'id'));
         // 新しく追加するタグを作成
         $newAddTag = array_values(array_diff($newTags, $oldTags));  // newTagsにあってoldTagsにないタグ名の配列（新しく追加するタグ名の配列）
         $tags = [];  // タグ(tagsテーブル)のレコードの配列
@@ -452,7 +161,7 @@ class PostController extends Controller
 
         // 編集した投稿をレスポンスとして返す
         $post = Post::where('id', $request->id)
-                    ->with(['user', 'tags', 'postImages', 'donmais' => function ($query) {
+                    ->with(['user:id,name,icon', 'tags', 'postImages', 'donmais' => function ($query) {
                         $query->where('user_id', Auth::id());
                     }])
                     ->withCount('donmais', 'comments', 'replies')
@@ -499,5 +208,303 @@ class PostController extends Controller
         }
 
         $post->delete();
+    }
+
+
+
+    // フォロー中のユーザーの投稿優先で、投稿を新着順で全て取得（３件ずつ無限スクロール）
+    public function getPosts(Request $request)
+    {
+        $authUser = Auth::User();
+        $followsId = array_column($authUser->follows->all(), 'following_user_id');  // 認証ユーザーがフォローしているユーザーのIDの配列
+        array_push($followsId, Auth::id());  // 自分のIDも追加
+
+        // $yesterday = new Carbon('-1 day', 'Asia/Tokyo');
+
+        // 認証ユーザーがフォローしてるユーザーの合計投稿数
+        $followPostsCount = Post::whereIn('user_id', $followsId)
+                                // ->where('created_at', '>=', $yesterday)  // もしアプリを本格運用するなら１日以内の投稿のみ取得
+                                ->count();
+
+        if ($request->loaded_posts_count < $followPostsCount) {
+            // 先に認証ユーザーがフォローしているユーザーの投稿と自分の投稿を新着順で取得
+            $posts = Post::whereIn('user_id', $followsId)
+                        ->with(['user:id,name,icon', 'tags', 'postImages', 'donmais' => function ($query) {
+                            $query->where('user_id', Auth::id());
+                        }])
+                        ->withCount('donmais', 'comments', 'replies')
+                        ->orderBy('id', 'desc')
+                        ->offset($request->loaded_posts_count)
+                        ->limit(3)
+                        ->get();
+        } else {
+            // フォロー中のユーザーの投稿を全て読み終えたらフォローしていないユーザーの投稿を新着順で取得
+            $posts = Post::whereNotIn('user_id', $followsId)
+                        ->with(['user:id,name,icon', 'tags', 'postImages', 'donmais' => function ($query) {
+                            $query->where('user_id', Auth::id());
+                        }])
+                        ->withCount('donmais', 'comments', 'replies')
+                        ->orderBy('id', 'desc')
+                        ->offset($request->loaded_posts_count - $followPostsCount)
+                        ->limit(3)
+                        ->get();
+        }
+
+        // 投稿のジャンル、認証ユーザーがどんまいしているか、どんまい数、コメント数を取得
+        foreach ($posts as $post) {
+            $post->genre = Post::$genres[$post->genre_index];
+            if (count($post->donmais) > 0) {
+                $post->donmai = true;
+            } else {
+                $post->donmai = false;
+            }
+            $post->donmaiCount = $post->donmais_count;
+            $post->commentCount = $post->comments_count + $post->replies_count;
+            $post->postMenuOpened = false;
+        }
+
+        $data = [
+            'posts' => $posts,
+            'postsTotal' => Post::count(),
+        ];
+
+        return $data;
+    }
+
+
+    // ジャンル別で投稿を取得（３件ずつ無限スクロール）
+    public function getGenrePosts($name, Request $request)
+    {
+        // ジャンルのインデックスを取得
+        $genreRoutes = array_column(Post::$genres, 'route');
+        $genreIndex = array_search($name, $genreRoutes);
+
+        // そのジャンルの投稿、投稿したユーザー、タグ、画像、を取得
+        $posts = Post::where('genre_index', $genreIndex)
+                ->with(['user:id,name,icon', 'tags', 'postImages', 'donmais' => function ($query) {
+                    $query->where('user_id', Auth::id());
+                }])
+                ->withCount('donmais', 'comments', 'replies')
+                ->orderBy('id', 'desc')
+                ->offset($request->loaded_posts_count)
+                ->limit(3)
+                ->get();
+
+        foreach ($posts as $post) {
+            $post->genre = Post::$genres[$post->genre_index];
+            if (count($post->donmais) > 0) {
+                $post->donmai = true;
+            } else {
+                $post->donmai = false;
+            }
+            $post->donmaiCount = $post->donmais_count;
+            $post->commentCount = $post->comments_count + $post->replies_count;
+            $post->postMenuOpened = false;
+        }
+
+        $data = [
+            'posts' => $posts,
+            'postsTotal' => Post::where('genre_index', $genreIndex)->count(),
+        ];
+
+        return $data;
+    }
+
+
+
+    // 話題の投稿ページで、ここ１週間以内でどんまい数が多い順に投稿を取得
+    public function getHotPosts(Request $request)
+    {
+        $lastWeek = new Carbon('-30 day', 'Asia/Tokyo');  // 今だけ20日に設定
+
+        // 投稿一覧をdonmais数が多い順で取得（３件ずつ無限スクロール）
+        $posts = Post::where('created_at', '>=', $lastWeek)
+                    ->with(['user:id,name,icon', 'tags', 'postImages', 'donmais' => function ($query) {
+                        $query->where('user_id', Auth::id());
+                    }])
+                    ->withCount('donmais', 'comments', 'replies')
+                    ->orderBy('donmais_count', 'desc')
+                    ->orderBy('comments_count', 'desc')
+                    ->orderBy('id', 'desc')
+                    ->offset($request->loaded_posts_count)
+                    ->limit(3)
+                    ->get();
+
+        foreach ($posts as $post) {
+            $post->genre = Post::$genres[$post->genre_index];
+            if (count($post->donmais) > 0) {
+                $post->donmai = true;
+            } else {
+                $post->donmai = false;
+            }
+            $post->donmaiCount = $post->donmais_count;
+            $post->commentCount = $post->comments_count + $post->replies_count;
+            $post->postMenuOpened = false;
+        }
+
+        $data = [
+            'posts' => $posts,
+            'postsTotal' => Post::where('created_at', '>=', $lastWeek)->count(),
+        ];
+
+        return $data;
+    }
+
+
+
+    // ユーザーページでユーザーの投稿を新着順で取得（３件ずつ無限スクロール）
+    public function getUserPostsOnly($id, Request $request)
+    {
+        $posts = Post::where('user_id', $id)
+                    ->with(['user:id,name,icon', 'tags', 'postImages'])
+                    ->withCount(['donmais', 'comments', 'replies',
+                                 'donmais as donmai_by_user' => function (Builder $query) {
+                                    $query->where('user_id', Auth::id());
+                                }])
+                    ->orderBy('id', 'desc')
+                    ->offset($request->loaded_posts_count)
+                    ->limit(3)
+                    ->get();
+
+        foreach ($posts as $post) {
+            $post->genre = Post::$genres[$post->genre_index];
+            // 認証ユーザーがどんまいしているかチェック
+            if ($post->donmai_by_user) {
+                $post->donmai = true;
+            } else {
+                $post->donmai = false;
+            }
+            $post->donmaiCount = $post->donmais_count;
+            $post->commentCount = $post->comments_count + $post->replies_count;
+            $post->postMenuOpened = false;
+        }
+
+        $data = [
+            'posts' => $posts,
+            'postsTotal' => Post::where('user_id', $id)->count(),
+        ];
+
+        return $data;
+    }
+
+
+
+    // ユーザーがどんまいした投稿を、どんまいした日が新しい順に取得（３件ずつ無限スクロール）
+    public function getUserDonmaiPostsOnly($id, Request $request)
+    {
+        $donmais = Donmai::where('user_id', $id)
+                        ->with(['post.user:id,name,icon',
+                                'post.tags', 
+                                'post.postImages',
+                                'post' => function ($query) {
+                                    $query->withCount(['donmais', 'comments', 'replies']);
+                                }])
+                        ->orderBy('id', 'desc')
+                        ->offset($request->loaded_posts_count)
+                        ->limit(3)
+                        ->get();
+
+        foreach ($donmais as $donmai) {
+            $donmai->post->genre = Post::$genres[$donmai->post->genre_index];
+            $donmai->post->donmai = true;
+            $donmai->post->donmaiCount = $donmai->post->donmais_count;
+            $donmai->post->commentCount = $donmai->post->comments_count + $donmai->post->replies_count;
+            $donmai->post->postMenuOpened = false;
+        }
+
+        $data = [
+            'donmais' => $donmais,
+            'postsTotal' => Post::whereHas('donmais', function (Builder $query) use ($id) {
+                                    $query->where('user_id', $id);
+                                })
+                                ->count(),
+        ];
+
+        return $data;
+    }
+
+
+
+    // 検索したワードをタグに含む投稿を新着順で取得（３件ずつ無限スクロール）
+    public function getSearchNewPostsOnly($word, Request $request)
+    {
+        $posts = Post::whereHas('tags', function (Builder $query) use ($word) {
+                        $query->where('name', $word);
+                    })
+                    ->with(['user:id,name,icon', 'tags', 'postImages'])
+                    ->withCount(['donmais', 'comments', 'replies',
+                                 'donmais as donmai_by_user' => function (Builder $query) {
+                                    $query->where('user_id', Auth::id());
+                                 }])
+                    ->orderBy('id', 'desc')
+                    ->offset($request->loaded_posts_count)
+                    ->limit(3)
+                    ->get();
+
+        foreach ($posts as $post) {
+            $post->genre = Post::$genres[$post->genre_index];
+            // 認証ユーザーがどんまいしているかチェック
+            if ($post->donmai_by_user) {
+                $post->donmai = true;
+            } else {
+                $post->donmai = false;
+            }
+            $post->donmaiCount = $post->donmais_count;
+            $post->commentCount = $post->comments_count + $post->replies_count;
+            $post->postMenuOpened = false;
+        }
+
+        $data = [
+            'posts' => $posts,
+            'postsTotal' => Post::whereHas('tags', function (Builder $query) use ($word) {
+                                $query->where('name', $word);
+                            })
+                            ->count(),
+        ];
+
+        return $data;
+    }
+
+
+
+    // 検索したワードをタグに含む投稿をどんまい数が多い順で取得（３件ずつ無限スクロール）
+    public function getSearchPopularPostsOnly($word, Request $request)
+    {
+        $posts = Post::whereHas('tags', function (Builder $query) use ($word) {
+                        $query->where('name', $word);
+                    })
+                    ->with(['user:id,name,icon', 'tags', 'postImages'])
+                    ->withCount(['donmais', 'comments', 'replies',
+                                 'donmais as donmai_by_user' => function (Builder $query) {
+                                    $query->where('user_id', Auth::id());
+                                 }])
+                    ->orderBy('donmais_count', 'desc')
+                    ->orderBy('comments_count', 'desc')
+                    ->offset($request->loaded_posts_count)
+                    ->limit(3)
+                    ->get();
+
+        foreach ($posts as $post) {
+            $post->genre = Post::$genres[$post->genre_index];
+            // 認証ユーザーがどんまいしているかチェック
+            if ($post->donmai_by_user) {
+                $post->donmai = true;
+            } else {
+                $post->donmai = false;
+            }
+            $post->donmaiCount = $post->donmais_count;
+            $post->commentCount = $post->comments_count + $post->replies_count;
+            $post->postMenuOpened = false;
+        }
+
+        $data = [
+            'posts' => $posts,
+            'postsTotal' => Post::whereHas('tags', function (Builder $query) use ($word) {
+                                $query->where('name', $word);
+                            })
+                            ->count(),
+        ];
+
+        return $data;
     }
 }

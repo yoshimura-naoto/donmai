@@ -538,6 +538,7 @@ export default {
       ],
       editErrors: [],
       edited: false,
+      editProcessing: false,  // 編集の処理中
       // 無限スクロール用
       postsLoading: false,
       loadMorePosts: true,
@@ -632,6 +633,7 @@ export default {
       // 削除の確認のモーダル
       deletePostModalOpened: false,
       deletePostIndex: null,
+      deleteProssesing: false,
       // 投稿編集モーダル
       modalPostEditShow: false,
       editPostIndex: null,
@@ -769,12 +771,16 @@ export default {
     },
     // 投稿の削除
     deletePost() {
+      if (this.deleteProssesing) return;
+      this.deleteProssesing = true;
       axios.post('/api/post/delete/' + this.posts[this.deletePostIndex].id)
         .then(() => {
           this.posts.splice(this.deletePostIndex, 1);
           this.deletePostModalClose();
-        }).catch(() => {
-          return;
+          this.deleteProssesing = false;
+        }).catch((error) => {
+          console.log(error);
+          this.deleteProssesing = false;
         });
     },
     // 投稿編集モーダルを開く
@@ -829,7 +835,7 @@ export default {
       this.editErrors = [];
       this.nextNewImageId = -1;
       this.editHeight = '20px';
-      if (!this.edited) {
+      if (!this.editProcessing) {
         this.closePostMenu(this.editPostIndex);
       }
       this.modalPostEditShow = false;
@@ -911,9 +917,7 @@ export default {
           } else {
             this.posts.splice(this.editPostIndex, 1);
           }
-          this.edited = true;
           this.editPostModalClose();
-          this.edited = false;
           this.editProcessing = false;
         }).catch((error) => {
           this.editErrors = error.response.data.errors;
@@ -1045,7 +1049,10 @@ export default {
       axios.get('/api/donmai/users/' + this.modalPostId + '?page=' + this.donmaiPage)
         .then((res) => {
           console.log(res.data);
-          this.modalDonmaiUsers.push(...res.data.data);
+          const users = res.data.data.map((obj) => {
+            return obj.user;
+          });
+          this.modalDonmaiUsers.push(...users);
           this.donmaiLoading = false;
           if (this.donmaiPage === res.data.last_page) {
             this.isLastDonmaiPage = true;
@@ -1091,9 +1098,10 @@ export default {
       const img_height = img.height;
       if (img_height >= img_width) {
         this.heightIsBigger = true;
-        document.querySelector('.overlay-image-image').addEventListener('load', () => {
-          this.tatenagaImageWidth = document.querySelector('.overlay-image-image').clientWidth;
-          // console.log(this.tatenagaImageWidth);
+        this.$nextTick(function() {
+            this.tatenagaImageWidth = document.querySelector('.overlay-image-image').clientWidth;
+            this.handleResize();
+            // console.log(this.tatenagaImageWidth);
         });
       }
     },
@@ -1365,7 +1373,9 @@ export default {
       this.modalPostEditShow = false;
     }
     this.loadMorePosts = false;
-    next();
+    if (!this.editProcessing && !this.deleteProssesing) {
+      next();
+    }
   },
 
   beforeRouteUpdate (to, from, next) {
@@ -1377,9 +1387,13 @@ export default {
       this.deletePostModalOpened = false;
       this.editPostModalClose(); ///////////////!!!!!!!!!!!!!
     }
+    // this.editProcessing = false;
+    // this.deleteProssesing = false;
     this.resetPaginate();
     this.getPosts(to.params.name);
-    next();
+    if (!this.editProcessing && !this.deleteProssesing) {
+      next();
+    }
   },
 }
 </script>

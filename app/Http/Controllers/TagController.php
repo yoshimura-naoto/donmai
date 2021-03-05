@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+use Carbon\Carbon;
+
 use App\User;
 use App\Post;
 use App\PostImage;
@@ -16,10 +18,14 @@ use App\Reply;
 
 class TagController extends Controller
 {
-    // タグのトレンドランキング（紐ついた投稿が多い順）
+    // タグのトレンドランキング（ここ１週間以内で紐つけられた投稿が多い順）
     public function getTrend()
     {
-        $tags = Tag::withCount('posts')
+        $lastWeek = new Carbon('-30 day', 'Asia/Tokyo');
+
+        $tags = Tag::withCount(['posts' => function (Builder $query) use ($lastWeek) {
+                        $query->where('posts.created_at', '>', $lastWeek);
+                    }])
                     ->orderBy('posts_count', 'desc')
                     ->limit(10)
                     ->get();
@@ -35,11 +41,11 @@ class TagController extends Controller
 
 
 
-    // そのタグを関連づけた投稿の数
+    // そのタグを関連づけた投稿の数を取得
     public function tagCount($name)
     {
         $tag = Tag::where('name', $name)
-                    ->withCount('posts')
+                    ->withCount(['posts'])
                     ->first();
 
         $tagPostsCount = null;
@@ -55,21 +61,20 @@ class TagController extends Controller
 
 
 
-    // そのタグを関連づけた投稿を新着順で取得
+    // そのタグを関連づけた投稿を新着順で取得（３件ずつ無限スクロール）
     public function getTagsNewPosts($name, Request $request)
     {
-        // 投稿一覧の取得
         $posts = Post::whereHas('tags', function (Builder $query) use ($name) {
-                    $query->where('name', $name);
-                })
-                ->with(['user', 'tags', 'postImages', 'donmais' => function ($query) {
-                    $query->where('user_id', Auth::id());
-                }])
-                ->withCount('donmais', 'comments', 'replies')
-                ->orderBy('id', 'desc')
-                ->offset($request->loaded_posts_count)
-                ->limit(3)
-                ->get();
+                        $query->where('name', $name);
+                    })
+                    ->with(['user:id,name,icon', 'tags', 'postImages', 'donmais' => function ($query) {
+                        $query->where('user_id', Auth::id());
+                    }])
+                    ->withCount('donmais', 'comments', 'replies')
+                    ->orderBy('id', 'desc')
+                    ->offset($request->loaded_posts_count)
+                    ->limit(3)
+                    ->get();
 
         foreach ($posts as $post) {
             $post->genre = Post::$genres[$post->genre_index];
@@ -86,9 +91,9 @@ class TagController extends Controller
         $data = [
             'posts' => $posts,
             'postsTotal' => Post::whereHas('tags', function (Builder $query) use ($name) {
-                                $query->where('name', $name);
-                            })
-                            ->count(),
+                                    $query->where('name', $name);
+                                })
+                                ->count(),
         ];
 
         return $data;

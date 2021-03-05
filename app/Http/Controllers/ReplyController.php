@@ -59,7 +59,7 @@ class ReplyController extends Controller
 
         // 投稿した返信をレスポンスとして返す
         $newReply = Reply::where('id', $reply->id)
-                        ->with(['user', 'replyGoods'])
+                        ->with(['user:id,name,icon', 'replyGoods'])
                         ->first();
 
         $newReply->goodCount = 0;

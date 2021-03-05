@@ -7,7 +7,7 @@
       <div class="trend-container">
 
         <div class="trend-title">
-          トレンド
+          トレンドのタグ（1週間）
         </div>
 
         <div class="trend-box">
@@ -19,7 +19,7 @@
             </div>
   
             <div class="trend-tag">
-              {{ trend.name }}
+              #{{ trend.name }}
             </div>
   
             <div class="trend-bar-area">

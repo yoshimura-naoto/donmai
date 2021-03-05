@@ -119,7 +119,10 @@ export default {
       axios.get('/api/guchiroom/user/' + userId + '?page=' + page)
         .then((res) => {
           console.log(res.data);
-          this.guchiRooms = res.data.data;
+          const guchiRooms = res.data.data.map((obj) => {
+            return obj.guchi_room;
+          });
+          this.guchiRooms = guchiRooms;
           this.currentPage = res.data.current_page;
           this.lastPage = res.data.last_page;
           this.total = res.data.total;

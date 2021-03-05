@@ -15,7 +15,6 @@ use Storage;
 
 class RegisterController extends Controller
 {
-
     // ユーザー登録の処理
     public function register(Request $request)
     {
@@ -50,10 +49,10 @@ class RegisterController extends Controller
         }
         Tag::whereIn('id', $tagsId)->delete();
 
-        // このユーザーが作成したグチ部屋のuser_idをnullにする（グチ部屋は消さない）
+        // このユーザーが作成したグチ部屋のuser_idをnullにする（グチ部屋自体は消さない）
         GuchiRoom::where('user_id', $id)->update(['user_id' => null]);
 
-        // このユーザーが作成したグチのuser_idをnullにする（グチは消さない）
+        // このユーザーが作成したグチのuser_idをnullにする（グチ自体は消さない）
         Guchi::where('user_id', $id)->update(['user_id' => null]);
 
         // プロフィール画像の削除
