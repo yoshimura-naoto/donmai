@@ -70,9 +70,9 @@
         </div>
 
         <!-- テスト用 -->
-        <div class="user-edit-modify-btn" @click="checkForm">
+        <!-- <div class="user-edit-modify-btn" @click="checkForm">
           チェック
-        </div>
+        </div> -->
 
       </div>
 
@@ -95,23 +95,26 @@ export default {
         newPassword_confirmation: null,
       },
       errors: [],
+      editProcessing: false,
     }
   },
 
   methods: {
     // フォーム送信
     submit() {
+      if (this.editProcessing) return;
+      this.editProcessing = true;
       axios.post('/api/user/password', this.form)
         .then(() => {
+          this.editProcessing = false;
           this.$router.push({ name: 'user', params: { id: this.form.id }});
         }).catch((error) => {
           this.errors = error.response.data.errors;
+          this.editProcessing = false;
         });
     },
     // フォームの値をチェック
     checkForm() {
-      // const form = JSON.stringify(this.form);
-      // console.log(form);
       console.log(this.form);
     }
   },
@@ -122,6 +125,12 @@ export default {
         this.form = res.data;
         console.log(this.form);
       })
-  }
+  },
+
+  beforeRouteLeave (to, from, next) {
+    if (!this.editProcessing) {
+      next();
+    }
+  },
 }
 </script>

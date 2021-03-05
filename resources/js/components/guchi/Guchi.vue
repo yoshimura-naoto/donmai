@@ -123,9 +123,9 @@
               </div>
 
               <!-- テスト用 -->
-              <div class="create">
+              <!-- <div class="create">
                 <div class="create-btn" @click="check">チェック</div>
-              </div>
+              </div> -->
 
               <!-- 作成ボタン -->
               <div class="create">

@@ -12,7 +12,7 @@
         </div>
 
         <div class="tag-posts-count">
-          投稿{{ postsCount }}件
+          投稿全<b>{{ postsCount }}</b>件
         </div>
 
       </div>

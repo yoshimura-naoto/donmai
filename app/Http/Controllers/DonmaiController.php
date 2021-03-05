@@ -31,27 +31,27 @@ class DonmaiController extends Controller
     }
 
 
-    // その投稿にどんまいしたユーザーの取得
+    // その投稿にどんまいしたユーザーたちを、最近どんまいした人順で取得
     public function getDonmaiUser($id)
     {
-        $users = User::select(['id', 'icon', 'name'])
-                    ->whereHas('donmais', function (Builder $query) use ($id) {
-                        $query->where('post_id', $id);
-                    })
-                    ->withCount(['followers' => function (Builder $query) {
-                        $query->where('user_id', Auth::id());
-                    }])
-                    ->paginate(8);
+        $donmais = Donmai::where('post_id', $id)
+                        ->with(['user' => function ($query) {
+                            $query->withCount(['followers' => function (Builder $query) {
+                                $query->where('user_id', Auth::id());
+                            }]);
+                        }])
+                        ->orderBy('id', 'desc')
+                        ->paginate(8);
 
         // それぞれのユーザーを認証ユーザーがフォローしているか判定
-        foreach ($users as $user) {
-            if ($user->followers_count > 0) {
-                $user->followed = true;
+        foreach ($donmais as $donmai) {
+            if ($donmai->user->followers_count > 0) {
+                $donmai->user->followed = true;
             } else {
-                $user->followed = false;
+                $donmai->user->followed = false;
             }
         }
 
-        return $users;
+        return $donmais;
     }
 }

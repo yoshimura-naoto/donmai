@@ -17,12 +17,13 @@ class Comment extends Model
 
     // バリデーション
     public static $commentRules = [
-        'body' => 'required',
+        'body' => 'required | max:250',
     ];
 
     // バリデーションメッセージ
     public static $commentValMessages = [
         'body.required' => 'コメントを入力してください！',
+        'body.max' => 'コメントは250文字以内にしてください！',
     ];
 
 

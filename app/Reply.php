@@ -17,12 +17,13 @@ class Reply extends Model
 
     // バリデーションルール
     public static $replyRules = [
-        'body' => 'required',
+        'body' => 'required | max:250',
     ];
 
     // バリデーションメッセージ
     public static $replyValMessages = [
         'body.required' => '返信を入力してください！',
+        'body.max' => '250文字以内にしてください！',
     ];
 
 

@@ -14,8 +14,15 @@ class Follow extends Model
     ];
 
 
+    // フォローしているユーザー
     public function user()
     {
         return $this->belongsTo('App\User');
+    }
+
+    // フォローされているユーザー
+    public function followedUser()
+    {
+        return $this->belongsTo('App\User', 'following_user_id');
     }
 }

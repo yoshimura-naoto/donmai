@@ -101,7 +101,8 @@ class UserController extends Controller
     // 検索したユーザーを取得
     public function getSearchUsers($word)
     {
-        $users = User::where('name', 'like', '%' . $word . '%')
+        $users = User::select('id', 'icon', 'name', 'pr')
+                    ->where('name', 'like', '%' . $word . '%')
                     ->with(['followers' => function ($query) {
                         $query->where('user_id', Auth::id());
                     }])

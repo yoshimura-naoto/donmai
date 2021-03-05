@@ -584,6 +584,7 @@ export default {
       authUser: null,
       // 投稿一覧部分のみリロードするためのキー
       reloadKey: 0,
+      willReload: false,
       // ウィンドウ幅
       windowWidth: window.innerWidth,
       // 縦長画像の調整
@@ -608,6 +609,7 @@ export default {
       },
       errors: [],
       urls: [],
+      postProsessing: false,
       // 投稿の編集
       editPost: {
         id: null,
@@ -624,6 +626,8 @@ export default {
           // }
         ], 
       nextNewImageId: -1, // 新たに追加する画像のid（マイナス値）
+      editProcessing: false,
+      edited: false,
       // 投稿編集の画像プレビュー用のURL
       editUrls: [
         // {
@@ -730,6 +734,7 @@ export default {
       // 削除の確認のモーダル
       deletePostModalOpened: false,
       deletePostIndex: null,
+      deleteProssesing: false,
       // 投稿編集モーダル
       modalPostEditShow: false,
       editPostIndex: null,
@@ -788,11 +793,18 @@ export default {
           if (this.posts.length === res.data.postsTotal) {
             this.loadMorePosts = false;
           }
+          if (this.willReload) {
+            this.reloadKey++;
+          }
           this.postsLoading = false;
+          this.postProsessing = false;
+          this.willReload = false;
           console.log(this.posts.length);
         }).catch((error) => {
           console.log(error);
           this.postsLoading = false;
+          this.postProsessing = false;
+          this.willReload = false;
         });
     },
     // 投稿のテキストエリアの高さをフレキシブルに
@@ -842,6 +854,8 @@ export default {
     // },
     // 投稿
     submit() {
+      if (this.postProsessing) return;
+      this.postProsessing = true;
       let data = new FormData();
       Object.entries(this.newPost).forEach(([key, value]) => {
         if (Array.isArray(value)) {
@@ -854,10 +868,19 @@ export default {
       })
       axios.post('/api/post/add', data)
         .then(() => {
-          this.reload();
+          // this.reload();
+          this.posts = [];
+          this.newPost.body = '';
+          this.newPost.genreIndex = '';
+          this.newPost.tags = '';
+          this.newPost.images = [];
+          this.errors = [];
+          this.urls = [];
+          this.willReload = true;
+          this.getPosts();
         }).catch((error) => {
           this.errors = error.response.data.errors;
-          // console.log(this.errors);
+          this.postProsessing = false;
         });
     },
     // 画像アップロードでプレビュー
@@ -879,7 +902,6 @@ export default {
         console.log(this.newPost.images);
         console.log(this.urls);
       }
-      // this.imageCount = this.files.length;
       // console.log(this.files);
       // console.log(this.urls);
       // console.log(this.imageCount);
@@ -891,7 +913,6 @@ export default {
       URL.revokeObjectURL(url);
       console.log(this.urls);
       console.log(this.newPost.images);
-      // this.imageCount = this.files.length;
       // console.log(this.files);
       // console.log(this.imageCount);
     },
@@ -922,12 +943,16 @@ export default {
     },
     // 投稿の削除
     deletePost() {
+      if (this.deleteProssesing) return;
+      this.deleteProssesing = true;
       axios.post('/api/post/delete/' + this.posts[this.deletePostIndex].id)
         .then(() => {
           this.posts.splice(this.deletePostIndex, 1);
           this.deletePostModalClose();
-        }).catch(() => {
-          return;
+          this.deleteProssesing = false;
+        }).catch((error) => {
+          console.log(error);
+          this.deleteProssesing = false;
         });
     },
     // 投稿編集モーダルの開閉
@@ -1038,6 +1063,8 @@ export default {
     },
     // 編集した投稿を送信
     editSubmit() {
+      if (this.editProcessing) return;
+      this.editProcessing = true;
       this.editPost.newImageFiles = this.newImages.map((obj) => {
         return obj.file;
       });
@@ -1056,8 +1083,10 @@ export default {
           this.posts.splice(this.editPostIndex, 1, res.data.post);
           this.posts[this.editPostIndex].postMenuOpened = false;
           this.editPostModalClose();
+          this.editProcessing = false;
         }).catch((error) => {
           this.editErrors = error.response.data.errors;
+          this.editProcessing = false;
         });
     },
     // どんまい機能の処理
@@ -1190,7 +1219,10 @@ export default {
       axios.get('/api/donmai/users/' + this.modalPostId + '?page=' + this.donmaiPage)
         .then((res) => {
           console.log(res.data);
-          this.modalDonmaiUsers.push(...res.data.data);
+          const users = res.data.data.map((obj) => {
+            return obj.user;
+          });
+          this.modalDonmaiUsers.push(...users);
           this.donmaiLoading = false;
           if (this.donmaiPage === res.data.last_page) {
             this.isLastDonmaiPage = true;
@@ -1206,6 +1238,7 @@ export default {
       this.modalDonmaiShow = true;
       this.getDonmaiUsers();
     },
+    // どんまいしたユーザー一覧のモーダルを閉じる
     closeModalDonmai() {
       this.modalDonmaiShow = false;
       this.modalDonmaiUsers = [];
@@ -1236,9 +1269,10 @@ export default {
       const img_height = img.height;
       if (img_height >= img_width) {
         this.heightIsBigger = true;
-        document.querySelector('.overlay-image-image').addEventListener('load', () => {
-          this.tatenagaImageWidth = document.querySelector('.overlay-image-image').clientWidth;
-          // console.log(this.tatenagaImageWidth);
+        this.$nextTick(function() {
+            this.tatenagaImageWidth = document.querySelector('.overlay-image-image').clientWidth;
+            this.handleResize();
+            // console.log(this.tatenagaImageWidth);
         });
       }
     },
@@ -1512,7 +1546,9 @@ export default {
       this.modalPostEditShow = false;
     }
     this.loadMorePosts = false;
-    next();
+    if (!this.postProsessing && !this.editProcessing && !this.deleteProssesing) {
+      next();
+    }
   },
 
   directives: {

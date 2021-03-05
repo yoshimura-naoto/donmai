@@ -314,7 +314,11 @@ export default {
       axios.get('/api/following/' + this.user.id + '?page=' + this.followsPage)
         .then((res) => {
           console.log(res.data);
-          this.modalFollows.push(...res.data.data);
+          const follows = res.data.data.map((obj) => {
+            return obj.followed_user;
+          });
+          this.modalFollows.push(...follows);
+          // this.modalFollows.push(...res.data.data);
           this.followsLoading = false;
           if (this.followsPage === res.data.last_page) {
             this.isLastFollowsPage = true;
@@ -333,7 +337,10 @@ export default {
       axios.get('/api/follower/' + this.user.id + '?page=' + this.followersPage)
         .then((res) => {
           console.log(res.data);
-          this.modalFollowers.push(...res.data.data);
+          const followers = res.data.data.map((obj) => {
+            return obj.user;
+          });
+          this.modalFollowers.push(...followers);
           this.followersLoading = false;
           if (this.followersPage === res.data.last_page) {
             this.isLastFollowersPage = true;

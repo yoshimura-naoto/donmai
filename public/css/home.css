@@ -14,7 +14,7 @@
 .new-post {
   margin-bottom: 10px;
   padding: 10px 10px 0 10px;
-  background: pink;
+  background: #c5e8e5;
   display: flex;
   border-radius: 16px;
 }
@@ -38,7 +38,7 @@
 
 .flex-textarea {
   /* background: pink; */
-  background: pink;
+  background: #c5e8e5;
   width: calc(100% - 20px);
   font-size: 18px;
   color: #525252;
@@ -79,7 +79,7 @@
   border-radius: 6px;
   margin-left: 7px;
   margin-bottom: 10px;
-  background: #ffd5dd;
+  background: #a8d8de;
   outline: none;
 }
 
@@ -186,7 +186,8 @@
   font-weight: bold;
   font-size: 18px;
   color: white;
-  background: silver;
+  background: rgb(163, 162, 162);
+  width: 60px;
   text-align: center;
   border-radius: 16px;
   padding: 3px 10px;
@@ -196,7 +197,8 @@
 }
 
 .submit-btn:hover {
-  background: rgb(163, 162, 162);
+  /* background: rgb(163, 162, 162); */
+  opacity: 0.8;
 }
 
 
@@ -205,7 +207,7 @@
 .posts {
   margin-bottom: 10px;
   padding: 10px 10px 0 10px;
-  background: pink;
+  background: #c5e8e5;
   display: flex;
   border-radius: 16px;
 }
@@ -239,7 +241,7 @@
 
 .post-menu-btn:hover {
   cursor: pointer;
-  background: #ffa9c6;
+  background: #93d4dc;
 }
 
 .post-menus {
@@ -257,7 +259,7 @@
   height: 30px;
   line-height: 30px;
   border-radius: 10px 10px 0 0;
-  background: #ff8ca0;
+  background: #7dc5ce;
   border-bottom: 1px solid #525252;
   text-align: center;
   transition: 0.3s;
@@ -266,14 +268,14 @@
 
 .post-menu-edit:hover {
   cursor: pointer;
-  background: #ff5f95;
+  background: #73bac3;
 }
 
 .post-menu-delete {
   height: 30px;
   line-height: 30px;
   border-radius: 0 0 10px 10px;
-  background: #ff8ca0;
+  background: #7dc5ce;
   text-align: center;
   transition: 0.3s;
   color: #525252;
@@ -281,7 +283,7 @@
 
 .post-menu-delete:hover {
   cursor: pointer;
-  background: #ff5f95;
+  background: #73bac3;
 }
 
 .post-menu-cover {
@@ -403,7 +405,7 @@
 
 .post-action-icon:hover {
   cursor: pointer;
-  background: rgb(252, 156, 172);
+  background: #93d4dc;
 }
 
 .post-action-icon-comment-overlay {
@@ -455,7 +457,7 @@
 .posts-overlay {
   /* width: 580px; */
   padding: 10px 10px 0 10px;
-  background: pink;
+  background: #c5e8e5;
   display: flex;
   border-radius: 16px;
   height: 500px;
@@ -471,7 +473,7 @@
 .posts-edit-overlay {
   padding: 10px 10px 0 10px;
   margin: 0 10px;
-  background: pink;
+  background: #c5e8e5;
   display: flex;
   border-radius: 16px;
   max-height: 500px;
@@ -551,7 +553,7 @@
   position: absolute;
   right: 0;
   font-size: 14px;
-  background: #ff9fb0;
+  background: #99cbd2;
   width: 44px;
   height: 25px;
   text-align: center;
@@ -567,7 +569,7 @@
 
 .reply-delete {
   font-size: 14px;
-  background: #ff9fb0;
+  background: #99cbd2;
   width: 44px;
   height: 25px;
   text-align: center;
@@ -612,7 +614,7 @@
 }
 
 .flex-textarea-2 {
-  background: #fdaebb;
+  background: #aad1d6;
   width: calc(100% - 15px);
   font-size: 18px;
   color: #525252;
@@ -624,7 +626,7 @@
 }
 
 .comment-btn-main {
-  background: #ff92a5;
+  background: #99cbd2;
   width: 80px;
   height: 28px;
   text-align: center;
@@ -641,7 +643,7 @@
 }
 
 .flex-textarea-2:focus {
-  background: rgb(252, 169, 182);
+  background: #a0c9ce;
 }
 
 .comment-reply-btns {
@@ -651,7 +653,7 @@
 }
 
 .comment-btn {
-  background: #ff92a5;
+  background: #99cbd2;
   width: 80px;
   height: 28px;
   text-align: center;
@@ -668,7 +670,7 @@
 }
 
 .reply-cancel-btn {
-  background: #ff92a5;
+  background: #99cbd2;
   width: 93px;
   height: 28px;
   text-align: center;

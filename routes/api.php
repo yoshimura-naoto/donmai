@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -18,10 +20,12 @@ use Illuminate\Http\Request;
 Route::middleware('auth:sanctum')->group(function(){
     // 認証ユーザー情報取得
     Route::get('/user', function (Request $request) {
-        return $request->user();
+        $user = Auth::user()->makeVisible(['email']);
+        return $user;
+        // return $request->user();
     });
 
-    // 認証ユーザー情報とジャンルに取得
+    // 認証ユーザー情報とジャンルを取得
     Route::get('/authandgenre', 'PostController@getAuthAndGenre');
 
     // ユーザー関連
@@ -88,6 +92,7 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::post('/guchiroom/unbookmark/{id}', 'GuchiController@unBookmark');
     Route::get('/guchi/init/{id}', 'GuchiController@init');
     Route::get('/guchi/get/{id}', 'GuchiController@guchiGet');
+    Route::get('/guchi/latest/{id}', 'GuchiController@getLatestGuchi');
     Route::post('/guchi/create', 'GuchiController@guchiCreate');
     Route::post('/guchi/delete/{id}', 'GuchiController@guchiDelete');
     Route::post('/guchi/good/{id}', 'GuchiController@good');

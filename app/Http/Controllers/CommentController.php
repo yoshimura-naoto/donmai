@@ -11,11 +11,11 @@ use App\User;
 
 class CommentController extends Controller
 {
-    // 投稿のコメントを取得（５件ずつ無限スクロール）
+    // 投稿のコメントを最新順で取得（５件ずつ無限スクロール）
     public function getComments($id, Request $request)
     {
         $comments = Comment::where('post_id', $id)
-                            ->with(['user', 'commentGoods' => function ($query) {
+                            ->with(['user:id,name,icon', 'commentGoods' => function ($query) {
                                 $query->where('user_id', Auth::id());
                             }])
                             ->withCount('commentGoods', 'replies')
@@ -66,7 +66,7 @@ class CommentController extends Controller
 
         // 投稿したコメントをレスポンスとして返す
         $newComment = Comment::where('id', $comment->id)
-                            ->with(['user', 'commentGoods', 'replies.user', 'replies.replyGoods'])
+                            ->with(['user:id,name,icon', 'commentGoods', 'replies.user', 'replies.replyGoods'])
                             ->first();
 
         $newComment->goodCount = 0;

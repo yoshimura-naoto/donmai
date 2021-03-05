@@ -15,7 +15,6 @@ use Storage;
 
 class RegisterController extends Controller
 {
-
     // ユーザー登録の処理
     public function register(Request $request)
     {
