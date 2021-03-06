@@ -2789,17 +2789,15 @@ __webpack_require__.r(__webpack_exports__);
 
       this.url = URL.createObjectURL(this.form.icon);
       this.$refs.preview.value = '';
-      this.message = '';
-      console.log(this.form.icon);
-      console.log(this.url);
+      this.message = ''; // console.log(this.form.icon);
+      // console.log(this.url);
     },
     // 画像プレビューの削除
     deletePreview: function deletePreview() {
       URL.revokeObjectURL(this.url);
       this.url = '';
-      this.form.icon = '';
-      console.log(this.url);
-      console.log(this.form.icon);
+      this.form.icon = ''; // console.log(this.url);
+      // console.log(this.form.icon);
     },
     // グチ部屋の投稿（作成）
     submit: function submit() {
@@ -2983,7 +2981,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       axios.get('/api/guchiroom/all/new?page=' + page).then(function (res) {
-        console.log(res.data);
+        // console.log(res.data);
         _this2.guchiRooms = res.data.data;
         _this2.currentPage = res.data.current_page;
         _this2.lastPage = res.data.last_page;
@@ -3049,8 +3047,7 @@ __webpack_require__.r(__webpack_exports__);
     deleteRoomModalOpen: function deleteRoomModalOpen(i) {
       this.keepScrollWhenOpen();
       this.deleteRoomIndex = i;
-      this.deleteRoomModalOpened = true;
-      console.log(this.guchiRooms[this.deleteRoomIndex].id);
+      this.deleteRoomModalOpened = true; // console.log(this.guchiRooms[this.deleteRoomIndex].id);
     },
     deleteRoomModalClose: function deleteRoomModalClose() {
       this.keepScrollWhenClose();
@@ -3237,7 +3234,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       axios.get('/api/guchiroom/all/trend?page=' + page).then(function (res) {
-        console.log(res.data);
+        // console.log(res.data);
         _this2.guchiRooms = res.data.data;
         _this2.currentPage = res.data.current_page;
         _this2.lastPage = res.data.last_page;
@@ -3303,8 +3300,7 @@ __webpack_require__.r(__webpack_exports__);
     deleteRoomModalOpen: function deleteRoomModalOpen(i) {
       this.keepScrollWhenOpen();
       this.deleteRoomIndex = i;
-      this.deleteRoomModalOpened = true;
-      console.log(this.guchiRooms[this.deleteRoomIndex].id);
+      this.deleteRoomModalOpened = true; // console.log(this.guchiRooms[this.deleteRoomIndex].id);
     },
     deleteRoomModalClose: function deleteRoomModalClose() {
       this.keepScrollWhenClose();
@@ -3574,6 +3570,15 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -3600,6 +3605,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       },
       message: null,
       errors: [],
+      tooLongGuchiMessage: '',
       postProsessing: false,
       // グチたち
       guchisTotal: 0,
@@ -3639,6 +3645,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       chatScrollHeight: 0,
       // 一番下にスクロールするかどうか
       scrollToBottom: false,
+      // マウント中かどうか
+      mounting: false,
       // すでに読み込み完了している画像の数
       loadedImgCount: 0,
       // 新たに読み込む画像の数
@@ -3658,6 +3666,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         _this.authUser = res.data.authUser;
         _this.guchiRoom = res.data.guchiRoom;
         _this.scrollToBottom = true;
+        _this.mounting = true;
 
         _this.getGuchis(roomId);
       })["catch"](function () {
@@ -3674,7 +3683,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       axios.get('/api/guchi/get/' + roomId + '?loaded_guchis_count=' + this.guchis.length).then(function (res) {
         var _this2$guchis;
 
-        console.log(res.data);
+        // console.log(res.data);
         _this2.guchisTotal = res.data.guchisTotal;
         _this2.newImageCount = res.data.imagesCount;
 
@@ -3682,9 +3691,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
         if (_this2.guchis.length === res.data.guchisTotal) {
           _this2.loadMoreGuchis = false;
-        }
+        } // console.log(this.guchis.length);
 
-        console.log(_this2.guchis.length);
 
         _this2.$nextTick(function () {
           var guchiChatArea = document.querySelector('.guchis-chat-area');
@@ -3694,32 +3702,34 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
             this.scrollToBottom = false;
             this.chatScrollHeight = guchiChatArea.scrollHeight;
             this.guchisLoading = false;
+            this.mounting = false;
           } else if (!this.scrollToBottom && this.newImageCount === 0) {
             guchiChatArea.scrollTop = guchiChatArea.scrollHeight - this.chatScrollHeight;
             this.chatScrollHeight = guchiChatArea.scrollHeight;
             this.guchisLoading = false;
+            this.mounting = false;
           }
         });
       })["catch"](function (error) {
         console.log(error);
         _this2.guchisLoading = false;
+        _this2.mounting = false;
       });
     },
     // 最新のグチを１件取得
     getLatestGuchi: function getLatestGuchi() {
       var _this3 = this;
 
-      var guchiChatArea = document.querySelector('.guchis-chat-area');
-      console.log(guchiChatArea.scrollTop);
-      console.log(guchiChatArea.scrollHeight);
-      console.log(guchiChatArea.clientHeight);
+      var guchiChatArea = document.querySelector('.guchis-chat-area'); // console.log(guchiChatArea.scrollTop);
+      // console.log(guchiChatArea.scrollHeight);
+      // console.log(guchiChatArea.clientHeight);
 
       if (guchiChatArea.scrollTop >= guchiChatArea.scrollHeight - guchiChatArea.clientHeight * 2) {
         this.scrollToBottom = true;
       }
 
       axios.get('/api/guchi/latest/' + this.$route.params.id).then(function (res) {
-        console.log(res.data);
+        // console.log(res.data);
         _this3.newImageCount = res.data.guchi_images_count;
 
         _this3.guchis.push(res.data); // スクロール位置が底の方にあるときだけ、最新のグチを取得した際に一番下にスクロールされる
@@ -3754,7 +3764,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       var guchiChatArea = document.querySelector('.guchis-chat-area');
 
       if (this.loadedImgCount === this.newImageCount && this.scrollToBottom) {
-        if (this.chatScrollHeight < 510) {
+        if (this.chatScrollHeight < 510 && !this.mounting) {
           this.scrollToEnd();
         }
 
@@ -3763,12 +3773,14 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         this.loadedImgCount = 0;
         this.chatScrollHeight = guchiChatArea.scrollHeight;
         this.guchisLoading = false;
+        this.mounting = false;
       } else if (this.loadedImgCount === this.newImageCount && !this.scrollToBottom && this.guchisLoading) {
         guchiChatArea.scrollTop = guchiChatArea.scrollHeight - this.chatScrollHeight;
         this.chatScrollHeight = guchiChatArea.scrollHeight;
         this.loadedImgCount = 0;
         this.chatScrollHeight = guchiChatArea.scrollHeight;
         this.guchisLoading = false;
+        this.mounting = false;
       }
     },
     // グッドの切り替え
@@ -3815,18 +3827,16 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         }
 
         this.$refs.threadPreview.value = '';
-        this.message = null;
-        console.log(this.urls);
-        console.log(this.form.images);
+        this.message = null; // console.log(this.urls);
+        // console.log(this.form.images);
       }
     },
     // 画像プレビューの削除
     deletePreview: function deletePreview(url, index) {
       this.urls.splice(index, 1);
       this.form.images.splice(index, 1);
-      URL.revokeObjectURL(url);
-      console.log(this.urls);
-      console.log(this.form.images);
+      URL.revokeObjectURL(url); // console.log(this.urls);
+      // console.log(this.form.images);
     },
     // 匿名か名前表示か選択
     anonymous: function anonymous() {
@@ -3840,7 +3850,19 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       var _this6 = this;
 
       if (this.postProsessing) return;
-      this.postProsessing = true;
+      this.postProsessing = true; // 文字数判定
+
+      var textCount = this.form.body.replace(/\n/g, '').length; // console.log(textCount);
+
+      if (textCount > 100) {
+        this.tooLongGuchiMessage = '100文字以内にしてください！（現在' + textCount + '文字）';
+        this.errors = [];
+        this.postProsessing = false;
+        return;
+      } else {
+        this.tooLongGuchiMessage = '';
+      }
+
       var data = new FormData();
       Object.entries(this.form).forEach(function (_ref) {
         var _ref2 = _slicedToArray(_ref, 2),
@@ -3936,8 +3958,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     deleteGuchiModalOpen: function deleteGuchiModalOpen(i) {
       this.keepScrollWhenOpen();
       this.deleteGuchiIndex = i;
-      this.deleteGuchiModalOpened = true;
-      console.log(this.guchis[this.deleteGuchiIndex].id);
+      this.deleteGuchiModalOpened = true; // console.log(this.guchis[this.deleteGuchiIndex].id);
     },
     deleteGuchiModalClose: function deleteGuchiModalClose() {
       this.keepScrollWhenClose();
@@ -3963,8 +3984,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     deleteGuchiRealTime: function deleteGuchiRealTime(guchiId) {
       var guchiIds = this.guchis.map(function (obj) {
         return obj.id;
-      });
-      console.log(guchiId);
+      }); // console.log(guchiId);
 
       if (guchiIds.includes(guchiId)) {
         var guchiIndex = guchiIds.indexOf(guchiId);
@@ -3987,9 +4007,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     this.getInitInfo(this.$route.params.id); // 最新のグチを取得
 
     Echo["private"]('chat').listen('GuchiCreated', function (e) {
-      console.log(e.guchi.guchi_room_id);
-      console.log(_this8.$route.params.id);
-
+      // console.log(e.guchi.guchi_room_id);
+      // console.log(this.$route.params.id);
       if (e.guchi.guchi_room_id == _this8.$route.params.id) {
         _this8.guchisTotal++;
 
@@ -3998,14 +4017,12 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     }); // グチを削除
 
     Echo["private"]('guchiDeleted').listen('GuchiDeleted', function (e) {
-      console.log(e.guchiData.guchi_room_id);
-
+      // console.log(e.guchiData.guchi_room_id);
       if (e.guchiData.guchi_room_id == _this8.$route.params.id) {
         _this8.guchisTotal--;
 
-        _this8.deleteGuchiRealTime(e.guchiData.id);
+        _this8.deleteGuchiRealTime(e.guchiData.id); // console.log(e.guchiData.id);
 
-        console.log(e.guchiData.id);
       }
     });
   },
@@ -4178,7 +4195,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       axios.get('/api/guchiroom/genre/new/' + genreName + '?page=' + page).then(function (res) {
-        console.log(res.data);
+        // console.log(res.data);
         _this2.guchiRooms = res.data.data;
         _this2.currentPage = res.data.current_page;
         _this2.lastPage = res.data.last_page;
@@ -4244,8 +4261,7 @@ __webpack_require__.r(__webpack_exports__);
     deleteRoomModalOpen: function deleteRoomModalOpen(i) {
       this.keepScrollWhenOpen();
       this.deleteRoomIndex = i;
-      this.deleteRoomModalOpened = true;
-      console.log(this.guchiRooms[this.deleteRoomIndex].id);
+      this.deleteRoomModalOpened = true; // console.log(this.guchiRooms[this.deleteRoomIndex].id);
     },
     deleteRoomModalClose: function deleteRoomModalClose() {
       this.keepScrollWhenClose();
@@ -4440,7 +4456,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       axios.get('/api/guchiroom/genre/trend/' + genreName + '?page=' + page).then(function (res) {
-        console.log(res.data);
+        // console.log(res.data);
         _this2.guchiRooms = res.data.data;
         _this2.currentPage = res.data.current_page;
         _this2.lastPage = res.data.last_page;
@@ -4506,8 +4522,7 @@ __webpack_require__.r(__webpack_exports__);
     deleteRoomModalOpen: function deleteRoomModalOpen(i) {
       this.keepScrollWhenOpen();
       this.deleteRoomIndex = i;
-      this.deleteRoomModalOpened = true;
-      console.log(this.guchiRooms[this.deleteRoomIndex].id);
+      this.deleteRoomModalOpened = true; // console.log(this.guchiRooms[this.deleteRoomIndex].id);
     },
     deleteRoomModalClose: function deleteRoomModalClose() {
       this.keepScrollWhenClose();
@@ -5289,6 +5304,34 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   inject: ['reload'],
@@ -5324,6 +5367,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       errors: [],
       urls: [],
       postProsessing: false,
+      tooLongBodyMessage: '',
       // 投稿の編集
       editPost: {
         id: null,
@@ -5350,14 +5394,11 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         //   path: '',
         // }
       ],
+      tooLongEditBodyMessage: '',
       editErrors: [],
       // 無限スクロール用
       postsLoading: false,
       loadMorePosts: true,
-      // itemLoading: false,
-      // loadMore: true,
-      // page: 1,
-      // isLastPage: false,
       // 投稿
       posts: [// {
         //   id: 1,
@@ -5415,6 +5456,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         //   replyFormOpened: false,
         //   replyInput: '',
         //   replyErrors: [],
+        //   tooLongReplyMessage: '',
         //   replyHeight: '31px',
         //   replies: [
         //     {
@@ -5435,12 +5477,16 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       // コメントの無限スクロール用
       commentsLoading: false,
       loadCommentsMore: true,
-      // commentsPage: 1,
-      // isCommentsLastPage: false,
       // 新規コメント、返信
       newComment: {},
       newReply: {},
+      // コメント投稿関連
       commentErrors: [],
+      tooLongCommentMessage: '',
+      // コメントが長すぎるというメッセージ
+      commentProcessing: false,
+      // コメント処理中
+      replyProcessing: false,
       // 画像モーダル
       modalImageShow: false,
       modalImage: '',
@@ -5482,7 +5528,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       var _this = this;
 
       axios.get('/api/authandgenre').then(function (res) {
-        console.log(res.data);
+        // console.log(res.data);
         _this.authUser = res.data.authUser;
         _this.genres = res.data.genres;
 
@@ -5507,8 +5553,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       axios.get('/api/post/get?loaded_posts_count=' + this.posts.length).then(function (res) {
         var _this2$posts;
 
-        console.log(res.data);
-
+        // console.log(res.data);
         (_this2$posts = _this2.posts).push.apply(_this2$posts, _toConsumableArray(res.data.posts));
 
         if (_this2.posts.length === res.data.postsTotal) {
@@ -5521,8 +5566,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
         _this2.postsLoading = false;
         _this2.postProsessing = false;
-        _this2.willReload = false;
-        console.log(_this2.posts.length);
+        _this2.willReload = false; // console.log(this.posts.length);
       })["catch"](function (error) {
         console.log(error);
         _this2.postsLoading = false;
@@ -5586,7 +5630,19 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       var _this6 = this;
 
       if (this.postProsessing) return;
-      this.postProsessing = true;
+      this.postProsessing = true; // 文字数判定
+
+      var textCount = this.newPost.body.replace(/\n/g, '').length; // console.log(textCount);
+
+      if (textCount > 250) {
+        this.tooLongBodyMessage = '250文字以内にしてください！（現在' + textCount + '文字）';
+        this.errors = [];
+        this.postProsessing = false;
+        return;
+      } else {
+        this.tooLongBodyMessage = '';
+      }
+
       var data = new FormData();
       Object.entries(this.newPost).forEach(function (_ref) {
         var _ref2 = _slicedToArray(_ref, 2),
@@ -5611,6 +5667,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         _this6.errors = [];
         _this6.urls = [];
         _this6.willReload = true;
+        _this6.loadMorePosts = true;
 
         _this6.getPosts();
       })["catch"](function (error) {
@@ -5639,9 +5696,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
           this.urls.push(URL.createObjectURL(files[_i2]));
         }
 
-        this.$refs.preview.value = '';
-        console.log(this.newPost.images);
-        console.log(this.urls);
+        this.$refs.preview.value = ''; // console.log(this.newPost.images);
+        // console.log(this.urls);
       } // console.log(this.files);
       // console.log(this.urls);
       // console.log(this.imageCount);
@@ -5651,9 +5707,9 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     deletePreview: function deletePreview(url, index) {
       this.urls.splice(index, 1);
       this.newPost.images.splice(index, 1);
-      URL.revokeObjectURL(url);
-      console.log(this.urls);
-      console.log(this.newPost.images); // console.log(this.files);
+      URL.revokeObjectURL(url); // console.log(this.urls);
+      // console.log(this.newPost.images);
+      // console.log(this.files);
       // console.log(this.imageCount);
     },
     // 投稿の編集・削除メニューの開閉
@@ -5734,9 +5790,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         _this8.editHeight = _this8.$refs.editarea.scrollHeight + 'px';
       }); // 今編集してるpostsのインデックスを記憶
 
-      this.editPostIndex = i;
-      console.log(this.editPost);
-      console.log(this.editUrls);
+      this.editPostIndex = i; // console.log(this.editPost);
+      // console.log(this.editUrls);
     },
     editPostModalClose: function editPostModalClose() {
       this.keepScrollWhenClose();
@@ -5752,9 +5807,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       this.nextNewImageId = -1;
       this.editHeight = '20px';
       this.closePostMenu(this.editPostIndex);
-      this.modalPostEditShow = false;
-      console.log(this.editPost);
-      console.log(this.posts);
+      this.modalPostEditShow = false; // console.log(this.editPost);
+      // console.log(this.posts);
     },
     // 投稿編集の画像アップロード
     uploadEditFile: function uploadEditFile() {
@@ -5784,10 +5838,9 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
           this.nextNewImageId--;
         }
 
-        this.$refs.editpreview.value = '';
-        console.log(this.editPost.deleteOldImagesId);
-        console.log(this.newImages);
-        console.log(this.editUrls);
+        this.$refs.editpreview.value = ''; // console.log(this.editPost.deleteOldImagesId);
+        // console.log(this.newImages);
+        // console.log(this.editUrls);
       }
     },
     // 投稿編集の画像プレビューの削除
@@ -5805,17 +5858,28 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
 
       URL.revokeObjectURL(path);
-      this.editUrls.splice(index, 1);
-      console.log(this.editPost.deleteOldImagesId);
-      console.log(this.newImages);
-      console.log(this.editUrls);
+      this.editUrls.splice(index, 1); // console.log(this.editPost.deleteOldImagesId);
+      // console.log(this.newImages);
+      // console.log(this.editUrls);
     },
     // 編集した投稿を送信
     editSubmit: function editSubmit() {
       var _this9 = this;
 
       if (this.editProcessing) return;
-      this.editProcessing = true;
+      this.editProcessing = true; // 文字数判定
+
+      var textCount = this.editPost.body.replace(/\n/g, '').length; // console.log(textCount);
+
+      if (textCount > 250) {
+        this.tooLongEditBodyMessage = '250文字以内にしてください！（現在' + textCount + '文字）';
+        this.editErrors = [];
+        this.editProcessing = false;
+        return;
+      } else {
+        this.tooLongEditBodyMessage = '';
+      }
+
       this.editPost.newImageFiles = this.newImages.map(function (obj) {
         return obj.file;
       });
@@ -5936,8 +6000,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       }); // 無限スクロール設定の初期化
 
       this.commentsLoading = false;
-      this.loadCommentsMore = true; // this.commentsPage = 1;
-      // this.isCommentsLastPage = false;
+      this.loadCommentsMore = true;
     },
     // コメントの取得
     getComments: function getComments() {
@@ -5949,16 +6012,14 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       axios.get('/api/comments/get/' + this.modalPostId + '?loaded_comments_count=' + this.modalPostComments.length).then(function (res) {
         var _this10$modalPostComm;
 
-        console.log(res.data);
-
+        // console.log(res.data);
         (_this10$modalPostComm = _this10.modalPostComments).push.apply(_this10$modalPostComm, _toConsumableArray(res.data.comments));
 
         if (_this10.modalPostComments.length === res.data.commentsTotal) {
           _this10.loadCommentsMore = false;
         }
 
-        _this10.commentsLoading = false;
-        console.log(_this10.modalPostComments.length);
+        _this10.commentsLoading = false; // console.log(this.modalPostComments.length);
       })["catch"](function (error) {
         console.log(error);
         _this10.commentsLoading = false;
@@ -5971,10 +6032,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
       if (bottomOfModal) {
         this.getComments();
-      } // console.log(postsOverlay.scrollTop);
-      // console.log(postsOverlay.clientHeight);
-      // console.log(postsOverlay.scrollHeight);
-
+      }
     },
     // どんまいしたユーザーの取得
     getDonmaiUsers: function getDonmaiUsers() {
@@ -5986,7 +6044,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       axios.get('/api/donmai/users/' + this.modalPostId + '?page=' + this.donmaiPage).then(function (res) {
         var _this11$modalDonmaiUs;
 
-        console.log(res.data);
+        // console.log(res.data);
         var users = res.data.data.map(function (obj) {
           return obj.user;
         });
@@ -6083,21 +6141,37 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     commentPost: function commentPost() {
       var _this14 = this;
 
+      if (this.commentProcessing) return;
+      this.commentProcessing = true; // 文字数判定
+
+      var textCount = this.commentInput.replace(/\n/g, '').length; // console.log(textCount);
+
+      if (textCount > 200) {
+        this.tooLongCommentMessage = '200文字以内にしてください！（現在' + textCount + '文字）';
+        this.commentErrors = [];
+        this.commentProcessing = false;
+        return;
+      } else {
+        this.tooLongCommentMessage = '';
+      }
+
       var data = new FormData();
       data.append('postId', this.modalPostId);
       data.append('body', this.commentInput);
       axios.post('/api/comment', data).then(function (res) {
-        console.log(res.data);
-
+        // console.log(res.data);
         _this14.modalPostComments.unshift(res.data);
 
         _this14.commentInput = '';
         _this14.posts[_this14.modalPostIndex].commentCount++;
         _this14.modalPostCommentCount++;
         _this14.commentErrors = [];
+        _this14.tooLongCommentMessage = '';
+        _this14.commentProcessing = false;
       })["catch"](function (error) {
         console.log(error.response.data.errors);
         _this14.commentErrors = error.response.data.errors;
+        _this14.commentProcessing = false;
       });
     },
     // コメント削除
@@ -6125,16 +6199,14 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       axios.get('/api/replies/get/' + this.modalPostComments[i].id + '?loaded_replies_count=' + this.modalPostComments[i].replies.length).then(function (res) {
         var _this16$modalPostComm;
 
-        console.log(res.data);
-
+        // console.log(res.data);
         (_this16$modalPostComm = _this16.modalPostComments[i].replies).push.apply(_this16$modalPostComm, _toConsumableArray(res.data.replies));
 
         if (_this16.modalPostComments[i].replies.length === res.data.repliesTotal) {
           _this16.modalPostComments[i].loadRepliesMore = false;
         }
 
-        _this16.modalPostComments[i].repliesLoading = false;
-        console.log(_this16.modalPostComments[i].replies.length);
+        _this16.modalPostComments[i].repliesLoading = false; // console.log(this.modalPostComments[i].replies.length);
       })["catch"](function (error) {
         console.log(error);
         _this16.modalPostComments[i].repliesLoading = false;
@@ -6176,12 +6248,25 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     reply: function reply(i) {
       var _this18 = this;
 
+      if (this.replyProcessing) return;
+      this.replyProcessing = true; // 文字数判定
+
+      var textCount = this.modalPostComments[i].replyInput.replace(/\n/g, '').length; // console.log(textCount);
+
+      if (textCount > 200) {
+        this.modalPostComments[i].tooLongReplyMessage = '200文字以内にしてください！（現在' + textCount + '文字）';
+        this.modalPostComments[i].replyErrors = [];
+        this.replyProcessing = false;
+        return;
+      } else {
+        this.modalPostComments[i].tooLongReplyMessage = '';
+      }
+
       var data = new FormData();
       data.append('body', this.modalPostComments[i].replyInput);
       data.append('commentId', this.modalPostComments[i].id);
       axios.post('/api/comment/reply', data).then(function (res) {
-        console.log(res.data);
-
+        // console.log(res.data);
         if (!_this18.modalPostComments[i].loadRepliesMore) {
           _this18.modalPostComments[i].replies.push(res.data);
         }
@@ -6192,9 +6277,11 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         _this18.posts[_this18.modalPostIndex].commentCount++;
         _this18.modalPostCommentCount++;
         _this18.modalPostComments[i].replyFormOpened = false;
+        _this18.replyProcessing = false;
       })["catch"](function (error) {
-        _this18.modalPostComments[i].replyErrors = error.response.data.errors;
         console.log(_this18.modalPostComments[0]);
+        _this18.modalPostComments[i].replyErrors = error.response.data.errors;
+        _this18.replyProcessing = false;
       });
     },
     // コメントへの返信の削除
@@ -6347,7 +6434,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
     this.loadMorePosts = false;
 
-    if (!this.postProsessing && !this.editProcessing && !this.deleteProssesing) {
+    if (!this.postProsessing && !this.editProcessing && !this.deleteProssesing && !this.commentProcessing && !this.replyProcessing) {
       next();
     }
   },
@@ -6892,6 +6979,26 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -6932,6 +7039,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         //   path: '',
         // }
       ],
+      tooLongEditBodyMessage: '',
       editErrors: [],
       edited: false,
       // 編集したかどうか
@@ -6996,6 +7104,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         //   replyFormOpened: false,
         //   replyInput: '',
         //   replyErrors: [],
+        //   tooLongReplyMessage: '',
         //   replyHeight: '31px',
         //   replies: [
         //     {
@@ -7016,12 +7125,16 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       // コメントの無限スクロール用
       commentsLoading: false,
       loadCommentsMore: true,
-      // commentsPage: 1,
-      // isCommentsLastPage: false,
       // 新規コメント、返信
       newComment: {},
       newReply: {},
+      // コメント投稿関連
       commentErrors: [],
+      tooLongCommentMessage: '',
+      // コメントが長すぎるというメッセージ
+      commentProcessing: false,
+      // コメント処理中
+      replyProcessing: false,
       // 画像モーダル
       modalImageShow: false,
       modalImage: '',
@@ -7063,7 +7176,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       var _this = this;
 
       axios.get('/api/authandgenre').then(function (res) {
-        console.log(res.data);
+        // console.log(res.data);
         _this.authUser = res.data.authUser;
         _this.genres = res.data.genres;
 
@@ -7086,16 +7199,14 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       axios.get('/api/post/genre/get/' + genreName + '?loaded_posts_count=' + this.posts.length).then(function (res) {
         var _this2$posts;
 
-        console.log(res.data);
-
+        // console.log(res.data);
         (_this2$posts = _this2.posts).push.apply(_this2$posts, _toConsumableArray(res.data.posts));
 
         if (_this2.posts.length === res.data.postsTotal) {
           _this2.loadMorePosts = false;
         }
 
-        _this2.postsLoading = false;
-        console.log(_this2.posts.length);
+        _this2.postsLoading = false; // console.log(this.posts.length);
       })["catch"](function (error) {
         console.log(error);
         _this2.postsLoading = false;
@@ -7209,9 +7320,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         _this6.editHeight = _this6.$refs.editarea.scrollHeight + 'px';
       }); // 今編集してるpostsのインデックスを記憶
 
-      this.editPostIndex = i;
-      console.log(this.editPost);
-      console.log(this.editUrls);
+      this.editPostIndex = i; // console.log(this.editPost);
+      // console.log(this.editUrls);
     },
     // 投稿編集モーダルを閉じる
     editPostModalClose: function editPostModalClose() {
@@ -7232,9 +7342,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         this.closePostMenu(this.editPostIndex);
       }
 
-      this.modalPostEditShow = false;
-      console.log(this.editPost);
-      console.log(this.posts);
+      this.modalPostEditShow = false; // console.log(this.editPost);
+      // console.log(this.posts);
     },
     // 投稿編集の画像アップロード
     uploadEditFile: function uploadEditFile() {
@@ -7264,10 +7373,9 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
           this.nextNewImageId--;
         }
 
-        this.$refs.editpreview.value = '';
-        console.log(this.editPost.deleteOldImagesId);
-        console.log(this.newImages);
-        console.log(this.editUrls);
+        this.$refs.editpreview.value = ''; // console.log(this.editPost.deleteOldImagesId);
+        // console.log(this.newImages);
+        // console.log(this.editUrls);
       }
     },
     // 投稿編集の画像プレビューの削除
@@ -7285,17 +7393,28 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
 
       URL.revokeObjectURL(path);
-      this.editUrls.splice(index, 1);
-      console.log(this.editPost.deleteOldImagesId);
-      console.log(this.newImages);
-      console.log(this.editUrls);
+      this.editUrls.splice(index, 1); // console.log(this.editPost.deleteOldImagesId);
+      // console.log(this.newImages);
+      // console.log(this.editUrls);
     },
     // 編集した投稿を送信
     editSubmit: function editSubmit() {
       var _this7 = this;
 
       if (this.editProcessing) return;
-      this.editProcessing = true;
+      this.editProcessing = true; // 文字数判定
+
+      var textCount = this.editPost.body.replace(/\n/g, '').length; // console.log(textCount);
+
+      if (textCount > 250) {
+        this.tooLongEditBodyMessage = '250文字以内にしてください！（現在' + textCount + '文字）';
+        this.editErrors = [];
+        this.editProcessing = false;
+        return;
+      } else {
+        this.tooLongEditBodyMessage = '';
+      }
+
       this.editPost.newImageFiles = this.newImages.map(function (obj) {
         return obj.file;
       });
@@ -7432,16 +7551,14 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       axios.get('/api/comments/get/' + this.modalPostId + '?loaded_comments_count=' + this.modalPostComments.length).then(function (res) {
         var _this8$modalPostComme;
 
-        console.log(res.data);
-
+        // console.log(res.data);
         (_this8$modalPostComme = _this8.modalPostComments).push.apply(_this8$modalPostComme, _toConsumableArray(res.data.comments));
 
         if (_this8.modalPostComments.length === res.data.commentsTotal) {
           _this8.loadCommentsMore = false;
         }
 
-        _this8.commentsLoading = false;
-        console.log(_this8.modalPostComments.length);
+        _this8.commentsLoading = false; // console.log(this.modalPostComments.length);
       })["catch"](function (error) {
         console.log(error);
         _this8.commentsLoading = false;
@@ -7466,7 +7583,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       axios.get('/api/donmai/users/' + this.modalPostId + '?page=' + this.donmaiPage).then(function (res) {
         var _this9$modalDonmaiUse;
 
-        console.log(res.data);
+        // console.log(res.data);
         var users = res.data.data.map(function (obj) {
           return obj.user;
         });
@@ -7562,22 +7679,35 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     commentPost: function commentPost() {
       var _this12 = this;
 
+      if (this.commentProcessing) return;
+      this.commentProcessing = true; // 文字数判定
+
+      var textCount = this.commentInput.replace(/\n/g, '').length; // console.log(textCount);
+
+      if (textCount > 200) {
+        this.tooLongCommentMessage = '200文字以内にしてください！（現在' + textCount + '文字）';
+        this.commentErrors = [];
+        this.commentProcessing = false;
+        return;
+      } else {
+        this.tooLongCommentMessage = '';
+      }
+
       var data = new FormData();
       data.append('postId', this.modalPostId);
       data.append('body', this.commentInput);
       axios.post('/api/comment', data).then(function (res) {
-        console.log(res.data);
-
+        // console.log(res.data);
         _this12.modalPostComments.unshift(res.data);
 
         _this12.commentInput = '';
         _this12.posts[_this12.modalPostIndex].commentCount++;
         _this12.modalPostCommentCount++;
         _this12.commentErrors = [];
+        _this12.commentProcessing = false;
       })["catch"](function (error) {
-        // console.log(error.response.data.errors);
-        // this.modalPostComments[i].replyErrors = [];
         _this12.commentErrors = error.response.data.errors;
+        _this12.commentProcessing = false;
       });
     },
     // コメント削除
@@ -7605,16 +7735,14 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       axios.get('/api/replies/get/' + this.modalPostComments[i].id + '?loaded_replies_count=' + this.modalPostComments[i].replies.length).then(function (res) {
         var _this14$modalPostComm;
 
-        console.log(res.data);
-
+        // console.log(res.data);
         (_this14$modalPostComm = _this14.modalPostComments[i].replies).push.apply(_this14$modalPostComm, _toConsumableArray(res.data.replies));
 
         if (_this14.modalPostComments[i].replies.length === res.data.repliesTotal) {
           _this14.modalPostComments[i].loadRepliesMore = false;
         }
 
-        _this14.modalPostComments[i].repliesLoading = false;
-        console.log(_this14.modalPostComments[i].replies.length);
+        _this14.modalPostComments[i].repliesLoading = false; // console.log(this.modalPostComments[i].replies.length);
       })["catch"](function (error) {
         console.log(error);
         _this14.modalPostComments[i].repliesLoading = false;
@@ -7651,12 +7779,25 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     reply: function reply(i) {
       var _this15 = this;
 
+      if (this.replyProcessing) return;
+      this.replyProcessing = true; // 文字数判定
+
+      var textCount = this.modalPostComments[i].replyInput.replace(/\n/g, '').length; // console.log(textCount);
+
+      if (textCount > 200) {
+        this.modalPostComments[i].tooLongReplyMessage = '200文字以内にしてください！（現在' + textCount + '文字）';
+        this.modalPostComments[i].replyErrors = [];
+        this.replyProcessing = false;
+        return;
+      } else {
+        this.modalPostComments[i].tooLongReplyMessage = '';
+      }
+
       var data = new FormData();
       data.append('body', this.modalPostComments[i].replyInput);
       data.append('commentId', this.modalPostComments[i].id);
       axios.post('/api/comment/reply', data).then(function (res) {
-        console.log(res.data);
-
+        // console.log(res.data);
         if (!_this15.modalPostComments[i].loadRepliesMore) {
           _this15.modalPostComments[i].replies.push(res.data);
         }
@@ -7665,12 +7806,12 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         _this15.modalPostComments[i].replyInput = '';
         _this15.modalPostComments[i].replyErrors = [];
         _this15.posts[_this15.modalPostIndex].commentCount++;
-        _this15.modalPostCommentCount++; // this.modalPostComments[i].replyShow = true;
-
+        _this15.modalPostCommentCount++;
         _this15.modalPostComments[i].replyFormOpened = false;
+        _this15.replyProcessing = false;
       })["catch"](function (error) {
         _this15.modalPostComments[i].replyErrors = error.response.data.errors;
-        console.log(_this15.modalPostComments[i].replyErrors);
+        _this15.replyProcessing = false;
       });
     },
     // コメントへの返信の削除
@@ -7811,7 +7952,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
     this.loadMorePosts = false;
 
-    if (!this.editProcessing && !this.deleteProssesing) {
+    if (!this.editProcessing && !this.deleteProssesing && !this.commentProcessing && !this.replyProcessing) {
       next();
     }
   },
@@ -7823,14 +7964,12 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       this.closeModalDonmai();
       this.deletePostModalOpened = false;
       this.editPostModalClose(); ///////////////!!!!!!!!!!!!!
-    } // this.editProcessing = false;
-    // this.deleteProssesing = false;
-
+    }
 
     this.resetPaginate();
     this.getPosts(to.params.name);
 
-    if (!this.editProcessing && !this.deleteProssesing) {
+    if (!this.editProcessing && !this.deleteProssesing && !this.commentProcessing && !this.replyProcessing) {
       next();
     }
   }
@@ -8375,6 +8514,27 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -8415,6 +8575,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         //   path: '',
         // }
       ],
+      tooLongEditBodyMessage: '',
       editErrors: [],
       edited: false,
       // 編集したかどうか
@@ -8482,6 +8643,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         //   replyFormOpened: false,
         //   replyInput: '',
         //   replyErrors: [],
+        //   tooLongReplyMessage: '',
         //   replyHeight: '31px',
         //   replies: [
         //     {
@@ -8505,7 +8667,13 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       // 新規コメント、返信
       newComment: {},
       newReply: {},
+      // コメント投稿関連
       commentErrors: [],
+      tooLongCommentMessage: '',
+      // コメントが長すぎるというメッセージ
+      commentProcessing: false,
+      // コメント処理中
+      replyProcessing: false,
       // 画像モーダル
       modalImageShow: false,
       modalImage: '',
@@ -8547,7 +8715,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       var _this = this;
 
       axios.get('/api/authandgenre').then(function (res) {
-        console.log(res.data);
+        // console.log(res.data);
         _this.authUser = res.data.authUser;
         _this.genres = res.data.genres;
 
@@ -8570,17 +8738,15 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       axios.get('/api/post/hot/get?loaded_posts_count=' + this.posts.length).then(function (res) {
         var _this2$posts;
 
-        console.log(res.data);
-
+        // console.log(res.data);
         (_this2$posts = _this2.posts).push.apply(_this2$posts, _toConsumableArray(res.data.posts));
 
         if (_this2.posts.length === res.data.postsTotal) {
           _this2.loadMorePosts = false;
         }
 
-        _this2.postsLoading = false;
-        console.log(_this2.posts.length);
-        console.log(_this2.loadMorePosts);
+        _this2.postsLoading = false; // console.log(this.posts.length);
+        // console.log(this.loadMorePosts);
       })["catch"](function (error) {
         console.log(error);
         _this2.postsLoading = false;
@@ -8697,9 +8863,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         _this6.editHeight = _this6.$refs.editarea.scrollHeight + 'px';
       }); // 今編集してるpostsのインデックスを記憶
 
-      this.editPostIndex = i;
-      console.log(this.editPost);
-      console.log(this.editUrls);
+      this.editPostIndex = i; // console.log(this.editPost);
+      // console.log(this.editUrls);
     },
     // 投稿編集モーダルを閉じる
     editPostModalClose: function editPostModalClose() {
@@ -8720,9 +8885,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         this.closePostMenu(this.editPostIndex);
       }
 
-      this.modalPostEditShow = false;
-      console.log(this.editPost);
-      console.log(this.posts);
+      this.modalPostEditShow = false; // console.log(this.editPost);
+      // console.log(this.posts);
     },
     // 投稿編集の画像アップロード
     uploadEditFile: function uploadEditFile() {
@@ -8752,10 +8916,9 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
           this.nextNewImageId--;
         }
 
-        this.$refs.editpreview.value = '';
-        console.log(this.editPost.deleteOldImagesId);
-        console.log(this.newImages);
-        console.log(this.editUrls);
+        this.$refs.editpreview.value = ''; // console.log(this.editPost.deleteOldImagesId);
+        // console.log(this.newImages);
+        // console.log(this.editUrls);
       }
     },
     // 投稿編集の画像プレビューの削除
@@ -8773,17 +8936,28 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
 
       URL.revokeObjectURL(path);
-      this.editUrls.splice(index, 1);
-      console.log(this.editPost.deleteOldImagesId);
-      console.log(this.newImages);
-      console.log(this.editUrls);
+      this.editUrls.splice(index, 1); // console.log(this.editPost.deleteOldImagesId);
+      // console.log(this.newImages);
+      // console.log(this.editUrls);
     },
     // 編集した投稿を送信
     editSubmit: function editSubmit() {
       var _this7 = this;
 
       if (this.editProcessing) return;
-      this.editProcessing = true;
+      this.editProcessing = true; // 文字数判定
+
+      var textCount = this.editPost.body.replace(/\n/g, '').length; // console.log(textCount);
+
+      if (textCount > 250) {
+        this.tooLongEditBodyMessage = '250文字以内にしてください！';
+        this.editErrors = [];
+        this.editProcessing = false;
+        return;
+      } else {
+        this.tooLongEditBodyMessage = '';
+      }
+
       this.editPost.newImageFiles = this.newImages.map(function (obj) {
         return obj.file;
       });
@@ -8915,16 +9089,14 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       axios.get('/api/comments/get/' + this.modalPostId + '?loaded_comments_count=' + this.modalPostComments.length).then(function (res) {
         var _this8$modalPostComme;
 
-        console.log(res.data);
-
+        // console.log(res.data);
         (_this8$modalPostComme = _this8.modalPostComments).push.apply(_this8$modalPostComme, _toConsumableArray(res.data.comments));
 
         if (_this8.modalPostComments.length === res.data.commentsTotal) {
           _this8.loadCommentsMore = false;
         }
 
-        _this8.commentsLoading = false;
-        console.log(_this8.modalPostComments.length);
+        _this8.commentsLoading = false; // console.log(this.modalPostComments.length);
       })["catch"](function (error) {
         console.log(error);
         _this8.commentsLoading = false;
@@ -8949,7 +9121,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       axios.get('/api/donmai/users/' + this.modalPostId + '?page=' + this.donmaiPage).then(function (res) {
         var _this9$modalDonmaiUse;
 
-        console.log(res.data);
+        // console.log(res.data);
         var users = res.data.data.map(function (obj) {
           return obj.user;
         });
@@ -9045,6 +9217,20 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     commentPost: function commentPost() {
       var _this12 = this;
 
+      if (this.commentProcessing) return;
+      this.commentProcessing = true; // 文字数判定
+
+      var textCount = this.commentInput.replace(/\n/g, '').length; // console.log(textCount);
+
+      if (textCount > 200) {
+        this.tooLongCommentMessage = '200文字以内にしてください！（現在' + textCount + '文字）';
+        this.commentErrors = [];
+        this.commentProcessing = false;
+        return;
+      } else {
+        this.tooLongCommentMessage = '';
+      }
+
       var data = new FormData();
       data.append('postId', this.modalPostId);
       data.append('body', this.commentInput);
@@ -9056,10 +9242,12 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         _this12.posts[_this12.modalPostIndex].commentCount++;
         _this12.modalPostCommentCount++;
         _this12.commentErrors = [];
+        _this12.commentProcessing = false;
       })["catch"](function (error) {
         // console.log(error.response.data.errors);
         // this.modalPostComments[i].replyErrors = [];
         _this12.commentErrors = error.response.data.errors;
+        _this12.commentProcessing = false;
       });
     },
     // コメント削除
@@ -9087,16 +9275,14 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       axios.get('/api/replies/get/' + this.modalPostComments[i].id + '?loaded_replies_count=' + this.modalPostComments[i].replies.length).then(function (res) {
         var _this14$modalPostComm;
 
-        console.log(res.data);
-
+        // console.log(res.data);
         (_this14$modalPostComm = _this14.modalPostComments[i].replies).push.apply(_this14$modalPostComm, _toConsumableArray(res.data.replies));
 
         if (_this14.modalPostComments[i].replies.length === res.data.repliesTotal) {
           _this14.modalPostComments[i].loadRepliesMore = false;
         }
 
-        _this14.modalPostComments[i].repliesLoading = false;
-        console.log(_this14.modalPostComments[i].replies.length);
+        _this14.modalPostComments[i].repliesLoading = false; // console.log(this.modalPostComments[i].replies.length);
       })["catch"](function (error) {
         console.log(error);
         _this14.modalPostComments[i].repliesLoading = false;
@@ -9133,6 +9319,20 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     reply: function reply(i) {
       var _this15 = this;
 
+      if (this.replyProcessing) return;
+      this.replyProcessing = true; // 文字数判定
+
+      var textCount = this.modalPostComments[i].replyInput.replace(/\n/g, '').length; // console.log(textCount);
+
+      if (textCount > 200) {
+        this.modalPostComments[i].tooLongReplyMessage = '200文字以内にしてください！（現在' + textCount + '文字）';
+        this.modalPostComments[i].replyErrors = [];
+        this.replyProcessing = false;
+        return;
+      } else {
+        this.modalPostComments[i].tooLongReplyMessage = '';
+      }
+
       var data = new FormData();
       data.append('body', this.modalPostComments[i].replyInput);
       data.append('commentId', this.modalPostComments[i].id);
@@ -9146,11 +9346,12 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         _this15.modalPostComments[i].replyInput = '';
         _this15.modalPostComments[i].replyErrors = [];
         _this15.posts[_this15.modalPostIndex].commentCount++;
-        _this15.modalPostCommentCount++; // this.modalPostComments[i].replyShow = true;
-
+        _this15.modalPostCommentCount++;
         _this15.modalPostComments[i].replyFormOpened = false;
+        _this15.replyProcessing = false;
       })["catch"](function (error) {
-        _this15.modalPostComments[i].replyErrors = error.response.data.errors; // console.log(this.modalPostComments[i].replyErrors)
+        _this15.modalPostComments[i].replyErrors = error.response.data.errors;
+        _this15.replyProcessing = false;
       });
     },
     // コメントへの返信の削除
@@ -9290,7 +9491,10 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     }
 
     this.loadMorePosts = false;
-    next();
+
+    if (!this.editProcessing && !this.deleteProssesing && !this.commentProcessing && !this.replyProcessing) {
+      next();
+    }
   },
   beforeRouteUpdate: function beforeRouteUpdate(to, from, next) {
     if (this.modalPostShow || this.modalImageShow || this.deletePostModalOpened || this.modalPostEditShow) {
@@ -9520,7 +9724,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       axios.get('/api/search/guchiroom/new/' + word + '?page=' + page).then(function (res) {
-        console.log(res.data);
+        // console.log(res.data);
         _this2.guchiRooms = res.data.data;
         _this2.currentPage = res.data.current_page;
         _this2.lastPage = res.data.last_page;
@@ -9586,8 +9790,7 @@ __webpack_require__.r(__webpack_exports__);
     deleteRoomModalOpen: function deleteRoomModalOpen(i) {
       this.keepScrollWhenOpen();
       this.deleteRoomIndex = i;
-      this.deleteRoomModalOpened = true;
-      console.log(this.guchiRooms[this.deleteRoomIndex].id);
+      this.deleteRoomModalOpened = true; // console.log(this.guchiRooms[this.deleteRoomIndex].id);
     },
     deleteRoomModalClose: function deleteRoomModalClose() {
       this.keepScrollWhenClose();
@@ -9782,7 +9985,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       axios.get('/api/search/guchiroom/popular/' + word + '?page=' + page).then(function (res) {
-        console.log(res.data);
+        // console.log(res.data);
         _this2.guchiRooms = res.data.data;
         _this2.currentPage = res.data.current_page;
         _this2.lastPage = res.data.last_page;
@@ -9848,8 +10051,7 @@ __webpack_require__.r(__webpack_exports__);
     deleteRoomModalOpen: function deleteRoomModalOpen(i) {
       this.keepScrollWhenOpen();
       this.deleteRoomIndex = i;
-      this.deleteRoomModalOpened = true;
-      console.log(this.guchiRooms[this.deleteRoomIndex].id);
+      this.deleteRoomModalOpened = true; // console.log(this.guchiRooms[this.deleteRoomIndex].id);
     },
     deleteRoomModalClose: function deleteRoomModalClose() {
       this.keepScrollWhenClose();
@@ -10446,6 +10648,27 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -10486,6 +10709,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         //   path: '',
         // }
       ],
+      tooLongEditBodyMessage: '',
       editErrors: [],
       edited: false,
       // 編集したかどうか
@@ -10553,6 +10777,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         //   replyFormOpened: false,
         //   replyInput: '',
         //   replyErrors: [],
+        //   tooLongReplyMessage: '',
         //   replyHeight: '31px',
         //   replies: [
         //     {
@@ -10576,7 +10801,13 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       // 新規コメント、返信
       newComment: {},
       newReply: {},
+      // コメント投稿関連
       commentErrors: [],
+      tooLongCommentMessage: '',
+      // コメントが長すぎるというメッセージ
+      commentProcessing: false,
+      // コメント処理中
+      replyProcessing: false,
       // 画像モーダル
       modalImageShow: false,
       modalImage: '',
@@ -10614,7 +10845,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       var _this = this;
 
       axios.get('/api/authandgenre').then(function (res) {
-        console.log(res.data);
+        // console.log(res.data);
         _this.authUser = res.data.authUser;
         _this.genres = res.data.genres;
 
@@ -10637,16 +10868,14 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       axios.get('/api/post/search/new/' + word + '?loaded_posts_count=' + this.posts.length).then(function (res) {
         var _this2$posts;
 
-        console.log(res.data);
-
+        // console.log(res.data);
         (_this2$posts = _this2.posts).push.apply(_this2$posts, _toConsumableArray(res.data.posts));
 
         if (_this2.posts.length === res.data.postsTotal) {
           _this2.loadMorePosts = false;
         }
 
-        _this2.postsLoading = false;
-        console.log(_this2.posts.length);
+        _this2.postsLoading = false; // console.log(this.posts.length);
       })["catch"](function (error) {
         console.log(error);
         _this2.postsLoading = false;
@@ -10760,9 +10989,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         _this6.editHeight = _this6.$refs.editarea.scrollHeight + 'px';
       }); // 今編集してるpostsのインデックスを記憶
 
-      this.editPostIndex = i;
-      console.log(this.editPost);
-      console.log(this.editUrls);
+      this.editPostIndex = i; // console.log(this.editPost);
+      // console.log(this.editUrls);
     },
     // 投稿編集モーダルを閉じる
     editPostModalClose: function editPostModalClose() {
@@ -10783,9 +11011,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         this.closePostMenu(this.editPostIndex);
       }
 
-      this.modalPostEditShow = false;
-      console.log(this.editPost);
-      console.log(this.posts);
+      this.modalPostEditShow = false; // console.log(this.editPost);
+      // console.log(this.posts);
     },
     // 投稿編集の画像アップロード
     uploadEditFile: function uploadEditFile() {
@@ -10815,10 +11042,9 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
           this.nextNewImageId--;
         }
 
-        this.$refs.editpreview.value = '';
-        console.log(this.editPost.deleteOldImagesId);
-        console.log(this.newImages);
-        console.log(this.editUrls);
+        this.$refs.editpreview.value = ''; // console.log(this.editPost.deleteOldImagesId);
+        // console.log(this.newImages);
+        // console.log(this.editUrls);
       }
     },
     // 投稿編集の画像プレビューの削除
@@ -10836,17 +11062,28 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
 
       URL.revokeObjectURL(path);
-      this.editUrls.splice(index, 1);
-      console.log(this.editPost.deleteOldImagesId);
-      console.log(this.newImages);
-      console.log(this.editUrls);
+      this.editUrls.splice(index, 1); // console.log(this.editPost.deleteOldImagesId);
+      // console.log(this.newImages);
+      // console.log(this.editUrls);
     },
     // 編集した投稿を送信
     editSubmit: function editSubmit() {
       var _this7 = this;
 
       if (this.editProcessing) return;
-      this.editProcessing = true;
+      this.editProcessing = true; // 文字数判定
+
+      var textCount = this.editPost.body.replace(/\n/g, '').length; // console.log(textCount);
+
+      if (textCount > 250) {
+        this.tooLongEditBodyMessage = '250文字以内にしてください！（現在' + textCount + '文字）';
+        this.editErrors = [];
+        this.editProcessing = false;
+        return;
+      } else {
+        this.tooLongEditBodyMessage = '';
+      }
+
       this.editPost.newImageFiles = this.newImages.map(function (obj) {
         return obj.file;
       });
@@ -10982,16 +11219,14 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       axios.get('/api/comments/get/' + this.modalPostId + '?loaded_comments_count=' + this.modalPostComments.length).then(function (res) {
         var _this8$modalPostComme;
 
-        console.log(res.data);
-
+        // console.log(res.data);
         (_this8$modalPostComme = _this8.modalPostComments).push.apply(_this8$modalPostComme, _toConsumableArray(res.data.comments));
 
         if (_this8.modalPostComments.length === res.data.commentsTotal) {
           _this8.loadCommentsMore = false;
         }
 
-        _this8.commentsLoading = false;
-        console.log(_this8.modalPostComments.length);
+        _this8.commentsLoading = false; // console.log(this.modalPostComments.length);
       })["catch"](function (error) {
         console.log(error);
         _this8.commentsLoading = false;
@@ -11016,7 +11251,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       axios.get('/api/donmai/users/' + this.modalPostId + '?page=' + this.donmaiPage).then(function (res) {
         var _this9$modalDonmaiUse;
 
-        console.log(res.data);
+        // console.log(res.data);
         var users = res.data.data.map(function (obj) {
           return obj.user;
         });
@@ -11112,6 +11347,20 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     commentPost: function commentPost() {
       var _this12 = this;
 
+      if (this.commentProcessing) return;
+      this.commentProcessing = true; // 文字数判定
+
+      var textCount = this.commentInput.replace(/\n/g, '').length; // console.log(textCount);
+
+      if (textCount > 200) {
+        this.tooLongCommentMessage = '200文字以内にしてください！（現在' + textCount + '文字）';
+        this.commentErrors = [];
+        this.commentProcessing = false;
+        return;
+      } else {
+        this.tooLongCommentMessage = '';
+      }
+
       var data = new FormData();
       data.append('postId', this.modalPostId);
       data.append('body', this.commentInput);
@@ -11123,10 +11372,12 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         _this12.posts[_this12.modalPostIndex].commentCount++;
         _this12.modalPostCommentCount++;
         _this12.commentErrors = [];
+        _this12.commentProcessing = false;
       })["catch"](function (error) {
         // console.log(error.response.data.errors);
         // this.modalPostComments[i].replyErrors = [];
         _this12.commentErrors = error.response.data.errors;
+        _this12.commentProcessing = false;
       });
     },
     // コメント削除
@@ -11154,16 +11405,14 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       axios.get('/api/replies/get/' + this.modalPostComments[i].id + '?loaded_replies_count=' + this.modalPostComments[i].replies.length).then(function (res) {
         var _this14$modalPostComm;
 
-        console.log(res.data);
-
+        // console.log(res.data);
         (_this14$modalPostComm = _this14.modalPostComments[i].replies).push.apply(_this14$modalPostComm, _toConsumableArray(res.data.replies));
 
         if (_this14.modalPostComments[i].replies.length === res.data.repliesTotal) {
           _this14.modalPostComments[i].loadRepliesMore = false;
         }
 
-        _this14.modalPostComments[i].repliesLoading = false;
-        console.log(_this14.modalPostComments[i].replies.length);
+        _this14.modalPostComments[i].repliesLoading = false; // console.log(this.modalPostComments[i].replies.length);
       })["catch"](function (error) {
         console.log(error);
         _this14.modalPostComments[i].repliesLoading = false;
@@ -11200,6 +11449,20 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     reply: function reply(i) {
       var _this15 = this;
 
+      if (this.replyProcessing) return;
+      this.replyProcessing = true; // 文字数判定
+
+      var textCount = this.modalPostComments[i].replyInput.replace(/\n/g, '').length; // console.log(textCount);
+
+      if (textCount > 200) {
+        this.modalPostComments[i].tooLongReplyMessage = '200文字以内にしてください！（現在' + textCount + '文字）';
+        this.modalPostComments[i].replyErrors = [];
+        this.replyProcessing = false;
+        return;
+      } else {
+        this.modalPostComments[i].tooLongReplyMessage = '';
+      }
+
       var data = new FormData();
       data.append('body', this.modalPostComments[i].replyInput);
       data.append('commentId', this.modalPostComments[i].id);
@@ -11213,11 +11476,12 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         _this15.modalPostComments[i].replyInput = '';
         _this15.modalPostComments[i].replyErrors = [];
         _this15.posts[_this15.modalPostIndex].commentCount++;
-        _this15.modalPostCommentCount++; // this.modalPostComments[i].replyShow = true;
-
+        _this15.modalPostCommentCount++;
         _this15.modalPostComments[i].replyFormOpened = false;
+        _this15.replyProcessing = false;
       })["catch"](function (error) {
-        _this15.modalPostComments[i].replyErrors = error.response.data.errors; // console.log(this.modalPostComments[i].replyErrors)
+        _this15.modalPostComments[i].replyErrors = error.response.data.errors;
+        _this15.replyProcessing = false;
       });
     },
     // コメントへの返信の削除
@@ -11368,7 +11632,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
     this.loadMorePosts = false;
 
-    if (!this.editProcessing && !this.deleteProssesing) {
+    if (!this.editProcessing && !this.deleteProssesing && !this.commentProcessing && !this.replyProcessing) {
       next();
     }
   },
@@ -11387,7 +11651,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     this.resetPaginate();
     this.getPosts(to.params.word);
 
-    if (!this.editProcessing && !this.deleteProssesing) {
+    if (!this.editProcessing && !this.deleteProssesing && !this.commentProcessing && !this.replyProcessing) {
       next();
     }
   }
@@ -11928,6 +12192,27 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -11968,6 +12253,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         //   path: '',
         // }
       ],
+      tooLongEditBodyMessage: '',
       editErrors: [],
       edited: false,
       // 編集したかどうか
@@ -12035,6 +12321,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         //   replyFormOpened: false,
         //   replyInput: '',
         //   replyErrors: [],
+        //   tooLongReplyMessage: '',
         //   replyHeight: '31px',
         //   replies: [
         //     {
@@ -12058,7 +12345,13 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       // 新規コメント、返信
       newComment: {},
       newReply: {},
+      // コメント投稿関連
       commentErrors: [],
+      tooLongCommentMessage: '',
+      // コメントが長すぎるというメッセージ
+      commentProcessing: false,
+      // コメント処理中
+      replyProcessing: false,
       // 画像モーダル
       modalImageShow: false,
       modalImage: '',
@@ -12096,7 +12389,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       var _this = this;
 
       axios.get('/api/authandgenre').then(function (res) {
-        console.log(res.data);
+        // console.log(res.data);
         _this.authUser = res.data.authUser;
         _this.genres = res.data.genres;
 
@@ -12119,16 +12412,14 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       axios.get('/api/post/search/popular/' + word + '?loaded_posts_count=' + this.posts.length).then(function (res) {
         var _this2$posts;
 
-        console.log(res.data);
-
+        // console.log(res.data);
         (_this2$posts = _this2.posts).push.apply(_this2$posts, _toConsumableArray(res.data.posts));
 
         if (_this2.posts.length === res.data.postsTotal) {
           _this2.loadMorePosts = false;
         }
 
-        _this2.postsLoading = false;
-        console.log(_this2.posts.length);
+        _this2.postsLoading = false; // console.log(this.posts.length);
       })["catch"](function (error) {
         console.log(error);
         _this2.postsLoading = false;
@@ -12242,9 +12533,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         _this6.editHeight = _this6.$refs.editarea.scrollHeight + 'px';
       }); // 今編集してるpostsのインデックスを記憶
 
-      this.editPostIndex = i;
-      console.log(this.editPost);
-      console.log(this.editUrls);
+      this.editPostIndex = i; // console.log(this.editPost);
+      // console.log(this.editUrls);
     },
     // 投稿編集モーダルを閉じる
     editPostModalClose: function editPostModalClose() {
@@ -12265,9 +12555,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         this.closePostMenu(this.editPostIndex);
       }
 
-      this.modalPostEditShow = false;
-      console.log(this.editPost);
-      console.log(this.posts);
+      this.modalPostEditShow = false; // console.log(this.editPost);
+      // console.log(this.posts);
     },
     // 投稿編集の画像アップロード
     uploadEditFile: function uploadEditFile() {
@@ -12297,10 +12586,9 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
           this.nextNewImageId--;
         }
 
-        this.$refs.editpreview.value = '';
-        console.log(this.editPost.deleteOldImagesId);
-        console.log(this.newImages);
-        console.log(this.editUrls);
+        this.$refs.editpreview.value = ''; // console.log(this.editPost.deleteOldImagesId);
+        // console.log(this.newImages);
+        // console.log(this.editUrls);
       }
     },
     // 投稿編集の画像プレビューの削除
@@ -12318,17 +12606,28 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
 
       URL.revokeObjectURL(path);
-      this.editUrls.splice(index, 1);
-      console.log(this.editPost.deleteOldImagesId);
-      console.log(this.newImages);
-      console.log(this.editUrls);
+      this.editUrls.splice(index, 1); // console.log(this.editPost.deleteOldImagesId);
+      // console.log(this.newImages);
+      // console.log(this.editUrls);
     },
     // 編集した投稿を送信
     editSubmit: function editSubmit() {
       var _this7 = this;
 
       if (this.editProcessing) return;
-      this.editProcessing = true;
+      this.editProcessing = true; // 文字数判定
+
+      var textCount = this.editPost.body.replace(/\n/g, '').length; // console.log(textCount);
+
+      if (textCount > 250) {
+        this.tooLongEditBodyMessage = '250文字以内にしてください！（現在' + textCount + '文字）';
+        this.editErrors = [];
+        this.editProcessing = false;
+        return;
+      } else {
+        this.tooLongEditBodyMessage = '';
+      }
+
       this.editPost.newImageFiles = this.newImages.map(function (obj) {
         return obj.file;
       });
@@ -12464,16 +12763,14 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       axios.get('/api/comments/get/' + this.modalPostId + '?loaded_comments_count=' + this.modalPostComments.length).then(function (res) {
         var _this8$modalPostComme;
 
-        console.log(res.data);
-
+        // console.log(res.data);
         (_this8$modalPostComme = _this8.modalPostComments).push.apply(_this8$modalPostComme, _toConsumableArray(res.data.comments));
 
         if (_this8.modalPostComments.length === res.data.commentsTotal) {
           _this8.loadCommentsMore = false;
         }
 
-        _this8.commentsLoading = false;
-        console.log(_this8.modalPostComments.length);
+        _this8.commentsLoading = false; // console.log(this.modalPostComments.length);
       })["catch"](function (error) {
         console.log(error);
         _this8.commentsLoading = false;
@@ -12498,7 +12795,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       axios.get('/api/donmai/users/' + this.modalPostId + '?page=' + this.donmaiPage).then(function (res) {
         var _this9$modalDonmaiUse;
 
-        console.log(res.data);
+        // console.log(res.data);
         var users = res.data.data.map(function (obj) {
           return obj.user;
         });
@@ -12594,6 +12891,20 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     commentPost: function commentPost() {
       var _this12 = this;
 
+      if (this.commentProcessing) return;
+      this.commentProcessing = true; // 文字数判定
+
+      var textCount = this.commentInput.replace(/\n/g, '').length; // console.log(textCount);
+
+      if (textCount > 200) {
+        this.tooLongCommentMessage = '200文字以内にしてください！（現在' + textCount + '文字）';
+        this.commentErrors = [];
+        this.commentProcessing = false;
+        return;
+      } else {
+        this.tooLongCommentMessage = '';
+      }
+
       var data = new FormData();
       data.append('postId', this.modalPostId);
       data.append('body', this.commentInput);
@@ -12605,10 +12916,12 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         _this12.posts[_this12.modalPostIndex].commentCount++;
         _this12.modalPostCommentCount++;
         _this12.commentErrors = [];
+        _this12.commentProcessing = false;
       })["catch"](function (error) {
         // console.log(error.response.data.errors);
         // this.modalPostComments[i].replyErrors = [];
         _this12.commentErrors = error.response.data.errors;
+        _this12.commentProcessing = false;
       });
     },
     // コメント削除
@@ -12636,16 +12949,14 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       axios.get('/api/replies/get/' + this.modalPostComments[i].id + '?loaded_replies_count=' + this.modalPostComments[i].replies.length).then(function (res) {
         var _this14$modalPostComm;
 
-        console.log(res.data);
-
+        // console.log(res.data);
         (_this14$modalPostComm = _this14.modalPostComments[i].replies).push.apply(_this14$modalPostComm, _toConsumableArray(res.data.replies));
 
         if (_this14.modalPostComments[i].replies.length === res.data.repliesTotal) {
           _this14.modalPostComments[i].loadRepliesMore = false;
         }
 
-        _this14.modalPostComments[i].repliesLoading = false;
-        console.log(_this14.modalPostComments[i].replies.length);
+        _this14.modalPostComments[i].repliesLoading = false; // console.log(this.modalPostComments[i].replies.length);
       })["catch"](function (error) {
         console.log(error);
         _this14.modalPostComments[i].repliesLoading = false;
@@ -12682,6 +12993,20 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     reply: function reply(i) {
       var _this15 = this;
 
+      if (this.replyProcessing) return;
+      this.replyProcessing = true; // 文字数判定
+
+      var textCount = this.modalPostComments[i].replyInput.replace(/\n/g, '').length; // console.log(textCount);
+
+      if (textCount > 200) {
+        this.modalPostComments[i].tooLongReplyMessage = '200文字以内にしてください！（現在' + textCount + '文字）';
+        this.modalPostComments[i].replyErrors = [];
+        this.replyProcessing = false;
+        return;
+      } else {
+        this.modalPostComments[i].tooLongReplyMessage = '';
+      }
+
       var data = new FormData();
       data.append('body', this.modalPostComments[i].replyInput);
       data.append('commentId', this.modalPostComments[i].id);
@@ -12695,11 +13020,12 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         _this15.modalPostComments[i].replyInput = '';
         _this15.modalPostComments[i].replyErrors = [];
         _this15.posts[_this15.modalPostIndex].commentCount++;
-        _this15.modalPostCommentCount++; // this.modalPostComments[i].replyShow = true;
-
+        _this15.modalPostCommentCount++;
         _this15.modalPostComments[i].replyFormOpened = false;
+        _this15.replyProcessing = false;
       })["catch"](function (error) {
-        _this15.modalPostComments[i].replyErrors = error.response.data.errors; // console.log(this.modalPostComments[i].replyErrors)
+        _this15.modalPostComments[i].replyErrors = error.response.data.errors;
+        _this15.replyProcessing = false; // console.log(this.modalPostComments[i].replyErrors)
       });
     },
     // コメントへの返信の削除
@@ -12850,7 +13176,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
     this.loadMorePosts = false;
 
-    if (!this.editProcessing && !this.deleteProssesing) {
+    if (!this.editProcessing && !this.deleteProssesing && !this.commentProcessing && !this.replyProcessing) {
       next();
     }
   },
@@ -12867,7 +13193,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     this.resetPaginate();
     this.getPosts(to.params.word);
 
-    if (!this.editProcessing && !this.deleteProssesing) {
+    if (!this.editProcessing && !this.deleteProssesing && !this.commentProcessing && !this.replyProcessing) {
       next();
     }
   }
@@ -12969,7 +13295,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       var _this = this;
 
       axios.get('/api/user').then(function (res) {
-        console.log(res.data);
+        // console.log(res.data);
         _this.authUser = res.data;
 
         if (!_this.authUser.icon) {
@@ -12991,8 +13317,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       axios.get('/api/search/users/' + word + '?page=' + this.page).then(function (res) {
         var _this2$users;
 
-        console.log(res.data);
-
+        // console.log(res.data);
         (_this2$users = _this2.users).push.apply(_this2$users, _toConsumableArray(res.data.data));
 
         _this2.itemLoading = false;
@@ -13683,6 +14008,27 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -13723,6 +14069,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         //   path: '',
         // }
       ],
+      tooLongEditBodyMessage: '',
       editErrors: [],
       edited: false,
       editProcessing: false,
@@ -13789,6 +14136,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         //   replyFormOpened: false,
         //   replyInput: '',
         //   replyErrors: [],
+        //   tooLongReplyMessage: '',
         //   replyHeight: '31px',
         //   replies: [
         //     {
@@ -13812,7 +14160,13 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       // 新規コメント、返信
       newComment: {},
       newReply: {},
+      // コメント投稿関連
       commentErrors: [],
+      tooLongCommentMessage: '',
+      // コメントが長すぎるというメッセージ
+      commentProcessing: false,
+      // コメント処理中
+      replyProcessing: false,
       // 画像モーダル
       modalImageShow: false,
       modalImage: '',
@@ -13854,7 +14208,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       var _this = this;
 
       axios.get('/api/authandgenre').then(function (res) {
-        console.log(res.data);
+        // console.log(res.data);
         _this.authUser = res.data.authUser;
         _this.genres = res.data.genres;
 
@@ -13877,40 +14231,19 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       axios.get('/api/post/tags/new/' + tagName + '?loaded_posts_count=' + this.posts.length).then(function (res) {
         var _this2$posts;
 
-        console.log(res.data);
-
+        // console.log(res.data);
         (_this2$posts = _this2.posts).push.apply(_this2$posts, _toConsumableArray(res.data.posts));
 
         if (_this2.posts.length === res.data.postsTotal) {
           _this2.loadMorePosts = false;
         }
 
-        _this2.postsLoading = false;
-        console.log(_this2.posts.length);
+        _this2.postsLoading = false; // console.log(this.posts.length);
       })["catch"](function (error) {
         console.log(error);
         _this2.postsLoading = false;
       });
     },
-    // getPosts(tagName) {
-    //   // 読み込み中か最後のページなら読み込まない。
-    //   if (this.isLastPage) return;
-    //   if (this.itemLoading) return;
-    //   this.itemLoading = true;
-    //   axios.get('/api/post/tags/new/' + tagName + '?page=' + this.page)
-    //     .then((res) => {
-    //       console.log(res.data);
-    //       this.posts.push(...res.data.data);
-    //       this.itemLoading = false;
-    //       if (this.page === res.data.last_page) {
-    //         this.isLastPage = true;
-    //       }
-    //       this.page++;
-    //     }).catch((error) => {
-    //       console.log(error);
-    //       this.itemLoading = false;
-    //     });
-    // },
     // 無限スクロールのリセット
     resetPaginate: function resetPaginate() {
       this.posts = [];
@@ -14019,9 +14352,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         _this6.editHeight = _this6.$refs.editarea.scrollHeight + 'px';
       }); // 今編集してるpostsのインデックスを記憶
 
-      this.editPostIndex = i;
-      console.log(this.editPost);
-      console.log(this.editUrls);
+      this.editPostIndex = i; // console.log(this.editPost);
+      // console.log(this.editUrls);
     },
     // 投稿編集モーダルを閉じる
     editPostModalClose: function editPostModalClose() {
@@ -14042,9 +14374,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         this.closePostMenu(this.editPostIndex);
       }
 
-      this.modalPostEditShow = false;
-      console.log(this.editPost);
-      console.log(this.posts);
+      this.modalPostEditShow = false; // console.log(this.editPost);
+      // console.log(this.posts);
     },
     // 投稿編集の画像アップロード
     uploadEditFile: function uploadEditFile() {
@@ -14074,10 +14405,9 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
           this.nextNewImageId--;
         }
 
-        this.$refs.editpreview.value = '';
-        console.log(this.editPost.deleteOldImagesId);
-        console.log(this.newImages);
-        console.log(this.editUrls);
+        this.$refs.editpreview.value = ''; // console.log(this.editPost.deleteOldImagesId);
+        // console.log(this.newImages);
+        // console.log(this.editUrls);
       }
     },
     // 投稿編集の画像プレビューの削除
@@ -14095,17 +14425,28 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
 
       URL.revokeObjectURL(path);
-      this.editUrls.splice(index, 1);
-      console.log(this.editPost.deleteOldImagesId);
-      console.log(this.newImages);
-      console.log(this.editUrls);
+      this.editUrls.splice(index, 1); // console.log(this.editPost.deleteOldImagesId);
+      // console.log(this.newImages);
+      // console.log(this.editUrls);
     },
     // 編集した投稿を送信
     editSubmit: function editSubmit() {
       var _this7 = this;
 
       if (this.editProcessing) return;
-      this.editProcessing = true;
+      this.editProcessing = true; // 文字数判定
+
+      var textCount = this.editPost.body.replace(/\n/g, '').length; // console.log(textCount);
+
+      if (textCount > 250) {
+        this.tooLongEditBodyMessage = '250文字以内にしてください！（現在' + textCount + '文字）';
+        this.editErrors = [];
+        this.editProcessing = false;
+        return;
+      } else {
+        this.tooLongEditBodyMessage = '';
+      }
+
       this.editPost.newImageFiles = this.newImages.map(function (obj) {
         return obj.file;
       });
@@ -14241,16 +14582,14 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       axios.get('/api/comments/get/' + this.modalPostId + '?loaded_comments_count=' + this.modalPostComments.length).then(function (res) {
         var _this8$modalPostComme;
 
-        console.log(res.data);
-
+        // console.log(res.data);
         (_this8$modalPostComme = _this8.modalPostComments).push.apply(_this8$modalPostComme, _toConsumableArray(res.data.comments));
 
         if (_this8.modalPostComments.length === res.data.commentsTotal) {
           _this8.loadCommentsMore = false;
         }
 
-        _this8.commentsLoading = false;
-        console.log(_this8.modalPostComments.length);
+        _this8.commentsLoading = false; // console.log(this.modalPostComments.length);
       })["catch"](function (error) {
         console.log(error);
         _this8.commentsLoading = false;
@@ -14275,7 +14614,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       axios.get('/api/donmai/users/' + this.modalPostId + '?page=' + this.donmaiPage).then(function (res) {
         var _this9$modalDonmaiUse;
 
-        console.log(res.data);
+        // console.log(res.data);
         var users = res.data.data.map(function (obj) {
           return obj.user;
         });
@@ -14371,6 +14710,20 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     commentPost: function commentPost() {
       var _this12 = this;
 
+      if (this.commentProcessing) return;
+      this.commentProcessing = true; // 文字数判定
+
+      var textCount = this.commentInput.replace(/\n/g, '').length; // console.log(textCount);
+
+      if (textCount > 200) {
+        this.tooLongCommentMessage = '200文字以内にしてください！（現在' + textCount + '文字）';
+        this.commentErrors = [];
+        this.commentProcessing = false;
+        return;
+      } else {
+        this.tooLongCommentMessage = '';
+      }
+
       var data = new FormData();
       data.append('postId', this.modalPostId);
       data.append('body', this.commentInput);
@@ -14382,10 +14735,12 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         _this12.posts[_this12.modalPostIndex].commentCount++;
         _this12.modalPostCommentCount++;
         _this12.commentErrors = [];
+        _this12.commentProcessing = false;
       })["catch"](function (error) {
         // console.log(error.response.data.errors);
         // this.modalPostComments[i].replyErrors = [];
         _this12.commentErrors = error.response.data.errors;
+        _this12.commentProcessing = false;
       });
     },
     // コメント削除
@@ -14413,16 +14768,14 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       axios.get('/api/replies/get/' + this.modalPostComments[i].id + '?loaded_replies_count=' + this.modalPostComments[i].replies.length).then(function (res) {
         var _this14$modalPostComm;
 
-        console.log(res.data);
-
+        // console.log(res.data);
         (_this14$modalPostComm = _this14.modalPostComments[i].replies).push.apply(_this14$modalPostComm, _toConsumableArray(res.data.replies));
 
         if (_this14.modalPostComments[i].replies.length === res.data.repliesTotal) {
           _this14.modalPostComments[i].loadRepliesMore = false;
         }
 
-        _this14.modalPostComments[i].repliesLoading = false;
-        console.log(_this14.modalPostComments[i].replies.length);
+        _this14.modalPostComments[i].repliesLoading = false; // console.log(this.modalPostComments[i].replies.length);
       })["catch"](function (error) {
         console.log(error);
         _this14.modalPostComments[i].repliesLoading = false;
@@ -14459,6 +14812,20 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     reply: function reply(i) {
       var _this15 = this;
 
+      if (this.replyProcessing) return;
+      this.replyProcessing = true; // 文字数判定
+
+      var textCount = this.modalPostComments[i].replyInput.replace(/\n/g, '').length; // console.log(textCount);
+
+      if (textCount > 200) {
+        this.modalPostComments[i].tooLongReplyMessage = '200文字以内にしてください！（現在' + textCount + '文字）';
+        this.modalPostComments[i].replyErrors = [];
+        this.replyProcessing = false;
+        return;
+      } else {
+        this.modalPostComments[i].tooLongReplyMessage = '';
+      }
+
       var data = new FormData();
       data.append('body', this.modalPostComments[i].replyInput);
       data.append('commentId', this.modalPostComments[i].id);
@@ -14472,11 +14839,12 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         _this15.modalPostComments[i].replyInput = '';
         _this15.modalPostComments[i].replyErrors = [];
         _this15.posts[_this15.modalPostIndex].commentCount++;
-        _this15.modalPostCommentCount++; // this.modalPostComments[i].replyShow = true;
-
+        _this15.modalPostCommentCount++;
         _this15.modalPostComments[i].replyFormOpened = false;
+        _this15.replyProcessing = false;
       })["catch"](function (error) {
-        _this15.modalPostComments[i].replyErrors = error.response.data.errors; // console.log(this.modalPostComments[i].replyErrors)
+        _this15.modalPostComments[i].replyErrors = error.response.data.errors;
+        _this15.replyProcessing = false; // console.log(this.modalPostComments[i].replyErrors)
       });
     },
     // コメントへの返信の削除
@@ -14626,7 +14994,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
     this.loadMorePosts = false;
 
-    if (!this.editProcessing && !this.deleteProssesing) {
+    if (!this.editProcessing && !this.deleteProssesing && !this.commentProcessing && !this.replyProcessing) {
       next();
     }
   },
@@ -14645,7 +15013,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     this.resetPaginate();
     this.getPosts(to.params.name);
 
-    if (!this.editProcessing && !this.deleteProssesing) {
+    if (!this.editProcessing && !this.deleteProssesing && !this.commentProcessing && !this.replyProcessing) {
       next();
     }
   }
@@ -15186,6 +15554,27 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -15226,6 +15615,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         //   path: '',
         // }
       ],
+      tooLongEditBodyMessage: '',
       editErrors: [],
       edited: false,
       // 編集したかどうか
@@ -15293,6 +15683,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         //   replyFormOpened: false,
         //   replyInput: '',
         //   replyErrors: [],
+        //   tooLongReplyMessage: '',
         //   replyHeight: '31px',
         //   replies: [
         //     {
@@ -15316,7 +15707,13 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       // 新規コメント、返信
       newComment: {},
       newReply: {},
+      // コメント投稿関連
       commentErrors: [],
+      tooLongCommentMessage: '',
+      // コメントが長すぎるというメッセージ
+      commentProcessing: false,
+      // コメント処理中
+      replyProcessing: false,
       // 画像モーダル
       modalImageShow: false,
       modalImage: '',
@@ -15358,7 +15755,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       var _this = this;
 
       axios.get('/api/authandgenre').then(function (res) {
-        console.log(res.data);
+        // console.log(res.data);
         _this.authUser = res.data.authUser;
         _this.genres = res.data.genres;
 
@@ -15381,16 +15778,14 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       axios.get('/api/post/tags/popular/' + tagName + '?loaded_posts_count=' + this.posts.length).then(function (res) {
         var _this2$posts;
 
-        console.log(res.data);
-
+        // console.log(res.data);
         (_this2$posts = _this2.posts).push.apply(_this2$posts, _toConsumableArray(res.data.posts));
 
         if (_this2.posts.length === res.data.postsTotal) {
           _this2.loadMorePosts = false;
         }
 
-        _this2.postsLoading = false;
-        console.log(_this2.posts.length);
+        _this2.postsLoading = false; // console.log(this.posts.length);
       })["catch"](function (error) {
         console.log(error);
         _this2.postsLoading = false;
@@ -15504,9 +15899,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         _this6.editHeight = _this6.$refs.editarea.scrollHeight + 'px';
       }); // 今編集してるpostsのインデックスを記憶
 
-      this.editPostIndex = i;
-      console.log(this.editPost);
-      console.log(this.editUrls);
+      this.editPostIndex = i; // console.log(this.editPost);
+      // console.log(this.editUrls);
     },
     // 投稿編集モーダルを閉じる
     editPostModalClose: function editPostModalClose() {
@@ -15528,9 +15922,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       }
 
       this.modalPostEditShow = false;
-      this.editPostIndex = null;
-      console.log(this.editPost);
-      console.log(this.posts);
+      this.editPostIndex = null; // console.log(this.editPost);
+      // console.log(this.posts);
     },
     // 投稿編集の画像アップロード
     uploadEditFile: function uploadEditFile() {
@@ -15560,10 +15953,9 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
           this.nextNewImageId--;
         }
 
-        this.$refs.editpreview.value = '';
-        console.log(this.editPost.deleteOldImagesId);
-        console.log(this.newImages);
-        console.log(this.editUrls);
+        this.$refs.editpreview.value = ''; // console.log(this.editPost.deleteOldImagesId);
+        // console.log(this.newImages);
+        // console.log(this.editUrls);
       }
     },
     // 投稿編集の画像プレビューの削除
@@ -15581,17 +15973,28 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
 
       URL.revokeObjectURL(path);
-      this.editUrls.splice(index, 1);
-      console.log(this.editPost.deleteOldImagesId);
-      console.log(this.newImages);
-      console.log(this.editUrls);
+      this.editUrls.splice(index, 1); // console.log(this.editPost.deleteOldImagesId);
+      // console.log(this.newImages);
+      // console.log(this.editUrls);
     },
     // 編集した投稿を送信
     editSubmit: function editSubmit() {
       var _this7 = this;
 
       if (this.editProcessing) return;
-      this.editProcessing = true;
+      this.editProcessing = true; // 文字数判定
+
+      var textCount = this.editPost.body.replace(/\n/g, '').length; // console.log(textCount);
+
+      if (textCount > 250) {
+        this.tooLongEditBodyMessage = '250文字以内にしてください！（現在' + textCount + '文字）';
+        this.editErrors = [];
+        this.editProcessing = false;
+        return;
+      } else {
+        this.tooLongEditBodyMessage = '';
+      }
+
       this.editPost.newImageFiles = this.newImages.map(function (obj) {
         return obj.file;
       });
@@ -15610,8 +16013,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         }
       });
       axios.post('/api/post/edit', data).then(function (res) {
-        console.log(res.data); // このページのタグを削除していたらこのページの投稿一覧から削除
-
+        // console.log(res.data);
+        // このページのタグを削除していたらこのページの投稿一覧から削除
         if (_this7.editPost.tags.includes(_this7.$route.params.name)) {
           _this7.posts.splice(_this7.editPostIndex, 1, res.data.post);
         } else {
@@ -15729,16 +16132,14 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       axios.get('/api/comments/get/' + this.modalPostId + '?loaded_comments_count=' + this.modalPostComments.length).then(function (res) {
         var _this8$modalPostComme;
 
-        console.log(res.data);
-
+        // console.log(res.data);
         (_this8$modalPostComme = _this8.modalPostComments).push.apply(_this8$modalPostComme, _toConsumableArray(res.data.comments));
 
         if (_this8.modalPostComments.length === res.data.commentsTotal) {
           _this8.loadCommentsMore = false;
         }
 
-        _this8.commentsLoading = false;
-        console.log(_this8.modalPostComments.length);
+        _this8.commentsLoading = false; // console.log(this.modalPostComments.length);
       })["catch"](function (error) {
         console.log(error);
         _this8.commentsLoading = false;
@@ -15763,7 +16164,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       axios.get('/api/donmai/users/' + this.modalPostId + '?page=' + this.donmaiPage).then(function (res) {
         var _this9$modalDonmaiUse;
 
-        console.log(res.data);
+        // console.log(res.data);
         var users = res.data.data.map(function (obj) {
           return obj.user;
         });
@@ -15859,6 +16260,20 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     commentPost: function commentPost() {
       var _this12 = this;
 
+      if (this.commentProcessing) return;
+      this.commentProcessing = true; // 文字数判定
+
+      var textCount = this.commentInput.replace(/\n/g, '').length; // console.log(textCount);
+
+      if (textCount > 200) {
+        this.tooLongCommentMessage = '200文字以内にしてください！（現在' + textCount + '文字）';
+        this.commentErrors = [];
+        this.commentProcessing = false;
+        return;
+      } else {
+        this.tooLongCommentMessage = '';
+      }
+
       var data = new FormData();
       data.append('postId', this.modalPostId);
       data.append('body', this.commentInput);
@@ -15870,10 +16285,12 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         _this12.posts[_this12.modalPostIndex].commentCount++;
         _this12.modalPostCommentCount++;
         _this12.commentErrors = [];
+        _this12.commentProcessing = false;
       })["catch"](function (error) {
         // console.log(error.response.data.errors);
         // this.modalPostComments[i].replyErrors = [];
         _this12.commentErrors = error.response.data.errors;
+        _this12.commentProcessing = false;
       });
     },
     // コメント削除
@@ -15901,16 +16318,14 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       axios.get('/api/replies/get/' + this.modalPostComments[i].id + '?loaded_replies_count=' + this.modalPostComments[i].replies.length).then(function (res) {
         var _this14$modalPostComm;
 
-        console.log(res.data);
-
+        // console.log(res.data);
         (_this14$modalPostComm = _this14.modalPostComments[i].replies).push.apply(_this14$modalPostComm, _toConsumableArray(res.data.replies));
 
         if (_this14.modalPostComments[i].replies.length === res.data.repliesTotal) {
           _this14.modalPostComments[i].loadRepliesMore = false;
         }
 
-        _this14.modalPostComments[i].repliesLoading = false;
-        console.log(_this14.modalPostComments[i].replies.length);
+        _this14.modalPostComments[i].repliesLoading = false; // console.log(this.modalPostComments[i].replies.length);
       })["catch"](function (error) {
         console.log(error);
         _this14.modalPostComments[i].repliesLoading = false;
@@ -15947,6 +16362,20 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     reply: function reply(i) {
       var _this15 = this;
 
+      if (this.replyProcessing) return;
+      this.replyProcessing = true; // 文字数判定
+
+      var textCount = this.modalPostComments[i].replyInput.replace(/\n/g, '').length; // console.log(textCount);
+
+      if (textCount > 200) {
+        this.modalPostComments[i].tooLongReplyMessage = '200文字以内にしてください！（現在' + textCount + '文字）';
+        this.modalPostComments[i].replyErrors = [];
+        this.replyProcessing = false;
+        return;
+      } else {
+        this.modalPostComments[i].tooLongReplyMessage = '';
+      }
+
       var data = new FormData();
       data.append('body', this.modalPostComments[i].replyInput);
       data.append('commentId', this.modalPostComments[i].id);
@@ -15960,11 +16389,12 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         _this15.modalPostComments[i].replyInput = '';
         _this15.modalPostComments[i].replyErrors = [];
         _this15.posts[_this15.modalPostIndex].commentCount++;
-        _this15.modalPostCommentCount++; // this.modalPostComments[i].replyShow = true;
-
+        _this15.modalPostCommentCount++;
         _this15.modalPostComments[i].replyFormOpened = false;
+        _this15.replyProcessing = false;
       })["catch"](function (error) {
-        _this15.modalPostComments[i].replyErrors = error.response.data.errors; // console.log(this.modalPostComments[i].replyErrors)
+        _this15.modalPostComments[i].replyErrors = error.response.data.errors;
+        _this15.replyProcessing = false; // console.log(this.modalPostComments[i].replyErrors)
       });
     },
     // コメントへの返信の削除
@@ -16114,7 +16544,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
     this.loadMorePosts = false;
 
-    if (!this.editProcessing && !this.deleteProssesing) {
+    if (!this.editProcessing && !this.deleteProssesing && !this.commentProcessing && !this.replyProcessing) {
       next();
     }
   },
@@ -16133,7 +16563,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     this.resetPaginate();
     this.getPosts(to.params.name);
 
-    if (!this.editProcessing && !this.deleteProssesing) {
+    if (!this.editProcessing && !this.deleteProssesing && !this.commentProcessing && !this.replyProcessing) {
       next();
     }
   }
@@ -16212,12 +16642,14 @@ __webpack_require__.r(__webpack_exports__);
 
       axios.get('/api/tag/trend').then(function (res) {
         // console.log(res.data);
-        _this.trends = res.data;
+        if (res.data.length > 0) {
+          _this.trends = res.data;
 
-        _this.$nextTick(function () {
-          this.makeGraph();
-          this.postCountUp();
-        });
+          _this.$nextTick(function () {
+            this.makeGraph();
+            this.postCountUp();
+          });
+        }
       })["catch"](function () {
         return;
       });
@@ -16564,7 +16996,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       var _this2 = this;
 
       axios.get('/api/user/' + paramId).then(function (res) {
-        console.log(res.data);
+        // console.log(res.data);
         _this2.user = res.data;
 
         if (_this2.user.icon === null) {
@@ -16602,7 +17034,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       axios.get('/api/following/' + this.user.id + '?page=' + this.followsPage).then(function (res) {
         var _this3$modalFollows;
 
-        console.log(res.data);
+        // console.log(res.data);
         var follows = res.data.data.map(function (obj) {
           return obj.followed_user;
         });
@@ -16632,7 +17064,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       axios.get('/api/follower/' + this.user.id + '?page=' + this.followersPage).then(function (res) {
         var _this4$modalFollowers;
 
-        console.log(res.data);
+        // console.log(res.data);
         var followers = res.data.data.map(function (obj) {
           return obj.user;
         });
@@ -17344,6 +17776,27 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -17384,6 +17837,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         //   path: '',
         // }
       ],
+      tooLongEditBodyMessage: '',
       editErrors: [],
       edited: false,
       // 編集したかどうか
@@ -17451,6 +17905,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         //   replyFormOpened: false,
         //   replyInput: '',
         //   replyErrors: [],
+        //   tooLongReplyMessage: '',
         //   replyHeight: '31px',
         //   replies: [
         //     {
@@ -17474,7 +17929,13 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       // 新規コメント、返信
       newComment: {},
       newReply: {},
+      // コメント投稿関連
       commentErrors: [],
+      tooLongCommentMessage: '',
+      // コメントが長すぎるというメッセージ
+      commentProcessing: false,
+      // コメント処理中
+      replyProcessing: false,
       // 画像モーダル
       modalImageShow: false,
       modalImage: '',
@@ -17512,7 +17973,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       var _this = this;
 
       axios.get('/api/authandgenre').then(function (res) {
-        console.log(res.data);
+        // console.log(res.data);
         _this.authUser = res.data.authUser;
         _this.genres = res.data.genres;
 
@@ -17535,7 +17996,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       axios.get('/api/post/user/donmai/' + userId + '?loaded_posts_count=' + this.posts.length).then(function (res) {
         var _this2$posts;
 
-        console.log(res.data);
+        // console.log(res.data);
         var posts = res.data.donmais.map(function (obj) {
           return obj.post;
         });
@@ -17546,8 +18007,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
           _this2.loadMorePosts = false;
         }
 
-        _this2.postsLoading = false;
-        console.log(_this2.posts.length);
+        _this2.postsLoading = false; // console.log(this.posts.length);
       })["catch"](function (error) {
         console.log(error);
         _this2.postsLoading = false;
@@ -17661,9 +18121,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         _this6.editHeight = _this6.$refs.editarea.scrollHeight + 'px';
       }); // 今編集してるpostsのインデックスを記憶
 
-      this.editPostIndex = i;
-      console.log(this.editPost);
-      console.log(this.editUrls);
+      this.editPostIndex = i; // console.log(this.editPost);
+      // console.log(this.editUrls);
     },
     // 投稿編集モーダルを閉じる
     editPostModalClose: function editPostModalClose() {
@@ -17684,9 +18143,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         this.closePostMenu(this.editPostIndex);
       }
 
-      this.modalPostEditShow = false;
-      console.log(this.editPost);
-      console.log(this.posts);
+      this.modalPostEditShow = false; // console.log(this.editPost);
+      // console.log(this.posts);
     },
     // 投稿編集の画像アップロード
     uploadEditFile: function uploadEditFile() {
@@ -17716,10 +18174,9 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
           this.nextNewImageId--;
         }
 
-        this.$refs.editpreview.value = '';
-        console.log(this.editPost.deleteOldImagesId);
-        console.log(this.newImages);
-        console.log(this.editUrls);
+        this.$refs.editpreview.value = ''; // console.log(this.editPost.deleteOldImagesId);
+        // console.log(this.newImages);
+        // console.log(this.editUrls);
       }
     },
     // 投稿編集の画像プレビューの削除
@@ -17737,17 +18194,28 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
 
       URL.revokeObjectURL(path);
-      this.editUrls.splice(index, 1);
-      console.log(this.editPost.deleteOldImagesId);
-      console.log(this.newImages);
-      console.log(this.editUrls);
+      this.editUrls.splice(index, 1); // console.log(this.editPost.deleteOldImagesId);
+      // console.log(this.newImages);
+      // console.log(this.editUrls);
     },
     // 編集した投稿を送信
     editSubmit: function editSubmit() {
       var _this7 = this;
 
       if (this.editProcessing) return;
-      this.editProcessing = true;
+      this.editProcessing = true; // 文字数判定
+
+      var textCount = this.editPost.body.replace(/\n/g, '').length; // console.log(textCount);
+
+      if (textCount > 250) {
+        this.tooLongEditBodyMessage = '250文字以内にしてください！（現在' + textCount + '文字）';
+        this.editErrors = [];
+        this.editProcessing = false;
+        return;
+      } else {
+        this.tooLongEditBodyMessage = '';
+      }
+
       this.editPost.newImageFiles = this.newImages.map(function (obj) {
         return obj.file;
       });
@@ -17878,16 +18346,14 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       axios.get('/api/comments/get/' + this.modalPostId + '?loaded_comments_count=' + this.modalPostComments.length).then(function (res) {
         var _this8$modalPostComme;
 
-        console.log(res.data);
-
+        // console.log(res.data);
         (_this8$modalPostComme = _this8.modalPostComments).push.apply(_this8$modalPostComme, _toConsumableArray(res.data.comments));
 
         if (_this8.modalPostComments.length === res.data.commentsTotal) {
           _this8.loadCommentsMore = false;
         }
 
-        _this8.commentsLoading = false;
-        console.log(_this8.modalPostComments.length);
+        _this8.commentsLoading = false; // console.log(this.modalPostComments.length);
       })["catch"](function (error) {
         console.log(error);
         _this8.commentsLoading = false;
@@ -17912,7 +18378,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       axios.get('/api/donmai/users/' + this.modalPostId + '?page=' + this.donmaiPage).then(function (res) {
         var _this9$modalDonmaiUse;
 
-        console.log(res.data);
+        // console.log(res.data);
         var users = res.data.data.map(function (obj) {
           return obj.user;
         });
@@ -18008,6 +18474,20 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     commentPost: function commentPost() {
       var _this12 = this;
 
+      if (this.commentProcessing) return;
+      this.commentProcessing = true; // 文字数判定
+
+      var textCount = this.commentInput.replace(/\n/g, '').length; // console.log(textCount);
+
+      if (textCount > 200) {
+        this.tooLongCommentMessage = '200文字以内にしてください！（現在' + textCount + '文字）';
+        this.commentErrors = [];
+        this.commentProcessing = false;
+        return;
+      } else {
+        this.tooLongCommentMessage = '';
+      }
+
       var data = new FormData();
       data.append('postId', this.modalPostId);
       data.append('body', this.commentInput);
@@ -18019,10 +18499,12 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         _this12.posts[_this12.modalPostIndex].commentCount++;
         _this12.modalPostCommentCount++;
         _this12.commentErrors = [];
+        _this12.commentProcessing = false;
       })["catch"](function (error) {
         // console.log(error.response.data.errors);
         // this.modalPostComments[i].replyErrors = [];
         _this12.commentErrors = error.response.data.errors;
+        _this12.commentProcessing = false;
       });
     },
     // コメント削除
@@ -18050,16 +18532,14 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       axios.get('/api/replies/get/' + this.modalPostComments[i].id + '?loaded_replies_count=' + this.modalPostComments[i].replies.length).then(function (res) {
         var _this14$modalPostComm;
 
-        console.log(res.data);
-
+        // console.log(res.data);
         (_this14$modalPostComm = _this14.modalPostComments[i].replies).push.apply(_this14$modalPostComm, _toConsumableArray(res.data.replies));
 
         if (_this14.modalPostComments[i].replies.length === res.data.repliesTotal) {
           _this14.modalPostComments[i].loadRepliesMore = false;
         }
 
-        _this14.modalPostComments[i].repliesLoading = false;
-        console.log(_this14.modalPostComments[i].replies.length);
+        _this14.modalPostComments[i].repliesLoading = false; // console.log(this.modalPostComments[i].replies.length);
       })["catch"](function (error) {
         console.log(error);
         _this14.modalPostComments[i].repliesLoading = false;
@@ -18096,12 +18576,25 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     reply: function reply(i) {
       var _this15 = this;
 
+      if (this.replyProcessing) return;
+      this.replyProcessing = true; // 文字数判定
+
+      var textCount = this.modalPostComments[i].replyInput.replace(/\n/g, '').length; // console.log(textCount);
+
+      if (textCount > 200) {
+        this.modalPostComments[i].tooLongReplyMessage = '200文字以内にしてください！（現在' + textCount + '文字）';
+        this.modalPostComments[i].replyErrors = [];
+        this.replyProcessing = false;
+        return;
+      } else {
+        this.modalPostComments[i].tooLongReplyMessage = '';
+      }
+
       var data = new FormData();
       data.append('body', this.modalPostComments[i].replyInput);
       data.append('commentId', this.modalPostComments[i].id);
       axios.post('/api/comment/reply', data).then(function (res) {
-        console.log(res.data);
-
+        // console.log(res.data);
         if (!_this15.modalPostComments[i].loadRepliesMore) {
           _this15.modalPostComments[i].replies.push(res.data);
         }
@@ -18110,11 +18603,12 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         _this15.modalPostComments[i].replyInput = '';
         _this15.modalPostComments[i].replyErrors = [];
         _this15.posts[_this15.modalPostIndex].commentCount++;
-        _this15.modalPostCommentCount++; // this.modalPostComments[i].replyShow = true;
-
+        _this15.modalPostCommentCount++;
         _this15.modalPostComments[i].replyFormOpened = false;
+        _this15.replyProcessing = false;
       })["catch"](function (error) {
-        _this15.modalPostComments[i].replyErrors = error.response.data.errors; // console.log(this.modalPostComments[i].replyErrors)
+        _this15.modalPostComments[i].replyErrors = error.response.data.errors;
+        _this15.replyProcessing = false; // console.log(this.modalPostComments[i].replyErrors)
       });
     },
     // コメントへの返信の削除
@@ -18255,7 +18749,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
     this.loadMorePosts = false;
 
-    if (!this.editProcessing && !this.deleteProssesing) {
+    if (!this.editProcessing && !this.deleteProssesing && !this.commentProcessing && !this.replyProcessing) {
       next();
     }
   },
@@ -18274,7 +18768,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     this.resetPaginate();
     this.getPosts(to.params.id);
 
-    if (!this.editProcessing && !this.deleteProssesing) {
+    if (!this.editProcessing && !this.deleteProssesing && !this.commentProcessing && !this.replyProcessing) {
       next();
     }
   }
@@ -18291,6 +18785,9 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
 //
 //
 //
@@ -18423,6 +18920,8 @@ __webpack_require__.r(__webpack_exports__);
       url: '',
       // 画像アップロードエラーメッセージ
       message: '',
+      // 自己紹介が長すぎ
+      tooLongPrMessage: '',
       // 変更処理中
       editProcessing: false
     };
@@ -18441,26 +18940,36 @@ __webpack_require__.r(__webpack_exports__);
       this.form.icon = null;
       this.url = URL.createObjectURL(this.form.iconImage);
       this.$refs.preview.value = '';
-      this.message = '';
-      console.log(this.form.iconImage);
-      console.log(this.url);
+      this.message = ''; // console.log(this.form.iconImage);
+      // console.log(this.url);
     },
     // 画像のプレビュー削除
     deletePreview: function deletePreview() {
       URL.revokeObjectURL(this.url);
       this.form.iconImage = null;
       this.form.icon = null;
-      this.url = '';
-      console.log(this.form.iconImage);
-      console.log(this.form.icon);
-      console.log(this.url);
+      this.url = ''; // console.log(this.form.iconImage);
+      // console.log(this.form.icon);
+      // console.log(this.url);
     },
     // 変更を送信
     submit: function submit() {
       var _this = this;
 
       if (this.editProcessing) return;
-      this.editProcessing = true;
+      this.editProcessing = true; // 文字数判定
+
+      var textCount = this.form.pr.replace(/\n/g, '').length; // console.log(textCount);
+
+      if (textCount > 100) {
+        this.tooLongPrMessage = '100文字以内にしてください！（現在' + textCount + '文字）';
+        this.errors = [];
+        this.editProcessing = false;
+        return;
+      } else {
+        this.tooLongPrMessage = '';
+      }
+
       var data = new FormData();
       data.append('id', this.form.id);
       data.append('name', this.form.name);
@@ -18505,7 +19014,7 @@ __webpack_require__.r(__webpack_exports__);
     var _this2 = this;
 
     axios.get('/api/user').then(function (res) {
-      console.log(res.data);
+      // console.log(res.data);
       _this2.email = res.data.email;
 
       _this2.$set(_this2.form, 'id', res.data.id);
@@ -18657,7 +19166,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       axios.get('/api/guchiroom/user/' + userId + '?page=' + page).then(function (res) {
-        console.log(res.data);
+        // console.log(res.data);
         var guchiRooms = res.data.data.map(function (obj) {
           return obj.guchi_room;
         });
@@ -18726,8 +19235,7 @@ __webpack_require__.r(__webpack_exports__);
     deleteRoomModalOpen: function deleteRoomModalOpen(i) {
       this.keepScrollWhenOpen();
       this.deleteRoomIndex = i;
-      this.deleteRoomModalOpened = true;
-      console.log(this.guchiRooms[this.deleteRoomIndex].id);
+      this.deleteRoomModalOpened = true; // console.log(this.guchiRooms[this.deleteRoomIndex].id);
     },
     deleteRoomModalClose: function deleteRoomModalClose() {
       this.keepScrollWhenClose();
@@ -18929,8 +19437,7 @@ __webpack_require__.r(__webpack_exports__);
     var _this2 = this;
 
     axios.get('/api/user').then(function (res) {
-      _this2.form = res.data;
-      console.log(_this2.form);
+      _this2.form = res.data; // console.log(this.form);
     });
   },
   beforeRouteLeave: function beforeRouteLeave(to, from, next) {
@@ -19474,6 +19981,27 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -19514,6 +20042,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         //   path: '',
         // }
       ],
+      tooLongEditBodyMessage: '',
       editErrors: [],
       edited: false,
       // 編集したかどうか
@@ -19581,6 +20110,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         //   replyFormOpened: false,
         //   replyInput: '',
         //   replyErrors: [],
+        //   tooLongReplyMessage: '',
         //   replyHeight: '31px',
         //   replies: [
         //     {
@@ -19604,7 +20134,13 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       // 新規コメント、返信
       newComment: {},
       newReply: {},
+      // コメント投稿関連
       commentErrors: [],
+      tooLongCommentMessage: '',
+      // コメントが長すぎるというメッセージ
+      commentProcessing: false,
+      // コメント処理中
+      replyProcessing: false,
       // 画像モーダル
       modalImageShow: false,
       modalImage: '',
@@ -19642,7 +20178,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       var _this = this;
 
       axios.get('/api/authandgenre').then(function (res) {
-        console.log(res.data);
+        // console.log(res.data);
         _this.authUser = res.data.authUser;
         _this.genres = res.data.genres;
 
@@ -19665,40 +20201,19 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       axios.get('/api/post/user/get/' + userId + '?loaded_posts_count=' + this.posts.length).then(function (res) {
         var _this2$posts;
 
-        console.log(res.data);
-
+        // console.log(res.data);
         (_this2$posts = _this2.posts).push.apply(_this2$posts, _toConsumableArray(res.data.posts));
 
         if (_this2.posts.length === res.data.postsTotal) {
           _this2.loadMorePosts = false;
         }
 
-        _this2.postsLoading = false;
-        console.log(_this2.posts.length);
+        _this2.postsLoading = false; // console.log(this.posts.length);
       })["catch"](function (error) {
         console.log(error);
         _this2.postsLoading = false;
       });
     },
-    // getPosts(userId) {
-    //   // 読み込み中か最後のページなら読み込まない。
-    //   if (this.isLastPage) return;
-    //   if (this.itemLoading) return;
-    //   this.itemLoading = true;
-    //   axios.get('/api/post/user/get/' + userId + '?page=' + this.page)
-    //     .then((res) => {
-    //       console.log(res.data);
-    //       this.posts.push(...res.data.data);
-    //       this.itemLoading = false;
-    //       if (this.page === res.data.last_page) {
-    //         this.isLastPage = true;
-    //       }
-    //       this.page++;
-    //     }).catch((error) => {
-    //       console.log(error);
-    //       this.itemLoading = false;
-    //     });
-    // },
     // 無限スクロールのリセット
     resetPaginate: function resetPaginate() {
       this.posts = [];
@@ -19807,9 +20322,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         _this6.editHeight = _this6.$refs.editarea.scrollHeight + 'px';
       }); // 今編集してるpostsのインデックスを記憶
 
-      this.editPostIndex = i;
-      console.log(this.editPost);
-      console.log(this.editUrls);
+      this.editPostIndex = i; // console.log(this.editPost);
+      // console.log(this.editUrls);
     },
     // 投稿編集モーダルを閉じる
     editPostModalClose: function editPostModalClose() {
@@ -19830,9 +20344,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         this.closePostMenu(this.editPostIndex);
       }
 
-      this.modalPostEditShow = false;
-      console.log(this.editPost);
-      console.log(this.posts);
+      this.modalPostEditShow = false; // console.log(this.editPost);
+      // console.log(this.posts);
     },
     // 投稿編集の画像アップロード
     uploadEditFile: function uploadEditFile() {
@@ -19862,10 +20375,9 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
           this.nextNewImageId--;
         }
 
-        this.$refs.editpreview.value = '';
-        console.log(this.editPost.deleteOldImagesId);
-        console.log(this.newImages);
-        console.log(this.editUrls);
+        this.$refs.editpreview.value = ''; // console.log(this.editPost.deleteOldImagesId);
+        // console.log(this.newImages);
+        // console.log(this.editUrls);
       }
     },
     // 投稿編集の画像プレビューの削除
@@ -19883,17 +20395,28 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
 
       URL.revokeObjectURL(path);
-      this.editUrls.splice(index, 1);
-      console.log(this.editPost.deleteOldImagesId);
-      console.log(this.newImages);
-      console.log(this.editUrls);
+      this.editUrls.splice(index, 1); // console.log(this.editPost.deleteOldImagesId);
+      // console.log(this.newImages);
+      // console.log(this.editUrls);
     },
     // 編集した投稿を送信
     editSubmit: function editSubmit() {
       var _this7 = this;
 
       if (this.editProcessing) return;
-      this.editProcessing = true;
+      this.editProcessing = true; // 文字数判定
+
+      var textCount = this.editPost.body.replace(/\n/g, '').length; // console.log(textCount);
+
+      if (textCount > 250) {
+        this.tooLongEditBodyMessage = '250文字以内にしてください！（現在' + textCount + '文字）';
+        this.editErrors = [];
+        this.editProcessing = false;
+        return;
+      } else {
+        this.tooLongEditBodyMessage = '';
+      }
+
       this.editPost.newImageFiles = this.newImages.map(function (obj) {
         return obj.file;
       });
@@ -20024,16 +20547,14 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       axios.get('/api/comments/get/' + this.modalPostId + '?loaded_comments_count=' + this.modalPostComments.length).then(function (res) {
         var _this8$modalPostComme;
 
-        console.log(res.data);
-
+        // console.log(res.data);
         (_this8$modalPostComme = _this8.modalPostComments).push.apply(_this8$modalPostComme, _toConsumableArray(res.data.comments));
 
         if (_this8.modalPostComments.length === res.data.commentsTotal) {
           _this8.loadCommentsMore = false;
         }
 
-        _this8.commentsLoading = false;
-        console.log(_this8.modalPostComments.length);
+        _this8.commentsLoading = false; // console.log(this.modalPostComments.length);
       })["catch"](function (error) {
         console.log(error);
         _this8.commentsLoading = false;
@@ -20058,7 +20579,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       axios.get('/api/donmai/users/' + this.modalPostId + '?page=' + this.donmaiPage).then(function (res) {
         var _this9$modalDonmaiUse;
 
-        console.log(res.data);
+        // console.log(res.data);
         var users = res.data.data.map(function (obj) {
           return obj.user;
         });
@@ -20154,6 +20675,20 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     commentPost: function commentPost() {
       var _this12 = this;
 
+      if (this.commentProcessing) return;
+      this.commentProcessing = true; // 文字数判定
+
+      var textCount = this.commentInput.replace(/\n/g, '').length; // console.log(textCount);
+
+      if (textCount > 200) {
+        this.tooLongCommentMessage = '200文字以内にしてください！（現在' + textCount + '文字）';
+        this.commentErrors = [];
+        this.commentProcessing = false;
+        return;
+      } else {
+        this.tooLongCommentMessage = '';
+      }
+
       var data = new FormData();
       data.append('postId', this.modalPostId);
       data.append('body', this.commentInput);
@@ -20165,10 +20700,12 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         _this12.posts[_this12.modalPostIndex].commentCount++;
         _this12.modalPostCommentCount++;
         _this12.commentErrors = [];
+        _this12.commentProcessing = false;
       })["catch"](function (error) {
         // console.log(error.response.data.errors);
         // this.modalPostComments[i].replyErrors = [];
         _this12.commentErrors = error.response.data.errors;
+        _this12.commentProcessing = false;
       });
     },
     // コメント削除
@@ -20196,16 +20733,14 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       axios.get('/api/replies/get/' + this.modalPostComments[i].id + '?loaded_replies_count=' + this.modalPostComments[i].replies.length).then(function (res) {
         var _this14$modalPostComm;
 
-        console.log(res.data);
-
+        // console.log(res.data);
         (_this14$modalPostComm = _this14.modalPostComments[i].replies).push.apply(_this14$modalPostComm, _toConsumableArray(res.data.replies));
 
         if (_this14.modalPostComments[i].replies.length === res.data.repliesTotal) {
           _this14.modalPostComments[i].loadRepliesMore = false;
         }
 
-        _this14.modalPostComments[i].repliesLoading = false;
-        console.log(_this14.modalPostComments[i].replies.length);
+        _this14.modalPostComments[i].repliesLoading = false; // console.log(this.modalPostComments[i].replies.length);
       })["catch"](function (error) {
         console.log(error);
         _this14.modalPostComments[i].repliesLoading = false;
@@ -20242,6 +20777,20 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     reply: function reply(i) {
       var _this15 = this;
 
+      if (this.replyProcessing) return;
+      this.replyProcessing = true; // 文字数判定
+
+      var textCount = this.modalPostComments[i].replyInput.replace(/\n/g, '').length; // console.log(textCount);
+
+      if (textCount > 200) {
+        this.modalPostComments[i].tooLongReplyMessage = '200文字以内にしてください！（現在' + textCount + '文字）';
+        this.modalPostComments[i].replyErrors = [];
+        this.replyProcessing = false;
+        return;
+      } else {
+        this.modalPostComments[i].tooLongReplyMessage = '';
+      }
+
       var data = new FormData();
       data.append('body', this.modalPostComments[i].replyInput);
       data.append('commentId', this.modalPostComments[i].id);
@@ -20255,11 +20804,12 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         _this15.modalPostComments[i].replyInput = '';
         _this15.modalPostComments[i].replyErrors = [];
         _this15.posts[_this15.modalPostIndex].commentCount++;
-        _this15.modalPostCommentCount++; // this.modalPostComments[i].replyShow = true;
-
+        _this15.modalPostCommentCount++;
         _this15.modalPostComments[i].replyFormOpened = false;
+        _this15.replyProcessing = false;
       })["catch"](function (error) {
-        _this15.modalPostComments[i].replyErrors = error.response.data.errors; // console.log(this.modalPostComments[i].replyErrors)
+        _this15.modalPostComments[i].replyErrors = error.response.data.errors;
+        _this15.replyProcessing = false; // console.log(this.modalPostComments[i].replyErrors)
       });
     },
     // コメントへの返信の削除
@@ -20400,7 +20950,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
     this.loadMorePosts = false;
 
-    if (!this.editProcessing && !this.deleteProssesing) {
+    if (!this.editProcessing && !this.deleteProssesing && !this.commentProcessing && !this.replyProcessing) {
       next();
     }
   },
@@ -20419,7 +20969,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     this.resetPaginate();
     this.getPosts(to.params.id);
 
-    if (!this.editProcessing && !this.deleteProssesing) {
+    if (!this.editProcessing && !this.deleteProssesing && !this.commentProcessing && !this.replyProcessing) {
       next();
     }
   }
@@ -65217,22 +65767,42 @@ var render = function() {
                             class: { "self-id": guchi.isSelf }
                           },
                           [
-                            guchi.user.icon
-                              ? _c("img", { attrs: { src: guchi.user.icon } })
-                              : _vm._e(),
-                            !guchi.user.icon
-                              ? _c("img", {
-                                  attrs: { src: "../../image/user.png" }
-                                })
-                              : _vm._e(),
+                            _c(
+                              "router-link",
+                              {
+                                attrs: {
+                                  to: {
+                                    name: "user",
+                                    params: { id: guchi.user.id }
+                                  }
+                                }
+                              },
+                              [
+                                guchi.user.icon
+                                  ? _c("img", {
+                                      attrs: { src: guchi.user.icon }
+                                    })
+                                  : _vm._e(),
+                                _vm._v(" "),
+                                !guchi.user.icon
+                                  ? _c("img", {
+                                      attrs: { src: "../../image/user.png" }
+                                    })
+                                  : _vm._e(),
+                                _vm._v(
+                                  "\n                " +
+                                    _vm._s(guchi.user.name) +
+                                    " \n              "
+                                )
+                              ]
+                            ),
                             _vm._v(
-                              " " +
-                                _vm._s(guchi.user.name) +
-                                " " +
+                              "\n              " +
                                 _vm._s(guchi.created_at) +
                                 "\n            "
                             )
-                          ]
+                          ],
+                          1
                         )
                       ])
                     : _vm._e(),
@@ -65347,6 +65917,16 @@ var render = function() {
             ? _c("div", { staticClass: "user-edit-error" }, [
                 _vm._v(
                   "\n          " + _vm._s(_vm.errors.body[0]) + "\n        "
+                )
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.tooLongGuchiMessage
+            ? _c("div", { staticClass: "user-edit-error" }, [
+                _vm._v(
+                  "\n          " +
+                    _vm._s(_vm.tooLongGuchiMessage) +
+                    "\n        "
                 )
               ])
             : _vm._e(),
@@ -66299,6 +66879,12 @@ var render = function() {
             ])
           : _vm._e(),
         _vm._v(" "),
+        _vm.tooLongBodyMessage
+          ? _c("div", { staticClass: "user-edit-error" }, [
+              _vm._v("\n        " + _vm._s(_vm.tooLongBodyMessage) + "\n      ")
+            ])
+          : _vm._e(),
+        _vm._v(" "),
         _c("div", { staticClass: "select-genre" }, [
           _c(
             "select",
@@ -66471,234 +67057,288 @@ var render = function() {
       { key: _vm.reloadKey },
       [
         _vm._l(_vm.posts, function(post, index) {
-          return _c("div", { key: post.id, staticClass: "posts" }, [
-            _c(
-              "div",
-              { staticClass: "logo-area" },
-              [
-                _c(
-                  "router-link",
-                  {
-                    attrs: {
-                      to: { name: "user", params: { id: post.user.id } }
-                    }
-                  },
-                  [
-                    post.user.icon
-                      ? _c("img", { attrs: { src: post.user.icon } })
-                      : _vm._e(),
-                    _vm._v(" "),
-                    !post.user.icon
-                      ? _c("img", { attrs: { src: "../image/user.png" } })
-                      : _vm._e()
-                  ]
-                )
-              ],
-              1
-            ),
-            _vm._v(" "),
-            _c("div", { staticClass: "input-area" }, [
-              _c("div", { staticClass: "post-name-menu" }, [
-                _c("div", { staticClass: "user-name-post" }, [
-                  _vm._v(_vm._s(post.user.name))
-                ]),
-                _vm._v(" "),
-                post.user.id === _vm.authUser.id && !post.postMenuOpened
-                  ? _c(
-                      "div",
-                      {
-                        staticClass: "post-menu-btn",
-                        on: {
-                          click: function($event) {
-                            return _vm.openPostMenu(index)
-                          }
-                        }
-                      },
-                      [_vm._v("\n            ...\n          ")]
-                    )
-                  : _vm._e(),
-                _vm._v(" "),
-                post.postMenuOpened
-                  ? _c("div", { staticClass: "post-menus" }, [
-                      _c(
+          return _c("div", { key: post.id }, [
+            post.user
+              ? _c("div", { staticClass: "posts" }, [
+                  post.user
+                    ? _c(
                         "div",
-                        {
-                          staticClass: "post-menu-edit",
-                          on: {
-                            click: function($event) {
-                              return _vm.editPostModalOpen(index)
-                            }
-                          }
-                        },
-                        [_vm._v("編集")]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        {
-                          staticClass: "post-menu-delete",
-                          on: {
-                            click: function($event) {
-                              return _vm.deletePostModalOpen(index)
-                            }
-                          }
-                        },
-                        [_vm._v("削除")]
-                      )
-                    ])
-                  : _vm._e(),
-                _vm._v(" "),
-                post.postMenuOpened
-                  ? _c("div", {
-                      staticClass: "post-menu-cover",
-                      on: {
-                        click: function($event) {
-                          return _vm.closePostMenu(index)
-                        }
-                      }
-                    })
-                  : _vm._e()
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "post-body" }, [
-                _vm._v(_vm._s(post.body))
-              ]),
-              _vm._v(" "),
-              post.tags
-                ? _c(
-                    "div",
-                    { staticClass: "post-tags" },
-                    _vm._l(post.tags, function(tag, index) {
-                      return _c(
-                        "router-link",
-                        {
-                          key: index,
-                          attrs: {
-                            to: { name: "tags.new", params: { name: tag.name } }
-                          }
-                        },
-                        [
-                          _vm._v(
-                            "\n            #" +
-                              _vm._s(tag.name) +
-                              "\n          "
-                          )
-                        ]
-                      )
-                    }),
-                    1
-                  )
-                : _vm._e(),
-              _vm._v(" "),
-              post.post_images && post.post_images.length > 0
-                ? _c(
-                    "div",
-                    { staticClass: "post-image-view" },
-                    _vm._l(post.post_images, function(image, index) {
-                      return _c(
-                        "div",
-                        {
-                          key: index,
-                          staticClass: "each-preview",
-                          class: {
-                            "one-image-pre": post.post_images.length == 1,
-                            "two-image-pre": post.post_images.length == 2,
-                            "three-image-pre": post.post_images.length == 3,
-                            "four-image-pre": post.post_images.length == 4,
-                            yokonaga: post.post_images.length == 3 && index == 0
-                          }
-                        },
+                        { staticClass: "logo-area" },
                         [
                           _c(
-                            "div",
+                            "router-link",
                             {
-                              staticClass: "each-image-box",
-                              on: {
-                                click: function($event) {
-                                  return _vm.openImageModal(image.path)
+                              attrs: {
+                                to: {
+                                  name: "user",
+                                  params: { id: post.user.id }
                                 }
                               }
                             },
                             [
-                              _c("div", {
-                                staticClass: "each-image",
-                                class: {
-                                  "one-each-image":
-                                    post.post_images.length == 1,
-                                  "two-each-image":
-                                    post.post_images.length == 2,
-                                  "three-each-image":
-                                    post.post_images.length == 3,
-                                  "four-each-image":
-                                    post.post_images.length == 4,
-                                  "yokonaga-image":
-                                    post.post_images.length == 3 && index == 0
-                                },
-                                style: {
-                                  backgroundImage: "url(" + image.path + ")"
-                                }
-                              })
+                              post.user.icon
+                                ? _c("img", { attrs: { src: post.user.icon } })
+                                : _vm._e(),
+                              _vm._v(" "),
+                              !post.user.icon
+                                ? _c("img", {
+                                    attrs: { src: "../image/user.png" }
+                                  })
+                                : _vm._e()
                             ]
                           )
-                        ]
+                        ],
+                        1
                       )
-                    }),
-                    0
-                  )
-                : _vm._e(),
-              _vm._v(" "),
-              _c("div", { staticClass: "post-btns" }, [
-                _c(
-                  "div",
-                  {
-                    staticClass: "post-donmai post-action-icon",
-                    on: {
-                      click: function($event) {
-                        return _vm.donmai(index)
-                      }
-                    }
-                  },
-                  [
-                    !post.donmai
-                      ? _c("img", {
-                          attrs: { src: "../image/donmai.png", width: "30px" }
-                        })
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "input-area" }, [
+                    post.user
+                      ? _c("div", { staticClass: "post-name-menu" }, [
+                          _c(
+                            "div",
+                            { staticClass: "user-name-post" },
+                            [
+                              _c(
+                                "router-link",
+                                {
+                                  attrs: {
+                                    to: {
+                                      name: "user",
+                                      params: { id: post.user.id }
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                " +
+                                      _vm._s(post.user.name) +
+                                      "\n              "
+                                  )
+                                ]
+                              )
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          post.user.id === _vm.authUser.id &&
+                          !post.postMenuOpened
+                            ? _c(
+                                "div",
+                                {
+                                  staticClass: "post-menu-btn",
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.openPostMenu(index)
+                                    }
+                                  }
+                                },
+                                [_vm._v("\n              ...\n            ")]
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
+                          post.postMenuOpened
+                            ? _c("div", { staticClass: "post-menus" }, [
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass: "post-menu-edit",
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.editPostModalOpen(index)
+                                      }
+                                    }
+                                  },
+                                  [_vm._v("編集")]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass: "post-menu-delete",
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.deletePostModalOpen(index)
+                                      }
+                                    }
+                                  },
+                                  [_vm._v("削除")]
+                                )
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
+                          post.postMenuOpened
+                            ? _c("div", {
+                                staticClass: "post-menu-cover",
+                                on: {
+                                  click: function($event) {
+                                    return _vm.closePostMenu(index)
+                                  }
+                                }
+                              })
+                            : _vm._e()
+                        ])
                       : _vm._e(),
                     _vm._v(" "),
-                    post.donmai
-                      ? _c("img", {
-                          attrs: { src: "../image/donmaied.png", width: "30px" }
-                        })
+                    _c("div", { staticClass: "post-body" }, [
+                      _vm._v(_vm._s(post.body))
+                    ]),
+                    _vm._v(" "),
+                    post.tags
+                      ? _c(
+                          "div",
+                          { staticClass: "post-tags" },
+                          _vm._l(post.tags, function(tag, index) {
+                            return _c(
+                              "router-link",
+                              {
+                                key: index,
+                                attrs: {
+                                  to: {
+                                    name: "tags.new",
+                                    params: { name: tag.name }
+                                  }
+                                }
+                              },
+                              [
+                                _vm._v(
+                                  "\n              #" +
+                                    _vm._s(tag.name) +
+                                    "\n            "
+                                )
+                              ]
+                            )
+                          }),
+                          1
+                        )
                       : _vm._e(),
-                    _vm._v(
-                      "\n            " +
-                        _vm._s(post.donmaiCount) +
-                        "\n          "
-                    )
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    staticClass: "post-comment-icon post-action-icon",
-                    on: {
-                      click: function($event) {
-                        return _vm.openModalPost(index)
-                      }
-                    }
-                  },
-                  [
-                    _c("img", { attrs: { src: "../image/comment.png" } }),
-                    _vm._v(
-                      "\n            " +
-                        _vm._s(post.commentCount) +
-                        "\n          "
-                    )
-                  ]
-                )
-              ])
-            ])
+                    _vm._v(" "),
+                    post.post_images && post.post_images.length > 0
+                      ? _c(
+                          "div",
+                          { staticClass: "post-image-view" },
+                          _vm._l(post.post_images, function(image, index) {
+                            return _c(
+                              "div",
+                              {
+                                key: index,
+                                staticClass: "each-preview",
+                                class: {
+                                  "one-image-pre": post.post_images.length == 1,
+                                  "two-image-pre": post.post_images.length == 2,
+                                  "three-image-pre":
+                                    post.post_images.length == 3,
+                                  "four-image-pre":
+                                    post.post_images.length == 4,
+                                  yokonaga:
+                                    post.post_images.length == 3 && index == 0
+                                }
+                              },
+                              [
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass: "each-image-box",
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.openImageModal(image.path)
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _c("div", {
+                                      staticClass: "each-image",
+                                      class: {
+                                        "one-each-image":
+                                          post.post_images.length == 1,
+                                        "two-each-image":
+                                          post.post_images.length == 2,
+                                        "three-each-image":
+                                          post.post_images.length == 3,
+                                        "four-each-image":
+                                          post.post_images.length == 4,
+                                        "yokonaga-image":
+                                          post.post_images.length == 3 &&
+                                          index == 0
+                                      },
+                                      style: {
+                                        backgroundImage:
+                                          "url(" + image.path + ")"
+                                      }
+                                    })
+                                  ]
+                                )
+                              ]
+                            )
+                          }),
+                          0
+                        )
+                      : _vm._e(),
+                    _vm._v(" "),
+                    post.user
+                      ? _c("div", { staticClass: "post-btns" }, [
+                          _c(
+                            "div",
+                            {
+                              staticClass: "post-donmai post-action-icon",
+                              on: {
+                                click: function($event) {
+                                  return _vm.donmai(index)
+                                }
+                              }
+                            },
+                            [
+                              !post.donmai
+                                ? _c("img", {
+                                    attrs: {
+                                      src: "../image/donmai.png",
+                                      width: "30px"
+                                    }
+                                  })
+                                : _vm._e(),
+                              _vm._v(" "),
+                              post.donmai
+                                ? _c("img", {
+                                    attrs: {
+                                      src: "../image/donmaied.png",
+                                      width: "30px"
+                                    }
+                                  })
+                                : _vm._e(),
+                              _vm._v(
+                                "\n              " +
+                                  _vm._s(post.donmaiCount) +
+                                  "\n            "
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              staticClass: "post-comment-icon post-action-icon",
+                              on: {
+                                click: function($event) {
+                                  return _vm.openModalPost(index)
+                                }
+                              }
+                            },
+                            [
+                              _c("img", {
+                                attrs: { src: "../image/comment.png" }
+                              }),
+                              _vm._v(
+                                "\n              " +
+                                  _vm._s(post.commentCount) +
+                                  "\n            "
+                              )
+                            ]
+                          )
+                        ])
+                      : _vm._e()
+                  ])
+                ])
+              : _vm._e()
           ])
         }),
         _vm._v(" "),
@@ -66766,9 +67406,31 @@ var render = function() {
                     "div",
                     { staticClass: "input-area" },
                     [
-                      _c("div", { staticClass: "user-name-post" }, [
-                        _vm._v(_vm._s(_vm.modalPostUserName))
-                      ]),
+                      _c(
+                        "div",
+                        { staticClass: "user-name-post" },
+                        [
+                          _c(
+                            "router-link",
+                            {
+                              attrs: {
+                                to: {
+                                  name: "user",
+                                  params: { id: _vm.modalPostUserId }
+                                }
+                              }
+                            },
+                            [
+                              _vm._v(
+                                "\n              " +
+                                  _vm._s(_vm.modalPostUserName) +
+                                  "\n            "
+                              )
+                            ]
+                          )
+                        ],
+                        1
+                      ),
                       _vm._v(" "),
                       _c("div", { staticClass: "post-body" }, [
                         _vm._v(_vm._s(_vm.modalPostBody))
@@ -66936,6 +67598,16 @@ var render = function() {
                               ])
                             : _vm._e(),
                           _vm._v(" "),
+                          _vm.tooLongCommentMessage
+                            ? _c("div", { staticClass: "user-edit-error" }, [
+                                _vm._v(
+                                  "\n                " +
+                                    _vm._s(_vm.tooLongCommentMessage) +
+                                    "\n              "
+                                )
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
                           _c(
                             "div",
                             {
@@ -67023,12 +67695,26 @@ var render = function() {
                                       "div",
                                       { staticClass: "overlay-post-name" },
                                       [
-                                        _vm._v(
-                                          "\n                  " +
-                                            _vm._s(comment.user.name) +
-                                            "\n                "
+                                        _c(
+                                          "router-link",
+                                          {
+                                            attrs: {
+                                              to: {
+                                                name: "user",
+                                                params: { id: comment.user.id }
+                                              }
+                                            }
+                                          },
+                                          [
+                                            _vm._v(
+                                              "\n                    " +
+                                                _vm._s(comment.user.name) +
+                                                "\n                  "
+                                            )
+                                          ]
                                         )
-                                      ]
+                                      ],
+                                      1
                                     ),
                                     _vm._v(" "),
                                     _c(
@@ -67210,6 +67896,22 @@ var render = function() {
                                           )
                                         : _vm._e(),
                                       _vm._v(" "),
+                                      comment.tooLongReplyMessage
+                                        ? _c(
+                                            "div",
+                                            { staticClass: "user-edit-error" },
+                                            [
+                                              _vm._v(
+                                                "\n                  " +
+                                                  _vm._s(
+                                                    comment.tooLongReplyMessage
+                                                  ) +
+                                                  "\n                "
+                                              )
+                                            ]
+                                          )
+                                        : _vm._e(),
+                                      _vm._v(" "),
                                       _c(
                                         "div",
                                         { staticClass: "comment-reply-btns" },
@@ -67369,15 +68071,36 @@ var render = function() {
                                                                 "overlay-post-name"
                                                             },
                                                             [
-                                                              _vm._v(
-                                                                "\n                          " +
-                                                                  _vm._s(
-                                                                    reply.user
-                                                                      .name
-                                                                  ) +
-                                                                  "\n                        "
+                                                              _c(
+                                                                "router-link",
+                                                                {
+                                                                  attrs: {
+                                                                    to: {
+                                                                      name:
+                                                                        "user",
+                                                                      params: {
+                                                                        id:
+                                                                          reply
+                                                                            .user
+                                                                            .id
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                },
+                                                                [
+                                                                  _vm._v(
+                                                                    "\n                            " +
+                                                                      _vm._s(
+                                                                        reply
+                                                                          .user
+                                                                          .name
+                                                                      ) +
+                                                                      "\n                          "
+                                                                  )
+                                                                ]
                                                               )
-                                                            ]
+                                                            ],
+                                                            1
                                                           ),
                                                           _vm._v(" "),
                                                           _c(
@@ -67648,6 +68371,16 @@ var render = function() {
                       _vm._v(
                         "\n          " +
                           _vm._s(_vm.editErrors.body[0]) +
+                          "\n        "
+                      )
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.tooLongEditBodyMessage
+                  ? _c("div", { staticClass: "user-edit-error" }, [
+                      _vm._v(
+                        "\n          " +
+                          _vm._s(_vm.tooLongEditBodyMessage) +
                           "\n        "
                       )
                     ])
@@ -68109,9 +68842,31 @@ var render = function() {
                   _vm._v(" "),
                   _c("div", { staticClass: "input-area" }, [
                     _c("div", { staticClass: "post-name-menu" }, [
-                      _c("div", { staticClass: "user-name-post" }, [
-                        _vm._v(_vm._s(post.user.name))
-                      ]),
+                      _c(
+                        "div",
+                        { staticClass: "user-name-post" },
+                        [
+                          _c(
+                            "router-link",
+                            {
+                              attrs: {
+                                to: {
+                                  name: "user",
+                                  params: { id: post.user.id }
+                                }
+                              }
+                            },
+                            [
+                              _vm._v(
+                                "\n                " +
+                                  _vm._s(post.user.name) +
+                                  "\n              "
+                              )
+                            ]
+                          )
+                        ],
+                        1
+                      ),
                       _vm._v(" "),
                       post.user.id === _vm.authUser.id && !post.postMenuOpened
                         ? _c(
@@ -68392,9 +69147,31 @@ var render = function() {
                     "div",
                     { staticClass: "input-area" },
                     [
-                      _c("div", { staticClass: "user-name-post" }, [
-                        _vm._v(_vm._s(_vm.modalPostUserName))
-                      ]),
+                      _c(
+                        "div",
+                        { staticClass: "user-name-post" },
+                        [
+                          _c(
+                            "router-link",
+                            {
+                              attrs: {
+                                to: {
+                                  name: "user",
+                                  params: { id: _vm.modalPostUserId }
+                                }
+                              }
+                            },
+                            [
+                              _vm._v(
+                                "\n              " +
+                                  _vm._s(_vm.modalPostUserName) +
+                                  "\n            "
+                              )
+                            ]
+                          )
+                        ],
+                        1
+                      ),
                       _vm._v(" "),
                       _c("div", { staticClass: "post-body" }, [
                         _vm._v(_vm._s(_vm.modalPostBody))
@@ -68562,6 +69339,16 @@ var render = function() {
                               ])
                             : _vm._e(),
                           _vm._v(" "),
+                          _vm.tooLongCommentMessage
+                            ? _c("div", { staticClass: "user-edit-error" }, [
+                                _vm._v(
+                                  "\n                " +
+                                    _vm._s(_vm.tooLongCommentMessage) +
+                                    "\n              "
+                                )
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
                           _c(
                             "div",
                             {
@@ -68649,12 +69436,26 @@ var render = function() {
                                       "div",
                                       { staticClass: "overlay-post-name" },
                                       [
-                                        _vm._v(
-                                          "\n                  " +
-                                            _vm._s(comment.user.name) +
-                                            "\n                "
+                                        _c(
+                                          "router-link",
+                                          {
+                                            attrs: {
+                                              to: {
+                                                name: "user",
+                                                params: { id: comment.user.id }
+                                              }
+                                            }
+                                          },
+                                          [
+                                            _vm._v(
+                                              "\n                    " +
+                                                _vm._s(comment.user.name) +
+                                                "\n                  "
+                                            )
+                                          ]
                                         )
-                                      ]
+                                      ],
+                                      1
                                     ),
                                     _vm._v(" "),
                                     _c(
@@ -68836,6 +69637,22 @@ var render = function() {
                                           )
                                         : _vm._e(),
                                       _vm._v(" "),
+                                      comment.tooLongReplyMessage
+                                        ? _c(
+                                            "div",
+                                            { staticClass: "user-edit-error" },
+                                            [
+                                              _vm._v(
+                                                "\n                  " +
+                                                  _vm._s(
+                                                    comment.tooLongReplyMessage
+                                                  ) +
+                                                  "\n                "
+                                              )
+                                            ]
+                                          )
+                                        : _vm._e(),
+                                      _vm._v(" "),
                                       _c(
                                         "div",
                                         { staticClass: "comment-reply-btns" },
@@ -68995,15 +69812,36 @@ var render = function() {
                                                                 "overlay-post-name"
                                                             },
                                                             [
-                                                              _vm._v(
-                                                                "\n                          " +
-                                                                  _vm._s(
-                                                                    reply.user
-                                                                      .name
-                                                                  ) +
-                                                                  "\n                        "
+                                                              _c(
+                                                                "router-link",
+                                                                {
+                                                                  attrs: {
+                                                                    to: {
+                                                                      name:
+                                                                        "user",
+                                                                      params: {
+                                                                        id:
+                                                                          reply
+                                                                            .user
+                                                                            .id
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                },
+                                                                [
+                                                                  _vm._v(
+                                                                    "\n                            " +
+                                                                      _vm._s(
+                                                                        reply
+                                                                          .user
+                                                                          .name
+                                                                      ) +
+                                                                      "\n                          "
+                                                                  )
+                                                                ]
                                                               )
-                                                            ]
+                                                            ],
+                                                            1
                                                           ),
                                                           _vm._v(" "),
                                                           _c(
@@ -69274,6 +70112,16 @@ var render = function() {
                       _vm._v(
                         "\n          " +
                           _vm._s(_vm.editErrors.body[0]) +
+                          "\n        "
+                      )
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.tooLongEditBodyMessage
+                  ? _c("div", { staticClass: "user-edit-error" }, [
+                      _vm._v(
+                        "\n          " +
+                          _vm._s(_vm.tooLongEditBodyMessage) +
                           "\n        "
                       )
                     ])
@@ -69738,9 +70586,31 @@ var render = function() {
                     _vm._v(" "),
                     _c("div", { staticClass: "input-area" }, [
                       _c("div", { staticClass: "post-name-menu" }, [
-                        _c("div", { staticClass: "user-name-post" }, [
-                          _vm._v(_vm._s(post.user.name))
-                        ]),
+                        _c(
+                          "div",
+                          { staticClass: "user-name-post" },
+                          [
+                            _c(
+                              "router-link",
+                              {
+                                attrs: {
+                                  to: {
+                                    name: "user",
+                                    params: { id: post.user.id }
+                                  }
+                                }
+                              },
+                              [
+                                _vm._v(
+                                  "\n                  " +
+                                    _vm._s(post.user.name) +
+                                    "\n                "
+                                )
+                              ]
+                            )
+                          ],
+                          1
+                        ),
                         _vm._v(" "),
                         post.user.id === _vm.authUser.id && !post.postMenuOpened
                           ? _c(
@@ -70028,9 +70898,31 @@ var render = function() {
                     "div",
                     { staticClass: "input-area" },
                     [
-                      _c("div", { staticClass: "user-name-post" }, [
-                        _vm._v(_vm._s(_vm.modalPostUserName))
-                      ]),
+                      _c(
+                        "div",
+                        { staticClass: "user-name-post" },
+                        [
+                          _c(
+                            "router-link",
+                            {
+                              attrs: {
+                                to: {
+                                  name: "user",
+                                  params: { id: _vm.modalPostUserId }
+                                }
+                              }
+                            },
+                            [
+                              _vm._v(
+                                "\n              " +
+                                  _vm._s(_vm.modalPostUserName) +
+                                  "\n            "
+                              )
+                            ]
+                          )
+                        ],
+                        1
+                      ),
                       _vm._v(" "),
                       _c("div", { staticClass: "post-body" }, [
                         _vm._v(_vm._s(_vm.modalPostBody))
@@ -70203,6 +71095,16 @@ var render = function() {
                               ])
                             : _vm._e(),
                           _vm._v(" "),
+                          _vm.tooLongCommentMessage
+                            ? _c("div", { staticClass: "user-edit-error" }, [
+                                _vm._v(
+                                  "\n                " +
+                                    _vm._s(_vm.tooLongCommentMessage) +
+                                    "\n              "
+                                )
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
                           _c(
                             "div",
                             {
@@ -70290,12 +71192,26 @@ var render = function() {
                                       "div",
                                       { staticClass: "overlay-post-name" },
                                       [
-                                        _vm._v(
-                                          "\n                  " +
-                                            _vm._s(comment.user.name) +
-                                            "\n                "
+                                        _c(
+                                          "router-link",
+                                          {
+                                            attrs: {
+                                              to: {
+                                                name: "user",
+                                                params: { id: comment.user.id }
+                                              }
+                                            }
+                                          },
+                                          [
+                                            _vm._v(
+                                              "\n                    " +
+                                                _vm._s(comment.user.name) +
+                                                "\n                  "
+                                            )
+                                          ]
                                         )
-                                      ]
+                                      ],
+                                      1
                                     ),
                                     _vm._v(" "),
                                     _c(
@@ -70477,6 +71393,22 @@ var render = function() {
                                           )
                                         : _vm._e(),
                                       _vm._v(" "),
+                                      comment.tooLongReplyMessage
+                                        ? _c(
+                                            "div",
+                                            { staticClass: "user-edit-error" },
+                                            [
+                                              _vm._v(
+                                                "\n                  " +
+                                                  _vm._s(
+                                                    comment.tooLongReplyMessage
+                                                  ) +
+                                                  "\n                "
+                                              )
+                                            ]
+                                          )
+                                        : _vm._e(),
+                                      _vm._v(" "),
                                       _c(
                                         "div",
                                         { staticClass: "comment-reply-btns" },
@@ -70636,15 +71568,36 @@ var render = function() {
                                                                 "overlay-post-name"
                                                             },
                                                             [
-                                                              _vm._v(
-                                                                "\n                          " +
-                                                                  _vm._s(
-                                                                    reply.user
-                                                                      .name
-                                                                  ) +
-                                                                  "\n                        "
+                                                              _c(
+                                                                "router-link",
+                                                                {
+                                                                  attrs: {
+                                                                    to: {
+                                                                      name:
+                                                                        "user",
+                                                                      params: {
+                                                                        id:
+                                                                          reply
+                                                                            .user
+                                                                            .id
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                },
+                                                                [
+                                                                  _vm._v(
+                                                                    "\n                            " +
+                                                                      _vm._s(
+                                                                        reply
+                                                                          .user
+                                                                          .name
+                                                                      ) +
+                                                                      "\n                          "
+                                                                  )
+                                                                ]
                                                               )
-                                                            ]
+                                                            ],
+                                                            1
                                                           ),
                                                           _vm._v(" "),
                                                           _c(
@@ -70920,6 +71873,16 @@ var render = function() {
                     ])
                   : _vm._e(),
                 _vm._v(" "),
+                _vm.tooLongEditBodyMessage
+                  ? _c("div", { staticClass: "user-edit-error" }, [
+                      _vm._v(
+                        "\n          " +
+                          _vm._s(_vm.tooLongEditBodyMessage) +
+                          "\n        "
+                      )
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
                 _c("div", { staticClass: "select-genre" }, [
                   _c(
                     "select",
@@ -71103,17 +72066,6 @@ var render = function() {
                         on: { click: _vm.editSubmit }
                       },
                       [_vm._v("更新")]
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "submit" }, [
-                    _c(
-                      "div",
-                      {
-                        staticClass: "submit-btn",
-                        on: { click: _vm.editCheck }
-                      },
-                      [_vm._v("チェック")]
                     )
                   ])
                 ])
@@ -72237,9 +73189,31 @@ var render = function() {
                   _vm._v(" "),
                   _c("div", { staticClass: "input-area" }, [
                     _c("div", { staticClass: "post-name-menu" }, [
-                      _c("div", { staticClass: "user-name-post" }, [
-                        _vm._v(_vm._s(post.user.name))
-                      ]),
+                      _c(
+                        "div",
+                        { staticClass: "user-name-post" },
+                        [
+                          _c(
+                            "router-link",
+                            {
+                              attrs: {
+                                to: {
+                                  name: "user",
+                                  params: { id: post.user.id }
+                                }
+                              }
+                            },
+                            [
+                              _vm._v(
+                                "\n                " +
+                                  _vm._s(post.user.name) +
+                                  "\n              "
+                              )
+                            ]
+                          )
+                        ],
+                        1
+                      ),
                       _vm._v(" "),
                       post.user.id === _vm.authUser.id && !post.postMenuOpened
                         ? _c(
@@ -72524,9 +73498,31 @@ var render = function() {
                     "div",
                     { staticClass: "input-area" },
                     [
-                      _c("div", { staticClass: "user-name-post" }, [
-                        _vm._v(_vm._s(_vm.modalPostUserName))
-                      ]),
+                      _c(
+                        "div",
+                        { staticClass: "user-name-post" },
+                        [
+                          _c(
+                            "router-link",
+                            {
+                              attrs: {
+                                to: {
+                                  name: "user",
+                                  params: { id: _vm.modalPostUserId }
+                                }
+                              }
+                            },
+                            [
+                              _vm._v(
+                                "\n              " +
+                                  _vm._s(_vm.modalPostUserName) +
+                                  "\n            "
+                              )
+                            ]
+                          )
+                        ],
+                        1
+                      ),
                       _vm._v(" "),
                       _c("div", { staticClass: "post-body" }, [
                         _vm._v(_vm._s(_vm.modalPostBody))
@@ -72699,6 +73695,16 @@ var render = function() {
                               ])
                             : _vm._e(),
                           _vm._v(" "),
+                          _vm.tooLongCommentMessage
+                            ? _c("div", { staticClass: "user-edit-error" }, [
+                                _vm._v(
+                                  "\n                " +
+                                    _vm._s(_vm.tooLongCommentMessage) +
+                                    "\n              "
+                                )
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
                           _c(
                             "div",
                             {
@@ -72788,12 +73794,26 @@ var render = function() {
                                       "div",
                                       { staticClass: "overlay-post-name" },
                                       [
-                                        _vm._v(
-                                          "\n                  " +
-                                            _vm._s(comment.user.name) +
-                                            "\n                "
+                                        _c(
+                                          "router-link",
+                                          {
+                                            attrs: {
+                                              to: {
+                                                name: "user",
+                                                params: { id: comment.user.id }
+                                              }
+                                            }
+                                          },
+                                          [
+                                            _vm._v(
+                                              "\n                    " +
+                                                _vm._s(comment.user.name) +
+                                                "\n                  "
+                                            )
+                                          ]
                                         )
-                                      ]
+                                      ],
+                                      1
                                     ),
                                     _vm._v(" "),
                                     _c(
@@ -72975,6 +73995,22 @@ var render = function() {
                                           )
                                         : _vm._e(),
                                       _vm._v(" "),
+                                      comment.tooLongReplyMessage
+                                        ? _c(
+                                            "div",
+                                            { staticClass: "user-edit-error" },
+                                            [
+                                              _vm._v(
+                                                "\n                  " +
+                                                  _vm._s(
+                                                    comment.tooLongReplyMessage
+                                                  ) +
+                                                  "\n                "
+                                              )
+                                            ]
+                                          )
+                                        : _vm._e(),
+                                      _vm._v(" "),
                                       _c(
                                         "div",
                                         { staticClass: "comment-reply-btns" },
@@ -73134,15 +74170,36 @@ var render = function() {
                                                                 "overlay-post-name"
                                                             },
                                                             [
-                                                              _vm._v(
-                                                                "\n                          " +
-                                                                  _vm._s(
-                                                                    reply.user
-                                                                      .name
-                                                                  ) +
-                                                                  "\n                        "
+                                                              _c(
+                                                                "router-link",
+                                                                {
+                                                                  attrs: {
+                                                                    to: {
+                                                                      name:
+                                                                        "user",
+                                                                      params: {
+                                                                        id:
+                                                                          reply
+                                                                            .user
+                                                                            .id
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                },
+                                                                [
+                                                                  _vm._v(
+                                                                    "\n                            " +
+                                                                      _vm._s(
+                                                                        reply
+                                                                          .user
+                                                                          .name
+                                                                      ) +
+                                                                      "\n                          "
+                                                                  )
+                                                                ]
                                                               )
-                                                            ]
+                                                            ],
+                                                            1
                                                           ),
                                                           _vm._v(" "),
                                                           _c(
@@ -73418,6 +74475,16 @@ var render = function() {
                     ])
                   : _vm._e(),
                 _vm._v(" "),
+                _vm.tooLongEditBodyMessage
+                  ? _c("div", { staticClass: "user-edit-error" }, [
+                      _vm._v(
+                        "\n          " +
+                          _vm._s(_vm.tooLongEditBodyMessage) +
+                          "\n        "
+                      )
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
                 _c("div", { staticClass: "select-genre" }, [
                   _c(
                     "select",
@@ -73604,17 +74671,6 @@ var render = function() {
                         on: { click: _vm.editSubmit }
                       },
                       [_vm._v("更新")]
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "submit" }, [
-                    _c(
-                      "div",
-                      {
-                        staticClass: "submit-btn",
-                        on: { click: _vm.editCheck }
-                      },
-                      [_vm._v("チェック")]
                     )
                   ])
                 ])
@@ -73890,9 +74946,31 @@ var render = function() {
                   _vm._v(" "),
                   _c("div", { staticClass: "input-area" }, [
                     _c("div", { staticClass: "post-name-menu" }, [
-                      _c("div", { staticClass: "user-name-post" }, [
-                        _vm._v(_vm._s(post.user.name))
-                      ]),
+                      _c(
+                        "div",
+                        { staticClass: "user-name-post" },
+                        [
+                          _c(
+                            "router-link",
+                            {
+                              attrs: {
+                                to: {
+                                  name: "user",
+                                  params: { id: post.user.id }
+                                }
+                              }
+                            },
+                            [
+                              _vm._v(
+                                "\n                " +
+                                  _vm._s(post.user.name) +
+                                  "\n              "
+                              )
+                            ]
+                          )
+                        ],
+                        1
+                      ),
                       _vm._v(" "),
                       post.user.id === _vm.authUser.id && !post.postMenuOpened
                         ? _c(
@@ -74177,9 +75255,31 @@ var render = function() {
                     "div",
                     { staticClass: "input-area" },
                     [
-                      _c("div", { staticClass: "user-name-post" }, [
-                        _vm._v(_vm._s(_vm.modalPostUserName))
-                      ]),
+                      _c(
+                        "div",
+                        { staticClass: "user-name-post" },
+                        [
+                          _c(
+                            "router-link",
+                            {
+                              attrs: {
+                                to: {
+                                  name: "user",
+                                  params: { id: _vm.modalPostUserId }
+                                }
+                              }
+                            },
+                            [
+                              _vm._v(
+                                "\n              " +
+                                  _vm._s(_vm.modalPostUserName) +
+                                  "\n            "
+                              )
+                            ]
+                          )
+                        ],
+                        1
+                      ),
                       _vm._v(" "),
                       _c("div", { staticClass: "post-body" }, [
                         _vm._v(_vm._s(_vm.modalPostBody))
@@ -74352,6 +75452,16 @@ var render = function() {
                               ])
                             : _vm._e(),
                           _vm._v(" "),
+                          _vm.tooLongCommentMessage
+                            ? _c("div", { staticClass: "user-edit-error" }, [
+                                _vm._v(
+                                  "\n                " +
+                                    _vm._s(_vm.tooLongCommentMessage) +
+                                    "\n              "
+                                )
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
                           _c(
                             "div",
                             {
@@ -74441,12 +75551,26 @@ var render = function() {
                                       "div",
                                       { staticClass: "overlay-post-name" },
                                       [
-                                        _vm._v(
-                                          "\n                  " +
-                                            _vm._s(comment.user.name) +
-                                            "\n                "
+                                        _c(
+                                          "router-link",
+                                          {
+                                            attrs: {
+                                              to: {
+                                                name: "user",
+                                                params: { id: comment.user.id }
+                                              }
+                                            }
+                                          },
+                                          [
+                                            _vm._v(
+                                              "\n                    " +
+                                                _vm._s(comment.user.name) +
+                                                "\n                  "
+                                            )
+                                          ]
                                         )
-                                      ]
+                                      ],
+                                      1
                                     ),
                                     _vm._v(" "),
                                     _c(
@@ -74628,6 +75752,22 @@ var render = function() {
                                           )
                                         : _vm._e(),
                                       _vm._v(" "),
+                                      comment.tooLongReplyMessage
+                                        ? _c(
+                                            "div",
+                                            { staticClass: "user-edit-error" },
+                                            [
+                                              _vm._v(
+                                                "\n                  " +
+                                                  _vm._s(
+                                                    comment.tooLongReplyMessage
+                                                  ) +
+                                                  "\n                "
+                                              )
+                                            ]
+                                          )
+                                        : _vm._e(),
+                                      _vm._v(" "),
                                       _c(
                                         "div",
                                         { staticClass: "comment-reply-btns" },
@@ -74787,15 +75927,36 @@ var render = function() {
                                                                 "overlay-post-name"
                                                             },
                                                             [
-                                                              _vm._v(
-                                                                "\n                          " +
-                                                                  _vm._s(
-                                                                    reply.user
-                                                                      .name
-                                                                  ) +
-                                                                  "\n                        "
+                                                              _c(
+                                                                "router-link",
+                                                                {
+                                                                  attrs: {
+                                                                    to: {
+                                                                      name:
+                                                                        "user",
+                                                                      params: {
+                                                                        id:
+                                                                          reply
+                                                                            .user
+                                                                            .id
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                },
+                                                                [
+                                                                  _vm._v(
+                                                                    "\n                            " +
+                                                                      _vm._s(
+                                                                        reply
+                                                                          .user
+                                                                          .name
+                                                                      ) +
+                                                                      "\n                          "
+                                                                  )
+                                                                ]
                                                               )
-                                                            ]
+                                                            ],
+                                                            1
                                                           ),
                                                           _vm._v(" "),
                                                           _c(
@@ -75071,6 +76232,16 @@ var render = function() {
                     ])
                   : _vm._e(),
                 _vm._v(" "),
+                _vm.tooLongEditBodyMessage
+                  ? _c("div", { staticClass: "user-edit-error" }, [
+                      _vm._v(
+                        "\n          " +
+                          _vm._s(_vm.tooLongEditBodyMessage) +
+                          "\n        "
+                      )
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
                 _c("div", { staticClass: "select-genre" }, [
                   _c(
                     "select",
@@ -75257,17 +76428,6 @@ var render = function() {
                         on: { click: _vm.editSubmit }
                       },
                       [_vm._v("更新")]
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "submit" }, [
-                    _c(
-                      "div",
-                      {
-                        staticClass: "submit-btn",
-                        on: { click: _vm.editCheck }
-                      },
-                      [_vm._v("チェック")]
                     )
                   ])
                 ])
@@ -75786,9 +76946,31 @@ var render = function() {
                   _vm._v(" "),
                   _c("div", { staticClass: "input-area" }, [
                     _c("div", { staticClass: "post-name-menu" }, [
-                      _c("div", { staticClass: "user-name-post" }, [
-                        _vm._v(_vm._s(post.user.name))
-                      ]),
+                      _c(
+                        "div",
+                        { staticClass: "user-name-post" },
+                        [
+                          _c(
+                            "router-link",
+                            {
+                              attrs: {
+                                to: {
+                                  name: "user",
+                                  params: { id: post.user.id }
+                                }
+                              }
+                            },
+                            [
+                              _vm._v(
+                                "\n                " +
+                                  _vm._s(post.user.name) +
+                                  "\n              "
+                              )
+                            ]
+                          )
+                        ],
+                        1
+                      ),
                       _vm._v(" "),
                       post.user.id === _vm.authUser.id && !post.postMenuOpened
                         ? _c(
@@ -76073,9 +77255,31 @@ var render = function() {
                     "div",
                     { staticClass: "input-area" },
                     [
-                      _c("div", { staticClass: "user-name-post" }, [
-                        _vm._v(_vm._s(_vm.modalPostUserName))
-                      ]),
+                      _c(
+                        "div",
+                        { staticClass: "user-name-post" },
+                        [
+                          _c(
+                            "router-link",
+                            {
+                              attrs: {
+                                to: {
+                                  name: "user",
+                                  params: { id: _vm.modalPostUserId }
+                                }
+                              }
+                            },
+                            [
+                              _vm._v(
+                                "\n              " +
+                                  _vm._s(_vm.modalPostUserName) +
+                                  "\n            "
+                              )
+                            ]
+                          )
+                        ],
+                        1
+                      ),
                       _vm._v(" "),
                       _c("div", { staticClass: "post-body" }, [
                         _vm._v(_vm._s(_vm.modalPostBody))
@@ -76248,6 +77452,16 @@ var render = function() {
                               ])
                             : _vm._e(),
                           _vm._v(" "),
+                          _vm.tooLongCommentMessage
+                            ? _c("div", { staticClass: "user-edit-error" }, [
+                                _vm._v(
+                                  "\n                " +
+                                    _vm._s(_vm.tooLongCommentMessage) +
+                                    "\n              "
+                                )
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
                           _c(
                             "div",
                             {
@@ -76335,12 +77549,26 @@ var render = function() {
                                       "div",
                                       { staticClass: "overlay-post-name" },
                                       [
-                                        _vm._v(
-                                          "\n                  " +
-                                            _vm._s(comment.user.name) +
-                                            "\n                "
+                                        _c(
+                                          "router-link",
+                                          {
+                                            attrs: {
+                                              to: {
+                                                name: "user",
+                                                params: { id: comment.user.id }
+                                              }
+                                            }
+                                          },
+                                          [
+                                            _vm._v(
+                                              "\n                    " +
+                                                _vm._s(comment.user.name) +
+                                                "\n                  "
+                                            )
+                                          ]
                                         )
-                                      ]
+                                      ],
+                                      1
                                     ),
                                     _vm._v(" "),
                                     _c(
@@ -76522,6 +77750,22 @@ var render = function() {
                                           )
                                         : _vm._e(),
                                       _vm._v(" "),
+                                      comment.tooLongReplyMessage
+                                        ? _c(
+                                            "div",
+                                            { staticClass: "user-edit-error" },
+                                            [
+                                              _vm._v(
+                                                "\n                  " +
+                                                  _vm._s(
+                                                    comment.tooLongReplyMessage
+                                                  ) +
+                                                  "\n                "
+                                              )
+                                            ]
+                                          )
+                                        : _vm._e(),
+                                      _vm._v(" "),
                                       _c(
                                         "div",
                                         { staticClass: "comment-reply-btns" },
@@ -76681,15 +77925,36 @@ var render = function() {
                                                                 "overlay-post-name"
                                                             },
                                                             [
-                                                              _vm._v(
-                                                                "\n                          " +
-                                                                  _vm._s(
-                                                                    reply.user
-                                                                      .name
-                                                                  ) +
-                                                                  "\n                        "
+                                                              _c(
+                                                                "router-link",
+                                                                {
+                                                                  attrs: {
+                                                                    to: {
+                                                                      name:
+                                                                        "user",
+                                                                      params: {
+                                                                        id:
+                                                                          reply
+                                                                            .user
+                                                                            .id
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                },
+                                                                [
+                                                                  _vm._v(
+                                                                    "\n                            " +
+                                                                      _vm._s(
+                                                                        reply
+                                                                          .user
+                                                                          .name
+                                                                      ) +
+                                                                      "\n                          "
+                                                                  )
+                                                                ]
                                                               )
-                                                            ]
+                                                            ],
+                                                            1
                                                           ),
                                                           _vm._v(" "),
                                                           _c(
@@ -76965,6 +78230,16 @@ var render = function() {
                     ])
                   : _vm._e(),
                 _vm._v(" "),
+                _vm.tooLongEditBodyMessage
+                  ? _c("div", { staticClass: "user-edit-error" }, [
+                      _vm._v(
+                        "\n          " +
+                          _vm._s(_vm.tooLongEditBodyMessage) +
+                          "\n        "
+                      )
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
                 _c("div", { staticClass: "select-genre" }, [
                   _c(
                     "select",
@@ -77148,17 +78423,6 @@ var render = function() {
                         on: { click: _vm.editSubmit }
                       },
                       [_vm._v("更新")]
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "submit" }, [
-                    _c(
-                      "div",
-                      {
-                        staticClass: "submit-btn",
-                        on: { click: _vm.editCheck }
-                      },
-                      [_vm._v("チェック")]
                     )
                   ])
                 ])
@@ -77434,9 +78698,31 @@ var render = function() {
                   _vm._v(" "),
                   _c("div", { staticClass: "input-area" }, [
                     _c("div", { staticClass: "post-name-menu" }, [
-                      _c("div", { staticClass: "user-name-post" }, [
-                        _vm._v(_vm._s(post.user.name))
-                      ]),
+                      _c(
+                        "div",
+                        { staticClass: "user-name-post" },
+                        [
+                          _c(
+                            "router-link",
+                            {
+                              attrs: {
+                                to: {
+                                  name: "user",
+                                  params: { id: post.user.id }
+                                }
+                              }
+                            },
+                            [
+                              _vm._v(
+                                "\n                " +
+                                  _vm._s(post.user.name) +
+                                  "\n              "
+                              )
+                            ]
+                          )
+                        ],
+                        1
+                      ),
                       _vm._v(" "),
                       post.user.id === _vm.authUser.id && !post.postMenuOpened
                         ? _c(
@@ -77721,9 +79007,31 @@ var render = function() {
                     "div",
                     { staticClass: "input-area" },
                     [
-                      _c("div", { staticClass: "user-name-post" }, [
-                        _vm._v(_vm._s(_vm.modalPostUserName))
-                      ]),
+                      _c(
+                        "div",
+                        { staticClass: "user-name-post" },
+                        [
+                          _c(
+                            "router-link",
+                            {
+                              attrs: {
+                                to: {
+                                  name: "user",
+                                  params: { id: _vm.modalPostUserId }
+                                }
+                              }
+                            },
+                            [
+                              _vm._v(
+                                "\n              " +
+                                  _vm._s(_vm.modalPostUserName) +
+                                  "\n            "
+                              )
+                            ]
+                          )
+                        ],
+                        1
+                      ),
                       _vm._v(" "),
                       _c("div", { staticClass: "post-body" }, [
                         _vm._v(_vm._s(_vm.modalPostBody))
@@ -77896,6 +79204,16 @@ var render = function() {
                               ])
                             : _vm._e(),
                           _vm._v(" "),
+                          _vm.tooLongCommentMessage
+                            ? _c("div", { staticClass: "user-edit-error" }, [
+                                _vm._v(
+                                  "\n                " +
+                                    _vm._s(_vm.tooLongCommentMessage) +
+                                    "\n              "
+                                )
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
                           _c(
                             "div",
                             {
@@ -77983,12 +79301,26 @@ var render = function() {
                                       "div",
                                       { staticClass: "overlay-post-name" },
                                       [
-                                        _vm._v(
-                                          "\n                  " +
-                                            _vm._s(comment.user.name) +
-                                            "\n                "
+                                        _c(
+                                          "router-link",
+                                          {
+                                            attrs: {
+                                              to: {
+                                                name: "user",
+                                                params: { id: comment.user.id }
+                                              }
+                                            }
+                                          },
+                                          [
+                                            _vm._v(
+                                              "\n                    " +
+                                                _vm._s(comment.user.name) +
+                                                "\n                  "
+                                            )
+                                          ]
                                         )
-                                      ]
+                                      ],
+                                      1
                                     ),
                                     _vm._v(" "),
                                     _c(
@@ -78170,6 +79502,22 @@ var render = function() {
                                           )
                                         : _vm._e(),
                                       _vm._v(" "),
+                                      comment.tooLongReplyMessage
+                                        ? _c(
+                                            "div",
+                                            { staticClass: "user-edit-error" },
+                                            [
+                                              _vm._v(
+                                                "\n                  " +
+                                                  _vm._s(
+                                                    comment.tooLongReplyMessage
+                                                  ) +
+                                                  "\n                "
+                                              )
+                                            ]
+                                          )
+                                        : _vm._e(),
+                                      _vm._v(" "),
                                       _c(
                                         "div",
                                         { staticClass: "comment-reply-btns" },
@@ -78329,15 +79677,36 @@ var render = function() {
                                                                 "overlay-post-name"
                                                             },
                                                             [
-                                                              _vm._v(
-                                                                "\n                          " +
-                                                                  _vm._s(
-                                                                    reply.user
-                                                                      .name
-                                                                  ) +
-                                                                  "\n                        "
+                                                              _c(
+                                                                "router-link",
+                                                                {
+                                                                  attrs: {
+                                                                    to: {
+                                                                      name:
+                                                                        "user",
+                                                                      params: {
+                                                                        id:
+                                                                          reply
+                                                                            .user
+                                                                            .id
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                },
+                                                                [
+                                                                  _vm._v(
+                                                                    "\n                            " +
+                                                                      _vm._s(
+                                                                        reply
+                                                                          .user
+                                                                          .name
+                                                                      ) +
+                                                                      "\n                          "
+                                                                  )
+                                                                ]
                                                               )
-                                                            ]
+                                                            ],
+                                                            1
                                                           ),
                                                           _vm._v(" "),
                                                           _c(
@@ -78613,6 +79982,16 @@ var render = function() {
                     ])
                   : _vm._e(),
                 _vm._v(" "),
+                _vm.tooLongEditBodyMessage
+                  ? _c("div", { staticClass: "user-edit-error" }, [
+                      _vm._v(
+                        "\n          " +
+                          _vm._s(_vm.tooLongEditBodyMessage) +
+                          "\n        "
+                      )
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
                 _c("div", { staticClass: "select-genre" }, [
                   _c(
                     "select",
@@ -78796,17 +80175,6 @@ var render = function() {
                         on: { click: _vm.editSubmit }
                       },
                       [_vm._v("更新")]
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "submit" }, [
-                    _c(
-                      "div",
-                      {
-                        staticClass: "submit-btn",
-                        on: { click: _vm.editCheck }
-                      },
-                      [_vm._v("チェック")]
                     )
                   ])
                 ])
@@ -79719,9 +81087,31 @@ var render = function() {
                   _vm._v(" "),
                   _c("div", { staticClass: "input-area" }, [
                     _c("div", { staticClass: "post-name-menu" }, [
-                      _c("div", { staticClass: "user-name-post" }, [
-                        _vm._v(_vm._s(post.user.name))
-                      ]),
+                      _c(
+                        "div",
+                        { staticClass: "user-name-post" },
+                        [
+                          _c(
+                            "router-link",
+                            {
+                              attrs: {
+                                to: {
+                                  name: "user",
+                                  params: { id: post.user.id }
+                                }
+                              }
+                            },
+                            [
+                              _vm._v(
+                                "\n                " +
+                                  _vm._s(post.user.name) +
+                                  "\n              "
+                              )
+                            ]
+                          )
+                        ],
+                        1
+                      ),
                       _vm._v(" "),
                       post.user.id === _vm.authUser.id && !post.postMenuOpened
                         ? _c(
@@ -80006,9 +81396,31 @@ var render = function() {
                     "div",
                     { staticClass: "input-area" },
                     [
-                      _c("div", { staticClass: "user-name-post" }, [
-                        _vm._v(_vm._s(_vm.modalPostUserName))
-                      ]),
+                      _c(
+                        "div",
+                        { staticClass: "user-name-post" },
+                        [
+                          _c(
+                            "router-link",
+                            {
+                              attrs: {
+                                to: {
+                                  name: "user",
+                                  params: { id: _vm.modalPostUserId }
+                                }
+                              }
+                            },
+                            [
+                              _vm._v(
+                                "\n              " +
+                                  _vm._s(_vm.modalPostUserName) +
+                                  "\n            "
+                              )
+                            ]
+                          )
+                        ],
+                        1
+                      ),
                       _vm._v(" "),
                       _c("div", { staticClass: "post-body" }, [
                         _vm._v(_vm._s(_vm.modalPostBody))
@@ -80181,6 +81593,16 @@ var render = function() {
                               ])
                             : _vm._e(),
                           _vm._v(" "),
+                          _vm.tooLongCommentMessage
+                            ? _c("div", { staticClass: "user-edit-error" }, [
+                                _vm._v(
+                                  "\n                " +
+                                    _vm._s(_vm.tooLongCommentMessage) +
+                                    "\n              "
+                                )
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
                           _c(
                             "div",
                             {
@@ -80268,12 +81690,26 @@ var render = function() {
                                       "div",
                                       { staticClass: "overlay-post-name" },
                                       [
-                                        _vm._v(
-                                          "\n                  " +
-                                            _vm._s(comment.user.name) +
-                                            "\n                "
+                                        _c(
+                                          "router-link",
+                                          {
+                                            attrs: {
+                                              to: {
+                                                name: "user",
+                                                params: { id: comment.user.id }
+                                              }
+                                            }
+                                          },
+                                          [
+                                            _vm._v(
+                                              "\n                    " +
+                                                _vm._s(comment.user.name) +
+                                                "\n                  "
+                                            )
+                                          ]
                                         )
-                                      ]
+                                      ],
+                                      1
                                     ),
                                     _vm._v(" "),
                                     _c(
@@ -80455,6 +81891,22 @@ var render = function() {
                                           )
                                         : _vm._e(),
                                       _vm._v(" "),
+                                      comment.tooLongReplyMessage
+                                        ? _c(
+                                            "div",
+                                            { staticClass: "user-edit-error" },
+                                            [
+                                              _vm._v(
+                                                "\n                  " +
+                                                  _vm._s(
+                                                    comment.tooLongReplyMessage
+                                                  ) +
+                                                  "\n                "
+                                              )
+                                            ]
+                                          )
+                                        : _vm._e(),
+                                      _vm._v(" "),
                                       _c(
                                         "div",
                                         { staticClass: "comment-reply-btns" },
@@ -80614,15 +82066,36 @@ var render = function() {
                                                                 "overlay-post-name"
                                                             },
                                                             [
-                                                              _vm._v(
-                                                                "\n                          " +
-                                                                  _vm._s(
-                                                                    reply.user
-                                                                      .name
-                                                                  ) +
-                                                                  "\n                        "
+                                                              _c(
+                                                                "router-link",
+                                                                {
+                                                                  attrs: {
+                                                                    to: {
+                                                                      name:
+                                                                        "user",
+                                                                      params: {
+                                                                        id:
+                                                                          reply
+                                                                            .user
+                                                                            .id
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                },
+                                                                [
+                                                                  _vm._v(
+                                                                    "\n                            " +
+                                                                      _vm._s(
+                                                                        reply
+                                                                          .user
+                                                                          .name
+                                                                      ) +
+                                                                      "\n                          "
+                                                                  )
+                                                                ]
                                                               )
-                                                            ]
+                                                            ],
+                                                            1
                                                           ),
                                                           _vm._v(" "),
                                                           _c(
@@ -80893,6 +82366,16 @@ var render = function() {
                       _vm._v(
                         "\n          " +
                           _vm._s(_vm.editErrors.body[0]) +
+                          "\n        "
+                      )
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.tooLongEditBodyMessage
+                  ? _c("div", { staticClass: "user-edit-error" }, [
+                      _vm._v(
+                        "\n          " +
+                          _vm._s(_vm.tooLongEditBodyMessage) +
                           "\n        "
                       )
                     ])
@@ -81468,6 +82951,16 @@ var render = function() {
                 ? _c("div", { staticClass: "user-edit-error" }, [
                     _vm._v(
                       "\n          " + _vm._s(_vm.errors.pr[0]) + "\n        "
+                    )
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.tooLongPrMessage
+                ? _c("div", { staticClass: "user-edit-error" }, [
+                    _vm._v(
+                      "\n          " +
+                        _vm._s(_vm.tooLongPrMessage) +
+                        "\n        "
                     )
                   ])
                 : _vm._e()
@@ -82047,9 +83540,31 @@ var render = function() {
                   _vm._v(" "),
                   _c("div", { staticClass: "input-area" }, [
                     _c("div", { staticClass: "post-name-menu" }, [
-                      _c("div", { staticClass: "user-name-post" }, [
-                        _vm._v(_vm._s(post.user.name))
-                      ]),
+                      _c(
+                        "div",
+                        { staticClass: "user-name-post" },
+                        [
+                          _c(
+                            "router-link",
+                            {
+                              attrs: {
+                                to: {
+                                  name: "user",
+                                  params: { id: post.user.id }
+                                }
+                              }
+                            },
+                            [
+                              _vm._v(
+                                "\n                " +
+                                  _vm._s(post.user.name) +
+                                  "\n              "
+                              )
+                            ]
+                          )
+                        ],
+                        1
+                      ),
                       _vm._v(" "),
                       post.user.id === _vm.authUser.id && !post.postMenuOpened
                         ? _c(
@@ -82334,9 +83849,31 @@ var render = function() {
                     "div",
                     { staticClass: "input-area" },
                     [
-                      _c("div", { staticClass: "user-name-post" }, [
-                        _vm._v(_vm._s(_vm.modalPostUserName))
-                      ]),
+                      _c(
+                        "div",
+                        { staticClass: "user-name-post" },
+                        [
+                          _c(
+                            "router-link",
+                            {
+                              attrs: {
+                                to: {
+                                  name: "user",
+                                  params: { id: _vm.modalPostUserId }
+                                }
+                              }
+                            },
+                            [
+                              _vm._v(
+                                "\n              " +
+                                  _vm._s(_vm.modalPostUserName) +
+                                  "\n            "
+                              )
+                            ]
+                          )
+                        ],
+                        1
+                      ),
                       _vm._v(" "),
                       _c("div", { staticClass: "post-body" }, [
                         _vm._v(_vm._s(_vm.modalPostBody))
@@ -82509,6 +84046,16 @@ var render = function() {
                               ])
                             : _vm._e(),
                           _vm._v(" "),
+                          _vm.tooLongCommentMessage
+                            ? _c("div", { staticClass: "user-edit-error" }, [
+                                _vm._v(
+                                  "\n                " +
+                                    _vm._s(_vm.tooLongCommentMessage) +
+                                    "\n              "
+                                )
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
                           _c(
                             "div",
                             {
@@ -82596,12 +84143,26 @@ var render = function() {
                                       "div",
                                       { staticClass: "overlay-post-name" },
                                       [
-                                        _vm._v(
-                                          "\n                  " +
-                                            _vm._s(comment.user.name) +
-                                            "\n                "
+                                        _c(
+                                          "router-link",
+                                          {
+                                            attrs: {
+                                              to: {
+                                                name: "user",
+                                                params: { id: comment.user.id }
+                                              }
+                                            }
+                                          },
+                                          [
+                                            _vm._v(
+                                              "\n                    " +
+                                                _vm._s(comment.user.name) +
+                                                "\n                  "
+                                            )
+                                          ]
                                         )
-                                      ]
+                                      ],
+                                      1
                                     ),
                                     _vm._v(" "),
                                     _c(
@@ -82783,6 +84344,22 @@ var render = function() {
                                           )
                                         : _vm._e(),
                                       _vm._v(" "),
+                                      comment.tooLongReplyMessage
+                                        ? _c(
+                                            "div",
+                                            { staticClass: "user-edit-error" },
+                                            [
+                                              _vm._v(
+                                                "\n                  " +
+                                                  _vm._s(
+                                                    comment.tooLongReplyMessage
+                                                  ) +
+                                                  "\n                "
+                                              )
+                                            ]
+                                          )
+                                        : _vm._e(),
+                                      _vm._v(" "),
                                       _c(
                                         "div",
                                         { staticClass: "comment-reply-btns" },
@@ -82942,15 +84519,36 @@ var render = function() {
                                                                 "overlay-post-name"
                                                             },
                                                             [
-                                                              _vm._v(
-                                                                "\n                          " +
-                                                                  _vm._s(
-                                                                    reply.user
-                                                                      .name
-                                                                  ) +
-                                                                  "\n                        "
+                                                              _c(
+                                                                "router-link",
+                                                                {
+                                                                  attrs: {
+                                                                    to: {
+                                                                      name:
+                                                                        "user",
+                                                                      params: {
+                                                                        id:
+                                                                          reply
+                                                                            .user
+                                                                            .id
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                },
+                                                                [
+                                                                  _vm._v(
+                                                                    "\n                            " +
+                                                                      _vm._s(
+                                                                        reply
+                                                                          .user
+                                                                          .name
+                                                                      ) +
+                                                                      "\n                          "
+                                                                  )
+                                                                ]
                                                               )
-                                                            ]
+                                                            ],
+                                                            1
                                                           ),
                                                           _vm._v(" "),
                                                           _c(
@@ -83221,6 +84819,16 @@ var render = function() {
                       _vm._v(
                         "\n          " +
                           _vm._s(_vm.editErrors.body[0]) +
+                          "\n        "
+                      )
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.tooLongEditBodyMessage
+                  ? _c("div", { staticClass: "user-edit-error" }, [
+                      _vm._v(
+                        "\n          " +
+                          _vm._s(_vm.tooLongEditBodyMessage) +
                           "\n        "
                       )
                     ])

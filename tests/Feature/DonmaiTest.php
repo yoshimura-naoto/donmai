@@ -97,7 +97,10 @@ class DonmaiTest extends TestCase
         $this->actingAs($user1)
             ->getJson('/api/donmai/users/' . $post->id . '?page=0')
             ->assertStatus(200)
-            ->assertSeeInOrder([$user1->name, '"followed":false', $user2->name, '"followed":true'])
+            ->assertSeeInOrder([
+                $user2->name, '"followed":true',
+                $user1->name, '"followed":false',
+            ])
             ->assertDontSee($user3->name);
     }
 }

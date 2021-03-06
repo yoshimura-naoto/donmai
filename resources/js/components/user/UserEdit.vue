@@ -82,6 +82,9 @@
           <div v-if="errors.pr" class="user-edit-error">
             {{ errors.pr[0] }}
           </div>
+          <div v-if="tooLongPrMessage" class="user-edit-error">
+            {{ tooLongPrMessage }}
+          </div>
 
         </div>
 
@@ -131,6 +134,8 @@ export default {
       url: '',
       // 画像アップロードエラーメッセージ
       message: '',
+      // 自己紹介が長すぎ
+      tooLongPrMessage: '',
       // 変更処理中
       editProcessing: false,
     }
@@ -149,8 +154,8 @@ export default {
       this.url = URL.createObjectURL(this.form.iconImage);
       this.$refs.preview.value = '';
       this.message = '';
-      console.log(this.form.iconImage);
-      console.log(this.url);
+      // console.log(this.form.iconImage);
+      // console.log(this.url);
     },
     // 画像のプレビュー削除
     deletePreview() {
@@ -158,14 +163,25 @@ export default {
       this.form.iconImage = null;
       this.form.icon = null;
       this.url = '';
-      console.log(this.form.iconImage);
-      console.log(this.form.icon);
-      console.log(this.url);
+      // console.log(this.form.iconImage);
+      // console.log(this.form.icon);
+      // console.log(this.url);
     },
     // 変更を送信
     submit() {
       if (this.editProcessing) return;
       this.editProcessing = true;
+      // 文字数判定
+      let textCount = this.form.pr.replace(/\n/g, '').length;
+      // console.log(textCount);
+      if (textCount > 100) {
+        this.tooLongPrMessage = '100文字以内にしてください！（現在' + textCount + '文字）';
+        this.errors = [];
+        this.editProcessing = false;
+        return;
+      } else {
+        this.tooLongPrMessage = '';
+      }
       let data = new FormData();
       data.append('id', this.form.id);
       data.append('name', this.form.name);
@@ -200,7 +216,7 @@ export default {
   mounted() {
     axios.get('/api/user')
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         this.email = res.data.email;
         this.$set(this.form, 'id', res.data.id);
         this.$set(this.form, 'icon', res.data.icon);

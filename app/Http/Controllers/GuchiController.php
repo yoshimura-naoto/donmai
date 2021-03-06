@@ -299,9 +299,7 @@ class GuchiController extends Controller
         $request->validate(Guchi::$guchiRules, Guchi::$guchiValMessages);
 
         // 匿名かどうかの決定
-        $anonymous = false;
         if ($request->anonymous) {
-            $anonymous = true;
             $userId = null;
         } else {
             $userId = Auth::id();
@@ -312,7 +310,6 @@ class GuchiController extends Controller
             'user_id' => $userId,
             'guchi_room_id' => $request->roomId,
             'body' => $request->body,
-            'anonymous' => $anonymous,
         ]);
 
         // 画像の保存

@@ -22,7 +22,6 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::get('/user', function (Request $request) {
         $user = Auth::user()->makeVisible(['email']);
         return $user;
-        // return $request->user();
     });
 
     // 認証ユーザー情報とジャンルを取得

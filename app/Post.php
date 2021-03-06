@@ -20,26 +20,20 @@ class Post extends Model
     public static $genres = [
         ['route' => 'jobs', 'name' => '仕事'],
         ['route' => 'life', 'name' => '日常'],
+        ['route' => 'school', 'name' => '学校'],
         ['route' => 'relationship', 'name' => '人間関係'],
         ['route' => 'dozi', 'name' => 'どじ'],
         ['route' => 'shame', 'name' => '恥かいた'],
-        ['route' => 'school', 'name' => '学校'],
+        ['route' => 'mistake', 'name' => 'やらかした'],
         ['route' => 'love', 'name' => '恋愛'],
         ['route' => 'marriage', 'name' => '結婚生活'],
-        ['route' => 'game', 'name' => 'ゲーム'],
+        ['route' => 'home', 'name' => '家庭'],
+        ['route' => 'heart', 'name' => '精神'],
+        ['route' => 'comparison', 'name' => '他人と比較'],
+        ['route' => 'money', 'name' => 'お金'],
         ['route' => 'disease', 'name' => '病気'],
-        ['route' => 'heart', 'name' => '心'],
-        ['route' => 'unko', 'name' => 'うんこ'],
-        ['route' => 'unko', 'name' => 'うんこ'],
-        ['route' => 'unko', 'name' => 'うんこ'],
-        ['route' => 'unko', 'name' => 'うんこ'],
-        ['route' => 'unko', 'name' => 'うんこ'],
-        ['route' => 'unko', 'name' => 'うんこ'],
-        ['route' => 'unko', 'name' => 'うんこ'],
-        ['route' => 'unko', 'name' => 'うんこ'],
-        ['route' => 'unko', 'name' => 'うんこ'],
-        ['route' => 'unko', 'name' => 'うんこ'],
-        ['route' => 'unko', 'name' => 'うんこ'],
+        ['route' => 'accident', 'name' => '事故'],
+        ['route' => 'game', 'name' => 'ゲーム'],
     ];
 
     // ジャンルのrouteからジャンルのインデックスを取得
@@ -52,7 +46,7 @@ class Post extends Model
 
     // 投稿のバリデーション（create）
     public static $postRules = [
-        'body' => 'required | max:250',
+        'body' => 'required',
         'genreIndex' => 'required',
         'tags' => 'max:100',
     ];
@@ -60,7 +54,6 @@ class Post extends Model
     // 投稿のバリデーションメッセージ（create）
     public static $postValMessages = [
         'body.required' => '本文を入力してください！',
-        'body.max' => '本文は250文字以内にしてください！',
         'genreIndex.required' => 'ジャンルを選択してください！',
         'tags.max' => 'タグ欄は100字以内にしてください！',
     ];

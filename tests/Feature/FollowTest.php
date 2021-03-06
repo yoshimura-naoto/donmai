@@ -103,16 +103,21 @@ class FollowTest extends TestCase
             ->getJson('/api/following/' . $user1->id . '?page=1')
             ->assertOk()
             ->assertSeeInOrder([
-                $user2->name, '"followed":false',
-                $user3->name, '"followed":true',
-                $user4->name, '"followed":false',
-                $user5->name, '"followed":false',
-                $user6->name, '"followed":true',
-                $user7->name, '"followed":false',
-                $user8->name, '"followed":false',
+                $user11->name, '"followed":true',
+                $user10->name, '"followed":false',
                 $user9->name, '"followed":false',
+                $user8->name, '"followed":false',
+                $user7->name, '"followed":false',
+                $user6->name, '"followed":true',
+                $user5->name, '"followed":false',
+                $user4->name, '"followed":false',
             ])
-            ->assertDontSee($authUser->name, $user1->name, $user10->name, $user11->name, $user12->name)
+            ->assertDontSee(
+                $authUser->name,
+                $user1->name,
+                $user2->name,
+                $user3->name,
+                $user12->name)
             ->assertJsonFragment(['total' => 10]);
 
         // 1スクロールでのレスポンス
@@ -120,10 +125,15 @@ class FollowTest extends TestCase
             ->getJson('/api/following/' . $user1->id . '?page=2')
             ->assertOk()
             ->assertSeeInOrder([
-                $user10->name, '"followed":false',
-                $user11->name, '"followed":true',
+                $user3->name, '"followed":true',
+                $user2->name, '"followed":false',
             ])
-            ->assertDontSee($authUser->name, $user1->name, $user5->name, $user7->name, $user9->name)
+            ->assertDontSee(
+                $authUser->name,
+                $user1->name, 
+                $user5->name, 
+                $user7->name,
+                $user9->name)
             ->assertJsonFragment(['total' => 10]);
     }
 
@@ -168,16 +178,22 @@ class FollowTest extends TestCase
             ->getJson('/api/follower/' . $user1->id . '?page=1')
             ->assertOk()
             ->assertSeeInOrder([
-                $user2->name, '"followed":false',
-                $user3->name, '"followed":true',
-                $user4->name, '"followed":false',
-                $user5->name, '"followed":false',
-                $user6->name, '"followed":true',
-                $user7->name, '"followed":false',
-                $user8->name, '"followed":false',
+                $user11->name, '"followed":true',
+                $user10->name, '"followed":false',
                 $user9->name, '"followed":false',
+                $user8->name, '"followed":false',
+                $user7->name, '"followed":false',
+                $user6->name, '"followed":true',
+                $user5->name, '"followed":false',
+                $user4->name, '"followed":false',
             ])
-            ->assertDontSee($authUser->name, $user1->name, $user10->name, $user11->name, $user12->name)
+            ->assertDontSee(
+                $authUser->name, 
+                $user1->name, 
+                $user2->name, 
+                $user3->name, 
+                $user12->name
+            )
             ->assertJsonFragment(['total' => 10]);
 
         // 1スクロールでのレスポンス
@@ -185,10 +201,16 @@ class FollowTest extends TestCase
             ->getJson('/api/follower/' . $user1->id . '?page=2')
             ->assertOk()
             ->assertSeeInOrder([
-                $user10->name, '"followed":false',
-                $user11->name, '"followed":true',
+                $user3->name, '"followed":true',
+                $user2->name, '"followed":false',
             ])
-            ->assertDontSee($authUser->name, $user1->name, $user5->name, $user7->name, $user9->name, $user12->name)
+            ->assertDontSee(
+                $authUser->name,
+                $user1->name,
+                $user5->name,
+                $user7->name,
+                $user9->name,
+                $user12->name)
             ->assertJsonFragment(['total' => 10]);
     }
 }

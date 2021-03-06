@@ -51,14 +51,20 @@
           <div v-for="(guchi, index) in guchis" :key="guchi.id" class="thread-comment-area" :class="[{'self-comment': guchi.isSelf}, {'anonymous': !guchi.user_id}]">
 
             <!-- IDと投稿日時 -->
+            <!-- 匿名の場合 -->
             <div v-if="!guchi.user_id" class="thread-comment-area-top">
               <div class="id">匿名:</div>
               <div class="time">{{ guchi.created_at }}</div>
             </div>
-
+            <!-- 名前を公開する場合 -->
             <div v-if="guchi.user_id" class="thread-comment-area-top">
               <div class="id" :class="{ 'self-id': guchi.isSelf }">
-                <img v-if="guchi.user.icon" :src="guchi.user.icon"><img v-if="!guchi.user.icon" :src="'../../image/user.png'"> {{ guchi.user.name }} {{ guchi.created_at }}
+                <router-link :to="{ name: 'user', params: { id: guchi.user.id }}">
+                  <img v-if="guchi.user.icon" :src="guchi.user.icon">
+                  <img v-if="!guchi.user.icon" :src="'../../image/user.png'">
+                  {{ guchi.user.name }} 
+                </router-link>
+                {{ guchi.created_at }}
               </div>
             </div>
 
@@ -106,6 +112,9 @@
 
           <div v-if="errors.body" class="user-edit-error">
             {{ errors.body[0] }}
+          </div>
+          <div v-if="tooLongGuchiMessage" class="user-edit-error">
+            {{ tooLongGuchiMessage }}
           </div>
 
           <!-- 画像のプレビュー -->
@@ -211,6 +220,7 @@ export default {
       },
       message: null,
       errors: [],
+      tooLongGuchiMessage: '',
       postProsessing: false,
       // グチたち
       guchisTotal: 0,
@@ -250,6 +260,8 @@ export default {
       chatScrollHeight: 0,
       // 一番下にスクロールするかどうか
       scrollToBottom: false,
+      // マウント中かどうか
+      mounting: false,
       // すでに読み込み完了している画像の数
       loadedImgCount: 0,
       // 新たに読み込む画像の数
@@ -269,6 +281,7 @@ export default {
           this.authUser = res.data.authUser;
           this.guchiRoom = res.data.guchiRoom;
           this.scrollToBottom = true;
+          this.mounting = true;
           this.getGuchis(roomId);
         }).catch(() => {
           return;
@@ -281,14 +294,14 @@ export default {
       this.guchisLoading = true;
       axios.get('/api/guchi/get/' + roomId + '?loaded_guchis_count=' + this.guchis.length)
         .then((res) => {
-          console.log(res.data);
+          // console.log(res.data);
           this.guchisTotal = res.data.guchisTotal;
           this.newImageCount = res.data.imagesCount;
           this.guchis.unshift(...res.data.guchis);
           if (this.guchis.length === res.data.guchisTotal) {
             this.loadMoreGuchis = false;
           }
-          console.log(this.guchis.length);
+          // console.log(this.guchis.length);
           this.$nextTick(function() {
             const guchiChatArea = document.querySelector('.guchis-chat-area');
             if (this.scrollToBottom && this.newImageCount === 0) {
@@ -296,29 +309,32 @@ export default {
               this.scrollToBottom = false;
               this.chatScrollHeight = guchiChatArea.scrollHeight;
               this.guchisLoading = false;
+              this.mounting = false;
             } else if (!this.scrollToBottom && this.newImageCount === 0) {
               guchiChatArea.scrollTop = guchiChatArea.scrollHeight - this.chatScrollHeight;
               this.chatScrollHeight = guchiChatArea.scrollHeight;
               this.guchisLoading = false;
+              this.mounting = false;
             }
           });
         }).catch((error) => {
           console.log(error);
           this.guchisLoading = false;
+          this.mounting = false;
         });
     },
     // 最新のグチを１件取得
     getLatestGuchi() {
       const guchiChatArea = document.querySelector('.guchis-chat-area');
-      console.log(guchiChatArea.scrollTop);
-      console.log(guchiChatArea.scrollHeight);
-      console.log(guchiChatArea.clientHeight);
+      // console.log(guchiChatArea.scrollTop);
+      // console.log(guchiChatArea.scrollHeight);
+      // console.log(guchiChatArea.clientHeight);
       if (guchiChatArea.scrollTop >= guchiChatArea.scrollHeight - guchiChatArea.clientHeight * 2) {
         this.scrollToBottom = true;
       }
       axios.get('/api/guchi/latest/' + this.$route.params.id)
         .then((res) => {
-          console.log(res.data);
+          // console.log(res.data);
           this.newImageCount = res.data.guchi_images_count;
           this.guchis.push(res.data);
           // スクロール位置が底の方にあるときだけ、最新のグチを取得した際に一番下にスクロールされる
@@ -348,7 +364,7 @@ export default {
       this.loadedImgCount++;
       const guchiChatArea = document.querySelector('.guchis-chat-area');
       if (this.loadedImgCount === this.newImageCount && this.scrollToBottom) {
-        if (this.chatScrollHeight < 510) {
+        if (this.chatScrollHeight < 510 && !this.mounting) {
           this.scrollToEnd();
         }
         guchiChatArea.scrollTop = guchiChatArea.scrollHeight - guchiChatArea.clientHeight;
@@ -356,12 +372,14 @@ export default {
         this.loadedImgCount = 0;
         this.chatScrollHeight = guchiChatArea.scrollHeight;
         this.guchisLoading = false;
+        this.mounting = false;
       } else if (this.loadedImgCount === this.newImageCount && !this.scrollToBottom && this.guchisLoading) {
         guchiChatArea.scrollTop = guchiChatArea.scrollHeight - this.chatScrollHeight;
         this.chatScrollHeight = guchiChatArea.scrollHeight;
         this.loadedImgCount = 0;
         this.chatScrollHeight = guchiChatArea.scrollHeight;
         this.guchisLoading = false;
+        this.mounting = false;
       }
     },
     // グッドの切り替え
@@ -401,8 +419,8 @@ export default {
         }
         this.$refs.threadPreview.value = '';
         this.message = null;
-        console.log(this.urls);
-        console.log(this.form.images);
+        // console.log(this.urls);
+        // console.log(this.form.images);
       }
     },
     // 画像プレビューの削除
@@ -410,8 +428,8 @@ export default {
       this.urls.splice(index, 1);
       this.form.images.splice(index, 1);
       URL.revokeObjectURL(url);
-      console.log(this.urls);
-      console.log(this.form.images);
+      // console.log(this.urls);
+      // console.log(this.form.images);
     },
     // 匿名か名前表示か選択
     anonymous() {
@@ -424,6 +442,17 @@ export default {
     submit() {
       if (this.postProsessing) return;
       this.postProsessing = true;
+      // 文字数判定
+      let textCount = this.form.body.replace(/\n/g, '').length;
+      // console.log(textCount);
+      if (textCount > 100) {
+        this.tooLongGuchiMessage = '100文字以内にしてください！（現在' + textCount + '文字）';
+        this.errors = [];
+        this.postProsessing = false;
+        return;
+      } else {
+        this.tooLongGuchiMessage = '';
+      }
       let data = new FormData();
       Object.entries(this.form).forEach(([key, value]) => {
         if (Array.isArray(value)) {
@@ -516,7 +545,7 @@ export default {
       this.keepScrollWhenOpen();
       this.deleteGuchiIndex = i;
       this.deleteGuchiModalOpened = true;
-      console.log(this.guchis[this.deleteGuchiIndex].id);
+      // console.log(this.guchis[this.deleteGuchiIndex].id);
     },
     deleteGuchiModalClose() {
       this.keepScrollWhenClose();
@@ -541,7 +570,7 @@ export default {
       const guchiIds = this.guchis.map((obj) => {
         return obj.id;
       });
-      console.log(guchiId);
+      // console.log(guchiId);
       if (guchiIds.includes(guchiId)) {
         let guchiIndex = guchiIds.indexOf(guchiId);
         this.guchis.splice(guchiIndex, 1);
@@ -565,8 +594,8 @@ export default {
     // 最新のグチを取得
     Echo.private('chat')
       .listen('GuchiCreated', (e) => {
-        console.log(e.guchi.guchi_room_id);
-        console.log(this.$route.params.id);
+        // console.log(e.guchi.guchi_room_id);
+        // console.log(this.$route.params.id);
         if (e.guchi.guchi_room_id == this.$route.params.id) {
           this.guchisTotal++;
           this.getLatestGuchi();
@@ -575,11 +604,11 @@ export default {
     // グチを削除
     Echo.private('guchiDeleted')
       .listen('GuchiDeleted', (e) => {
-        console.log(e.guchiData.guchi_room_id);
+        // console.log(e.guchiData.guchi_room_id);
         if (e.guchiData.guchi_room_id == this.$route.params.id) {
           this.guchisTotal--;
           this.deleteGuchiRealTime(e.guchiData.id);
-          console.log(e.guchiData.id);
+          // console.log(e.guchiData.id);
         }
       });
   },

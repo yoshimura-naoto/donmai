@@ -15,11 +15,13 @@
         <!-- テキスト入力エリア -->
         <div class="input-1">
           <textarea v-model="newPost.body" ref="area" :style="styles" class="flex-textarea" placeholder="なんかあった？"></textarea>
-          <!-- <textarea @keydown="changeHeight" v-model="newPost.body" ref="area" class="flex-textarea" placeholder="なんかあった？"></textarea> -->
         </div>
 
         <div v-if="errors.body" class="user-edit-error">
           {{ errors.body[0] }}
+        </div>
+        <div v-if="tooLongBodyMessage" class="user-edit-error">
+          {{ tooLongBodyMessage }}
         </div>
 
         <!-- ジャンル選択エリア -->
@@ -83,70 +85,80 @@
     <!-- 投稿一覧 -->
     <div :key="reloadKey">
 
-      <div v-for="(post, index) in posts" :key="post.id" class="posts">
+      <div v-for="(post, index) in posts" :key="post.id">
 
-        <!-- アイコン画像 -->
-        <div class="logo-area">
-          <router-link :to="{ name: 'user', params: { id: post.user.id }}">
-            <img v-if="post.user.icon" :src="post.user.icon">
-            <img v-if="!post.user.icon" :src="'../image/user.png'">
-          </router-link>
-        </div>
+        <!-- axiosで取得した投稿が0でもなぜかpostsに１つオブジェクトが生成されるから「v-if="post.user"」でゴリ押しで消す！ -->
+        <div class="posts" v-if="post.user">
 
-        <!-- 内容表示エリア -->
-        <div class="input-area">
-
-          <div class="post-name-menu">
-            <!-- ユーザー名 -->
-            <div class="user-name-post">{{ post.user.name }}</div>
-            <!-- メニューボタン -->
-            <div v-if="post.user.id === authUser.id && !post.postMenuOpened" @click="openPostMenu(index)" class="post-menu-btn">
-              ...
-            </div>
-            <!-- メニュー -->
-            <div v-if="post.postMenuOpened" class="post-menus">
-              <div class="post-menu-edit" @click="editPostModalOpen(index)">編集</div>
-              <div class="post-menu-delete" @click="deletePostModalOpen(index)">削除</div>
-            </div>
-            <!-- メニューのモーダルカバー -->
-            <div v-if="post.postMenuOpened" @click="closePostMenu(index)" class="post-menu-cover"></div>
-          </div>
-
-          <!-- テキスト -->
-          <div class="post-body">{{ post.body }}</div>
-
-          <!-- タグ -->
-          <div v-if="post.tags" class="post-tags">
-            <router-link :to="{ name: 'tags.new', params: { name: tag.name }}" v-for="(tag, index) in post.tags" :key="index">
-              #{{ tag.name }}
+          <!-- アイコン画像 -->
+          <div class="logo-area" v-if="post.user">
+            <router-link :to="{ name: 'user', params: { id: post.user.id }}">
+              <img v-if="post.user.icon" :src="post.user.icon">
+              <img v-if="!post.user.icon" :src="'../image/user.png'">
             </router-link>
           </div>
 
-          <!-- 画像たち -->
-          <div v-if="post.post_images && post.post_images.length > 0" class="post-image-view">
-            <div v-for="(image, index) in post.post_images" :key="index" class="each-preview" :class="{ 'one-image-pre': post.post_images.length == 1, 'two-image-pre': post.post_images.length == 2, 'three-image-pre': post.post_images.length == 3, 'four-image-pre': post.post_images.length == 4, 'yokonaga': post.post_images.length == 3 && index == 0 }">
-              <div @click="openImageModal(image.path)" class="each-image-box">
-                <div class="each-image" :style="{ backgroundImage: 'url(' + image.path + ')' }" :class="{ 'one-each-image': post.post_images.length == 1, 'two-each-image': post.post_images.length == 2, 'three-each-image': post.post_images.length == 3, 'four-each-image': post.post_images.length == 4, 'yokonaga-image': post.post_images.length == 3 && index == 0 }"></div>
+          <!-- 内容表示エリア -->
+          <div class="input-area">
+
+            <div class="post-name-menu" v-if="post.user">
+              <!-- ユーザー名 -->
+              <div class="user-name-post">
+                <router-link :to="{ name: 'user', params: { id: post.user.id }}">
+                  {{ post.user.name }}
+                </router-link>
+              </div>
+              <!-- メニューボタン -->
+              <div v-if="post.user.id === authUser.id && !post.postMenuOpened" @click="openPostMenu(index)" class="post-menu-btn">
+                ...
+              </div>
+              <!-- メニュー -->
+              <div v-if="post.postMenuOpened" class="post-menus">
+                <div class="post-menu-edit" @click="editPostModalOpen(index)">編集</div>
+                <div class="post-menu-delete" @click="deletePostModalOpen(index)">削除</div>
+              </div>
+              <!-- メニューのモーダルカバー -->
+              <div v-if="post.postMenuOpened" @click="closePostMenu(index)" class="post-menu-cover"></div>
+            </div>
+
+            <!-- テキスト -->
+            <div class="post-body">{{ post.body }}</div>
+
+            <!-- タグ -->
+            <div v-if="post.tags" class="post-tags">
+              <router-link :to="{ name: 'tags.new', params: { name: tag.name }}" v-for="(tag, index) in post.tags" :key="index">
+                #{{ tag.name }}
+              </router-link>
+            </div>
+
+            <!-- 画像たち -->
+            <div v-if="post.post_images && post.post_images.length > 0" class="post-image-view">
+              <div v-for="(image, index) in post.post_images" :key="index" class="each-preview" :class="{ 'one-image-pre': post.post_images.length == 1, 'two-image-pre': post.post_images.length == 2, 'three-image-pre': post.post_images.length == 3, 'four-image-pre': post.post_images.length == 4, 'yokonaga': post.post_images.length == 3 && index == 0 }">
+                <div @click="openImageModal(image.path)" class="each-image-box">
+                  <div class="each-image" :style="{ backgroundImage: 'url(' + image.path + ')' }" :class="{ 'one-each-image': post.post_images.length == 1, 'two-each-image': post.post_images.length == 2, 'three-each-image': post.post_images.length == 3, 'four-each-image': post.post_images.length == 4, 'yokonaga-image': post.post_images.length == 3 && index == 0 }"></div>
+                </div>
               </div>
             </div>
-          </div>
 
-          <!-- どんまいボタンとコメントボタンエリア -->
-          <div class="post-btns">
-            <!-- どんまいボタン -->
-            <div class="post-donmai post-action-icon" @click="donmai(index)">
-              <img v-if="!post.donmai" :src="'../image/donmai.png'" width="30px">
-              <img v-if="post.donmai" :src="'../image/donmaied.png'" width="30px">
-              {{ post.donmaiCount }}
+            <!-- どんまいボタンとコメントボタンエリア -->
+            <div class="post-btns" v-if="post.user">
+              <!-- どんまいボタン -->
+              <div class="post-donmai post-action-icon" @click="donmai(index)">
+                <img v-if="!post.donmai" :src="'../image/donmai.png'" width="30px">
+                <img v-if="post.donmai" :src="'../image/donmaied.png'" width="30px">
+                {{ post.donmaiCount }}
+              </div>
+              <!-- コメントボタン -->
+              <div @click="openModalPost(index)" class="post-comment-icon post-action-icon">
+                <img :src="'../image/comment.png'">
+                {{ post.commentCount }}
+              </div>
             </div>
-            <!-- コメントボタン -->
-            <div @click="openModalPost(index)" class="post-comment-icon post-action-icon">
-              <img :src="'../image/comment.png'">
-              {{ post.commentCount }}
-            </div>
+
           </div>
 
         </div>
+
       </div>
 
       <!-- 読み込み中 -->
@@ -176,7 +188,11 @@
           <div class="input-area">
 
             <!-- ユーザー名 -->
-            <div class="user-name-post">{{ modalPostUserName }}</div>
+            <div class="user-name-post">
+              <router-link :to="{ name: 'user', params: { id: modalPostUserId }}">
+                {{ modalPostUserName }}
+              </router-link>
+            </div>
 
             <!-- テキスト -->
             <div class="post-body">{{ modalPostBody }}</div>
@@ -224,6 +240,9 @@
                 <div v-if="commentErrors.body" class="user-edit-error">
                   {{ commentErrors.body[0] }}
                 </div>
+                <div v-if="tooLongCommentMessage" class="user-edit-error">
+                  {{ tooLongCommentMessage }}
+                </div>
 
                 <div class="comment-btn-main" @click="commentPost">
                   コメント
@@ -255,7 +274,9 @@
 
                   <!-- 名前 -->
                   <div class="overlay-post-name">
-                    {{ comment.user.name }}
+                    <router-link :to="{ name: 'user', params: { id: comment.user.id }}">
+                      {{ comment.user.name }}
+                    </router-link>
                   </div>
 
                   <!-- 日付 -->
@@ -303,6 +324,9 @@
                   <div v-if="comment.replyErrors.body" class="user-edit-error">
                     {{ comment.replyErrors.body[0] }}
                   </div>
+                  <div v-if="comment.tooLongReplyMessage" class="user-edit-error">
+                    {{ comment.tooLongReplyMessage }}
+                  </div>
 
                   <div class="comment-reply-btns">
 
@@ -344,7 +368,9 @@
 
                           <!-- 名前 -->
                           <div class="overlay-post-name">
-                            {{ reply.user.name }}
+                            <router-link :to="{ name: 'user', params: { id: reply.user.id }}">
+                              {{ reply.user.name }}
+                            </router-link>
                           </div>
 
                           <!-- 日付 -->
@@ -415,7 +441,6 @@
     <!-- 投稿編集モーダル -->
     <div v-if="modalPostEditShow" @click.self="editPostModalClose" class="overlay-post">
 
-      <!-- <div class="new-post"> -->
       <div class="posts-edit-overlay">
 
         <!-- アイコン画像 -->
@@ -433,6 +458,9 @@
 
           <div v-if="editErrors.body" class="user-edit-error">
             {{ editErrors.body[0] }}
+          </div>
+          <div v-if="tooLongEditBodyMessage" class="user-edit-error">
+            {{ tooLongEditBodyMessage }}
           </div>
 
           <!-- ジャンル選択エリア -->
@@ -610,6 +638,7 @@ export default {
       errors: [],
       urls: [],
       postProsessing: false,
+      tooLongBodyMessage: '', 
       // 投稿の編集
       editPost: {
         id: null,
@@ -635,14 +664,11 @@ export default {
         //   path: '',
         // }
       ],
+      tooLongEditBodyMessage: '',
       editErrors: [],
       // 無限スクロール用
       postsLoading: false,
       loadMorePosts: true,
-      // itemLoading: false,
-      // loadMore: true,
-      // page: 1,
-      // isLastPage: false,
       // 投稿
       posts: [
         // {
@@ -702,6 +728,7 @@ export default {
         //   replyFormOpened: false,
         //   replyInput: '',
         //   replyErrors: [],
+        //   tooLongReplyMessage: '',
         //   replyHeight: '31px',
         //   replies: [
         //     {
@@ -722,12 +749,14 @@ export default {
       // コメントの無限スクロール用
       commentsLoading: false,
       loadCommentsMore: true,
-      // commentsPage: 1,
-      // isCommentsLastPage: false,
       // 新規コメント、返信
       newComment: {},
       newReply: {},
+      // コメント投稿関連
       commentErrors: [],
+      tooLongCommentMessage: '', // コメントが長すぎるというメッセージ
+      commentProcessing: false, // コメント処理中
+      replyProcessing: false,
       // 画像モーダル
       modalImageShow: false,
       modalImage: '',
@@ -770,7 +799,7 @@ export default {
     getInitInfo() {
       axios.get('/api/authandgenre')
         .then((res) => {
-          console.log(res.data);
+          // console.log(res.data);
           this.authUser = res.data.authUser;
           this.genres = res.data.genres;
           if (!this.authUser.icon) {
@@ -788,7 +817,7 @@ export default {
       this.postsLoading = true;
       axios.get('/api/post/get?loaded_posts_count=' + this.posts.length)
         .then((res) => {
-          console.log(res.data);
+          // console.log(res.data);
           this.posts.push(...res.data.posts);
           if (this.posts.length === res.data.postsTotal) {
             this.loadMorePosts = false;
@@ -799,7 +828,7 @@ export default {
           this.postsLoading = false;
           this.postProsessing = false;
           this.willReload = false;
-          console.log(this.posts.length);
+          // console.log(this.posts.length);
         }).catch((error) => {
           console.log(error);
           this.postsLoading = false;
@@ -856,6 +885,17 @@ export default {
     submit() {
       if (this.postProsessing) return;
       this.postProsessing = true;
+      // 文字数判定
+      let textCount = this.newPost.body.replace(/\n/g, '').length;
+      // console.log(textCount);
+      if (textCount > 250) {
+        this.tooLongBodyMessage = '250文字以内にしてください！（現在' + textCount + '文字）';
+        this.errors = [];
+        this.postProsessing = false;
+        return;
+      } else {
+        this.tooLongBodyMessage = '';
+      }
       let data = new FormData();
       Object.entries(this.newPost).forEach(([key, value]) => {
         if (Array.isArray(value)) {
@@ -877,6 +917,7 @@ export default {
           this.errors = [];
           this.urls = [];
           this.willReload = true;
+          this.loadMorePosts = true;
           this.getPosts();
         }).catch((error) => {
           this.errors = error.response.data.errors;
@@ -899,8 +940,8 @@ export default {
           this.urls.push(URL.createObjectURL(files[i]));
         }
         this.$refs.preview.value = '';
-        console.log(this.newPost.images);
-        console.log(this.urls);
+        // console.log(this.newPost.images);
+        // console.log(this.urls);
       }
       // console.log(this.files);
       // console.log(this.urls);
@@ -911,8 +952,8 @@ export default {
       this.urls.splice(index, 1);
       this.newPost.images.splice(index, 1);
       URL.revokeObjectURL(url);
-      console.log(this.urls);
-      console.log(this.newPost.images);
+      // console.log(this.urls);
+      // console.log(this.newPost.images);
       // console.log(this.files);
       // console.log(this.imageCount);
     },
@@ -990,8 +1031,8 @@ export default {
       });
       // 今編集してるpostsのインデックスを記憶
       this.editPostIndex = i;
-      console.log(this.editPost);
-      console.log(this.editUrls);
+      // console.log(this.editPost);
+      // console.log(this.editUrls);
     },
     editPostModalClose() {
       this.keepScrollWhenClose();
@@ -1008,8 +1049,8 @@ export default {
       this.editHeight = '20px';
       this.closePostMenu(this.editPostIndex);
       this.modalPostEditShow = false;
-      console.log(this.editPost);
-      console.log(this.posts);
+      // console.log(this.editPost);
+      // console.log(this.posts);
     },
     // 投稿編集の画像アップロード
     uploadEditFile() {
@@ -1037,9 +1078,9 @@ export default {
           this.nextNewImageId--;
         }
         this.$refs.editpreview.value = '';
-        console.log(this.editPost.deleteOldImagesId);
-        console.log(this.newImages);
-        console.log(this.editUrls);
+        // console.log(this.editPost.deleteOldImagesId);
+        // console.log(this.newImages);
+        // console.log(this.editUrls);
       }
     },
     // 投稿編集の画像プレビューの削除
@@ -1057,14 +1098,25 @@ export default {
       // プレビュー用URLの削除
       URL.revokeObjectURL(path);
       this.editUrls.splice(index, 1);
-      console.log(this.editPost.deleteOldImagesId);
-      console.log(this.newImages);
-      console.log(this.editUrls);
+      // console.log(this.editPost.deleteOldImagesId);
+      // console.log(this.newImages);
+      // console.log(this.editUrls);
     },
     // 編集した投稿を送信
     editSubmit() {
       if (this.editProcessing) return;
       this.editProcessing = true;
+      // 文字数判定
+      let textCount = this.editPost.body.replace(/\n/g, '').length;
+      // console.log(textCount);
+      if (textCount > 250) {
+        this.tooLongEditBodyMessage = '250文字以内にしてください！（現在' + textCount + '文字）';
+        this.editErrors = [];
+        this.editProcessing = false;
+        return;
+      } else {
+        this.tooLongEditBodyMessage = '';
+      }
       this.editPost.newImageFiles = this.newImages.map((obj) => {
         return obj.file;
       });
@@ -1178,8 +1230,6 @@ export default {
       // 無限スクロール設定の初期化
       this.commentsLoading = false;
       this.loadCommentsMore = true;
-      // this.commentsPage = 1;
-      // this.isCommentsLastPage = false;
     },
     // コメントの取得
     getComments() {
@@ -1188,13 +1238,13 @@ export default {
       this.commentsLoading = true;
       axios.get('/api/comments/get/' + this.modalPostId + '?loaded_comments_count=' + this.modalPostComments.length)
         .then((res) => {
-          console.log(res.data);
+          // console.log(res.data);
           this.modalPostComments.push(...res.data.comments);
           if (this.modalPostComments.length === res.data.commentsTotal) {
             this.loadCommentsMore = false;
           }
           this.commentsLoading = false;
-          console.log(this.modalPostComments.length);
+          // console.log(this.modalPostComments.length);
         }).catch((error) => {
           console.log(error);
           this.commentsLoading = false;
@@ -1207,9 +1257,6 @@ export default {
       if (bottomOfModal) {
         this.getComments();
       }
-      // console.log(postsOverlay.scrollTop);
-      // console.log(postsOverlay.clientHeight);
-      // console.log(postsOverlay.scrollHeight);
     },
     // どんまいしたユーザーの取得
     getDonmaiUsers() {
@@ -1218,7 +1265,7 @@ export default {
       this.donmaiLoading = true;
       axios.get('/api/donmai/users/' + this.modalPostId + '?page=' + this.donmaiPage)
         .then((res) => {
-          console.log(res.data);
+          // console.log(res.data);
           const users = res.data.data.map((obj) => {
             return obj.user;
           });
@@ -1304,20 +1351,36 @@ export default {
     },
     // コメント投稿
     commentPost() {
+      if (this.commentProcessing) return;
+      this.commentProcessing = true;
+      // 文字数判定
+      let textCount = this.commentInput.replace(/\n/g, '').length;
+      // console.log(textCount);
+      if (textCount > 200) {
+        this.tooLongCommentMessage = '200文字以内にしてください！（現在' + textCount + '文字）';
+        this.commentErrors = [];
+        this.commentProcessing = false;
+        return;
+      } else {
+        this.tooLongCommentMessage = '';
+      }
       let data = new FormData();
       data.append('postId', this.modalPostId);
       data.append('body', this.commentInput);
       axios.post('/api/comment', data)
         .then((res) => {
-          console.log(res.data);
+          // console.log(res.data);
           this.modalPostComments.unshift(res.data);
           this.commentInput = '';
           this.posts[this.modalPostIndex].commentCount++;
           this.modalPostCommentCount++;
           this.commentErrors = [];
+          this.tooLongCommentMessage = '';
+          this.commentProcessing = false;
         }).catch((error) => {
           console.log(error.response.data.errors);
           this.commentErrors = error.response.data.errors;
+          this.commentProcessing = false;
         });
     },
     // コメント削除
@@ -1340,13 +1403,13 @@ export default {
       this.modalPostComments[i].repliesLoading = true;
       axios.get('/api/replies/get/' + this.modalPostComments[i].id + '?loaded_replies_count=' + this.modalPostComments[i].replies.length)
         .then((res) => {
-          console.log(res.data);
+          // console.log(res.data);
           this.modalPostComments[i].replies.push(...res.data.replies);
           if (this.modalPostComments[i].replies.length === res.data.repliesTotal) {
             this.modalPostComments[i].loadRepliesMore = false;
           }
           this.modalPostComments[i].repliesLoading = false;
-          console.log(this.modalPostComments[i].replies.length);
+          // console.log(this.modalPostComments[i].replies.length);
         }).catch((error) => {
           console.log(error);
           this.modalPostComments[i].repliesLoading = false;
@@ -1383,12 +1446,25 @@ export default {
     },
     // コメントへの返信の投稿
     reply(i) {
+      if (this.replyProcessing) return;
+      this.replyProcessing = true;
+      // 文字数判定
+      let textCount = this.modalPostComments[i].replyInput.replace(/\n/g, '').length;
+      // console.log(textCount);
+      if (textCount > 200) {
+        this.modalPostComments[i].tooLongReplyMessage = '200文字以内にしてください！（現在' + textCount + '文字）';
+        this.modalPostComments[i].replyErrors = [];
+        this.replyProcessing = false;
+        return;
+      } else {
+        this.modalPostComments[i].tooLongReplyMessage = '';
+      }
       let data = new FormData();
       data.append('body', this.modalPostComments[i].replyInput);
       data.append('commentId', this.modalPostComments[i].id);
       axios.post('/api/comment/reply', data)
         .then((res) => {
-          console.log(res.data);
+          // console.log(res.data);
           if (!this.modalPostComments[i].loadRepliesMore) {
             this.modalPostComments[i].replies.push(res.data);
           }
@@ -1398,9 +1474,11 @@ export default {
           this.posts[this.modalPostIndex].commentCount++;
           this.modalPostCommentCount++;
           this.modalPostComments[i].replyFormOpened = false;
+          this.replyProcessing = false;
         }).catch((error) => {
-          this.modalPostComments[i].replyErrors = error.response.data.errors;
           console.log(this.modalPostComments[0]);
+          this.modalPostComments[i].replyErrors = error.response.data.errors;
+          this.replyProcessing = false;
         });
     },
     // コメントへの返信の削除
@@ -1546,7 +1624,7 @@ export default {
       this.modalPostEditShow = false;
     }
     this.loadMorePosts = false;
-    if (!this.postProsessing && !this.editProcessing && !this.deleteProssesing) {
+    if (!this.postProsessing && !this.editProcessing && !this.deleteProssesing && !this.commentProcessing && !this.replyProcessing) {
       next();
     }
   },

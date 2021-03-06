@@ -18,13 +18,12 @@ class Guchi extends Model
 
     // グチ投稿のバリデーション
     public static $guchiRules = [
-        'body' => 'required | max:250',
+        'body' => 'required',
     ];
 
     // グチ投稿のバリデーションメッセージ
     public static $guchiValMessages = [
         'body.required' => '入力されていません！',
-        'body.max' => '250文字以内にしてください！',
     ];
 
 

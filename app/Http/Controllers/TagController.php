@@ -21,7 +21,7 @@ class TagController extends Controller
     // タグのトレンドランキング（ここ１週間以内で紐つけられた投稿が多い順）
     public function getTrend()
     {
-        $lastWeek = new Carbon('-30 day', 'Asia/Tokyo');
+        $lastWeek = new Carbon('-7 day', 'Asia/Tokyo');
 
         $tags = Tag::withCount(['posts' => function (Builder $query) use ($lastWeek) {
                         $query->where('posts.created_at', '>', $lastWeek);

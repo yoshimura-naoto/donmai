@@ -24,7 +24,11 @@
 
             <div class="post-name-menu">
               <!-- ユーザー名 -->
-              <div class="user-name-post">{{ post.user.name }}</div>
+              <div class="user-name-post">
+                <router-link :to="{ name: 'user', params: { id: post.user.id }}">
+                  {{ post.user.name }}
+                </router-link>
+              </div>
               <!-- メニューボタン -->
               <div v-if="post.user.id === authUser.id && !post.postMenuOpened" @click="openPostMenu(index)" class="post-menu-btn">
                 ...
@@ -104,7 +108,11 @@
           <div class="input-area">
 
             <!-- ユーザー名 -->
-            <div class="user-name-post">{{ modalPostUserName }}</div>
+            <div class="user-name-post">
+              <router-link :to="{ name: 'user', params: { id: modalPostUserId }}">
+                {{ modalPostUserName }}
+              </router-link>
+            </div>
 
             <!-- テキスト -->
             <div class="post-body">{{ modalPostBody }}</div>
@@ -151,6 +159,9 @@
                 <div v-if="commentErrors.body" class="user-edit-error">
                   {{ commentErrors.body[0] }}
                 </div>
+                <div v-if="tooLongCommentMessage" class="user-edit-error">
+                  {{ tooLongCommentMessage }}
+                </div>
 
                 <div class="comment-btn-main" @click="commentPost">
                   コメント
@@ -181,7 +192,9 @@
 
                   <!-- 名前 -->
                   <div class="overlay-post-name">
-                    {{ comment.user.name }}
+                    <router-link :to="{ name: 'user', params: { id: comment.user.id }}">
+                      {{ comment.user.name }}
+                    </router-link>
                   </div>
 
                   <!-- 日付 -->
@@ -228,6 +241,9 @@
                   <div v-if="comment.replyErrors.body" class="user-edit-error">
                     {{ comment.replyErrors.body[0] }}
                   </div>
+                  <div v-if="comment.tooLongReplyMessage" class="user-edit-error">
+                    {{ comment.tooLongReplyMessage }}
+                  </div>
 
                   <div class="comment-reply-btns">
 
@@ -268,7 +284,9 @@
 
                           <!-- 名前 -->
                           <div class="overlay-post-name">
-                            {{ reply.user.name }}
+                            <router-link :to="{ name: 'user', params: { id: reply.user.id }}">
+                              {{ reply.user.name }}
+                            </router-link>
                           </div>
 
                           <!-- 日付 -->
@@ -358,6 +376,9 @@
           <div v-if="editErrors.body" class="user-edit-error">
             {{ editErrors.body[0] }}
           </div>
+          <div v-if="tooLongEditBodyMessage" class="user-edit-error">
+            {{ tooLongEditBodyMessage }}
+          </div>
 
           <!-- ジャンル選択エリア -->
           <div class="select-genre">
@@ -407,9 +428,9 @@
             </div>
 
             <!-- テスト用 -->
-            <div class="submit">
+            <!-- <div class="submit">
               <div class="submit-btn" @click="editCheck">チェック</div>
-            </div>
+            </div> -->
             
           </div>
 
@@ -536,6 +557,7 @@ export default {
         //   path: '',
         // }
       ],
+      tooLongEditBodyMessage: '',
       editErrors: [],
       edited: false,  // 編集したかどうか
       editProcessing: false,  // 編集の処理中
@@ -603,6 +625,7 @@ export default {
         //   replyFormOpened: false,
         //   replyInput: '',
         //   replyErrors: [],
+        //   tooLongReplyMessage: '',
         //   replyHeight: '31px',
         //   replies: [
         //     {
@@ -626,7 +649,11 @@ export default {
       // 新規コメント、返信
       newComment: {},
       newReply: {},
+      // コメント投稿関連
       commentErrors: [],
+      tooLongCommentMessage: '', // コメントが長すぎるというメッセージ
+      commentProcessing: false, // コメント処理中
+      replyProcessing: false,
       // 画像モーダル
       modalImageShow: false,
       modalImage: '',
@@ -669,7 +696,7 @@ export default {
     getInitInfo(tagName) {
       axios.get('/api/authandgenre')
         .then((res) => {
-          console.log(res.data);
+          // console.log(res.data);
           this.authUser = res.data.authUser;
           this.genres = res.data.genres;
           if (!this.authUser.icon) {
@@ -687,13 +714,13 @@ export default {
       this.postsLoading = true;
       axios.get('/api/post/tags/popular/' + tagName + '?loaded_posts_count=' + this.posts.length)
         .then((res) => {
-          console.log(res.data);
+          // console.log(res.data);
           this.posts.push(...res.data.posts);
           if (this.posts.length === res.data.postsTotal) {
             this.loadMorePosts = false;
           }
           this.postsLoading = false;
-          console.log(this.posts.length);
+          // console.log(this.posts.length);
         }).catch((error) => {
           console.log(error);
           this.postsLoading = false;
@@ -799,8 +826,8 @@ export default {
       });
       // 今編集してるpostsのインデックスを記憶
       this.editPostIndex = i;
-      console.log(this.editPost);
-      console.log(this.editUrls);
+      // console.log(this.editPost);
+      // console.log(this.editUrls);
     },
     // 投稿編集モーダルを閉じる
     editPostModalClose() {
@@ -821,8 +848,8 @@ export default {
       }
       this.modalPostEditShow = false;
       this.editPostIndex = null;
-      console.log(this.editPost);
-      console.log(this.posts);
+      // console.log(this.editPost);
+      // console.log(this.posts);
     },
     // 投稿編集の画像アップロード
     uploadEditFile() {
@@ -850,9 +877,9 @@ export default {
           this.nextNewImageId--;
         }
         this.$refs.editpreview.value = '';
-        console.log(this.editPost.deleteOldImagesId);
-        console.log(this.newImages);
-        console.log(this.editUrls);
+        // console.log(this.editPost.deleteOldImagesId);
+        // console.log(this.newImages);
+        // console.log(this.editUrls);
       }
     },
     // 投稿編集の画像プレビューの削除
@@ -870,14 +897,25 @@ export default {
       // プレビュー用URLの削除
       URL.revokeObjectURL(path);
       this.editUrls.splice(index, 1);
-      console.log(this.editPost.deleteOldImagesId);
-      console.log(this.newImages);
-      console.log(this.editUrls);
+      // console.log(this.editPost.deleteOldImagesId);
+      // console.log(this.newImages);
+      // console.log(this.editUrls);
     },
     // 編集した投稿を送信
     editSubmit() {
       if (this.editProcessing) return;
       this.editProcessing = true;
+      // 文字数判定
+      let textCount = this.editPost.body.replace(/\n/g, '').length;
+      // console.log(textCount);
+      if (textCount > 250) {
+        this.tooLongEditBodyMessage = '250文字以内にしてください！（現在' + textCount + '文字）';
+        this.editErrors = [];
+        this.editProcessing = false;
+        return;
+      } else {
+        this.tooLongEditBodyMessage = '';
+      }
       this.editPost.newImageFiles = this.newImages.map((obj) => {
         return obj.file;
       });
@@ -893,7 +931,7 @@ export default {
       });
       axios.post('/api/post/edit', data)
         .then((res) => {
-          console.log(res.data);
+          // console.log(res.data);
           // このページのタグを削除していたらこのページの投稿一覧から削除
           if (this.editPost.tags.includes(this.$route.params.name)) {
             this.posts.splice(this.editPostIndex, 1, res.data.post);
@@ -1005,13 +1043,13 @@ export default {
       this.commentsLoading = true;
       axios.get('/api/comments/get/' + this.modalPostId + '?loaded_comments_count=' + this.modalPostComments.length)
         .then((res) => {
-          console.log(res.data);
+          // console.log(res.data);
           this.modalPostComments.push(...res.data.comments);
           if (this.modalPostComments.length === res.data.commentsTotal) {
             this.loadCommentsMore = false;
           }
           this.commentsLoading = false;
-          console.log(this.modalPostComments.length);
+          // console.log(this.modalPostComments.length);
         }).catch((error) => {
           console.log(error);
           this.commentsLoading = false;
@@ -1032,7 +1070,7 @@ export default {
       this.donmaiLoading = true;
       axios.get('/api/donmai/users/' + this.modalPostId + '?page=' + this.donmaiPage)
         .then((res) => {
-          console.log(res.data);
+          // console.log(res.data);
           const users = res.data.data.map((obj) => {
             return obj.user;
           });
@@ -1117,6 +1155,19 @@ export default {
     },
     // コメント投稿
     commentPost() {
+      if (this.commentProcessing) return;
+      this.commentProcessing = true;
+      // 文字数判定
+      let textCount = this.commentInput.replace(/\n/g, '').length;
+      // console.log(textCount);
+      if (textCount > 200) {
+        this.tooLongCommentMessage = '200文字以内にしてください！（現在' + textCount + '文字）';
+        this.commentErrors = [];
+        this.commentProcessing = false;
+        return;
+      } else {
+        this.tooLongCommentMessage = '';
+      }
       let data = new FormData();
       data.append('postId', this.modalPostId);
       data.append('body', this.commentInput);
@@ -1128,10 +1179,12 @@ export default {
           this.posts[this.modalPostIndex].commentCount++;
           this.modalPostCommentCount++;
           this.commentErrors = [];
+          this.commentProcessing = false;
         }).catch((error) => {
           // console.log(error.response.data.errors);
           // this.modalPostComments[i].replyErrors = [];
           this.commentErrors = error.response.data.errors;
+          this.commentProcessing = false;
         });
     },
     // コメント削除
@@ -1154,13 +1207,13 @@ export default {
       this.modalPostComments[i].repliesLoading = true;
       axios.get('/api/replies/get/' + this.modalPostComments[i].id + '?loaded_replies_count=' + this.modalPostComments[i].replies.length)
         .then((res) => {
-          console.log(res.data);
+          // console.log(res.data);
           this.modalPostComments[i].replies.push(...res.data.replies);
           if (this.modalPostComments[i].replies.length === res.data.repliesTotal) {
             this.modalPostComments[i].loadRepliesMore = false;
           }
           this.modalPostComments[i].repliesLoading = false;
-          console.log(this.modalPostComments[i].replies.length);
+          // console.log(this.modalPostComments[i].replies.length);
         }).catch((error) => {
           console.log(error);
           this.modalPostComments[i].repliesLoading = false;
@@ -1196,6 +1249,19 @@ export default {
     },
     // コメントへの返信の投稿
     reply(i) {
+      if (this.replyProcessing) return;
+      this.replyProcessing = true;
+      // 文字数判定
+      let textCount = this.modalPostComments[i].replyInput.replace(/\n/g, '').length;
+      // console.log(textCount);
+      if (textCount > 200) {
+        this.modalPostComments[i].tooLongReplyMessage = '200文字以内にしてください！（現在' + textCount + '文字）';
+        this.modalPostComments[i].replyErrors = [];
+        this.replyProcessing = false;
+        return;
+      } else {
+        this.modalPostComments[i].tooLongReplyMessage = '';
+      }
       let data = new FormData();
       data.append('body', this.modalPostComments[i].replyInput);
       data.append('commentId', this.modalPostComments[i].id);
@@ -1210,10 +1276,11 @@ export default {
           this.modalPostComments[i].replyErrors = [];
           this.posts[this.modalPostIndex].commentCount++;
           this.modalPostCommentCount++;
-          // this.modalPostComments[i].replyShow = true;
           this.modalPostComments[i].replyFormOpened = false;
+          this.replyProcessing = false;
         }).catch((error) => {
           this.modalPostComments[i].replyErrors = error.response.data.errors;
+          this.replyProcessing = false;
           // console.log(this.modalPostComments[i].replyErrors)
         });
     },
@@ -1357,7 +1424,7 @@ export default {
       this.modalPostEditShow = false;
     }
     this.loadMorePosts = false;
-    if (!this.editProcessing && !this.deleteProssesing) {
+    if (!this.editProcessing && !this.deleteProssesing && !this.commentProcessing && !this.replyProcessing) {
       next();
     }
   },
@@ -1375,7 +1442,7 @@ export default {
     // this.deleteProssesing = false;
     this.resetPaginate();
     this.getPosts(to.params.name);
-    if (!this.editProcessing && !this.deleteProssesing) {
+    if (!this.editProcessing && !this.deleteProssesing && !this.commentProcessing && !this.replyProcessing) {
       next();
     }
   },

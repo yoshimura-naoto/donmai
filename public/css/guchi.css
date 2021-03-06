@@ -610,6 +610,11 @@
   margin-bottom: 10px;
 }
 
+.thread-comment-area-top a {
+  text-decoration: none;
+  color: #717171;
+}
+
 .thread-comment-area-top .id {
   /* margin-right: 15px; */
   margin-right: 6px;
