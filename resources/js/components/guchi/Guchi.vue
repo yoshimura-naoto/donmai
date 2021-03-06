@@ -231,16 +231,16 @@ export default {
       this.url = URL.createObjectURL(this.form.icon);
       this.$refs.preview.value = '';
       this.message = '';
-      console.log(this.form.icon);
-      console.log(this.url);
+      // console.log(this.form.icon);
+      // console.log(this.url);
     },
     // 画像プレビューの削除
     deletePreview() {
       URL.revokeObjectURL(this.url);
       this.url = '';
       this.form.icon = '';
-      console.log(this.url);
-      console.log(this.form.icon);
+      // console.log(this.url);
+      // console.log(this.form.icon);
     },
     // グチ部屋の投稿（作成）
     submit() {

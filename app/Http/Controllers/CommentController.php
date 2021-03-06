@@ -41,6 +41,7 @@ class CommentController extends Controller
             $comment->replyErrors = [];
             $comment->repliesLoading = false;
             $comment->loadRepliesMore = true;
+            $comment->tooLongReplyMessage = '';
         }
 
         $data = [
@@ -77,6 +78,7 @@ class CommentController extends Controller
         $newComment->replyInput = '';
         $newComment->replies = [];
         $newComment->replyErrors = [];
+        $newComment->tooLongReplyMessage = '';
 
         return response()->json($newComment, 200);
     }

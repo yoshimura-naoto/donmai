@@ -119,7 +119,7 @@ export default {
     getGuchiRooms(page, genreName) {
       axios.get('/api/guchiroom/genre/new/' + genreName + '?page=' + page)
         .then((res) => {
-          console.log(res.data);
+          // console.log(res.data);
           this.guchiRooms = res.data.data;
           this.currentPage = res.data.current_page;
           this.lastPage = res.data.last_page;
@@ -179,7 +179,7 @@ export default {
       this.keepScrollWhenOpen();
       this.deleteRoomIndex = i;
       this.deleteRoomModalOpened = true;
-      console.log(this.guchiRooms[this.deleteRoomIndex].id);
+      // console.log(this.guchiRooms[this.deleteRoomIndex].id);
     },
     deleteRoomModalClose() {
       this.keepScrollWhenClose();

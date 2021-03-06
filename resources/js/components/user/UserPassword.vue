@@ -123,7 +123,7 @@ export default {
     axios.get('/api/user')
       .then((res) => {
         this.form = res.data;
-        console.log(this.form);
+        // console.log(this.form);
       })
   },
 

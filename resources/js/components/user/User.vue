@@ -279,7 +279,7 @@ export default {
     getUserInfo(paramId) {
       axios.get('/api/user/' + paramId)
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         this.user = res.data;
         if (this.user.icon === null) {
           this.user.icon = '../../image/user.png';
@@ -313,7 +313,7 @@ export default {
       this.followsLoading = true;
       axios.get('/api/following/' + this.user.id + '?page=' + this.followsPage)
         .then((res) => {
-          console.log(res.data);
+          // console.log(res.data);
           const follows = res.data.data.map((obj) => {
             return obj.followed_user;
           });
@@ -336,7 +336,7 @@ export default {
       this.followersLoading = true;
       axios.get('/api/follower/' + this.user.id + '?page=' + this.followersPage)
         .then((res) => {
-          console.log(res.data);
+          // console.log(res.data);
           const followers = res.data.data.map((obj) => {
             return obj.user;
           });

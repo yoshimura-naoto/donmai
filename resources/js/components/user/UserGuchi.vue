@@ -118,7 +118,7 @@ export default {
     getGuchiRooms(page, userId) {
       axios.get('/api/guchiroom/user/' + userId + '?page=' + page)
         .then((res) => {
-          console.log(res.data);
+          // console.log(res.data);
           const guchiRooms = res.data.data.map((obj) => {
             return obj.guchi_room;
           });
@@ -181,7 +181,7 @@ export default {
       this.keepScrollWhenOpen();
       this.deleteRoomIndex = i;
       this.deleteRoomModalOpened = true;
-      console.log(this.guchiRooms[this.deleteRoomIndex].id);
+      // console.log(this.guchiRooms[this.deleteRoomIndex].id);
     },
     deleteRoomModalClose() {
       this.keepScrollWhenClose();

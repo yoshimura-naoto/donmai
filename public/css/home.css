@@ -221,11 +221,21 @@
   font-weight: bold;
 }
 
+.user-name-post a {
+  text-decoration: none;
+  color: #525252;
+}
+
 .post-name-menu {
   display: flex;
   justify-content: space-between;
   position: relative;
 }
+
+/* .post-name-menu a {
+  text-decoration: none;
+  color: #525252;
+} */
 
 .post-menu-btn {
   font-size: 24px;
@@ -530,6 +540,11 @@
   color: #353535;
 }
 
+.overlay-post-name a {
+  text-decoration: none;
+  color: #525252;
+}
+
 .overlay-post-day {
   color: #8c8c8c;
 }
@@ -788,11 +803,11 @@
   max-height: 200px;
   /* max-height: 70px; */
   overflow: scroll;
-  -ms-overflow-style: none;    /* IE, Edge 対応 */
-  scrollbar-width: none;       /* Firefox 対応 */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
-.donmai-user-box::-webkit-scrollbar {  /* Chrome, Safari 対応 */
+.donmai-user-box::-webkit-scrollbar {  
   display:none;
 }
 
@@ -846,6 +861,7 @@
   padding: 3px 8px;
   border-radius: 15px;
   margin-left: auto;
+  /* margin-right: 6px; */
   color: #4c4c4c;
   user-select: none;
 }
@@ -980,7 +996,7 @@
   }
 
   .genre-list ul li {
-    margin: 10px 10px 10px 0;
+    margin: 10px 10px -1px 0;
   }
 
   .genre-list ul li a {

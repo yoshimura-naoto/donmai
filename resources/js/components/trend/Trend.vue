@@ -61,11 +61,13 @@ export default {
       axios.get('/api/tag/trend')
         .then((res) => {
           // console.log(res.data);
-          this.trends = res.data;
-          this.$nextTick(function () {
-            this.makeGraph();
-            this.postCountUp();
-          });
+          if (res.data.length > 0) {
+            this.trends = res.data;
+            this.$nextTick(function () {
+              this.makeGraph();
+              this.postCountUp();
+            });
+          }
         }).catch(() => {
           return;
         });

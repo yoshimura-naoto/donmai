@@ -50,8 +50,9 @@ class PostController extends Controller
         // タグの保存
         $tagsText = $request->tags;   // ユーザーが入力したタグを文字列の状態（'#りんご #バナナ'）で取得
         $tagsList = preg_match_all('/#([^\s#]+)/', str_replace('　', ' ', $tagsText), $m) ? $m[1] : [];  // $tagsTextを配列に変換（ハッシュタグから始まる単語を取得して配列に）
+        $uniqueTagsList = array_unique($tagsList);  // 重複を除去
         $tags = [];     // タグのレコード（tagsテーブルのレコード）の配列
-        foreach ($tagsList as $tag) {
+        foreach ($uniqueTagsList as $tag) {
             $record = Tag::firstOrCreate(['name' => $tag]);
             array_push($tags, $record);
         }
@@ -315,7 +316,7 @@ class PostController extends Controller
     // 話題の投稿ページで、ここ１週間以内でどんまい数が多い順に投稿を取得
     public function getHotPosts(Request $request)
     {
-        $lastWeek = new Carbon('-30 day', 'Asia/Tokyo');  // 今だけ20日に設定
+        $lastWeek = new Carbon('-7 day', 'Asia/Tokyo');  // 今だけ20日に設定
 
         // 投稿一覧をdonmais数が多い順で取得（３件ずつ無限スクロール）
         $posts = Post::where('created_at', '>=', $lastWeek)

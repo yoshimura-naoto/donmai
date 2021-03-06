@@ -15,10 +15,9 @@ class CreateGuchisTable extends Migration
     {
         Schema::create('guchis', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('body');
+            $table->text('body');
             $table->unsignedBigInteger('user_id')->nullable();
             $table->unsignedBigInteger('guchi_room_id');
-            $table->boolean('anonymous');
             $table->timestamps();
             $table->foreign('guchi_room_id')->references('id')->on('guchi_rooms')->onDelete('cascade');
         });
