@@ -68,7 +68,11 @@ class UserController extends Controller
 
         // ユーザー名と自己紹介文の更新
         $user->name = $request->name;
-        $user->pr = $request->pr;
+        if ($request->pr) {
+            $user->pr = $request->pr;
+        } else {
+            $user->pr = null;
+        }
 
         $user->save();
 
