@@ -759,6 +759,16 @@
   padding: 0 10px;
 } */
 
+.image-modal-close {
+  position: absolute;
+  background: white;
+  border-radius: 50%;
+  opacity: 0.5;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+}
+
 .overlay-image-image {
   display: block;
   max-width: 800px;

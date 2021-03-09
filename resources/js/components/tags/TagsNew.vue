@@ -348,6 +348,7 @@
     <div v-show="modalImageShow" @click.self="closeImageModal" class="overlay-image">
 
       <div class="overlay-image-box">
+        <img :src="'../../image/batsu.png'" @click="closeImageModal" class="image-modal-close">
         <img :src="modalImage" class="overlay-image-image" :class="{'height-is-bigger':heightIsBigger}">
       </div>
 
