@@ -2250,6 +2250,8 @@ __webpack_require__.r(__webpack_exports__);
     // 検索の処理
     search: function search(e) {
       if (e.keyCode !== 13) return;
+      var searchForm = document.querySelector('#search');
+      searchForm.blur();
       this.$router.push({
         name: 'search.post.new',
         params: {
@@ -18910,7 +18912,7 @@ __webpack_require__.r(__webpack_exports__);
         id: null,
         icon: null,
         name: null,
-        pr: null,
+        pr: '',
         // 新しいアイコン
         iconImage: null
       },
@@ -18959,21 +18961,26 @@ __webpack_require__.r(__webpack_exports__);
       if (this.editProcessing) return;
       this.editProcessing = true; // 文字数判定
 
-      var textCount = this.form.pr.replace(/\n/g, '').length; // console.log(textCount);
+      if (this.form.pr) {
+        var textCount = this.form.pr.replace(/\n/g, '').length; // console.log(textCount);
 
-      if (textCount > 100) {
-        this.tooLongPrMessage = '100文字以内にしてください！（現在' + textCount + '文字）';
-        this.errors = [];
-        this.editProcessing = false;
-        return;
-      } else {
-        this.tooLongPrMessage = '';
+        if (textCount > 100) {
+          this.tooLongPrMessage = '100文字以内にしてください！（現在' + textCount + '文字）';
+          this.errors = [];
+          this.editProcessing = false;
+          return;
+        } else {
+          this.tooLongPrMessage = '';
+        }
       }
 
       var data = new FormData();
       data.append('id', this.form.id);
       data.append('name', this.form.name);
-      data.append('pr', this.form.pr);
+
+      if (this.form.pr) {
+        data.append('pr', this.form.pr);
+      }
 
       if (this.form.icon) {
         data.append('icon', this.form.icon);

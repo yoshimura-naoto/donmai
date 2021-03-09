@@ -124,7 +124,7 @@ export default {
         id: null,
         icon: null,
         name: null,
-        pr: null,
+        pr: '',
         // 新しいアイコン
         iconImage: null,
       },
@@ -172,20 +172,24 @@ export default {
       if (this.editProcessing) return;
       this.editProcessing = true;
       // 文字数判定
-      let textCount = this.form.pr.replace(/\n/g, '').length;
-      // console.log(textCount);
-      if (textCount > 100) {
-        this.tooLongPrMessage = '100文字以内にしてください！（現在' + textCount + '文字）';
-        this.errors = [];
-        this.editProcessing = false;
-        return;
-      } else {
-        this.tooLongPrMessage = '';
+      if (this.form.pr) {
+        let textCount = this.form.pr.replace(/\n/g, '').length;
+        // console.log(textCount);
+        if (textCount > 100) {
+          this.tooLongPrMessage = '100文字以内にしてください！（現在' + textCount + '文字）';
+          this.errors = [];
+          this.editProcessing = false;
+          return;
+        } else {
+          this.tooLongPrMessage = '';
+        }
       }
       let data = new FormData();
       data.append('id', this.form.id);
       data.append('name', this.form.name);
-      data.append('pr', this.form.pr);
+      if (this.form.pr) {
+        data.append('pr', this.form.pr);
+      }
       if (this.form.icon) {
         data.append('icon', this.form.icon);
       }

@@ -283,6 +283,7 @@ export default {
     // 検索の処理
     search(e) {
       if (e.keyCode !== 13) return;
+      document.querySelector('#search').blur();
       this.$router.push({ name: 'search.post.new', params: { word: this.keyword }})
         .catch(() => {
           return;
