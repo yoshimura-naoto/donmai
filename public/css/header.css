@@ -234,8 +234,12 @@ body {
   color: white;
 }
 
+.genre-menu-display-1:hover .pulldown-genre-menu {
+  display: block;
+}
+
 .pulldown-genre-menu {
-  /* display: none; */
+  display: none;
   position: fixed;
   text-align: initial;
   margin-left: -146px;
@@ -279,6 +283,10 @@ body {
 
 .header-genre-menu-wide {
   display: none;
+}
+
+.header-genre-menu-wide:hover .pulldown-genre-menu {
+  display: block;
 }
 
 

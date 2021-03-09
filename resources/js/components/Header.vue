@@ -26,11 +26,13 @@
         <!-- ジャンルメニュー -->
         <div :class="{'genre-menu-display-1': $route.path == $router.resolve({ name: 'home' }).href || $route.path.substr(0, 7) == '/genre/' }" class="header-genre-menu-2">
 
-          <div class="menu-set-btn-genre" @click="genreMenuToggle" v-click-outside="genreMenuClose">
+          <!-- <div class="menu-set-btn-genre" @click="genreMenuToggle" v-click-outside="genreMenuClose"> -->
+          <div class="menu-set-btn-genre">
             ジャンル
           </div>
 
-          <div v-if="genreOpened" class="pulldown-genre-menu">
+          <!-- <div v-if="genreOpened" class="pulldown-genre-menu"> -->
+          <div class="pulldown-genre-menu">
             <ul>
               <li>
                 <router-link :to="{ name: 'home' }" :class="{ 'selected': $route.path == '/' }">
@@ -49,7 +51,9 @@
 
         <!-- 画面幅670px未満の時のヘッダーメニューをプルダウン化 -->
         <div class="menu menu-set">
+
           <div>MENU</div>
+
           <ul>
 
             <li v-if="$route.path !== '/register' && $route.path !== '/login'">
@@ -131,10 +135,12 @@
         </div>
 
         <div v-if="$route.path !== '/register' && $route.path !== '/login'" :class="{'genre-menu-display-2': $route.path == $router.resolve({ name: 'home' }).href || $route.path.substr(0, 7) == '/genre/' }" class="header-genre-menu-wide">
-          <div class="menu-set-btn-genre-wide" @click="genreMenuToggleWide" v-click-outside="genreMenuWideClose">
+          <!-- <div class="menu-set-btn-genre-wide" @click="genreMenuToggleWide" v-click-outside="genreMenuWideClose"> -->
+          <div class="menu-set-btn-genre-wide">
             ジャンル
           </div>
-          <div v-if="genreMenuWideOpened" class="pulldown-genre-menu">
+          <!-- <div v-if="genreMenuWideOpened" class="pulldown-genre-menu"> -->
+          <div class="pulldown-genre-menu">
             <ul>
               <li>
                 <router-link :to="{ name: 'home' }" :class="{ 'selected': $route.path == '/' }">
