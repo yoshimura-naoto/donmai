@@ -2186,6 +2186,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -2557,6 +2563,13 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue_click_outside__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-click-outside */ "./node_modules/vue-click-outside/index.js");
 /* harmony import */ var vue_click_outside__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_click_outside__WEBPACK_IMPORTED_MODULE_0__);
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -63637,84 +63650,64 @@ var render = function() {
                 }
               },
               [
-                _c(
-                  "div",
-                  {
-                    directives: [
-                      {
-                        name: "click-outside",
-                        rawName: "v-click-outside",
-                        value: _vm.genreMenuClose,
-                        expression: "genreMenuClose"
-                      }
-                    ],
-                    staticClass: "menu-set-btn-genre",
-                    on: { click: _vm.genreMenuToggle }
-                  },
-                  [_vm._v("\n          ジャンル\n        ")]
-                ),
+                _c("div", { staticClass: "menu-set-btn-genre" }, [
+                  _vm._v("\n          ジャンル\n        ")
+                ]),
                 _vm._v(" "),
-                _vm.genreOpened
-                  ? _c("div", { staticClass: "pulldown-genre-menu" }, [
+                _c("div", { staticClass: "pulldown-genre-menu" }, [
+                  _c(
+                    "ul",
+                    [
                       _c(
-                        "ul",
+                        "li",
                         [
                           _c(
-                            "li",
-                            [
-                              _c(
-                                "router-link",
-                                {
-                                  class: { selected: _vm.$route.path == "/" },
-                                  attrs: { to: { name: "home" } }
-                                },
-                                [
-                                  _vm._v(
-                                    "\n                すべて\n              "
-                                  )
-                                ]
-                              )
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _vm._l(_vm.genres, function(genre, index) {
-                            return _c(
-                              "li",
-                              { key: index },
-                              [
-                                _c(
-                                  "router-link",
-                                  {
-                                    class: {
-                                      selected:
-                                        _vm.$route.path ==
-                                        "/genre/" + genre.route
-                                    },
-                                    attrs: {
-                                      to: {
-                                        name: "home.genre",
-                                        params: { name: genre.route }
-                                      }
-                                    }
-                                  },
-                                  [
-                                    _vm._v(
-                                      "\n                " +
-                                        _vm._s(genre.name) +
-                                        "\n              "
-                                    )
-                                  ]
-                                )
-                              ],
-                              1
-                            )
-                          })
+                            "router-link",
+                            {
+                              class: { selected: _vm.$route.path == "/" },
+                              attrs: { to: { name: "home" } }
+                            },
+                            [_vm._v("\n                すべて\n              ")]
+                          )
                         ],
-                        2
-                      )
-                    ])
-                  : _vm._e()
+                        1
+                      ),
+                      _vm._v(" "),
+                      _vm._l(_vm.genres, function(genre, index) {
+                        return _c(
+                          "li",
+                          { key: index },
+                          [
+                            _c(
+                              "router-link",
+                              {
+                                class: {
+                                  selected:
+                                    _vm.$route.path == "/genre/" + genre.route
+                                },
+                                attrs: {
+                                  to: {
+                                    name: "home.genre",
+                                    params: { name: genre.route }
+                                  }
+                                }
+                              },
+                              [
+                                _vm._v(
+                                  "\n                " +
+                                    _vm._s(genre.name) +
+                                    "\n              "
+                                )
+                              ]
+                            )
+                          ],
+                          1
+                        )
+                      })
+                    ],
+                    2
+                  )
+                ])
               ]
             ),
             _vm._v(" "),
@@ -63976,86 +63969,69 @@ var render = function() {
                     }
                   },
                   [
-                    _c(
-                      "div",
-                      {
-                        directives: [
-                          {
-                            name: "click-outside",
-                            rawName: "v-click-outside",
-                            value: _vm.genreMenuWideClose,
-                            expression: "genreMenuWideClose"
-                          }
-                        ],
-                        staticClass: "menu-set-btn-genre-wide",
-                        on: { click: _vm.genreMenuToggleWide }
-                      },
-                      [_vm._v("\n          ジャンル\n        ")]
-                    ),
+                    _c("div", { staticClass: "menu-set-btn-genre-wide" }, [
+                      _vm._v("\n          ジャンル\n        ")
+                    ]),
                     _vm._v(" "),
-                    _vm.genreMenuWideOpened
-                      ? _c("div", { staticClass: "pulldown-genre-menu" }, [
+                    _c("div", { staticClass: "pulldown-genre-menu" }, [
+                      _c(
+                        "ul",
+                        [
                           _c(
-                            "ul",
+                            "li",
                             [
                               _c(
-                                "li",
+                                "router-link",
+                                {
+                                  class: { selected: _vm.$route.path == "/" },
+                                  attrs: { to: { name: "home" } }
+                                },
                                 [
-                                  _c(
-                                    "router-link",
-                                    {
-                                      class: {
-                                        selected: _vm.$route.path == "/"
-                                      },
-                                      attrs: { to: { name: "home" } }
-                                    },
-                                    [
-                                      _vm._v(
-                                        "\n                すべて\n              "
-                                      )
-                                    ]
+                                  _vm._v(
+                                    "\n                すべて\n              "
                                   )
-                                ],
-                                1
-                              ),
-                              _vm._v(" "),
-                              _vm._l(_vm.genres, function(genre, index) {
-                                return _c(
-                                  "li",
-                                  { key: index },
-                                  [
-                                    _c(
-                                      "router-link",
-                                      {
-                                        class: {
-                                          selected:
-                                            _vm.$route.path ==
-                                            "/genre/" + genre.route
-                                        },
-                                        attrs: {
-                                          to: {
-                                            name: "home.genre",
-                                            params: { name: genre.route }
-                                          }
-                                        }
-                                      },
-                                      [
-                                        _vm._v(
-                                          "\n                " +
-                                            _vm._s(genre.name) +
-                                            "\n              "
-                                        )
-                                      ]
-                                    )
-                                  ],
-                                  1
-                                )
-                              })
+                                ]
+                              )
                             ],
-                            2
-                          )
-                        ])
-                      : _vm._e()
+                            1
+                          ),
+                          _vm._v(" "),
+                          _vm._l(_vm.genres, function(genre, index) {
+                            return _c(
+                              "li",
+                              { key: index },
+                              [
+                                _c(
+                                  "router-link",
+                                  {
+                                    class: {
+                                      selected:
+                                        _vm.$route.path ==
+                                        "/genre/" + genre.route
+                                    },
+                                    attrs: {
+                                      to: {
+                                        name: "home.genre",
+                                        params: { name: genre.route }
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _vm._v(
+                                      "\n                " +
+                                        _vm._s(genre.name) +
+                                        "\n              "
+                                    )
+                                  ]
+                                )
+                              ],
+                              1
+                            )
+                          })
+                        ],
+                        2
+                      )
+                    ])
                   ]
                 )
               : _vm._e(),
@@ -64632,80 +64608,68 @@ var render = function() {
               : _vm._e(),
             _vm._v(" "),
             _c("div", { staticClass: "guchi-top-btns-1" }, [
-              _c(
-                "div",
-                {
-                  directives: [
-                    {
-                      name: "click-outside",
-                      rawName: "v-click-outside",
-                      value: _vm.genreMenuClose,
-                      expression: "genreMenuClose"
-                    }
-                  ],
-                  staticClass: "guchi-genre-btn",
-                  on: { click: _vm.genreMenuOpen }
-                },
-                [_vm._v("ジャンル")]
-              ),
-              _vm._v(" "),
-              _c(
-                "ul",
-                {
-                  staticClass: "guchi-genre-list",
-                  class: { "guchi-genre-list-open": _vm.genreOpen }
-                },
-                [
-                  _c(
-                    "li",
-                    [
-                      _c(
-                        "router-link",
-                        {
-                          class: {
-                            selected:
-                              _vm.$route.path == "/guchi/all" ||
-                              _vm.$route.path == "/guchi/all/trend"
-                          },
-                          attrs: { to: { name: "guchi.all" } }
-                        },
-                        [_vm._v("\n                すべて\n              ")]
-                      )
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _vm._l(_vm.genres, function(genre, index) {
-                    return _c(
+              _c("div", { staticClass: "guchi-genre-btn" }, [
+                _c("div", [_vm._v("ジャンル")]),
+                _vm._v(" "),
+                _c(
+                  "ul",
+                  { staticClass: "guchi-genre-list" },
+                  [
+                    _c(
                       "li",
-                      { key: index },
                       [
                         _c(
                           "router-link",
                           {
                             class: {
                               selected:
-                                _vm.$route.path == "/guchi/" + genre.route ||
-                                _vm.$route.path ==
-                                  "/guchi/" + genre.route + "/trend"
+                                _vm.$route.path == "/guchi/all" ||
+                                _vm.$route.path == "/guchi/all/trend"
                             },
-                            attrs: { to: "/guchi/" + genre.route }
+                            attrs: { to: { name: "guchi.all" } }
                           },
                           [
                             _vm._v(
-                              "\n                " +
-                                _vm._s(genre.name) +
-                                "\n              "
+                              "\n                  すべて\n                "
                             )
                           ]
                         )
                       ],
                       1
-                    )
-                  })
-                ],
-                2
-              ),
+                    ),
+                    _vm._v(" "),
+                    _vm._l(_vm.genres, function(genre, index) {
+                      return _c(
+                        "li",
+                        { key: index },
+                        [
+                          _c(
+                            "router-link",
+                            {
+                              class: {
+                                selected:
+                                  _vm.$route.path == "/guchi/" + genre.route ||
+                                  _vm.$route.path ==
+                                    "/guchi/" + genre.route + "/trend"
+                              },
+                              attrs: { to: "/guchi/" + genre.route }
+                            },
+                            [
+                              _vm._v(
+                                "\n                  " +
+                                  _vm._s(genre.name) +
+                                  "\n                "
+                              )
+                            ]
+                          )
+                        ],
+                        1
+                      )
+                    })
+                  ],
+                  2
+                )
+              ]),
               _vm._v(" "),
               !_vm.createOpened &&
               _vm.$route.path.substr(0, 12) !== "/guchi/room/"

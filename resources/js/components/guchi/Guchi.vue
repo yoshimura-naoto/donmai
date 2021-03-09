@@ -15,23 +15,28 @@
           <!-- ジャンルボタン、新規作成ボタン -->
           <div class="guchi-top-btns-1">
 
-            <div @click="genreMenuOpen" v-click-outside="genreMenuClose" class="guchi-genre-btn">ジャンル</div>
+            <!-- <div @click="genreMenuOpen" v-click-outside="genreMenuClose" class="guchi-genre-btn">ジャンル</div> -->
+            <div class="guchi-genre-btn">
+              
+              <div>ジャンル</div>
 
-            <ul :class="{'guchi-genre-list-open': genreOpen}" class="guchi-genre-list">
-              <li>
-                <router-link :to="{ name: 'guchi.all' }" :class="{ 'selected': $route.path == '/guchi/all' || $route.path == '/guchi/all/trend' }">
-                  すべて
-                </router-link>
-              </li>
-              <li v-for="(genre, index) in genres" :key="index">
-                <router-link :to="'/guchi/' + genre.route" :class="{ 'selected': $route.path == '/guchi/' + genre.route || $route.path == '/guchi/' + genre.route + '/trend' }">
-                  {{ genre.name }}
-                </router-link>
-              </li>
-            </ul>
+              <!-- <ul :class="{'guchi-genre-list-open': genreOpen}" class="guchi-genre-list"> -->
+              <ul class="guchi-genre-list">
+                <li>
+                  <router-link :to="{ name: 'guchi.all' }" :class="{ 'selected': $route.path == '/guchi/all' || $route.path == '/guchi/all/trend' }">
+                    すべて
+                  </router-link>
+                </li>
+                <li v-for="(genre, index) in genres" :key="index">
+                  <router-link :to="'/guchi/' + genre.route" :class="{ 'selected': $route.path == '/guchi/' + genre.route || $route.path == '/guchi/' + genre.route + '/trend' }">
+                    {{ genre.name }}
+                  </router-link>
+                </li>
+              </ul>
+
+            </div>
 
             <!-- スレッド新規作成ボタン -->
-            <!-- <div v-if="!createOpened" class="guchi-new" @click="openCreateForm"> -->
             <div v-if="!createOpened && $route.path.substr(0, 12) !== '/guchi/room/'" class="guchi-new" @click="openCreateForm">
               部屋を作る
             </div>
