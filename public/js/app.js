@@ -2250,8 +2250,7 @@ __webpack_require__.r(__webpack_exports__);
     // 検索の処理
     search: function search(e) {
       if (e.keyCode !== 13) return;
-      var searchForm = document.querySelector('#search');
-      searchForm.blur();
+      document.querySelector('#search').blur();
       this.$router.push({
         name: 'search.post.new',
         params: {
@@ -3387,6 +3386,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToAr
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
+//
 //
 //
 //
@@ -4732,6 +4732,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToAr
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
+//
 //
 //
 //
@@ -7001,6 +7002,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -8014,6 +8016,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToAr
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
+//
 //
 //
 //
@@ -10671,6 +10674,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -11696,6 +11700,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToAr
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
+//
 //
 //
 //
@@ -14031,6 +14036,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -15058,6 +15064,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToAr
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
+//
 //
 //
 //
@@ -17799,6 +17806,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -19491,6 +19499,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToAr
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
+//
 //
 //
 //
@@ -66051,6 +66060,12 @@ var render = function() {
       [
         _c("div", { staticClass: "overlay-image-box" }, [
           _c("img", {
+            staticClass: "image-modal-close",
+            attrs: { src: "../../image/batsu.png" },
+            on: { click: _vm.closeImageModal }
+          }),
+          _vm._v(" "),
+          _c("img", {
             staticClass: "overlay-image-image",
             class: { "height-is-bigger": _vm.heightIsBigger },
             attrs: { src: _vm.modalImage }
@@ -68317,6 +68332,12 @@ var render = function() {
       [
         _c("div", { staticClass: "overlay-image-box" }, [
           _c("img", {
+            staticClass: "image-modal-close",
+            attrs: { src: "../image/batsu.png" },
+            on: { click: _vm.closeImageModal }
+          }),
+          _vm._v(" "),
+          _c("img", {
             staticClass: "overlay-image-image",
             class: { "height-is-bigger": _vm.heightIsBigger },
             attrs: { src: _vm.modalImage }
@@ -70057,6 +70078,12 @@ var render = function() {
       },
       [
         _c("div", { staticClass: "overlay-image-box" }, [
+          _c("img", {
+            staticClass: "image-modal-close",
+            attrs: { src: "../image/batsu.png" },
+            on: { click: _vm.closeImageModal }
+          }),
+          _vm._v(" "),
           _c("img", {
             staticClass: "overlay-image-image",
             class: { "height-is-bigger": _vm.heightIsBigger },
@@ -71813,6 +71840,12 @@ var render = function() {
       },
       [
         _c("div", { staticClass: "overlay-image-box" }, [
+          _c("img", {
+            staticClass: "image-modal-close",
+            attrs: { src: "../../image/batsu.png" },
+            on: { click: _vm.closeImageModal }
+          }),
+          _vm._v(" "),
           _c("img", {
             staticClass: "overlay-image-image",
             class: { "height-is-bigger": _vm.heightIsBigger },
@@ -74416,6 +74449,12 @@ var render = function() {
       [
         _c("div", { staticClass: "overlay-image-box" }, [
           _c("img", {
+            staticClass: "image-modal-close",
+            attrs: { src: "../../../image/batsu.png" },
+            on: { click: _vm.closeImageModal }
+          }),
+          _vm._v(" "),
+          _c("img", {
             staticClass: "overlay-image-image",
             class: { "height-is-bigger": _vm.heightIsBigger },
             attrs: { src: _vm.modalImage }
@@ -76172,6 +76211,12 @@ var render = function() {
       },
       [
         _c("div", { staticClass: "overlay-image-box" }, [
+          _c("img", {
+            staticClass: "image-modal-close",
+            attrs: { src: "../../../image/batsu.png" },
+            on: { click: _vm.closeImageModal }
+          }),
+          _vm._v(" "),
           _c("img", {
             staticClass: "overlay-image-image",
             class: { "height-is-bigger": _vm.heightIsBigger },
@@ -78171,6 +78216,12 @@ var render = function() {
       [
         _c("div", { staticClass: "overlay-image-box" }, [
           _c("img", {
+            staticClass: "image-modal-close",
+            attrs: { src: "../../image/batsu.png" },
+            on: { click: _vm.closeImageModal }
+          }),
+          _vm._v(" "),
+          _c("img", {
             staticClass: "overlay-image-image",
             class: { "height-is-bigger": _vm.heightIsBigger },
             attrs: { src: _vm.modalImage }
@@ -79922,6 +79973,12 @@ var render = function() {
       },
       [
         _c("div", { staticClass: "overlay-image-box" }, [
+          _c("img", {
+            staticClass: "image-modal-close",
+            attrs: { src: "../../image/batsu.png" },
+            on: { click: _vm.closeImageModal }
+          }),
+          _vm._v(" "),
           _c("img", {
             staticClass: "overlay-image-image",
             class: { "height-is-bigger": _vm.heightIsBigger },
@@ -82311,6 +82368,12 @@ var render = function() {
       },
       [
         _c("div", { staticClass: "overlay-image-box" }, [
+          _c("img", {
+            staticClass: "image-modal-close",
+            attrs: { src: "../../image/batsu.png" },
+            on: { click: _vm.closeImageModal }
+          }),
+          _vm._v(" "),
           _c("img", {
             staticClass: "overlay-image-image",
             class: { "height-is-bigger": _vm.heightIsBigger },
@@ -84764,6 +84827,12 @@ var render = function() {
       },
       [
         _c("div", { staticClass: "overlay-image-box" }, [
+          _c("img", {
+            staticClass: "image-modal-close",
+            attrs: { src: "../../image/batsu.png" },
+            on: { click: _vm.closeImageModal }
+          }),
+          _vm._v(" "),
           _c("img", {
             staticClass: "overlay-image-image",
             class: { "height-is-bigger": _vm.heightIsBigger },
