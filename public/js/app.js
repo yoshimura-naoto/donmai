@@ -2739,8 +2739,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -3952,8 +3950,19 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         });
       }
     },
+    bigImageResize: function bigImageResize() {
+      var overlayImage = document.querySelector('.overlay-image-image');
+
+      if (overlayImage.clientHeight > window.innerHeight) {
+        overlayImage.style.maxWidth = window.innerHeight / overlayImage.clientHeight * overlayImage.clientWidth + 'px';
+        overlayImage.style.maxHeight = window.innerHeight + 'px';
+      }
+    },
     closeImageModal: function closeImageModal() {
       this.keepScrollWhenClose();
+      var overlayImage = document.querySelector('.overlay-image-image');
+      overlayImage.style.maxWidth = 800 + 'px';
+      overlayImage.style.maxHeight = 'none';
       this.heightIsBigger = false;
       this.tatenagaImageWidth = null;
       this.modalImageShow = false;
@@ -4011,9 +4020,11 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
   },
   created: function created() {
     window.addEventListener('resize', this.handleResize);
+    window.addEventListener('resize', this.bigImageResize);
   },
   destroyed: function destroyed() {
     window.removeEventListener('resize', this.handleResize);
+    window.removeEventListener('resize', this.bigImageResize);
   },
   mounted: function mounted() {
     var _this8 = this;
@@ -6124,11 +6135,22 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         });
       }
     },
+    bigImageResize: function bigImageResize() {
+      var overlayImage = document.querySelector('.overlay-image-image');
+
+      if (overlayImage.clientHeight > window.innerHeight) {
+        overlayImage.style.maxWidth = window.innerHeight / overlayImage.clientHeight * overlayImage.clientWidth + 'px';
+        overlayImage.style.maxHeight = window.innerHeight + 'px';
+      }
+    },
     closeImageModal: function closeImageModal() {
       if (!this.modalPostShow) {
         this.keepScrollWhenClose();
       }
 
+      var overlayImage = document.querySelector('.overlay-image-image');
+      overlayImage.style.maxWidth = 800 + 'px';
+      overlayImage.style.maxHeight = 'none';
       this.heightIsBigger = false;
       this.tatenagaImageWidth = null;
       this.modalImageShow = false;
@@ -6411,12 +6433,14 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
   },
   created: function created() {
     window.addEventListener('resize', this.handleResize);
+    window.addEventListener('resize', this.bigImageResize);
     window.addEventListener('resize', this.changeHeight);
     window.addEventListener('resize', this.changeEditHeight);
     window.addEventListener('resize', this.changeCommentHeight);
   },
   destroyed: function destroyed() {
     window.removeEventListener('resize', this.handleResize);
+    window.removeEventListener('resize', this.bigImageResize);
     window.removeEventListener('resize', this.changeHeight);
     window.removeEventListener('resize', this.changeEditHeight);
     window.removeEventListener('resize', this.changeCommentHeight);
@@ -7663,11 +7687,22 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         });
       }
     },
+    bigImageResize: function bigImageResize() {
+      var overlayImage = document.querySelector('.overlay-image-image');
+
+      if (overlayImage.clientHeight > window.innerHeight) {
+        overlayImage.style.maxWidth = window.innerHeight / overlayImage.clientHeight * overlayImage.clientWidth + 'px';
+        overlayImage.style.maxHeight = window.innerHeight + 'px';
+      }
+    },
     closeImageModal: function closeImageModal() {
       if (!this.modalPostShow) {
         this.keepScrollWhenClose();
       }
 
+      var overlayImage = document.querySelector('.overlay-image-image');
+      overlayImage.style.maxWidth = 800 + 'px';
+      overlayImage.style.maxHeight = 'none';
       this.heightIsBigger = false;
       this.tatenagaImageWidth = null;
       this.modalImageShow = false;
@@ -7935,11 +7970,13 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
   },
   created: function created() {
     window.addEventListener('resize', this.handleResize);
+    window.addEventListener('resize', this.bigImageResize);
     window.addEventListener('resize', this.changeEditHeight);
     window.addEventListener('resize', this.changeCommentHeight);
   },
   destroyed: function destroyed() {
     window.removeEventListener('resize', this.handleResize);
+    window.removeEventListener('resize', this.bigImageResize);
     window.removeEventListener('resize', this.changeEditHeight);
     window.removeEventListener('resize', this.changeCommentHeight);
   },
@@ -9202,11 +9239,22 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         });
       }
     },
+    bigImageResize: function bigImageResize() {
+      var overlayImage = document.querySelector('.overlay-image-image');
+
+      if (overlayImage.clientHeight > window.innerHeight) {
+        overlayImage.style.maxWidth = window.innerHeight / overlayImage.clientHeight * overlayImage.clientWidth + 'px';
+        overlayImage.style.maxHeight = window.innerHeight + 'px';
+      }
+    },
     closeImageModal: function closeImageModal() {
       if (!this.modalPostShow) {
         this.keepScrollWhenClose();
       }
 
+      var overlayImage = document.querySelector('.overlay-image-image');
+      overlayImage.style.maxWidth = 800 + 'px';
+      overlayImage.style.maxHeight = 'none';
       this.heightIsBigger = false;
       this.tatenagaImageWidth = null;
       this.modalImageShow = false;
@@ -9491,11 +9539,13 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
   },
   created: function created() {
     window.addEventListener('resize', this.handleResize);
+    window.addEventListener('resize', this.bigImageResize);
     window.addEventListener('resize', this.changeEditHeight);
     window.addEventListener('resize', this.changeCommentHeight);
   },
   destroyed: function destroyed() {
     window.removeEventListener('resize', this.handleResize);
+    window.removeEventListener('resize', this.bigImageResize);
     window.removeEventListener('resize', this.changeEditHeight);
     window.removeEventListener('resize', this.changeCommentHeight);
   },
@@ -11333,11 +11383,22 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         });
       }
     },
+    bigImageResize: function bigImageResize() {
+      var overlayImage = document.querySelector('.overlay-image-image');
+
+      if (overlayImage.clientHeight > window.innerHeight) {
+        overlayImage.style.maxWidth = window.innerHeight / overlayImage.clientHeight * overlayImage.clientWidth + 'px';
+        overlayImage.style.maxHeight = window.innerHeight + 'px';
+      }
+    },
     closeImageModal: function closeImageModal() {
       if (!this.modalPostShow) {
         this.keepScrollWhenClose();
       }
 
+      var overlayImage = document.querySelector('.overlay-image-image');
+      overlayImage.style.maxWidth = 800 + 'px';
+      overlayImage.style.maxHeight = 'none';
       this.heightIsBigger = false;
       this.tatenagaImageWidth = null;
       this.modalImageShow = false;
@@ -11632,11 +11693,13 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
   },
   created: function created() {
     window.addEventListener('resize', this.handleResize);
+    window.addEventListener('resize', this.bigImageResize);
     window.addEventListener('resize', this.changeEditHeight);
     window.addEventListener('resize', this.changeCommentHeight);
   },
   destroyed: function destroyed() {
     window.removeEventListener('resize', this.handleResize);
+    window.removeEventListener('resize', this.bigImageResize);
     window.removeEventListener('resize', this.changeEditHeight);
     window.removeEventListener('resize', this.changeCommentHeight);
   },
@@ -12878,11 +12941,22 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         });
       }
     },
+    bigImageResize: function bigImageResize() {
+      var overlayImage = document.querySelector('.overlay-image-image');
+
+      if (overlayImage.clientHeight > window.innerHeight) {
+        overlayImage.style.maxWidth = window.innerHeight / overlayImage.clientHeight * overlayImage.clientWidth + 'px';
+        overlayImage.style.maxHeight = window.innerHeight + 'px';
+      }
+    },
     closeImageModal: function closeImageModal() {
       if (!this.modalPostShow) {
         this.keepScrollWhenClose();
       }
 
+      var overlayImage = document.querySelector('.overlay-image-image');
+      overlayImage.style.maxWidth = 800 + 'px';
+      overlayImage.style.maxHeight = 'none';
       this.heightIsBigger = false;
       this.tatenagaImageWidth = null;
       this.modalImageShow = false;
@@ -13177,11 +13251,13 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
   },
   created: function created() {
     window.addEventListener('resize', this.handleResize);
+    window.addEventListener('resize', this.bigImageResize);
     window.addEventListener('resize', this.changeEditHeight);
     window.addEventListener('resize', this.changeCommentHeight);
   },
   destroyed: function destroyed() {
     window.removeEventListener('resize', this.handleResize);
+    window.removeEventListener('resize', this.bigImageResize);
     window.removeEventListener('resize', this.changeEditHeight);
     window.removeEventListener('resize', this.changeCommentHeight);
   },
@@ -14698,11 +14774,22 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         });
       }
     },
+    bigImageResize: function bigImageResize() {
+      var overlayImage = document.querySelector('.overlay-image-image');
+
+      if (overlayImage.clientHeight > window.innerHeight) {
+        overlayImage.style.maxWidth = window.innerHeight / overlayImage.clientHeight * overlayImage.clientWidth + 'px';
+        overlayImage.style.maxHeight = window.innerHeight + 'px';
+      }
+    },
     closeImageModal: function closeImageModal() {
       if (!this.modalPostShow) {
         this.keepScrollWhenClose();
       }
 
+      var overlayImage = document.querySelector('.overlay-image-image');
+      overlayImage.style.maxWidth = 800 + 'px';
+      overlayImage.style.maxHeight = 'none';
       this.heightIsBigger = false;
       this.tatenagaImageWidth = null;
       this.modalImageShow = false;
@@ -14996,11 +15083,13 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
   },
   created: function created() {
     window.addEventListener('resize', this.handleResize);
+    window.addEventListener('resize', this.bigImageResize);
     window.addEventListener('resize', this.changeEditHeight);
     window.addEventListener('resize', this.changeCommentHeight);
   },
   destroyed: function destroyed() {
     window.removeEventListener('resize', this.handleResize);
+    window.removeEventListener('resize', this.bigImageResize);
     window.removeEventListener('resize', this.changeEditHeight);
     window.removeEventListener('resize', this.changeCommentHeight);
   },
@@ -16249,11 +16338,22 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         });
       }
     },
+    bigImageResize: function bigImageResize() {
+      var overlayImage = document.querySelector('.overlay-image-image');
+
+      if (overlayImage.clientHeight > window.innerHeight) {
+        overlayImage.style.maxWidth = window.innerHeight / overlayImage.clientHeight * overlayImage.clientWidth + 'px';
+        overlayImage.style.maxHeight = window.innerHeight + 'px';
+      }
+    },
     closeImageModal: function closeImageModal() {
       if (!this.modalPostShow) {
         this.keepScrollWhenClose();
       }
 
+      var overlayImage = document.querySelector('.overlay-image-image');
+      overlayImage.style.maxWidth = 800 + 'px';
+      overlayImage.style.maxHeight = 'none';
       this.heightIsBigger = false;
       this.tatenagaImageWidth = null;
       this.modalImageShow = false;
@@ -16547,11 +16647,13 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
   },
   created: function created() {
     window.addEventListener('resize', this.handleResize);
+    window.addEventListener('resize', this.bigImageResize);
     window.addEventListener('resize', this.changeEditHeight);
     window.addEventListener('resize', this.changeCommentHeight);
   },
   destroyed: function destroyed() {
     window.removeEventListener('resize', this.handleResize);
+    window.removeEventListener('resize', this.bigImageResize);
     window.removeEventListener('resize', this.changeEditHeight);
     window.removeEventListener('resize', this.changeCommentHeight);
   },
@@ -18464,11 +18566,22 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         });
       }
     },
+    bigImageResize: function bigImageResize() {
+      var overlayImage = document.querySelector('.overlay-image-image');
+
+      if (overlayImage.clientHeight > window.innerHeight) {
+        overlayImage.style.maxWidth = window.innerHeight / overlayImage.clientHeight * overlayImage.clientWidth + 'px';
+        overlayImage.style.maxHeight = window.innerHeight + 'px';
+      }
+    },
     closeImageModal: function closeImageModal() {
       if (!this.modalPostShow) {
         this.keepScrollWhenClose();
       }
 
+      var overlayImage = document.querySelector('.overlay-image-image');
+      overlayImage.style.maxWidth = 800 + 'px';
+      overlayImage.style.maxHeight = 'none';
       this.heightIsBigger = false;
       this.tatenagaImageWidth = null;
       this.modalImageShow = false;
@@ -18753,11 +18866,13 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
   },
   created: function created() {
     window.addEventListener('resize', this.handleResize);
+    window.addEventListener('resize', this.bigImageResize);
     window.addEventListener('resize', this.changeEditHeight);
     window.addEventListener('resize', this.changeCommentHeight);
   },
   destroyed: function destroyed() {
     window.removeEventListener('resize', this.handleResize);
+    window.removeEventListener('resize', this.bigImageResize);
     window.removeEventListener('resize', this.changeEditHeight);
     window.removeEventListener('resize', this.changeCommentHeight);
   },
@@ -20671,11 +20786,22 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         });
       }
     },
+    bigImageResize: function bigImageResize() {
+      var overlayImage = document.querySelector('.overlay-image-image');
+
+      if (overlayImage.clientHeight > window.innerHeight) {
+        overlayImage.style.maxWidth = window.innerHeight / overlayImage.clientHeight * overlayImage.clientWidth + 'px';
+        overlayImage.style.maxHeight = window.innerHeight + 'px';
+      }
+    },
     closeImageModal: function closeImageModal() {
       if (!this.modalPostShow) {
         this.keepScrollWhenClose();
       }
 
+      var overlayImage = document.querySelector('.overlay-image-image');
+      overlayImage.style.maxWidth = 800 + 'px';
+      overlayImage.style.maxHeight = 'none';
       this.heightIsBigger = false;
       this.tatenagaImageWidth = null;
       this.modalImageShow = false;
@@ -20960,11 +21086,13 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
   },
   created: function created() {
     window.addEventListener('resize', this.handleResize);
+    window.addEventListener('resize', this.bigImageResize);
     window.addEventListener('resize', this.changeEditHeight);
     window.addEventListener('resize', this.changeCommentHeight);
   },
   destroyed: function destroyed() {
     window.removeEventListener('resize', this.handleResize);
+    window.removeEventListener('resize', this.bigImageResize);
     window.removeEventListener('resize', this.changeEditHeight);
     window.removeEventListener('resize', this.changeCommentHeight);
   },
@@ -66032,7 +66160,8 @@ var render = function() {
           _c("img", {
             staticClass: "overlay-image-image",
             class: { "height-is-bigger": _vm.heightIsBigger },
-            attrs: { src: _vm.modalImage }
+            attrs: { src: _vm.modalImage },
+            on: { load: _vm.bigImageResize }
           })
         ])
       ]
@@ -67079,7 +67208,7 @@ var render = function() {
                     : _vm._e(),
                   _vm._v(" "),
                   _c("div", { staticClass: "input-area" }, [
-                    post.user
+                    post.user && _vm.authUser
                       ? _c("div", { staticClass: "post-name-menu" }, [
                           _c(
                             "div",
@@ -68304,7 +68433,8 @@ var render = function() {
           _c("img", {
             staticClass: "overlay-image-image",
             class: { "height-is-bigger": _vm.heightIsBigger },
-            attrs: { src: _vm.modalImage }
+            attrs: { src: _vm.modalImage },
+            on: { load: _vm.bigImageResize }
           })
         ])
       ]
@@ -70051,7 +70181,8 @@ var render = function() {
           _c("img", {
             staticClass: "overlay-image-image",
             class: { "height-is-bigger": _vm.heightIsBigger },
-            attrs: { src: _vm.modalImage }
+            attrs: { src: _vm.modalImage },
+            on: { load: _vm.bigImageResize }
           })
         ])
       ]
@@ -71813,7 +71944,8 @@ var render = function() {
           _c("img", {
             staticClass: "overlay-image-image",
             class: { "height-is-bigger": _vm.heightIsBigger },
-            attrs: { src: _vm.modalImage }
+            attrs: { src: _vm.modalImage },
+            on: { load: _vm.bigImageResize }
           })
         ])
       ]
@@ -74421,7 +74553,8 @@ var render = function() {
           _c("img", {
             staticClass: "overlay-image-image",
             class: { "height-is-bigger": _vm.heightIsBigger },
-            attrs: { src: _vm.modalImage }
+            attrs: { src: _vm.modalImage },
+            on: { load: _vm.bigImageResize }
           })
         ])
       ]
@@ -76184,7 +76317,8 @@ var render = function() {
           _c("img", {
             staticClass: "overlay-image-image",
             class: { "height-is-bigger": _vm.heightIsBigger },
-            attrs: { src: _vm.modalImage }
+            attrs: { src: _vm.modalImage },
+            on: { load: _vm.bigImageResize }
           })
         ])
       ]
@@ -78188,7 +78322,8 @@ var render = function() {
           _c("img", {
             staticClass: "overlay-image-image",
             class: { "height-is-bigger": _vm.heightIsBigger },
-            attrs: { src: _vm.modalImage }
+            attrs: { src: _vm.modalImage },
+            on: { load: _vm.bigImageResize }
           })
         ])
       ]
@@ -79946,7 +80081,8 @@ var render = function() {
           _c("img", {
             staticClass: "overlay-image-image",
             class: { "height-is-bigger": _vm.heightIsBigger },
-            attrs: { src: _vm.modalImage }
+            attrs: { src: _vm.modalImage },
+            on: { load: _vm.bigImageResize }
           })
         ])
       ]
@@ -82341,7 +82477,8 @@ var render = function() {
           _c("img", {
             staticClass: "overlay-image-image",
             class: { "height-is-bigger": _vm.heightIsBigger },
-            attrs: { src: _vm.modalImage }
+            attrs: { src: _vm.modalImage },
+            on: { load: _vm.bigImageResize }
           })
         ])
       ]
@@ -84800,7 +84937,8 @@ var render = function() {
           _c("img", {
             staticClass: "overlay-image-image",
             class: { "height-is-bigger": _vm.heightIsBigger },
-            attrs: { src: _vm.modalImage }
+            attrs: { src: _vm.modalImage },
+            on: { load: _vm.bigImageResize }
           })
         ])
       ]

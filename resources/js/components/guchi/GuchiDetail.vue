@@ -171,7 +171,7 @@
 
       <div class="overlay-image-box">
         <img :src="'../../image/batsu.png'" @click="closeImageModal" class="image-modal-close">
-        <img :src="modalImage" class="overlay-image-image" :class="{'height-is-bigger':heightIsBigger}">
+        <img :src="modalImage" @load="bigImageResize" class="overlay-image-image" :class="{'height-is-bigger':heightIsBigger}">
       </div>
 
     </div>
@@ -524,8 +524,18 @@ export default {
         });
       }
     },
+    bigImageResize() {
+      const overlayImage = document.querySelector('.overlay-image-image');
+      if (overlayImage.clientHeight > window.innerHeight) {
+        overlayImage.style.maxWidth = window.innerHeight / overlayImage.clientHeight * overlayImage.clientWidth + 'px';
+        overlayImage.style.maxHeight = window.innerHeight + 'px';
+      }
+    },
     closeImageModal() {
       this.keepScrollWhenClose();
+      const overlayImage = document.querySelector('.overlay-image-image');
+      overlayImage.style.maxWidth = 800 + 'px';
+      overlayImage.style.maxHeight = 'none';
       this.heightIsBigger = false;
       this.tatenagaImageWidth = null;
       this.modalImageShow = false;
@@ -583,10 +593,12 @@ export default {
 
   created() {
     window.addEventListener('resize', this.handleResize);
+    window.addEventListener('resize', this.bigImageResize);
   },
 
   destroyed() {
     window.removeEventListener('resize', this.handleResize);
+    window.removeEventListener('resize', this.bigImageResize);
   },
 
   mounted() {

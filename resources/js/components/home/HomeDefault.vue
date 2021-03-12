@@ -101,7 +101,7 @@
           <!-- 内容表示エリア -->
           <div class="input-area">
 
-            <div class="post-name-menu" v-if="post.user">
+            <div class="post-name-menu" v-if="post.user && authUser">
               <!-- ユーザー名 -->
               <div class="user-name-post">
                 <router-link :to="{ name: 'user', params: { id: post.user.id }}">
@@ -433,7 +433,7 @@
 
       <div class="overlay-image-box">
         <img :src="'../image/batsu.png'" @click="closeImageModal" class="image-modal-close">
-        <img :src="modalImage" class="overlay-image-image" :class="{'height-is-bigger':heightIsBigger}">
+        <img :src="modalImage" @load="bigImageResize" class="overlay-image-image" :class="{'height-is-bigger':heightIsBigger}">
       </div>
 
     </div>
@@ -1324,10 +1324,20 @@ export default {
         });
       }
     },
+    bigImageResize() {
+      const overlayImage = document.querySelector('.overlay-image-image');
+      if (overlayImage.clientHeight > window.innerHeight) {
+        overlayImage.style.maxWidth = window.innerHeight / overlayImage.clientHeight * overlayImage.clientWidth + 'px';
+        overlayImage.style.maxHeight = window.innerHeight + 'px';
+      }
+    },
     closeImageModal() {
       if (!this.modalPostShow) {
         this.keepScrollWhenClose();
       }
+      const overlayImage = document.querySelector('.overlay-image-image');
+      overlayImage.style.maxWidth = 800 + 'px';
+      overlayImage.style.maxHeight = 'none';
       this.heightIsBigger = false;
       this.tatenagaImageWidth = null;
       this.modalImageShow = false;
@@ -1588,6 +1598,7 @@ export default {
 
   created() {
     window.addEventListener('resize', this.handleResize);
+    window.addEventListener('resize', this.bigImageResize);
     window.addEventListener('resize', this.changeHeight);
     window.addEventListener('resize', this.changeEditHeight);
     window.addEventListener('resize', this.changeCommentHeight);
@@ -1595,6 +1606,7 @@ export default {
 
   destroyed() {
     window.removeEventListener('resize', this.handleResize);
+    window.removeEventListener('resize', this.bigImageResize);
     window.removeEventListener('resize', this.changeHeight);
     window.removeEventListener('resize', this.changeEditHeight);
     window.removeEventListener('resize', this.changeCommentHeight);
