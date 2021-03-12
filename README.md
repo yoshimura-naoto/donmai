@@ -14,7 +14,7 @@
 `pusher/pusher-php-server`：イベントをPusherでブロードキャスト  
 ### フロントエンドVue.jsで使用したライブラリ
 `vue`：フロントエンド用Vue.jsベース素材  
-`vue-router`：SPA構築のためのルーティングを行う
+`vue-router`：SPA構築のためのルーティングを行う  
 `laravel-mix`：フロントエンド素材をコンパイル  
 `vue-click-outside`：要素の外側のクリックを探知  
 `laravel-echo`：Pusherの利用に必要  
