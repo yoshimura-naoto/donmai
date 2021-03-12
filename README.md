@@ -12,6 +12,7 @@
 `laravel/ui`：フロントエンド開発のベース  
 `league/flysystem-aws-s3-v3`：AmazonS3画像アップロード用  
 `pusher/pusher-php-server`：イベントをPusherでブロードキャスト  
+`phpunit/phpunit`：テストコード用  
 ### フロントエンドVue.jsで使用したライブラリ
 `vue`：フロントエンド用Vue.jsベース素材  
 `vue-router`：SPA構築のためのルーティングを行う  
