@@ -404,24 +404,38 @@ export default {
     },
     // 画像アップロードとプレビュー
     uploadFile() {
-      const addImages = this.$refs.threadPreview.files;
-      for (let i = 0; i < addImages.length; i++) {
-        if (!addImages[i].type.match('image.*')) {
-          this.message = '画像ファイルを選択してください！';
+      const files = this.$refs.threadPreview.files;
+      if (this.form.images.length + files.length > 3) {  // 枚数制限バリデーション
+        window.alert('画像は3枚までです！');
+        return;
+      }
+      let totalFileSize = 0;
+      for (let i = 0; i < this.form.images.length; i++) {
+        totalFileSize += this.form.images[i].size;
+      }
+      let loadedImagesCount = 0;
+      for (let i = 0; i < files.length; i++) {
+        totalFileSize += files[i].size;
+        if (!files[i].type.match('image.*') || totalFileSize > 1600000) {  // 合計ファイルサイズ、画像でないファイルのバリデーション
+          window.alert('送信するファイルサイズの合計が1.6MBを超えているか、画像でないファイルをアップロードしようとしています！');
           return;
         }
-      }
-      if (this.form.images.length + addImages.length > 3) {
-        window.alert('画像は１投稿につき３枚までです！');
-      } else {
-        this.form.images.push(...addImages);
-        for (let i = 0; i < this.form.images.length; i++) {
-          this.urls.push(URL.createObjectURL(this.form.images[i]));
-        }
-        this.$refs.threadPreview.value = '';
-        this.message = null;
-        // console.log(this.urls);
-        // console.log(this.form.images);
+        let image = new Image();
+        image.src = URL.createObjectURL(files[i]);
+        image.addEventListener('load', () => {
+          loadedImagesCount++;
+          if (image.naturalWidth > 2500 || image.naturalHeight > 2500) {
+            window.alert('画像は縦・横それぞれ2500px以下のものを選択してください！');
+            return;
+          }
+          if (loadedImagesCount === files.length) {
+            this.form.images.push(...files);
+            for (let i = 0; i < files.length; i++) {
+              this.urls.push(URL.createObjectURL(files[i]));
+            }
+            this.$refs.threadPreview.value = '';
+          }
+        });
       }
     },
     // 画像プレビューの削除

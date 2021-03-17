@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Events\GuchiCreated;
 use App\Events\GuchiDeleted;
 
+use InterventionImage;
+
 use App\GuchiRoom;
 use App\GuchiBookmark;
 use App\Guchi;
@@ -37,6 +39,9 @@ class GuchiController extends Controller
         // アイコン画像保存処理
         if ($request->icon) {
             $image = $request->file('icon');
+            InterventionImage::make($image)
+                    ->encode('jpg')
+                    ->save($image);
             $path = Storage::disk('s3')->putFile('guchiroom_icon', $image, 'public');
             $iconUrl = Storage::disk('s3')->url($path);
         } else {
@@ -128,6 +133,7 @@ class GuchiController extends Controller
                             }])
                             ->withCount(['guchis'])
                             ->orderBy('guchis_count', 'desc')
+                            ->orderBy('id', 'desc')
                             ->paginate(10);
 
         $genres = Post::$genres;
@@ -182,6 +188,7 @@ class GuchiController extends Controller
                             }])
                             ->withCount(['guchis'])
                             ->orderBy('guchis_count', 'desc')
+                            ->orderBy('id', 'desc')
                             ->paginate(5);
 
         $genres = Post::$genres;
@@ -238,6 +245,7 @@ class GuchiController extends Controller
                                 $query->where('user_id', $authId);
                             }])
                             ->orderBy('guchis_count', 'desc')
+                            ->orderBy('id', 'asc')
                             ->paginate(5);
 
         $genres = Post::$genres;
@@ -317,6 +325,9 @@ class GuchiController extends Controller
 
         if ($images) {
             foreach ($images as $image) {
+                InterventionImage::make($image)
+                    ->encode('jpg')
+                    ->save($image);
                 $path = Storage::disk('s3')
                                 ->putFile('guchi_images', $image, 'public');
                 GuchiImage::create([

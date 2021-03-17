@@ -639,7 +639,7 @@ export default {
       errors: [],
       urls: [],
       postProsessing: false,
-      tooLongBodyMessage: '', 
+      tooLongBodyMessage: '',
       // 投稿の編集
       editPost: {
         id: null,
@@ -816,7 +816,11 @@ export default {
       if (!this.loadMorePosts) return;  // 全てのレコードを読み込んでいたら無効に
       if (this.postsLoading) return;  // ロード中は無効に
       this.postsLoading = true;
-      axios.get('/api/post/get?loaded_posts_count=' + this.posts.length)
+      const postIds = this.posts.map((obj) => {
+        return obj.id;
+      });
+      const postIdsString = postIds.join('-');
+      axios.get('/api/post/get?loaded_post_ids=' + postIdsString)
         .then((res) => {
           // console.log(res.data);
           this.posts.push(...res.data.posts);
@@ -829,7 +833,10 @@ export default {
           this.postsLoading = false;
           this.postProsessing = false;
           this.willReload = false;
-          // console.log(this.posts.length);
+          this.$nextTick(() => {
+            let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight;
+            if (bottomOfWindow && this.posts.length < res.data.postsTotal) this.getPosts();
+          });
         }).catch((error) => {
           console.log(error);
           this.postsLoading = false;
@@ -928,25 +935,38 @@ export default {
     // 画像アップロードでプレビュー
     uploadFile() {
       const files = this.$refs.preview.files;
-      for (let i = 0; i < files.length; i++) {
-        if (!files[i].type.match('image.*')) {
-          files.splice(i, 1);
-        }
-      }
-      if (this.newPost.images.length + files.length > 4) {
+      if (this.newPost.images.length + files.length > 4) {  // 枚数制限バリデーション
         window.alert('画像は４枚までです！');
-      } else {
-        this.newPost.images.push(...files);
-        for (let i = 0; i < files.length; i++) {
-          this.urls.push(URL.createObjectURL(files[i]));
-        }
-        this.$refs.preview.value = '';
-        // console.log(this.newPost.images);
-        // console.log(this.urls);
+        return;
       }
-      // console.log(this.files);
-      // console.log(this.urls);
-      // console.log(this.imageCount);
+      let totalFileSize = 0;
+      for (let i = 0; i < this.newPost.images.length; i++) {
+        totalFileSize += this.newPost.images[i].size;
+      }
+      let loadedImagesCount = 0;
+      for (let i = 0; i < files.length; i++) {
+        totalFileSize += files[i].size;
+        if (!files[i].type.match('image.*') || totalFileSize > 1600000) {  // 合計ファイルサイズ、画像でないファイルのバリデーション
+          window.alert('送信するファイルサイズの合計が1.6MBを超えているか、画像でないファイルをアップロードしようとしています！');
+          return;
+        }
+        let image = new Image();
+        image.src = URL.createObjectURL(files[i]);
+        image.addEventListener('load', () => {
+          loadedImagesCount++;
+          if (image.naturalWidth > 2500 || image.naturalHeight > 2500) {
+            window.alert('画像は縦・横それぞれ2500px以下のものを選択してください！');
+            return;
+          }
+          if (loadedImagesCount === files.length) {
+            this.newPost.images.push(...files);
+            for (let i = 0; i < files.length; i++) {
+              this.urls.push(URL.createObjectURL(files[i]));
+            }
+            this.$refs.preview.value = '';
+          }
+        });
+      }
     },
     // 画像プレビューの削除
     deletePreview(url, index) {
@@ -992,6 +1012,10 @@ export default {
           this.posts.splice(this.deletePostIndex, 1);
           this.deletePostModalClose();
           this.deleteProssesing = false;
+          this.$nextTick(() => {
+            let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight;
+            if (bottomOfWindow) this.getPosts();
+          });
         }).catch((error) => {
           console.log(error);
           this.deleteProssesing = false;
@@ -1056,32 +1080,45 @@ export default {
     // 投稿編集の画像アップロード
     uploadEditFile() {
       const files = this.$refs.editpreview.files;
-      // 画像ファイルじゃないものを除外
-      for (let i = 0; i < files.length; i++) {
-        if (!files[i].type.match('image.*')) {
-          files.splice(i, 1);
-        }
-      }
-      // ４枚以上アップロードしようとするとアラート
-      if (this.editUrls.length + files.length > 4) {
+      if (this.editUrls.length + files.length > 4) {  // 枚数制限バリデーション
         window.alert('画像は４枚までです！');
-      } else {
-        for (let i = 0; i < files.length; i++) {
-          const addFile = new Object();
-          addFile.id = this.nextNewImageId; // 新しく追加する画像にはマイナス値のidを付与（既存の画像と区別するため）
-          addFile.file = files[i];
-          this.newImages.push(addFile);
-          // プレビュー用URLをプッシュ
-          const addUrl = new Object();
-          addUrl.id = this.nextNewImageId;
-          addUrl.path = URL.createObjectURL(files[i]);
-          this.editUrls.push(addUrl);
-          this.nextNewImageId--;
+        return;
+      }
+      let totalFileSize = 0;
+      for (let i = 0; i < this.newImages.length; i++) {
+        totalFileSize += this.newImages[i].file.size;
+      }
+      let loadedImagesCount = 0;
+      for (let i = 0; i < files.length; i++) {
+        totalFileSize += files[i].size;
+        if (!files[i].type.match('image.*') || totalFileSize > 1600000) {  // 合計ファイルサイズ、画像でないファイルのバリデーション
+          window.alert('送信するファイルサイズの合計が1.6MBを超えているか、画像でないファイルをアップロードしようとしています！');
+          return;
         }
-        this.$refs.editpreview.value = '';
-        // console.log(this.editPost.deleteOldImagesId);
-        // console.log(this.newImages);
-        // console.log(this.editUrls);
+        let image = new Image();
+        image.src = URL.createObjectURL(files[i]);
+        image.addEventListener('load', () => {
+          loadedImagesCount++;
+          if (image.naturalWidth > 2500 || image.naturalHeight > 2500) {
+            window.alert('画像は縦・横それぞれ2500px以下のものを選択してください！');
+            return;
+          }
+          if (loadedImagesCount === files.length) {
+            for (let i = 0; i < files.length; i++) {
+              const addFile = new Object();
+              addFile.id = this.nextNewImageId; // 新しく追加する画像にはマイナス値のidを付与（既存の画像と区別するため）
+              addFile.file = files[i];
+              this.newImages.push(addFile);
+              // プレビュー用URLをプッシュ
+              const addUrl = new Object();
+              addUrl.id = this.nextNewImageId;
+              addUrl.path = URL.createObjectURL(files[i]);
+              this.editUrls.push(addUrl);
+              this.nextNewImageId--;
+            }
+            this.$refs.editpreview.value = '';
+          }
+        });
       }
     },
     // 投稿編集の画像プレビューの削除
@@ -1137,6 +1174,10 @@ export default {
           this.posts[this.editPostIndex].postMenuOpened = false;
           this.editPostModalClose();
           this.editProcessing = false;
+          this.$nextTick(() => {
+            let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight;
+            if (bottomOfWindow) this.getPosts();
+          });
         }).catch((error) => {
           this.editErrors = error.response.data.errors;
           this.editProcessing = false;
