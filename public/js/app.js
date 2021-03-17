@@ -2791,18 +2791,21 @@ __webpack_require__.r(__webpack_exports__);
     },
     // 画像アップロードのプレビュー
     uploadFile: function uploadFile() {
-      this.form.icon = this.$refs.preview.files[0];
+      var _this2 = this;
 
-      if (!this.form.icon.type.match('image.*')) {
-        this.message = '画像ファイルを選択してください';
-        this.form.icon = null;
-        return;
-      }
+      var file = this.$refs.preview.files[0];
+      var image = new Image();
+      image.src = URL.createObjectURL(file);
+      image.addEventListener('load', function () {
+        if (!file.type.match('image.*') || file.size > 1600000 || image.naturalWidth > 2500 || image.naturalHeight > 2500) {
+          window.alert('ファイルサイズが1.6MBを超える画像、または画像でないファイルはアップロードできません。画像は縦・横それぞれ2500px以下のものを選択してください。');
+          return;
+        }
 
-      this.url = URL.createObjectURL(this.form.icon);
-      this.$refs.preview.value = '';
-      this.message = ''; // console.log(this.form.icon);
-      // console.log(this.url);
+        _this2.form.icon = file;
+        _this2.url = URL.createObjectURL(_this2.form.icon);
+        _this2.$refs.preview.value = '';
+      });
     },
     // 画像プレビューの削除
     deletePreview: function deletePreview() {
@@ -2813,7 +2816,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     // グチ部屋の投稿（作成）
     submit: function submit() {
-      var _this2 = this;
+      var _this3 = this;
 
       var data = new FormData();
 
@@ -2824,24 +2827,24 @@ __webpack_require__.r(__webpack_exports__);
       data.append('title', this.form.title);
       data.append('genre', this.form.genre);
       axios.post('/api/guchiroom/create', data).then(function () {
-        _this2.form.icon = null;
-        _this2.form.title = '';
-        _this2.form.genre = '';
-        _this2.url = null;
-        _this2.errors = [];
-        _this2.message = '';
+        _this3.form.icon = null;
+        _this3.form.title = '';
+        _this3.form.genre = '';
+        _this3.url = null;
+        _this3.errors = [];
+        _this3.message = '';
 
-        _this2.closeCreateForm();
+        _this3.closeCreateForm();
 
-        if (_this2.$route.path === '/guchi/all') {
-          _this2.reloadKey++;
+        if (_this3.$route.path === '/guchi/all') {
+          _this3.reloadKey++;
         } else {
-          _this2.$router.push({
+          _this3.$router.push({
             name: 'guchi.all'
           });
         }
       })["catch"](function (error) {
-        _this2.errors = error.response.data.errors;
+        _this3.errors = error.response.data.errors;
       });
     }
   },
@@ -3385,6 +3388,8 @@ function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -3819,31 +3824,113 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     // 画像アップロードとプレビュー
     uploadFile: function uploadFile() {
-      var addImages = this.$refs.threadPreview.files;
+      var _this6 = this;
 
-      for (var i = 0; i < addImages.length; i++) {
-        if (!addImages[i].type.match('image.*')) {
-          this.message = '画像ファイルを選択してください！';
-          return;
-        }
+      var files = this.$refs.threadPreview.files;
+
+      if (this.form.images.length + files.length > 3) {
+        // 枚数制限バリデーション
+        window.alert('画像は3枚までです！');
+        return;
       }
 
-      if (this.form.images.length + addImages.length > 3) {
-        window.alert('画像は１投稿につき３枚までです！');
-      } else {
-        var _this$form$images;
+      var totalFileSize = 0;
 
-        (_this$form$images = this.form.images).push.apply(_this$form$images, _toConsumableArray(addImages));
+      for (var i = 0; i < this.form.images.length; i++) {
+        totalFileSize += this.form.images[i].size;
+      }
 
-        for (var _i = 0; _i < this.form.images.length; _i++) {
-          this.urls.push(URL.createObjectURL(this.form.images[_i]));
+      var loadedImagesCount = 0;
+
+      var _loop = function _loop(_i) {
+        totalFileSize += files[_i].size;
+        console.log(totalFileSize); // コンソール
+
+        if (!files[_i].type.match('image.*') || totalFileSize > 1600000) {
+          // 合計ファイルサイズ、画像でないファイルのバリデーション
+          window.alert('送信するファイルサイズの合計が1.6MBを超えているか、画像でないファイルをアップロードしようとしています！');
+          return {
+            v: void 0
+          };
         }
 
-        this.$refs.threadPreview.value = '';
-        this.message = null; // console.log(this.urls);
-        // console.log(this.form.images);
-      }
+        var image = new Image();
+        image.src = URL.createObjectURL(files[_i]);
+        image.addEventListener('load', function () {
+          loadedImagesCount++;
+          console.log(image.naturalWidth);
+          console.log(image.naturalHeight);
+
+          if (image.naturalWidth > 2500 || image.naturalHeight > 2500) {
+            window.alert('画像は縦・横それぞれ2500px以下のものを選択してください！');
+            return;
+          }
+
+          if (loadedImagesCount === files.length) {
+            var _this6$form$images;
+
+            (_this6$form$images = _this6.form.images).push.apply(_this6$form$images, _toConsumableArray(files));
+
+            for (var _i2 = 0; _i2 < files.length; _i2++) {
+              _this6.urls.push(URL.createObjectURL(files[_i2]));
+            }
+
+            _this6.$refs.threadPreview.value = '';
+          }
+        });
+      };
+
+      for (var _i = 0; _i < files.length; _i++) {
+        var _ret = _loop(_i);
+
+        if (_typeof(_ret) === "object") return _ret.v;
+      } // for (let i = 0; i < addImages.length; i++) {
+      //   totalFileSize += addImages[i].size;
+      //   if (!addImages[i].type.match('image.*') || totalFileSize > 1600000) {
+      //     window.alert('送信する合計のファイルサイズが1.6MBを超えている、または画像でないファイルがアップロードされています！');
+      //     return;
+      //   }
+      // }
+      // if (this.form.images.length + addImages.length > 3) {
+      //   window.alert('画像は１投稿につき３枚までです！');
+      // } else {
+      //   this.form.images.push(...addImages);
+      //   for (let i = 0; i < addImages.length; i++) {
+      //     this.urls.push(URL.createObjectURL(addImages[i]));
+      //   }
+      //   this.$refs.threadPreview.value = '';
+      //   this.message = null;
+      //   // console.log(this.urls);
+      //   // console.log(this.form.images);
+      // }
+
     },
+    // uploadFile() {
+    //   const addImages = this.$refs.threadPreview.files;
+    //   let totalFileSize = 0;
+    //   for (let i = 0; i < this.form.images.length; i++) {
+    //     totalFileSize += this.form.images[i].size;
+    //   }
+    //   for (let i = 0; i < addImages.length; i++) {
+    //     totalFileSize += addImages[i].size;
+    //     if (!addImages[i].type.match('image.*') || totalFileSize > 1600000) {
+    //       window.alert('送信する合計のファイルサイズが1.6MBを超えている、または画像でないファイルがアップロードされています！');
+    //       return;
+    //     }
+    //   }
+    //   if (this.form.images.length + addImages.length > 3) {
+    //     window.alert('画像は１投稿につき３枚までです！');
+    //   } else {
+    //     this.form.images.push(...addImages);
+    //     for (let i = 0; i < addImages.length; i++) {
+    //       this.urls.push(URL.createObjectURL(addImages[i]));
+    //     }
+    //     this.$refs.threadPreview.value = '';
+    //     this.message = null;
+    //     // console.log(this.urls);
+    //     // console.log(this.form.images);
+    //   }
+    // },
     // 画像プレビューの削除
     deletePreview: function deletePreview(url, index) {
       this.urls.splice(index, 1);
@@ -3860,7 +3947,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     // グチの送信
     submit: function submit() {
-      var _this6 = this;
+      var _this7 = this;
 
       if (this.postProsessing) return;
       this.postProsessing = true; // 文字数判定
@@ -3887,25 +3974,25 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
             data.append(key + '[]', v);
           });
         } else {
-          data.append('body', _this6.form.body);
-          data.append('roomId', _this6.guchiRoom.id);
+          data.append('body', _this7.form.body);
+          data.append('roomId', _this7.guchiRoom.id);
 
-          if (_this6.form.anonymous) {
-            data.append('anonymous', _this6.form.anonymous);
+          if (_this7.form.anonymous) {
+            data.append('anonymous', _this7.form.anonymous);
           }
         }
       });
       axios.post('/api/guchi/create', data).then(function () {
-        _this6.form.body = '';
-        _this6.form.images = [];
-        _this6.form.anonymous = true;
-        _this6.errors = [];
-        _this6.urls = [];
-        _this6.message = null;
-        _this6.postProsessing = false;
+        _this7.form.body = '';
+        _this7.form.images = [];
+        _this7.form.anonymous = true;
+        _this7.errors = [];
+        _this7.urls = [];
+        _this7.message = null;
+        _this7.postProsessing = false;
       })["catch"](function (error) {
-        _this6.errors = error.response.data.errors;
-        _this6.postProsessing = false;
+        _this7.errors = error.response.data.errors;
+        _this7.postProsessing = false;
       });
     },
     // ページ最下部へスクロール
@@ -3991,17 +4078,17 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     // グチの削除
     deleteGuchi: function deleteGuchi() {
-      var _this7 = this;
+      var _this8 = this;
 
       if (this.guchiDeleting) return;
       this.guchiDeleting = true;
       axios.post('/api/guchi/delete/' + this.guchis[this.deleteGuchiIndex].id).then(function () {
-        _this7.deleteGuchiModalClose();
+        _this8.deleteGuchiModalClose();
 
-        _this7.guchiDeleting = false;
+        _this8.guchiDeleting = false;
       })["catch"](function (error) {
         console.log(error);
-        _this7.guchiDeleting = false;
+        _this8.guchiDeleting = false;
       });
     },
     // グチをリアルタイムで削除
@@ -4027,7 +4114,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     window.removeEventListener('resize', this.bigImageResize);
   },
   mounted: function mounted() {
-    var _this8 = this;
+    var _this9 = this;
 
     // ページ初期化
     this.getInitInfo(this.$route.params.id); // 最新のグチを取得
@@ -4035,19 +4122,19 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     Echo["private"]('chat').listen('GuchiCreated', function (e) {
       // console.log(e.guchi.guchi_room_id);
       // console.log(this.$route.params.id);
-      if (e.guchi.guchi_room_id == _this8.$route.params.id) {
-        _this8.guchisTotal++;
+      if (e.guchi.guchi_room_id == _this9.$route.params.id) {
+        _this9.guchisTotal++;
 
-        _this8.getLatestGuchi();
+        _this9.getLatestGuchi();
       }
     }); // グチを削除
 
     Echo["private"]('guchiDeleted').listen('GuchiDeleted', function (e) {
       // console.log(e.guchiData.guchi_room_id);
-      if (e.guchiData.guchi_room_id == _this8.$route.params.id) {
-        _this8.guchisTotal--;
+      if (e.guchiData.guchi_room_id == _this9.$route.params.id) {
+        _this9.guchisTotal--;
 
-        _this8.deleteGuchiRealTime(e.guchiData.id); // console.log(e.guchiData.id);
+        _this9.deleteGuchiRealTime(e.guchiData.id); // console.log(e.guchiData.id);
 
       }
     });
@@ -4735,6 +4822,8 @@ function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (O
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
@@ -5577,7 +5666,11 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       if (this.postsLoading) return; // ロード中は無効に
 
       this.postsLoading = true;
-      axios.get('/api/post/get?loaded_posts_count=' + this.posts.length).then(function (res) {
+      var postIds = this.posts.map(function (obj) {
+        return obj.id;
+      });
+      var postIdsString = postIds.join('-');
+      axios.get('/api/post/get?loaded_post_ids=' + postIdsString).then(function (res) {
         var _this2$posts;
 
         // console.log(res.data);
@@ -5593,7 +5686,12 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
         _this2.postsLoading = false;
         _this2.postProsessing = false;
-        _this2.willReload = false; // console.log(this.posts.length);
+        _this2.willReload = false;
+
+        _this2.$nextTick(function () {
+          var bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight;
+          if (bottomOfWindow && _this2.posts.length < res.data.postsTotal) _this2.getPosts();
+        });
       })["catch"](function (error) {
         console.log(error);
         _this2.postsLoading = false;
@@ -5704,31 +5802,68 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     // 画像アップロードでプレビュー
     uploadFile: function uploadFile() {
+      var _this7 = this;
+
       var files = this.$refs.preview.files;
 
-      for (var i = 0; i < files.length; i++) {
-        if (!files[i].type.match('image.*')) {
-          files.splice(i, 1);
-        }
+      if (this.newPost.images.length + files.length > 4) {
+        // 枚数制限バリデーション
+        window.alert('画像は４枚までです！');
+        return;
       }
 
-      if (this.newPost.images.length + files.length > 4) {
-        window.alert('画像は４枚までです！');
-      } else {
-        var _this$newPost$images;
+      var totalFileSize = 0;
 
-        (_this$newPost$images = this.newPost.images).push.apply(_this$newPost$images, _toConsumableArray(files));
+      for (var i = 0; i < this.newPost.images.length; i++) {
+        totalFileSize += this.newPost.images[i].size;
+      }
 
-        for (var _i2 = 0; _i2 < files.length; _i2++) {
-          this.urls.push(URL.createObjectURL(files[_i2]));
+      var loadedImagesCount = 0;
+
+      var _loop = function _loop(_i2) {
+        totalFileSize += files[_i2].size;
+        console.log(totalFileSize); // コンソール
+
+        if (!files[_i2].type.match('image.*') || totalFileSize > 1600000) {
+          // 合計ファイルサイズ、画像でないファイルのバリデーション
+          window.alert('送信するファイルサイズの合計が1.6MBを超えているか、画像でないファイルをアップロードしようとしています！');
+          return {
+            v: void 0
+          };
         }
 
-        this.$refs.preview.value = ''; // console.log(this.newPost.images);
-        // console.log(this.urls);
-      } // console.log(this.files);
-      // console.log(this.urls);
-      // console.log(this.imageCount);
+        var image = new Image();
+        image.src = URL.createObjectURL(files[_i2]);
+        image.addEventListener('load', function () {
+          loadedImagesCount++;
+          console.log(image.naturalWidth);
+          console.log(image.naturalHeight);
 
+          if (image.naturalWidth > 2500 || image.naturalHeight > 2500) {
+            window.alert('画像は縦・横それぞれ2500px以下のものを選択してください！');
+            return;
+          }
+
+          if (loadedImagesCount === files.length) {
+            var _this7$newPost$images;
+
+            (_this7$newPost$images = _this7.newPost.images).push.apply(_this7$newPost$images, _toConsumableArray(files));
+
+            for (var _i3 = 0; _i3 < files.length; _i3++) {
+              _this7.urls.push(URL.createObjectURL(files[_i3]));
+            }
+
+            _this7.$refs.preview.value = '';
+            console.log(_this7.newPost.images);
+          }
+        });
+      };
+
+      for (var _i2 = 0; _i2 < files.length; _i2++) {
+        var _ret = _loop(_i2);
+
+        if (_typeof(_ret) === "object") return _ret.v;
+      }
     },
     // 画像プレビューの削除
     deletePreview: function deletePreview(url, index) {
@@ -5764,24 +5899,29 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     // 投稿の削除
     deletePost: function deletePost() {
-      var _this7 = this;
+      var _this8 = this;
 
       if (this.deleteProssesing) return;
       this.deleteProssesing = true;
       axios.post('/api/post/delete/' + this.posts[this.deletePostIndex].id).then(function () {
-        _this7.posts.splice(_this7.deletePostIndex, 1);
+        _this8.posts.splice(_this8.deletePostIndex, 1);
 
-        _this7.deletePostModalClose();
+        _this8.deletePostModalClose();
 
-        _this7.deleteProssesing = false;
+        _this8.deleteProssesing = false;
+
+        _this8.$nextTick(function () {
+          var bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight;
+          if (bottomOfWindow) _this8.getPosts();
+        });
       })["catch"](function (error) {
         console.log(error);
-        _this7.deleteProssesing = false;
+        _this8.deleteProssesing = false;
       });
     },
     // 投稿編集モーダルの開閉
     editPostModalOpen: function editPostModalOpen(i) {
-      var _this8 = this;
+      var _this9 = this;
 
       // スクロール位置の維持
       this.keepScrollWhenOpen(); // 投稿のidを取得
@@ -5814,7 +5954,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       this.modalPostEditShow = true; // テキストエリアの高さをフレキシブルに
 
       this.$nextTick(function () {
-        _this8.editHeight = _this8.$refs.editarea.scrollHeight + 'px';
+        _this9.editHeight = _this9.$refs.editarea.scrollHeight + 'px';
       }); // 今編集してるpostsのインデックスを記憶
 
       this.editPostIndex = i; // console.log(this.editPost);
@@ -5839,35 +5979,76 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     // 投稿編集の画像アップロード
     uploadEditFile: function uploadEditFile() {
-      var files = this.$refs.editpreview.files; // 画像ファイルじゃないものを除外
+      var _this10 = this;
 
-      for (var i = 0; i < files.length; i++) {
-        if (!files[i].type.match('image.*')) {
-          files.splice(i, 1);
-        }
-      } // ４枚以上アップロードしようとするとアラート
-
+      var files = this.$refs.editpreview.files;
 
       if (this.editUrls.length + files.length > 4) {
+        // 枚数制限バリデーション
         window.alert('画像は４枚までです！');
-      } else {
-        for (var _i3 = 0; _i3 < files.length; _i3++) {
-          var addFile = new Object();
-          addFile.id = this.nextNewImageId; // 新しく追加する画像にはマイナス値のidを付与（既存の画像と区別するため）
+        return;
+      }
 
-          addFile.file = files[_i3];
-          this.newImages.push(addFile); // プレビュー用URLをプッシュ
+      var totalFileSize = 0;
 
-          var addUrl = new Object();
-          addUrl.id = this.nextNewImageId;
-          addUrl.path = URL.createObjectURL(files[_i3]);
-          this.editUrls.push(addUrl);
-          this.nextNewImageId--;
+      for (var i = 0; i < this.newImages.length; i++) {
+        totalFileSize += this.newImages[i].file.size;
+      }
+
+      var loadedImagesCount = 0;
+
+      var _loop2 = function _loop2(_i4) {
+        totalFileSize += files[_i4].size;
+        console.log(totalFileSize); // コンソール
+
+        if (!files[_i4].type.match('image.*') || totalFileSize > 1600000) {
+          // 合計ファイルサイズ、画像でないファイルのバリデーション
+          window.alert('送信するファイルサイズの合計が1.6MBを超えているか、画像でないファイルをアップロードしようとしています！');
+          return {
+            v: void 0
+          };
         }
 
-        this.$refs.editpreview.value = ''; // console.log(this.editPost.deleteOldImagesId);
-        // console.log(this.newImages);
-        // console.log(this.editUrls);
+        var image = new Image();
+        image.src = URL.createObjectURL(files[_i4]);
+        image.addEventListener('load', function () {
+          loadedImagesCount++;
+          console.log(image.naturalWidth);
+          console.log(image.naturalHeight);
+
+          if (image.naturalWidth > 2500 || image.naturalHeight > 2500) {
+            window.alert('画像は縦・横それぞれ2500px以下のものを選択してください！');
+            return;
+          }
+
+          if (loadedImagesCount === files.length) {
+            for (var _i5 = 0; _i5 < files.length; _i5++) {
+              var addFile = new Object();
+              addFile.id = _this10.nextNewImageId; // 新しく追加する画像にはマイナス値のidを付与（既存の画像と区別するため）
+
+              addFile.file = files[_i5];
+
+              _this10.newImages.push(addFile); // プレビュー用URLをプッシュ
+
+
+              var addUrl = new Object();
+              addUrl.id = _this10.nextNewImageId;
+              addUrl.path = URL.createObjectURL(files[_i5]);
+
+              _this10.editUrls.push(addUrl);
+
+              _this10.nextNewImageId--;
+            }
+
+            _this10.$refs.editpreview.value = '';
+          }
+        });
+      };
+
+      for (var _i4 = 0; _i4 < files.length; _i4++) {
+        var _ret2 = _loop2(_i4);
+
+        if (_typeof(_ret2) === "object") return _ret2.v;
       }
     },
     // 投稿編集の画像プレビューの削除
@@ -5891,7 +6072,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     // 編集した投稿を送信
     editSubmit: function editSubmit() {
-      var _this9 = this;
+      var _this11 = this;
 
       if (this.editProcessing) return;
       this.editProcessing = true; // 文字数判定
@@ -5925,16 +6106,21 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         }
       });
       axios.post('/api/post/edit', data).then(function (res) {
-        _this9.posts.splice(_this9.editPostIndex, 1, res.data.post);
+        _this11.posts.splice(_this11.editPostIndex, 1, res.data.post);
 
-        _this9.posts[_this9.editPostIndex].postMenuOpened = false;
+        _this11.posts[_this11.editPostIndex].postMenuOpened = false;
 
-        _this9.editPostModalClose();
+        _this11.editPostModalClose();
 
-        _this9.editProcessing = false;
+        _this11.editProcessing = false;
+
+        _this11.$nextTick(function () {
+          var bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight;
+          if (bottomOfWindow) _this11.getPosts();
+        });
       })["catch"](function (error) {
-        _this9.editErrors = error.response.data.errors;
-        _this9.editProcessing = false;
+        _this11.editErrors = error.response.data.errors;
+        _this11.editProcessing = false;
       });
     },
     // どんまい機能の処理
@@ -6031,25 +6217,25 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     // コメントの取得
     getComments: function getComments() {
-      var _this10 = this;
+      var _this12 = this;
 
       if (!this.loadCommentsMore) return;
       if (this.commentsLoading) return;
       this.commentsLoading = true;
       axios.get('/api/comments/get/' + this.modalPostId + '?loaded_comments_count=' + this.modalPostComments.length).then(function (res) {
-        var _this10$modalPostComm;
+        var _this12$modalPostComm;
 
         // console.log(res.data);
-        (_this10$modalPostComm = _this10.modalPostComments).push.apply(_this10$modalPostComm, _toConsumableArray(res.data.comments));
+        (_this12$modalPostComm = _this12.modalPostComments).push.apply(_this12$modalPostComm, _toConsumableArray(res.data.comments));
 
-        if (_this10.modalPostComments.length === res.data.commentsTotal) {
-          _this10.loadCommentsMore = false;
+        if (_this12.modalPostComments.length === res.data.commentsTotal) {
+          _this12.loadCommentsMore = false;
         }
 
-        _this10.commentsLoading = false; // console.log(this.modalPostComments.length);
+        _this12.commentsLoading = false; // console.log(this.modalPostComments.length);
       })["catch"](function (error) {
         console.log(error);
-        _this10.commentsLoading = false;
+        _this12.commentsLoading = false;
       });
     },
     // コメントの無限スクロールページネーション
@@ -6063,31 +6249,31 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     // どんまいしたユーザーの取得
     getDonmaiUsers: function getDonmaiUsers() {
-      var _this11 = this;
+      var _this13 = this;
 
       if (this.isLastDonmaiPage) return;
       if (this.donmaiLoading) return;
       this.donmaiLoading = true;
       axios.get('/api/donmai/users/' + this.modalPostId + '?page=' + this.donmaiPage).then(function (res) {
-        var _this11$modalDonmaiUs;
+        var _this13$modalDonmaiUs;
 
         // console.log(res.data);
         var users = res.data.data.map(function (obj) {
           return obj.user;
         });
 
-        (_this11$modalDonmaiUs = _this11.modalDonmaiUsers).push.apply(_this11$modalDonmaiUs, _toConsumableArray(users));
+        (_this13$modalDonmaiUs = _this13.modalDonmaiUsers).push.apply(_this13$modalDonmaiUs, _toConsumableArray(users));
 
-        _this11.donmaiLoading = false;
+        _this13.donmaiLoading = false;
 
-        if (_this11.donmaiPage === res.data.last_page) {
-          _this11.isLastDonmaiPage = true;
+        if (_this13.donmaiPage === res.data.last_page) {
+          _this13.isLastDonmaiPage = true;
         }
 
-        _this11.donmaiPage++;
+        _this13.donmaiPage++;
       })["catch"](function (error) {
         console.log(error);
-        _this11.donmaiLoading = false;
+        _this13.donmaiLoading = false;
       });
     },
     // どんまいしたユーザー一覧のモーダルを開く
@@ -6158,26 +6344,26 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     // どんまいしたユーザーのフォローとアンフォロー
     donmaiFollow: function donmaiFollow(i) {
-      var _this12 = this;
+      var _this14 = this;
 
       axios.post('/api/follow', this.modalDonmaiUsers[i]).then(function () {
-        _this12.modalDonmaiUsers[i].followed = true;
+        _this14.modalDonmaiUsers[i].followed = true;
       })["catch"](function () {
         return;
       });
     },
     donmaiUnFollow: function donmaiUnFollow(i) {
-      var _this13 = this;
+      var _this15 = this;
 
       axios.post('/api/unfollow', this.modalDonmaiUsers[i]).then(function () {
-        _this13.modalDonmaiUsers[i].followed = false;
+        _this15.modalDonmaiUsers[i].followed = false;
       })["catch"](function () {
         return;
       });
     },
     // コメント投稿
     commentPost: function commentPost() {
-      var _this14 = this;
+      var _this16 = this;
 
       if (this.commentProcessing) return;
       this.commentProcessing = true; // 文字数判定
@@ -6198,30 +6384,30 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       data.append('body', this.commentInput);
       axios.post('/api/comment', data).then(function (res) {
         // console.log(res.data);
-        _this14.modalPostComments.unshift(res.data);
+        _this16.modalPostComments.unshift(res.data);
 
-        _this14.commentInput = '';
-        _this14.posts[_this14.modalPostIndex].commentCount++;
-        _this14.modalPostCommentCount++;
-        _this14.commentErrors = [];
-        _this14.tooLongCommentMessage = '';
-        _this14.commentProcessing = false;
+        _this16.commentInput = '';
+        _this16.posts[_this16.modalPostIndex].commentCount++;
+        _this16.modalPostCommentCount++;
+        _this16.commentErrors = [];
+        _this16.tooLongCommentMessage = '';
+        _this16.commentProcessing = false;
       })["catch"](function (error) {
         console.log(error.response.data.errors);
-        _this14.commentErrors = error.response.data.errors;
-        _this14.commentProcessing = false;
+        _this16.commentErrors = error.response.data.errors;
+        _this16.commentProcessing = false;
       });
     },
     // コメント削除
     deleteComment: function deleteComment(i) {
-      var _this15 = this;
+      var _this17 = this;
 
       if (window.confirm('削除しますか？')) {
         axios.post('/api/comment/delete/' + this.modalPostComments[i].id).then(function () {
-          _this15.modalPostComments.splice(i, 1);
+          _this17.modalPostComments.splice(i, 1);
 
-          _this15.modalPostCommentCount--;
-          _this15.posts[_this15.modalPostIndex].commentCount--;
+          _this17.modalPostCommentCount--;
+          _this17.posts[_this17.modalPostIndex].commentCount--;
         })["catch"](function (error) {
           console.log(error);
         });
@@ -6229,25 +6415,25 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     // コメントへの返信の取得
     getReplies: function getReplies(i) {
-      var _this16 = this;
+      var _this18 = this;
 
       if (!this.modalPostComments[i].loadRepliesMore) return;
       if (this.modalPostComments[i].repliesLoading) return;
       this.modalPostComments[i].repliesLoading = true;
       axios.get('/api/replies/get/' + this.modalPostComments[i].id + '?loaded_replies_count=' + this.modalPostComments[i].replies.length).then(function (res) {
-        var _this16$modalPostComm;
+        var _this18$modalPostComm;
 
         // console.log(res.data);
-        (_this16$modalPostComm = _this16.modalPostComments[i].replies).push.apply(_this16$modalPostComm, _toConsumableArray(res.data.replies));
+        (_this18$modalPostComm = _this18.modalPostComments[i].replies).push.apply(_this18$modalPostComm, _toConsumableArray(res.data.replies));
 
-        if (_this16.modalPostComments[i].replies.length === res.data.repliesTotal) {
-          _this16.modalPostComments[i].loadRepliesMore = false;
+        if (_this18.modalPostComments[i].replies.length === res.data.repliesTotal) {
+          _this18.modalPostComments[i].loadRepliesMore = false;
         }
 
-        _this16.modalPostComments[i].repliesLoading = false; // console.log(this.modalPostComments[i].replies.length);
+        _this18.modalPostComments[i].repliesLoading = false; // console.log(this.modalPostComments[i].replies.length);
       })["catch"](function (error) {
         console.log(error);
-        _this16.modalPostComments[i].repliesLoading = false;
+        _this18.modalPostComments[i].repliesLoading = false;
       });
     },
     //コメントへの返信の取得と表示と非表示
@@ -6260,23 +6446,23 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     // コメントへのいいね機能
     commentGood: function commentGood(i) {
-      var _this17 = this;
+      var _this19 = this;
 
       var comment = this.modalPostComments[i];
 
       if (!comment.gooded) {
         axios.post('/api/comment/good/' + comment.id).then(function () {
-          _this17.$set(comment, 'gooded', true);
+          _this19.$set(comment, 'gooded', true);
 
-          _this17.$set(comment, 'goodCount', comment.goodCount + 1);
+          _this19.$set(comment, 'goodCount', comment.goodCount + 1);
         })["catch"](function () {
           return;
         });
       } else {
         axios.post('/api/comment/ungood/' + comment.id).then(function () {
-          _this17.$set(comment, 'gooded', false);
+          _this19.$set(comment, 'gooded', false);
 
-          _this17.$set(comment, 'goodCount', comment.goodCount - 1);
+          _this19.$set(comment, 'goodCount', comment.goodCount - 1);
         })["catch"](function () {
           return;
         });
@@ -6284,7 +6470,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     // コメントへの返信の投稿
     reply: function reply(i) {
-      var _this18 = this;
+      var _this20 = this;
 
       if (this.replyProcessing) return;
       this.replyProcessing = true; // 文字数判定
@@ -6305,30 +6491,30 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       data.append('commentId', this.modalPostComments[i].id);
       axios.post('/api/comment/reply', data).then(function (res) {
         // console.log(res.data);
-        if (!_this18.modalPostComments[i].loadRepliesMore) {
-          _this18.modalPostComments[i].replies.push(res.data);
+        if (!_this20.modalPostComments[i].loadRepliesMore) {
+          _this20.modalPostComments[i].replies.push(res.data);
         }
 
-        _this18.modalPostComments[i].replyCount++;
-        _this18.modalPostComments[i].replyInput = '';
-        _this18.modalPostComments[i].replyErrors = [];
-        _this18.posts[_this18.modalPostIndex].commentCount++;
-        _this18.modalPostCommentCount++;
-        _this18.modalPostComments[i].replyFormOpened = false;
-        _this18.replyProcessing = false;
+        _this20.modalPostComments[i].replyCount++;
+        _this20.modalPostComments[i].replyInput = '';
+        _this20.modalPostComments[i].replyErrors = [];
+        _this20.posts[_this20.modalPostIndex].commentCount++;
+        _this20.modalPostCommentCount++;
+        _this20.modalPostComments[i].replyFormOpened = false;
+        _this20.replyProcessing = false;
       })["catch"](function (error) {
-        console.log(_this18.modalPostComments[0]);
-        _this18.modalPostComments[i].replyErrors = error.response.data.errors;
-        _this18.replyProcessing = false;
+        console.log(_this20.modalPostComments[0]);
+        _this20.modalPostComments[i].replyErrors = error.response.data.errors;
+        _this20.replyProcessing = false;
       });
     },
     // コメントへの返信の削除
     deleteReply: function deleteReply(comId, repId) {
-      var _this19 = this;
+      var _this21 = this;
 
       if (window.confirm('削除しますか？')) {
         axios.post('/api/reply/delete/' + repId).then(function () {
-          var comment = _this19.modalPostComments.find(function (v) {
+          var comment = _this21.modalPostComments.find(function (v) {
             return v.id === comId;
           });
 
@@ -6339,8 +6525,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
           comment.replies.splice(replyIndex, 1);
           comment.replyCount--;
-          _this19.modalPostCommentCount--;
-          _this19.posts[_this19.modalPostIndex].commentCount--;
+          _this21.modalPostCommentCount--;
+          _this21.posts[_this21.modalPostIndex].commentCount--;
         })["catch"](function (error) {
           console.log(error);
         });
@@ -6446,7 +6632,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     window.removeEventListener('resize', this.changeCommentHeight);
   },
   mounted: function mounted() {
-    var _this20 = this;
+    var _this22 = this;
 
     // 認証ユーザー情報、全ジャンルを取得
     this.getInitInfo(); // 投稿の無限スクロール
@@ -6455,8 +6641,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       // スクロール位置が一番下ならtrue
       var bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight;
 
-      if (bottomOfWindow && !_this20.modalPostShow && !_this20.modalPostEditShow && !_this20.deletePostModalOpened && !_this20.modalImageShow) {
-        _this20.getPosts();
+      if (bottomOfWindow && !_this22.modalPostShow && !_this22.modalPostEditShow && !_this22.deletePostModalOpened && !_this22.modalImageShow) {
+        _this22.getPosts();
       }
     }; // マウント時にもテキストエリアの高さをフレキシブルに
 
@@ -6501,6 +6687,8 @@ function _nonIterableRest() { throw new TypeError("Invalid attempt to destructur
 function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
@@ -7247,7 +7435,13 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
           _this2.loadMorePosts = false;
         }
 
-        _this2.postsLoading = false; // console.log(this.posts.length);
+        _this2.postsLoading = false;
+
+        _this2.$nextTick(function () {
+          var bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight;
+          if (bottomOfWindow && _this2.posts.length < res.data.postsTotal) _this2.getPosts(genreName);
+        }); // console.log(this.posts.length);
+
       })["catch"](function (error) {
         console.log(error);
         _this2.postsLoading = false;
@@ -7318,6 +7512,11 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         _this5.deletePostModalClose();
 
         _this5.deleteProssesing = false;
+
+        _this5.$nextTick(function () {
+          var bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight;
+          if (bottomOfWindow) _this5.getPosts();
+        });
       })["catch"](function (error) {
         console.log(error);
         _this5.deleteProssesing = false;
@@ -7388,35 +7587,76 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     // 投稿編集の画像アップロード
     uploadEditFile: function uploadEditFile() {
-      var files = this.$refs.editpreview.files; // 画像ファイルじゃないものを除外
+      var _this7 = this;
 
-      for (var i = 0; i < files.length; i++) {
-        if (!files[i].type.match('image.*')) {
-          files.splice(i, 1);
-        }
-      } // ４枚以上アップロードしようとするとアラート
-
+      var files = this.$refs.editpreview.files;
 
       if (this.editUrls.length + files.length > 4) {
+        // 枚数制限バリデーション
         window.alert('画像は４枚までです！');
-      } else {
-        for (var _i = 0; _i < files.length; _i++) {
-          var addFile = new Object();
-          addFile.id = this.nextNewImageId; // 新しく追加する画像にはマイナス値のidを付与（既存の画像と区別するため）
+        return;
+      }
 
-          addFile.file = files[_i];
-          this.newImages.push(addFile); // プレビュー用URLをプッシュ
+      var totalFileSize = 0;
 
-          var addUrl = new Object();
-          addUrl.id = this.nextNewImageId;
-          addUrl.path = URL.createObjectURL(files[_i]);
-          this.editUrls.push(addUrl);
-          this.nextNewImageId--;
+      for (var i = 0; i < this.newImages.length; i++) {
+        totalFileSize += this.newImages[i].file.size;
+      }
+
+      var loadedImagesCount = 0;
+
+      var _loop = function _loop(_i) {
+        totalFileSize += files[_i].size;
+        console.log(totalFileSize); // コンソール
+
+        if (!files[_i].type.match('image.*') || totalFileSize > 1600000) {
+          // 合計ファイルサイズ、画像でないファイルのバリデーション
+          window.alert('送信するファイルサイズの合計が1.6MBを超えているか、画像でないファイルをアップロードしようとしています！');
+          return {
+            v: void 0
+          };
         }
 
-        this.$refs.editpreview.value = ''; // console.log(this.editPost.deleteOldImagesId);
-        // console.log(this.newImages);
-        // console.log(this.editUrls);
+        var image = new Image();
+        image.src = URL.createObjectURL(files[_i]);
+        image.addEventListener('load', function () {
+          loadedImagesCount++;
+          console.log(image.naturalWidth);
+          console.log(image.naturalHeight);
+
+          if (image.naturalWidth > 2500 || image.naturalHeight > 2500) {
+            window.alert('画像は縦・横それぞれ2500px以下のものを選択してください！');
+            return;
+          }
+
+          if (loadedImagesCount === files.length) {
+            for (var _i2 = 0; _i2 < files.length; _i2++) {
+              var addFile = new Object();
+              addFile.id = _this7.nextNewImageId; // 新しく追加する画像にはマイナス値のidを付与（既存の画像と区別するため）
+
+              addFile.file = files[_i2];
+
+              _this7.newImages.push(addFile); // プレビュー用URLをプッシュ
+
+
+              var addUrl = new Object();
+              addUrl.id = _this7.nextNewImageId;
+              addUrl.path = URL.createObjectURL(files[_i2]);
+
+              _this7.editUrls.push(addUrl);
+
+              _this7.nextNewImageId--;
+            }
+
+            _this7.$refs.editpreview.value = '';
+          }
+        });
+      };
+
+      for (var _i = 0; _i < files.length; _i++) {
+        var _ret = _loop(_i);
+
+        if (_typeof(_ret) === "object") return _ret.v;
       }
     },
     // 投稿編集の画像プレビューの削除
@@ -7440,7 +7680,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     // 編集した投稿を送信
     editSubmit: function editSubmit() {
-      var _this7 = this;
+      var _this8 = this;
 
       if (this.editProcessing) return;
       this.editProcessing = true; // 文字数判定
@@ -7475,18 +7715,23 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       });
       axios.post('/api/post/edit', data).then(function (res) {
         // ジャンルを変更していたらこのページの投稿一覧から削除
-        if (_this7.genres[_this7.editPost.genreIndex].route === _this7.$route.params.name) {
-          _this7.posts.splice(_this7.editPostIndex, 1, res.data.post);
+        if (_this8.genres[_this8.editPost.genreIndex].route === _this8.$route.params.name) {
+          _this8.posts.splice(_this8.editPostIndex, 1, res.data.post);
         } else {
-          _this7.posts.splice(_this7.editPostIndex, 1);
+          _this8.posts.splice(_this8.editPostIndex, 1);
         }
 
-        _this7.editPostModalClose();
+        _this8.editPostModalClose();
 
-        _this7.editProcessing = false;
+        _this8.editProcessing = false;
+
+        _this8.$nextTick(function () {
+          var bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight;
+          if (bottomOfWindow) _this8.getPosts();
+        });
       })["catch"](function (error) {
-        _this7.editErrors = error.response.data.errors;
-        _this7.editProcessing = false;
+        _this8.editErrors = error.response.data.errors;
+        _this8.editProcessing = false;
       });
     },
     // どんまい機能の処理
@@ -7584,25 +7829,25 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     // コメントの取得
     getComments: function getComments() {
-      var _this8 = this;
+      var _this9 = this;
 
       if (!this.loadCommentsMore) return;
       if (this.commentsLoading) return;
       this.commentsLoading = true;
       axios.get('/api/comments/get/' + this.modalPostId + '?loaded_comments_count=' + this.modalPostComments.length).then(function (res) {
-        var _this8$modalPostComme;
+        var _this9$modalPostComme;
 
         // console.log(res.data);
-        (_this8$modalPostComme = _this8.modalPostComments).push.apply(_this8$modalPostComme, _toConsumableArray(res.data.comments));
+        (_this9$modalPostComme = _this9.modalPostComments).push.apply(_this9$modalPostComme, _toConsumableArray(res.data.comments));
 
-        if (_this8.modalPostComments.length === res.data.commentsTotal) {
-          _this8.loadCommentsMore = false;
+        if (_this9.modalPostComments.length === res.data.commentsTotal) {
+          _this9.loadCommentsMore = false;
         }
 
-        _this8.commentsLoading = false; // console.log(this.modalPostComments.length);
+        _this9.commentsLoading = false; // console.log(this.modalPostComments.length);
       })["catch"](function (error) {
         console.log(error);
-        _this8.commentsLoading = false;
+        _this9.commentsLoading = false;
       });
     },
     // コメントの無限スクロールページネーション
@@ -7616,31 +7861,31 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     // どんまいしたユーザーの取得
     getDonmaiUsers: function getDonmaiUsers() {
-      var _this9 = this;
+      var _this10 = this;
 
       if (this.isLastDonmaiPage) return;
       if (this.donmaiLoading) return;
       this.donmaiLoading = true;
       axios.get('/api/donmai/users/' + this.modalPostId + '?page=' + this.donmaiPage).then(function (res) {
-        var _this9$modalDonmaiUse;
+        var _this10$modalDonmaiUs;
 
         // console.log(res.data);
         var users = res.data.data.map(function (obj) {
           return obj.user;
         });
 
-        (_this9$modalDonmaiUse = _this9.modalDonmaiUsers).push.apply(_this9$modalDonmaiUse, _toConsumableArray(users));
+        (_this10$modalDonmaiUs = _this10.modalDonmaiUsers).push.apply(_this10$modalDonmaiUs, _toConsumableArray(users));
 
-        _this9.donmaiLoading = false;
+        _this10.donmaiLoading = false;
 
-        if (_this9.donmaiPage === res.data.last_page) {
-          _this9.isLastDonmaiPage = true;
+        if (_this10.donmaiPage === res.data.last_page) {
+          _this10.isLastDonmaiPage = true;
         }
 
-        _this9.donmaiPage++;
+        _this10.donmaiPage++;
       })["catch"](function (error) {
         console.log(error);
-        _this9.donmaiLoading = false;
+        _this10.donmaiLoading = false;
       });
     },
     // どんまいしたユーザー一覧のモーダルを開く
@@ -7710,26 +7955,26 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     // どんまいしたユーザーのフォローとアンフォロー
     donmaiFollow: function donmaiFollow(i) {
-      var _this10 = this;
+      var _this11 = this;
 
       axios.post('/api/follow', this.modalDonmaiUsers[i]).then(function () {
-        _this10.modalDonmaiUsers[i].followed = true;
+        _this11.modalDonmaiUsers[i].followed = true;
       })["catch"](function () {
         return;
       });
     },
     donmaiUnFollow: function donmaiUnFollow(i) {
-      var _this11 = this;
+      var _this12 = this;
 
       axios.post('/api/unfollow', this.modalDonmaiUsers[i]).then(function () {
-        _this11.modalDonmaiUsers[i].followed = false;
+        _this12.modalDonmaiUsers[i].followed = false;
       })["catch"](function () {
         return;
       });
     },
     // コメント投稿
     commentPost: function commentPost() {
-      var _this12 = this;
+      var _this13 = this;
 
       if (this.commentProcessing) return;
       this.commentProcessing = true; // 文字数判定
@@ -7750,28 +7995,28 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       data.append('body', this.commentInput);
       axios.post('/api/comment', data).then(function (res) {
         // console.log(res.data);
-        _this12.modalPostComments.unshift(res.data);
+        _this13.modalPostComments.unshift(res.data);
 
-        _this12.commentInput = '';
-        _this12.posts[_this12.modalPostIndex].commentCount++;
-        _this12.modalPostCommentCount++;
-        _this12.commentErrors = [];
-        _this12.commentProcessing = false;
+        _this13.commentInput = '';
+        _this13.posts[_this13.modalPostIndex].commentCount++;
+        _this13.modalPostCommentCount++;
+        _this13.commentErrors = [];
+        _this13.commentProcessing = false;
       })["catch"](function (error) {
-        _this12.commentErrors = error.response.data.errors;
-        _this12.commentProcessing = false;
+        _this13.commentErrors = error.response.data.errors;
+        _this13.commentProcessing = false;
       });
     },
     // コメント削除
     deleteComment: function deleteComment(i) {
-      var _this13 = this;
+      var _this14 = this;
 
       if (window.confirm('削除しますか？')) {
         axios.post('/api/comment/delete/' + this.modalPostComments[i].id).then(function () {
-          _this13.modalPostComments.splice(i, 1);
+          _this14.modalPostComments.splice(i, 1);
 
-          _this13.modalPostCommentCount--;
-          _this13.posts[_this13.modalPostIndex].commentCount--;
+          _this14.modalPostCommentCount--;
+          _this14.posts[_this14.modalPostIndex].commentCount--;
         })["catch"](function (error) {
           console.log(error);
         });
@@ -7779,25 +8024,25 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     // コメントへの返信の取得
     getReplies: function getReplies(i) {
-      var _this14 = this;
+      var _this15 = this;
 
       if (!this.modalPostComments[i].loadRepliesMore) return;
       if (this.modalPostComments[i].repliesLoading) return;
       this.modalPostComments[i].repliesLoading = true;
       axios.get('/api/replies/get/' + this.modalPostComments[i].id + '?loaded_replies_count=' + this.modalPostComments[i].replies.length).then(function (res) {
-        var _this14$modalPostComm;
+        var _this15$modalPostComm;
 
         // console.log(res.data);
-        (_this14$modalPostComm = _this14.modalPostComments[i].replies).push.apply(_this14$modalPostComm, _toConsumableArray(res.data.replies));
+        (_this15$modalPostComm = _this15.modalPostComments[i].replies).push.apply(_this15$modalPostComm, _toConsumableArray(res.data.replies));
 
-        if (_this14.modalPostComments[i].replies.length === res.data.repliesTotal) {
-          _this14.modalPostComments[i].loadRepliesMore = false;
+        if (_this15.modalPostComments[i].replies.length === res.data.repliesTotal) {
+          _this15.modalPostComments[i].loadRepliesMore = false;
         }
 
-        _this14.modalPostComments[i].repliesLoading = false; // console.log(this.modalPostComments[i].replies.length);
+        _this15.modalPostComments[i].repliesLoading = false; // console.log(this.modalPostComments[i].replies.length);
       })["catch"](function (error) {
         console.log(error);
-        _this14.modalPostComments[i].repliesLoading = false;
+        _this15.modalPostComments[i].repliesLoading = false;
       });
     },
     //コメントへの返信の表示と非表示
@@ -7829,7 +8074,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     // コメントへの返信の投稿
     reply: function reply(i) {
-      var _this15 = this;
+      var _this16 = this;
 
       if (this.replyProcessing) return;
       this.replyProcessing = true; // 文字数判定
@@ -7850,29 +8095,29 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       data.append('commentId', this.modalPostComments[i].id);
       axios.post('/api/comment/reply', data).then(function (res) {
         // console.log(res.data);
-        if (!_this15.modalPostComments[i].loadRepliesMore) {
-          _this15.modalPostComments[i].replies.push(res.data);
+        if (!_this16.modalPostComments[i].loadRepliesMore) {
+          _this16.modalPostComments[i].replies.push(res.data);
         }
 
-        _this15.modalPostComments[i].replyCount++;
-        _this15.modalPostComments[i].replyInput = '';
-        _this15.modalPostComments[i].replyErrors = [];
-        _this15.posts[_this15.modalPostIndex].commentCount++;
-        _this15.modalPostCommentCount++;
-        _this15.modalPostComments[i].replyFormOpened = false;
-        _this15.replyProcessing = false;
+        _this16.modalPostComments[i].replyCount++;
+        _this16.modalPostComments[i].replyInput = '';
+        _this16.modalPostComments[i].replyErrors = [];
+        _this16.posts[_this16.modalPostIndex].commentCount++;
+        _this16.modalPostCommentCount++;
+        _this16.modalPostComments[i].replyFormOpened = false;
+        _this16.replyProcessing = false;
       })["catch"](function (error) {
-        _this15.modalPostComments[i].replyErrors = error.response.data.errors;
-        _this15.replyProcessing = false;
+        _this16.modalPostComments[i].replyErrors = error.response.data.errors;
+        _this16.replyProcessing = false;
       });
     },
     // コメントへの返信の削除
     deleteReply: function deleteReply(comId, repId) {
-      var _this16 = this;
+      var _this17 = this;
 
       if (window.confirm('削除しますか？')) {
         axios.post('/api/reply/delete/' + repId).then(function () {
-          var comment = _this16.modalPostComments.find(function (v) {
+          var comment = _this17.modalPostComments.find(function (v) {
             return v.id === comId;
           });
 
@@ -7883,8 +8128,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
           comment.replies.splice(replyIndex, 1);
           comment.replyCount--;
-          _this16.modalPostCommentCount--;
-          _this16.posts[_this16.modalPostIndex].commentCount--;
+          _this17.modalPostCommentCount--;
+          _this17.posts[_this17.modalPostIndex].commentCount--;
         })["catch"](function (error) {
           console.log(error);
         });
@@ -7981,7 +8226,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     window.removeEventListener('resize', this.changeCommentHeight);
   },
   mounted: function mounted() {
-    var _this17 = this;
+    var _this18 = this;
 
     // 認証ユーザー情報、全ジャンルを取得
     this.getInitInfo(this.$route.params.name); // 投稿の無限スクロール
@@ -7990,8 +8235,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       // スクロール位置が一番下ならtrue
       var bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight;
 
-      if (bottomOfWindow && !_this17.modalPostShow && !_this17.modalPostEditShow && !_this17.deletePostModalOpened && !_this17.modalImageShow) {
-        _this17.getPosts(_this17.$route.params.name);
+      if (bottomOfWindow && !_this18.modalPostShow && !_this18.modalPostEditShow && !_this18.deletePostModalOpened && !_this18.modalImageShow) {
+        _this18.getPosts(_this18.$route.params.name);
       }
     };
   },
@@ -8047,6 +8292,8 @@ function _nonIterableRest() { throw new TypeError("Invalid attempt to destructur
 function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
@@ -8790,7 +9037,13 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       if (!this.loadMorePosts) return;
       if (this.postsLoading) return;
       this.postsLoading = true;
-      axios.get('/api/post/hot/get?loaded_posts_count=' + this.posts.length).then(function (res) {
+      var postIds = this.posts.map(function (obj) {
+        return obj.id;
+      });
+      var postIdsString = postIds.join('-'); // console.log(postIdsString);
+      // axios.get('/api/post/hot/get?loaded_posts_count=' + this.posts.length + '&loaded_post_ids=' + postIdsString)
+
+      axios.get('/api/post/hot/get?loaded_post_ids=' + postIdsString).then(function (res) {
         var _this2$posts;
 
         // console.log(res.data);
@@ -8800,8 +9053,13 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
           _this2.loadMorePosts = false;
         }
 
-        _this2.postsLoading = false; // console.log(this.posts.length);
-        // console.log(this.loadMorePosts);
+        _this2.postsLoading = false;
+
+        _this2.$nextTick(function () {
+          var bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight;
+          if (bottomOfWindow && _this2.posts.length < res.data.postsTotal) _this2.getPosts();
+        }); // console.log(this.posts.length);
+
       })["catch"](function (error) {
         console.log(error);
         _this2.postsLoading = false;
@@ -8811,10 +9069,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     resetPaginate: function resetPaginate() {
       this.posts = [];
       this.postsLoading = false;
-      this.loadMorePosts = true; // this.itemLoading = false;
-      // this.loadMore = true;
-      // this.page = 1;
-      // this.isLastPage = false;
+      this.loadMorePosts = true;
     },
     // 投稿編集のテキストエリアの高さをフレキシブルに
     changeEditHeight: function changeEditHeight() {
@@ -8875,6 +9130,11 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         _this5.deletePostModalClose();
 
         _this5.deleteProssesing = false;
+
+        _this5.$nextTick(function () {
+          var bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight;
+          if (bottomOfWindow) _this5.getPosts();
+        });
       })["catch"](function (error) {
         console.log(error);
         _this5.deleteProssesing = false;
@@ -8945,35 +9205,76 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     // 投稿編集の画像アップロード
     uploadEditFile: function uploadEditFile() {
-      var files = this.$refs.editpreview.files; // 画像ファイルじゃないものを除外
+      var _this7 = this;
 
-      for (var i = 0; i < files.length; i++) {
-        if (!files[i].type.match('image.*')) {
-          files.splice(i, 1);
-        }
-      } // ４枚以上アップロードしようとするとアラート
-
+      var files = this.$refs.editpreview.files;
 
       if (this.editUrls.length + files.length > 4) {
+        // 枚数制限バリデーション
         window.alert('画像は４枚までです！');
-      } else {
-        for (var _i = 0; _i < files.length; _i++) {
-          var addFile = new Object();
-          addFile.id = this.nextNewImageId; // 新しく追加する画像にはマイナス値のidを付与（既存の画像と区別するため）
+        return;
+      }
 
-          addFile.file = files[_i];
-          this.newImages.push(addFile); // プレビュー用URLをプッシュ
+      var totalFileSize = 0;
 
-          var addUrl = new Object();
-          addUrl.id = this.nextNewImageId;
-          addUrl.path = URL.createObjectURL(files[_i]);
-          this.editUrls.push(addUrl);
-          this.nextNewImageId--;
+      for (var i = 0; i < this.newImages.length; i++) {
+        totalFileSize += this.newImages[i].file.size;
+      }
+
+      var loadedImagesCount = 0;
+
+      var _loop = function _loop(_i) {
+        totalFileSize += files[_i].size;
+        console.log(totalFileSize); // コンソール
+
+        if (!files[_i].type.match('image.*') || totalFileSize > 1600000) {
+          // 合計ファイルサイズ、画像でないファイルのバリデーション
+          window.alert('送信するファイルサイズの合計が1.6MBを超えているか、画像でないファイルをアップロードしようとしています！');
+          return {
+            v: void 0
+          };
         }
 
-        this.$refs.editpreview.value = ''; // console.log(this.editPost.deleteOldImagesId);
-        // console.log(this.newImages);
-        // console.log(this.editUrls);
+        var image = new Image();
+        image.src = URL.createObjectURL(files[_i]);
+        image.addEventListener('load', function () {
+          loadedImagesCount++;
+          console.log(image.naturalWidth);
+          console.log(image.naturalHeight);
+
+          if (image.naturalWidth > 2500 || image.naturalHeight > 2500) {
+            window.alert('画像は縦・横それぞれ2500px以下のものを選択してください！');
+            return;
+          }
+
+          if (loadedImagesCount === files.length) {
+            for (var _i2 = 0; _i2 < files.length; _i2++) {
+              var addFile = new Object();
+              addFile.id = _this7.nextNewImageId; // 新しく追加する画像にはマイナス値のidを付与（既存の画像と区別するため）
+
+              addFile.file = files[_i2];
+
+              _this7.newImages.push(addFile); // プレビュー用URLをプッシュ
+
+
+              var addUrl = new Object();
+              addUrl.id = _this7.nextNewImageId;
+              addUrl.path = URL.createObjectURL(files[_i2]);
+
+              _this7.editUrls.push(addUrl);
+
+              _this7.nextNewImageId--;
+            }
+
+            _this7.$refs.editpreview.value = '';
+          }
+        });
+      };
+
+      for (var _i = 0; _i < files.length; _i++) {
+        var _ret = _loop(_i);
+
+        if (_typeof(_ret) === "object") return _ret.v;
       }
     },
     // 投稿編集の画像プレビューの削除
@@ -8997,7 +9298,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     // 編集した投稿を送信
     editSubmit: function editSubmit() {
-      var _this7 = this;
+      var _this8 = this;
 
       if (this.editProcessing) return;
       this.editProcessing = true; // 文字数判定
@@ -9031,14 +9332,19 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         }
       });
       axios.post('/api/post/edit', data).then(function (res) {
-        _this7.posts.splice(_this7.editPostIndex, 1, res.data.post);
+        _this8.posts.splice(_this8.editPostIndex, 1, res.data.post);
 
-        _this7.editPostModalClose();
+        _this8.editPostModalClose();
 
-        _this7.editProcessing = false;
+        _this8.editProcessing = false;
+
+        _this8.$nextTick(function () {
+          var bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight;
+          if (bottomOfWindow) _this8.getPosts();
+        });
       })["catch"](function (error) {
-        _this7.editErrors = error.response.data.errors;
-        _this7.editProcessing = false;
+        _this8.editErrors = error.response.data.errors;
+        _this8.editProcessing = false;
       });
     },
     // どんまい機能の処理
@@ -9136,25 +9442,25 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     // コメントの取得
     getComments: function getComments() {
-      var _this8 = this;
+      var _this9 = this;
 
       if (!this.loadCommentsMore) return;
       if (this.commentsLoading) return;
       this.commentsLoading = true;
       axios.get('/api/comments/get/' + this.modalPostId + '?loaded_comments_count=' + this.modalPostComments.length).then(function (res) {
-        var _this8$modalPostComme;
+        var _this9$modalPostComme;
 
         // console.log(res.data);
-        (_this8$modalPostComme = _this8.modalPostComments).push.apply(_this8$modalPostComme, _toConsumableArray(res.data.comments));
+        (_this9$modalPostComme = _this9.modalPostComments).push.apply(_this9$modalPostComme, _toConsumableArray(res.data.comments));
 
-        if (_this8.modalPostComments.length === res.data.commentsTotal) {
-          _this8.loadCommentsMore = false;
+        if (_this9.modalPostComments.length === res.data.commentsTotal) {
+          _this9.loadCommentsMore = false;
         }
 
-        _this8.commentsLoading = false; // console.log(this.modalPostComments.length);
+        _this9.commentsLoading = false; // console.log(this.modalPostComments.length);
       })["catch"](function (error) {
         console.log(error);
-        _this8.commentsLoading = false;
+        _this9.commentsLoading = false;
       });
     },
     // コメントの無限スクロールページネーション
@@ -9168,31 +9474,31 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     // どんまいしたユーザーの取得
     getDonmaiUsers: function getDonmaiUsers() {
-      var _this9 = this;
+      var _this10 = this;
 
       if (this.isLastDonmaiPage) return;
       if (this.donmaiLoading) return;
       this.donmaiLoading = true;
       axios.get('/api/donmai/users/' + this.modalPostId + '?page=' + this.donmaiPage).then(function (res) {
-        var _this9$modalDonmaiUse;
+        var _this10$modalDonmaiUs;
 
         // console.log(res.data);
         var users = res.data.data.map(function (obj) {
           return obj.user;
         });
 
-        (_this9$modalDonmaiUse = _this9.modalDonmaiUsers).push.apply(_this9$modalDonmaiUse, _toConsumableArray(users));
+        (_this10$modalDonmaiUs = _this10.modalDonmaiUsers).push.apply(_this10$modalDonmaiUs, _toConsumableArray(users));
 
-        _this9.donmaiLoading = false;
+        _this10.donmaiLoading = false;
 
-        if (_this9.donmaiPage === res.data.last_page) {
-          _this9.isLastDonmaiPage = true;
+        if (_this10.donmaiPage === res.data.last_page) {
+          _this10.isLastDonmaiPage = true;
         }
 
-        _this9.donmaiPage++;
+        _this10.donmaiPage++;
       })["catch"](function (error) {
         console.log(error);
-        _this9.donmaiLoading = false;
+        _this10.donmaiLoading = false;
       });
     },
     // どんまいしたユーザー一覧のモーダルを開く
@@ -9262,26 +9568,26 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     // どんまいしたユーザーのフォローとアンフォロー
     donmaiFollow: function donmaiFollow(i) {
-      var _this10 = this;
+      var _this11 = this;
 
       axios.post('/api/follow', this.modalDonmaiUsers[i]).then(function () {
-        _this10.modalDonmaiUsers[i].followed = true;
+        _this11.modalDonmaiUsers[i].followed = true;
       })["catch"](function () {
         return;
       });
     },
     donmaiUnFollow: function donmaiUnFollow(i) {
-      var _this11 = this;
+      var _this12 = this;
 
       axios.post('/api/unfollow', this.modalDonmaiUsers[i]).then(function () {
-        _this11.modalDonmaiUsers[i].followed = false;
+        _this12.modalDonmaiUsers[i].followed = false;
       })["catch"](function () {
         return;
       });
     },
     // コメント投稿
     commentPost: function commentPost() {
-      var _this12 = this;
+      var _this13 = this;
 
       if (this.commentProcessing) return;
       this.commentProcessing = true; // 文字数判定
@@ -9302,30 +9608,30 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       data.append('body', this.commentInput);
       axios.post('/api/comment', data).then(function (res) {
         // console.log(res.data);
-        _this12.modalPostComments.unshift(res.data);
+        _this13.modalPostComments.unshift(res.data);
 
-        _this12.commentInput = '';
-        _this12.posts[_this12.modalPostIndex].commentCount++;
-        _this12.modalPostCommentCount++;
-        _this12.commentErrors = [];
-        _this12.commentProcessing = false;
+        _this13.commentInput = '';
+        _this13.posts[_this13.modalPostIndex].commentCount++;
+        _this13.modalPostCommentCount++;
+        _this13.commentErrors = [];
+        _this13.commentProcessing = false;
       })["catch"](function (error) {
         // console.log(error.response.data.errors);
         // this.modalPostComments[i].replyErrors = [];
-        _this12.commentErrors = error.response.data.errors;
-        _this12.commentProcessing = false;
+        _this13.commentErrors = error.response.data.errors;
+        _this13.commentProcessing = false;
       });
     },
     // コメント削除
     deleteComment: function deleteComment(i) {
-      var _this13 = this;
+      var _this14 = this;
 
       if (window.confirm('削除しますか？')) {
         axios.post('/api/comment/delete/' + this.modalPostComments[i].id).then(function () {
-          _this13.modalPostComments.splice(i, 1);
+          _this14.modalPostComments.splice(i, 1);
 
-          _this13.modalPostCommentCount--;
-          _this13.posts[_this13.modalPostIndex].commentCount--;
+          _this14.modalPostCommentCount--;
+          _this14.posts[_this14.modalPostIndex].commentCount--;
         })["catch"](function (error) {
           console.log(error);
         });
@@ -9333,25 +9639,25 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     // コメントへの返信の取得
     getReplies: function getReplies(i) {
-      var _this14 = this;
+      var _this15 = this;
 
       if (!this.modalPostComments[i].loadRepliesMore) return;
       if (this.modalPostComments[i].repliesLoading) return;
       this.modalPostComments[i].repliesLoading = true;
       axios.get('/api/replies/get/' + this.modalPostComments[i].id + '?loaded_replies_count=' + this.modalPostComments[i].replies.length).then(function (res) {
-        var _this14$modalPostComm;
+        var _this15$modalPostComm;
 
         // console.log(res.data);
-        (_this14$modalPostComm = _this14.modalPostComments[i].replies).push.apply(_this14$modalPostComm, _toConsumableArray(res.data.replies));
+        (_this15$modalPostComm = _this15.modalPostComments[i].replies).push.apply(_this15$modalPostComm, _toConsumableArray(res.data.replies));
 
-        if (_this14.modalPostComments[i].replies.length === res.data.repliesTotal) {
-          _this14.modalPostComments[i].loadRepliesMore = false;
+        if (_this15.modalPostComments[i].replies.length === res.data.repliesTotal) {
+          _this15.modalPostComments[i].loadRepliesMore = false;
         }
 
-        _this14.modalPostComments[i].repliesLoading = false; // console.log(this.modalPostComments[i].replies.length);
+        _this15.modalPostComments[i].repliesLoading = false; // console.log(this.modalPostComments[i].replies.length);
       })["catch"](function (error) {
         console.log(error);
-        _this14.modalPostComments[i].repliesLoading = false;
+        _this15.modalPostComments[i].repliesLoading = false;
       });
     },
     //コメントへの返信の表示と非表示
@@ -9383,7 +9689,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     // コメントへの返信の投稿
     reply: function reply(i) {
-      var _this15 = this;
+      var _this16 = this;
 
       if (this.replyProcessing) return;
       this.replyProcessing = true; // 文字数判定
@@ -9404,29 +9710,29 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       data.append('commentId', this.modalPostComments[i].id);
       axios.post('/api/comment/reply', data).then(function (res) {
         // console.log(res.data);
-        if (!_this15.modalPostComments[i].loadRepliesMore) {
-          _this15.modalPostComments[i].replies.push(res.data);
+        if (!_this16.modalPostComments[i].loadRepliesMore) {
+          _this16.modalPostComments[i].replies.push(res.data);
         }
 
-        _this15.modalPostComments[i].replyCount++;
-        _this15.modalPostComments[i].replyInput = '';
-        _this15.modalPostComments[i].replyErrors = [];
-        _this15.posts[_this15.modalPostIndex].commentCount++;
-        _this15.modalPostCommentCount++;
-        _this15.modalPostComments[i].replyFormOpened = false;
-        _this15.replyProcessing = false;
+        _this16.modalPostComments[i].replyCount++;
+        _this16.modalPostComments[i].replyInput = '';
+        _this16.modalPostComments[i].replyErrors = [];
+        _this16.posts[_this16.modalPostIndex].commentCount++;
+        _this16.modalPostCommentCount++;
+        _this16.modalPostComments[i].replyFormOpened = false;
+        _this16.replyProcessing = false;
       })["catch"](function (error) {
-        _this15.modalPostComments[i].replyErrors = error.response.data.errors;
-        _this15.replyProcessing = false;
+        _this16.modalPostComments[i].replyErrors = error.response.data.errors;
+        _this16.replyProcessing = false;
       });
     },
     // コメントへの返信の削除
     deleteReply: function deleteReply(comId, repId) {
-      var _this16 = this;
+      var _this17 = this;
 
       if (window.confirm('削除しますか？')) {
         axios.post('/api/reply/delete/' + repId).then(function () {
-          var comment = _this16.modalPostComments.find(function (v) {
+          var comment = _this17.modalPostComments.find(function (v) {
             return v.id === comId;
           });
 
@@ -9437,8 +9743,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
           comment.replies.splice(replyIndex, 1);
           comment.replyCount--;
-          _this16.modalPostCommentCount--;
-          _this16.posts[_this16.modalPostIndex].commentCount--;
+          _this17.modalPostCommentCount--;
+          _this17.posts[_this17.modalPostIndex].commentCount--;
         })["catch"](function (error) {
           console.log(error);
         });
@@ -9487,7 +9793,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     }
   },
   mounted: function mounted() {
-    var _this17 = this;
+    var _this18 = this;
 
     // 認証ユーザー情報、全ジャンルを取得
     this.getInitInfo(); // 投稿の無限スクロール
@@ -9496,8 +9802,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       // スクロール位置が一番下ならtrue
       var bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight;
 
-      if (bottomOfWindow && !_this17.modalPostShow && !_this17.modalPostEditShow && !_this17.deletePostModalOpened && !_this17.modalImageShow) {
-        _this17.getPosts(_this17.$route.params.name);
+      if (bottomOfWindow && !_this18.modalPostShow && !_this18.modalPostEditShow && !_this18.deletePostModalOpened && !_this18.modalImageShow) {
+        _this18.getPosts(_this18.$route.params.name);
       }
     };
   },
@@ -10199,6 +10505,8 @@ function _nonIterableRest() { throw new TypeError("Invalid attempt to destructur
 function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
@@ -10944,7 +11252,13 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
           _this2.loadMorePosts = false;
         }
 
-        _this2.postsLoading = false; // console.log(this.posts.length);
+        _this2.postsLoading = false;
+
+        _this2.$nextTick(function () {
+          var bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight;
+          if (bottomOfWindow && _this2.posts.length < res.data.postsTotal) _this2.getPosts(word);
+        }); // console.log(this.posts.length);
+
       })["catch"](function (error) {
         console.log(error);
         _this2.postsLoading = false;
@@ -11015,6 +11329,11 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         _this5.deletePostModalClose();
 
         _this5.deleteProssesing = false;
+
+        _this5.$nextTick(function () {
+          var bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight;
+          if (bottomOfWindow) _this5.getPosts();
+        });
       })["catch"](function (error) {
         console.log(error);
         _this5.deleteProssesing = false;
@@ -11085,35 +11404,76 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     // 投稿編集の画像アップロード
     uploadEditFile: function uploadEditFile() {
-      var files = this.$refs.editpreview.files; // 画像ファイルじゃないものを除外
+      var _this7 = this;
 
-      for (var i = 0; i < files.length; i++) {
-        if (!files[i].type.match('image.*')) {
-          files.splice(i, 1);
-        }
-      } // ４枚以上アップロードしようとするとアラート
-
+      var files = this.$refs.editpreview.files;
 
       if (this.editUrls.length + files.length > 4) {
+        // 枚数制限バリデーション
         window.alert('画像は４枚までです！');
-      } else {
-        for (var _i = 0; _i < files.length; _i++) {
-          var addFile = new Object();
-          addFile.id = this.nextNewImageId; // 新しく追加する画像にはマイナス値のidを付与（既存の画像と区別するため）
+        return;
+      }
 
-          addFile.file = files[_i];
-          this.newImages.push(addFile); // プレビュー用URLをプッシュ
+      var totalFileSize = 0;
 
-          var addUrl = new Object();
-          addUrl.id = this.nextNewImageId;
-          addUrl.path = URL.createObjectURL(files[_i]);
-          this.editUrls.push(addUrl);
-          this.nextNewImageId--;
+      for (var i = 0; i < this.newImages.length; i++) {
+        totalFileSize += this.newImages[i].file.size;
+      }
+
+      var loadedImagesCount = 0;
+
+      var _loop = function _loop(_i) {
+        totalFileSize += files[_i].size;
+        console.log(totalFileSize); // コンソール
+
+        if (!files[_i].type.match('image.*') || totalFileSize > 1600000) {
+          // 合計ファイルサイズ、画像でないファイルのバリデーション
+          window.alert('送信するファイルサイズの合計が1.6MBを超えているか、画像でないファイルをアップロードしようとしています！');
+          return {
+            v: void 0
+          };
         }
 
-        this.$refs.editpreview.value = ''; // console.log(this.editPost.deleteOldImagesId);
-        // console.log(this.newImages);
-        // console.log(this.editUrls);
+        var image = new Image();
+        image.src = URL.createObjectURL(files[_i]);
+        image.addEventListener('load', function () {
+          loadedImagesCount++;
+          console.log(image.naturalWidth);
+          console.log(image.naturalHeight);
+
+          if (image.naturalWidth > 2500 || image.naturalHeight > 2500) {
+            window.alert('画像は縦・横それぞれ2500px以下のものを選択してください！');
+            return;
+          }
+
+          if (loadedImagesCount === files.length) {
+            for (var _i2 = 0; _i2 < files.length; _i2++) {
+              var addFile = new Object();
+              addFile.id = _this7.nextNewImageId; // 新しく追加する画像にはマイナス値のidを付与（既存の画像と区別するため）
+
+              addFile.file = files[_i2];
+
+              _this7.newImages.push(addFile); // プレビュー用URLをプッシュ
+
+
+              var addUrl = new Object();
+              addUrl.id = _this7.nextNewImageId;
+              addUrl.path = URL.createObjectURL(files[_i2]);
+
+              _this7.editUrls.push(addUrl);
+
+              _this7.nextNewImageId--;
+            }
+
+            _this7.$refs.editpreview.value = '';
+          }
+        });
+      };
+
+      for (var _i = 0; _i < files.length; _i++) {
+        var _ret = _loop(_i);
+
+        if (_typeof(_ret) === "object") return _ret.v;
       }
     },
     // 投稿編集の画像プレビューの削除
@@ -11137,7 +11497,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     // 編集した投稿を送信
     editSubmit: function editSubmit() {
-      var _this7 = this;
+      var _this8 = this;
 
       if (this.editProcessing) return;
       this.editProcessing = true; // 文字数判定
@@ -11172,18 +11532,23 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       });
       axios.post('/api/post/edit', data).then(function (res) {
         // 検索ワードのタグを削除していたらこのページの投稿一覧から削除
-        if (_this7.editPost.tags.includes(_this7.$route.params.word)) {
-          _this7.posts.splice(_this7.editPostIndex, 1, res.data.post);
+        if (_this8.editPost.tags.includes(_this8.$route.params.word)) {
+          _this8.posts.splice(_this8.editPostIndex, 1, res.data.post);
         } else {
-          _this7.posts.splice(_this7.editPostIndex, 1);
+          _this8.posts.splice(_this8.editPostIndex, 1);
         }
 
-        _this7.editPostModalClose();
+        _this8.editPostModalClose();
 
-        _this7.editProcessing = false;
+        _this8.editProcessing = false;
+
+        _this8.$nextTick(function () {
+          var bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight;
+          if (bottomOfWindow) _this8.getPosts();
+        });
       })["catch"](function (error) {
-        _this7.editErrors = error.response.data.errors;
-        _this7.editProcessing = false;
+        _this8.editErrors = error.response.data.errors;
+        _this8.editProcessing = false;
       });
     },
     // どんまい機能の処理
@@ -11280,25 +11645,25 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     // コメントの取得
     getComments: function getComments() {
-      var _this8 = this;
+      var _this9 = this;
 
       if (!this.loadCommentsMore) return;
       if (this.commentsLoading) return;
       this.commentsLoading = true;
       axios.get('/api/comments/get/' + this.modalPostId + '?loaded_comments_count=' + this.modalPostComments.length).then(function (res) {
-        var _this8$modalPostComme;
+        var _this9$modalPostComme;
 
         // console.log(res.data);
-        (_this8$modalPostComme = _this8.modalPostComments).push.apply(_this8$modalPostComme, _toConsumableArray(res.data.comments));
+        (_this9$modalPostComme = _this9.modalPostComments).push.apply(_this9$modalPostComme, _toConsumableArray(res.data.comments));
 
-        if (_this8.modalPostComments.length === res.data.commentsTotal) {
-          _this8.loadCommentsMore = false;
+        if (_this9.modalPostComments.length === res.data.commentsTotal) {
+          _this9.loadCommentsMore = false;
         }
 
-        _this8.commentsLoading = false; // console.log(this.modalPostComments.length);
+        _this9.commentsLoading = false; // console.log(this.modalPostComments.length);
       })["catch"](function (error) {
         console.log(error);
-        _this8.commentsLoading = false;
+        _this9.commentsLoading = false;
       });
     },
     // コメントの無限スクロールページネーション
@@ -11312,31 +11677,31 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     // どんまいしたユーザーの取得
     getDonmaiUsers: function getDonmaiUsers() {
-      var _this9 = this;
+      var _this10 = this;
 
       if (this.isLastDonmaiPage) return;
       if (this.donmaiLoading) return;
       this.donmaiLoading = true;
       axios.get('/api/donmai/users/' + this.modalPostId + '?page=' + this.donmaiPage).then(function (res) {
-        var _this9$modalDonmaiUse;
+        var _this10$modalDonmaiUs;
 
         // console.log(res.data);
         var users = res.data.data.map(function (obj) {
           return obj.user;
         });
 
-        (_this9$modalDonmaiUse = _this9.modalDonmaiUsers).push.apply(_this9$modalDonmaiUse, _toConsumableArray(users));
+        (_this10$modalDonmaiUs = _this10.modalDonmaiUsers).push.apply(_this10$modalDonmaiUs, _toConsumableArray(users));
 
-        _this9.donmaiLoading = false;
+        _this10.donmaiLoading = false;
 
-        if (_this9.donmaiPage === res.data.last_page) {
-          _this9.isLastDonmaiPage = true;
+        if (_this10.donmaiPage === res.data.last_page) {
+          _this10.isLastDonmaiPage = true;
         }
 
-        _this9.donmaiPage++;
+        _this10.donmaiPage++;
       })["catch"](function (error) {
         console.log(error);
-        _this9.donmaiLoading = false;
+        _this10.donmaiLoading = false;
       });
     },
     // どんまいしたユーザー一覧のモーダルを開く
@@ -11406,26 +11771,26 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     // どんまいしたユーザーのフォローとアンフォロー
     donmaiFollow: function donmaiFollow(i) {
-      var _this10 = this;
+      var _this11 = this;
 
       axios.post('/api/follow', this.modalDonmaiUsers[i]).then(function () {
-        _this10.modalDonmaiUsers[i].followed = true;
+        _this11.modalDonmaiUsers[i].followed = true;
       })["catch"](function () {
         return;
       });
     },
     donmaiUnFollow: function donmaiUnFollow(i) {
-      var _this11 = this;
+      var _this12 = this;
 
       axios.post('/api/unfollow', this.modalDonmaiUsers[i]).then(function () {
-        _this11.modalDonmaiUsers[i].followed = false;
+        _this12.modalDonmaiUsers[i].followed = false;
       })["catch"](function () {
         return;
       });
     },
     // コメント投稿
     commentPost: function commentPost() {
-      var _this12 = this;
+      var _this13 = this;
 
       if (this.commentProcessing) return;
       this.commentProcessing = true; // 文字数判定
@@ -11446,30 +11811,30 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       data.append('body', this.commentInput);
       axios.post('/api/comment', data).then(function (res) {
         // console.log(res.data);
-        _this12.modalPostComments.unshift(res.data);
+        _this13.modalPostComments.unshift(res.data);
 
-        _this12.commentInput = '';
-        _this12.posts[_this12.modalPostIndex].commentCount++;
-        _this12.modalPostCommentCount++;
-        _this12.commentErrors = [];
-        _this12.commentProcessing = false;
+        _this13.commentInput = '';
+        _this13.posts[_this13.modalPostIndex].commentCount++;
+        _this13.modalPostCommentCount++;
+        _this13.commentErrors = [];
+        _this13.commentProcessing = false;
       })["catch"](function (error) {
         // console.log(error.response.data.errors);
         // this.modalPostComments[i].replyErrors = [];
-        _this12.commentErrors = error.response.data.errors;
-        _this12.commentProcessing = false;
+        _this13.commentErrors = error.response.data.errors;
+        _this13.commentProcessing = false;
       });
     },
     // コメント削除
     deleteComment: function deleteComment(i) {
-      var _this13 = this;
+      var _this14 = this;
 
       if (window.confirm('削除しますか？')) {
         axios.post('/api/comment/delete/' + this.modalPostComments[i].id).then(function () {
-          _this13.modalPostComments.splice(i, 1);
+          _this14.modalPostComments.splice(i, 1);
 
-          _this13.modalPostCommentCount--;
-          _this13.posts[_this13.modalPostIndex].commentCount--;
+          _this14.modalPostCommentCount--;
+          _this14.posts[_this14.modalPostIndex].commentCount--;
         })["catch"](function (error) {
           console.log(error);
         });
@@ -11477,25 +11842,25 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     // コメントへの返信の取得
     getReplies: function getReplies(i) {
-      var _this14 = this;
+      var _this15 = this;
 
       if (!this.modalPostComments[i].loadRepliesMore) return;
       if (this.modalPostComments[i].repliesLoading) return;
       this.modalPostComments[i].repliesLoading = true;
       axios.get('/api/replies/get/' + this.modalPostComments[i].id + '?loaded_replies_count=' + this.modalPostComments[i].replies.length).then(function (res) {
-        var _this14$modalPostComm;
+        var _this15$modalPostComm;
 
         // console.log(res.data);
-        (_this14$modalPostComm = _this14.modalPostComments[i].replies).push.apply(_this14$modalPostComm, _toConsumableArray(res.data.replies));
+        (_this15$modalPostComm = _this15.modalPostComments[i].replies).push.apply(_this15$modalPostComm, _toConsumableArray(res.data.replies));
 
-        if (_this14.modalPostComments[i].replies.length === res.data.repliesTotal) {
-          _this14.modalPostComments[i].loadRepliesMore = false;
+        if (_this15.modalPostComments[i].replies.length === res.data.repliesTotal) {
+          _this15.modalPostComments[i].loadRepliesMore = false;
         }
 
-        _this14.modalPostComments[i].repliesLoading = false; // console.log(this.modalPostComments[i].replies.length);
+        _this15.modalPostComments[i].repliesLoading = false; // console.log(this.modalPostComments[i].replies.length);
       })["catch"](function (error) {
         console.log(error);
-        _this14.modalPostComments[i].repliesLoading = false;
+        _this15.modalPostComments[i].repliesLoading = false;
       });
     },
     //コメントへの返信の表示と非表示
@@ -11527,7 +11892,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     // コメントへの返信の投稿
     reply: function reply(i) {
-      var _this15 = this;
+      var _this16 = this;
 
       if (this.replyProcessing) return;
       this.replyProcessing = true; // 文字数判定
@@ -11548,29 +11913,29 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       data.append('commentId', this.modalPostComments[i].id);
       axios.post('/api/comment/reply', data).then(function (res) {
         // console.log(res.data);
-        if (!_this15.modalPostComments[i].isRepliesLastPage) {
-          _this15.modalPostComments[i].replies.push(res.data);
+        if (!_this16.modalPostComments[i].isRepliesLastPage) {
+          _this16.modalPostComments[i].replies.push(res.data);
         }
 
-        _this15.modalPostComments[i].replyCount++;
-        _this15.modalPostComments[i].replyInput = '';
-        _this15.modalPostComments[i].replyErrors = [];
-        _this15.posts[_this15.modalPostIndex].commentCount++;
-        _this15.modalPostCommentCount++;
-        _this15.modalPostComments[i].replyFormOpened = false;
-        _this15.replyProcessing = false;
+        _this16.modalPostComments[i].replyCount++;
+        _this16.modalPostComments[i].replyInput = '';
+        _this16.modalPostComments[i].replyErrors = [];
+        _this16.posts[_this16.modalPostIndex].commentCount++;
+        _this16.modalPostCommentCount++;
+        _this16.modalPostComments[i].replyFormOpened = false;
+        _this16.replyProcessing = false;
       })["catch"](function (error) {
-        _this15.modalPostComments[i].replyErrors = error.response.data.errors;
-        _this15.replyProcessing = false;
+        _this16.modalPostComments[i].replyErrors = error.response.data.errors;
+        _this16.replyProcessing = false;
       });
     },
     // コメントへの返信の削除
     deleteReply: function deleteReply(comId, repId) {
-      var _this16 = this;
+      var _this17 = this;
 
       if (window.confirm('削除しますか？')) {
         axios.post('/api/reply/delete/' + repId).then(function () {
-          var comment = _this16.modalPostComments.find(function (v) {
+          var comment = _this17.modalPostComments.find(function (v) {
             return v.id === comId;
           });
 
@@ -11581,8 +11946,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
           comment.replies.splice(replyIndex, 1);
           comment.replyCount--;
-          _this16.modalPostCommentCount--;
-          _this16.posts[_this16.modalPostIndex].commentCount--;
+          _this17.modalPostCommentCount--;
+          _this17.posts[_this17.modalPostIndex].commentCount--;
         })["catch"](function (error) {
           console.log(error);
         });
@@ -11641,7 +12006,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     }
   },
   mounted: function mounted() {
-    var _this17 = this;
+    var _this18 = this;
 
     // 認証ユーザー情報、全ジャンルを取得
     this.getInitInfo(this.$route.params.word); // 投稿の無限スクロール
@@ -11650,8 +12015,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       // スクロール位置が一番下ならtrue
       var bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight;
 
-      if (bottomOfWindow && !_this17.modalPostShow && !_this17.modalPostEditShow && !_this17.deletePostModalOpened && !_this17.modalImageShow) {
-        _this17.getPosts(_this17.$route.params.word);
+      if (bottomOfWindow && !_this18.modalPostShow && !_this18.modalPostEditShow && !_this18.deletePostModalOpened && !_this18.modalImageShow) {
+        _this18.getPosts(_this18.$route.params.word);
       }
     };
   },
@@ -11757,6 +12122,8 @@ function _nonIterableRest() { throw new TypeError("Invalid attempt to destructur
 function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
@@ -12492,7 +12859,12 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       if (!this.loadMorePosts) return;
       if (this.postsLoading) return;
       this.postsLoading = true;
-      axios.get('/api/post/search/popular/' + word + '?loaded_posts_count=' + this.posts.length).then(function (res) {
+      var postIds = this.posts.map(function (obj) {
+        return obj.id;
+      });
+      var postIdsString = postIds.join('-'); // axios.get('/api/post/search/popular/' + word + '?loaded_posts_count=' + this.posts.length)
+
+      axios.get('/api/post/search/popular/' + word + '?loaded_post_ids=' + postIdsString).then(function (res) {
         var _this2$posts;
 
         // console.log(res.data);
@@ -12502,7 +12874,13 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
           _this2.loadMorePosts = false;
         }
 
-        _this2.postsLoading = false; // console.log(this.posts.length);
+        _this2.postsLoading = false;
+
+        _this2.$nextTick(function () {
+          var bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight;
+          if (bottomOfWindow && _this2.posts.length < res.data.postsTotal) _this2.getPosts(word);
+        }); // console.log(this.posts.length);
+
       })["catch"](function (error) {
         console.log(error);
         _this2.postsLoading = false;
@@ -12573,6 +12951,11 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         _this5.deletePostModalClose();
 
         _this5.deleteProssesing = false;
+
+        _this5.$nextTick(function () {
+          var bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight;
+          if (bottomOfWindow) _this5.getPosts();
+        });
       })["catch"](function (error) {
         console.log(error);
         _this5.deleteProssesing = false;
@@ -12643,35 +13026,76 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     // 投稿編集の画像アップロード
     uploadEditFile: function uploadEditFile() {
-      var files = this.$refs.editpreview.files; // 画像ファイルじゃないものを除外
+      var _this7 = this;
 
-      for (var i = 0; i < files.length; i++) {
-        if (!files[i].type.match('image.*')) {
-          files.splice(i, 1);
-        }
-      } // ４枚以上アップロードしようとするとアラート
-
+      var files = this.$refs.editpreview.files;
 
       if (this.editUrls.length + files.length > 4) {
+        // 枚数制限バリデーション
         window.alert('画像は４枚までです！');
-      } else {
-        for (var _i = 0; _i < files.length; _i++) {
-          var addFile = new Object();
-          addFile.id = this.nextNewImageId; // 新しく追加する画像にはマイナス値のidを付与（既存の画像と区別するため）
+        return;
+      }
 
-          addFile.file = files[_i];
-          this.newImages.push(addFile); // プレビュー用URLをプッシュ
+      var totalFileSize = 0;
 
-          var addUrl = new Object();
-          addUrl.id = this.nextNewImageId;
-          addUrl.path = URL.createObjectURL(files[_i]);
-          this.editUrls.push(addUrl);
-          this.nextNewImageId--;
+      for (var i = 0; i < this.newImages.length; i++) {
+        totalFileSize += this.newImages[i].file.size;
+      }
+
+      var loadedImagesCount = 0;
+
+      var _loop = function _loop(_i) {
+        totalFileSize += files[_i].size;
+        console.log(totalFileSize); // コンソール
+
+        if (!files[_i].type.match('image.*') || totalFileSize > 1600000) {
+          // 合計ファイルサイズ、画像でないファイルのバリデーション
+          window.alert('送信するファイルサイズの合計が1.6MBを超えているか、画像でないファイルをアップロードしようとしています！');
+          return {
+            v: void 0
+          };
         }
 
-        this.$refs.editpreview.value = ''; // console.log(this.editPost.deleteOldImagesId);
-        // console.log(this.newImages);
-        // console.log(this.editUrls);
+        var image = new Image();
+        image.src = URL.createObjectURL(files[_i]);
+        image.addEventListener('load', function () {
+          loadedImagesCount++;
+          console.log(image.naturalWidth);
+          console.log(image.naturalHeight);
+
+          if (image.naturalWidth > 2500 || image.naturalHeight > 2500) {
+            window.alert('画像は縦・横それぞれ2500px以下のものを選択してください！');
+            return;
+          }
+
+          if (loadedImagesCount === files.length) {
+            for (var _i2 = 0; _i2 < files.length; _i2++) {
+              var addFile = new Object();
+              addFile.id = _this7.nextNewImageId; // 新しく追加する画像にはマイナス値のidを付与（既存の画像と区別するため）
+
+              addFile.file = files[_i2];
+
+              _this7.newImages.push(addFile); // プレビュー用URLをプッシュ
+
+
+              var addUrl = new Object();
+              addUrl.id = _this7.nextNewImageId;
+              addUrl.path = URL.createObjectURL(files[_i2]);
+
+              _this7.editUrls.push(addUrl);
+
+              _this7.nextNewImageId--;
+            }
+
+            _this7.$refs.editpreview.value = '';
+          }
+        });
+      };
+
+      for (var _i = 0; _i < files.length; _i++) {
+        var _ret = _loop(_i);
+
+        if (_typeof(_ret) === "object") return _ret.v;
       }
     },
     // 投稿編集の画像プレビューの削除
@@ -12695,7 +13119,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     // 編集した投稿を送信
     editSubmit: function editSubmit() {
-      var _this7 = this;
+      var _this8 = this;
 
       if (this.editProcessing) return;
       this.editProcessing = true; // 文字数判定
@@ -12730,18 +13154,23 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       });
       axios.post('/api/post/edit', data).then(function (res) {
         // 検索ワードのタグを削除していたらこのページの投稿一覧から削除
-        if (_this7.editPost.tags.includes(_this7.$route.params.word)) {
-          _this7.posts.splice(_this7.editPostIndex, 1, res.data.post);
+        if (_this8.editPost.tags.includes(_this8.$route.params.word)) {
+          _this8.posts.splice(_this8.editPostIndex, 1, res.data.post);
         } else {
-          _this7.posts.splice(_this7.editPostIndex, 1);
+          _this8.posts.splice(_this8.editPostIndex, 1);
         }
 
-        _this7.editPostModalClose();
+        _this8.editPostModalClose();
 
-        _this7.editProcessing = false;
+        _this8.editProcessing = false;
+
+        _this8.$nextTick(function () {
+          var bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight;
+          if (bottomOfWindow) _this8.getPosts();
+        });
       })["catch"](function (error) {
-        _this7.editErrors = error.response.data.errors;
-        _this7.editProcessing = false;
+        _this8.editErrors = error.response.data.errors;
+        _this8.editProcessing = false;
       });
     },
     // どんまい機能の処理
@@ -12838,25 +13267,25 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     // コメントの取得
     getComments: function getComments() {
-      var _this8 = this;
+      var _this9 = this;
 
       if (!this.loadCommentsMore) return;
       if (this.commentsLoading) return;
       this.commentsLoading = true;
       axios.get('/api/comments/get/' + this.modalPostId + '?loaded_comments_count=' + this.modalPostComments.length).then(function (res) {
-        var _this8$modalPostComme;
+        var _this9$modalPostComme;
 
         // console.log(res.data);
-        (_this8$modalPostComme = _this8.modalPostComments).push.apply(_this8$modalPostComme, _toConsumableArray(res.data.comments));
+        (_this9$modalPostComme = _this9.modalPostComments).push.apply(_this9$modalPostComme, _toConsumableArray(res.data.comments));
 
-        if (_this8.modalPostComments.length === res.data.commentsTotal) {
-          _this8.loadCommentsMore = false;
+        if (_this9.modalPostComments.length === res.data.commentsTotal) {
+          _this9.loadCommentsMore = false;
         }
 
-        _this8.commentsLoading = false; // console.log(this.modalPostComments.length);
+        _this9.commentsLoading = false; // console.log(this.modalPostComments.length);
       })["catch"](function (error) {
         console.log(error);
-        _this8.commentsLoading = false;
+        _this9.commentsLoading = false;
       });
     },
     // コメントの無限スクロールページネーション
@@ -12870,31 +13299,31 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     // どんまいしたユーザーの取得
     getDonmaiUsers: function getDonmaiUsers() {
-      var _this9 = this;
+      var _this10 = this;
 
       if (this.isLastDonmaiPage) return;
       if (this.donmaiLoading) return;
       this.donmaiLoading = true;
       axios.get('/api/donmai/users/' + this.modalPostId + '?page=' + this.donmaiPage).then(function (res) {
-        var _this9$modalDonmaiUse;
+        var _this10$modalDonmaiUs;
 
         // console.log(res.data);
         var users = res.data.data.map(function (obj) {
           return obj.user;
         });
 
-        (_this9$modalDonmaiUse = _this9.modalDonmaiUsers).push.apply(_this9$modalDonmaiUse, _toConsumableArray(users));
+        (_this10$modalDonmaiUs = _this10.modalDonmaiUsers).push.apply(_this10$modalDonmaiUs, _toConsumableArray(users));
 
-        _this9.donmaiLoading = false;
+        _this10.donmaiLoading = false;
 
-        if (_this9.donmaiPage === res.data.last_page) {
-          _this9.isLastDonmaiPage = true;
+        if (_this10.donmaiPage === res.data.last_page) {
+          _this10.isLastDonmaiPage = true;
         }
 
-        _this9.donmaiPage++;
+        _this10.donmaiPage++;
       })["catch"](function (error) {
         console.log(error);
-        _this9.donmaiLoading = false;
+        _this10.donmaiLoading = false;
       });
     },
     // どんまいしたユーザー一覧のモーダルを開く
@@ -12964,26 +13393,26 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     // どんまいしたユーザーのフォローとアンフォロー
     donmaiFollow: function donmaiFollow(i) {
-      var _this10 = this;
+      var _this11 = this;
 
       axios.post('/api/follow', this.modalDonmaiUsers[i]).then(function () {
-        _this10.modalDonmaiUsers[i].followed = true;
+        _this11.modalDonmaiUsers[i].followed = true;
       })["catch"](function () {
         return;
       });
     },
     donmaiUnFollow: function donmaiUnFollow(i) {
-      var _this11 = this;
+      var _this12 = this;
 
       axios.post('/api/unfollow', this.modalDonmaiUsers[i]).then(function () {
-        _this11.modalDonmaiUsers[i].followed = false;
+        _this12.modalDonmaiUsers[i].followed = false;
       })["catch"](function () {
         return;
       });
     },
     // コメント投稿
     commentPost: function commentPost() {
-      var _this12 = this;
+      var _this13 = this;
 
       if (this.commentProcessing) return;
       this.commentProcessing = true; // 文字数判定
@@ -13004,30 +13433,30 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       data.append('body', this.commentInput);
       axios.post('/api/comment', data).then(function (res) {
         // console.log(res.data);
-        _this12.modalPostComments.unshift(res.data);
+        _this13.modalPostComments.unshift(res.data);
 
-        _this12.commentInput = '';
-        _this12.posts[_this12.modalPostIndex].commentCount++;
-        _this12.modalPostCommentCount++;
-        _this12.commentErrors = [];
-        _this12.commentProcessing = false;
+        _this13.commentInput = '';
+        _this13.posts[_this13.modalPostIndex].commentCount++;
+        _this13.modalPostCommentCount++;
+        _this13.commentErrors = [];
+        _this13.commentProcessing = false;
       })["catch"](function (error) {
         // console.log(error.response.data.errors);
         // this.modalPostComments[i].replyErrors = [];
-        _this12.commentErrors = error.response.data.errors;
-        _this12.commentProcessing = false;
+        _this13.commentErrors = error.response.data.errors;
+        _this13.commentProcessing = false;
       });
     },
     // コメント削除
     deleteComment: function deleteComment(i) {
-      var _this13 = this;
+      var _this14 = this;
 
       if (window.confirm('削除しますか？')) {
         axios.post('/api/comment/delete/' + this.modalPostComments[i].id).then(function () {
-          _this13.modalPostComments.splice(i, 1);
+          _this14.modalPostComments.splice(i, 1);
 
-          _this13.modalPostCommentCount--;
-          _this13.posts[_this13.modalPostIndex].commentCount--;
+          _this14.modalPostCommentCount--;
+          _this14.posts[_this14.modalPostIndex].commentCount--;
         })["catch"](function (error) {
           console.log(error);
         });
@@ -13035,25 +13464,25 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     // コメントへの返信の取得
     getReplies: function getReplies(i) {
-      var _this14 = this;
+      var _this15 = this;
 
       if (!this.modalPostComments[i].loadRepliesMore) return;
       if (this.modalPostComments[i].repliesLoading) return;
       this.modalPostComments[i].repliesLoading = true;
       axios.get('/api/replies/get/' + this.modalPostComments[i].id + '?loaded_replies_count=' + this.modalPostComments[i].replies.length).then(function (res) {
-        var _this14$modalPostComm;
+        var _this15$modalPostComm;
 
         // console.log(res.data);
-        (_this14$modalPostComm = _this14.modalPostComments[i].replies).push.apply(_this14$modalPostComm, _toConsumableArray(res.data.replies));
+        (_this15$modalPostComm = _this15.modalPostComments[i].replies).push.apply(_this15$modalPostComm, _toConsumableArray(res.data.replies));
 
-        if (_this14.modalPostComments[i].replies.length === res.data.repliesTotal) {
-          _this14.modalPostComments[i].loadRepliesMore = false;
+        if (_this15.modalPostComments[i].replies.length === res.data.repliesTotal) {
+          _this15.modalPostComments[i].loadRepliesMore = false;
         }
 
-        _this14.modalPostComments[i].repliesLoading = false; // console.log(this.modalPostComments[i].replies.length);
+        _this15.modalPostComments[i].repliesLoading = false; // console.log(this.modalPostComments[i].replies.length);
       })["catch"](function (error) {
         console.log(error);
-        _this14.modalPostComments[i].repliesLoading = false;
+        _this15.modalPostComments[i].repliesLoading = false;
       });
     },
     //コメントへの返信の表示と非表示
@@ -13085,7 +13514,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     // コメントへの返信の投稿
     reply: function reply(i) {
-      var _this15 = this;
+      var _this16 = this;
 
       if (this.replyProcessing) return;
       this.replyProcessing = true; // 文字数判定
@@ -13106,29 +13535,29 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       data.append('commentId', this.modalPostComments[i].id);
       axios.post('/api/comment/reply', data).then(function (res) {
         // console.log(res.data);
-        if (!_this15.modalPostComments[i].loadRepliesMore) {
-          _this15.modalPostComments[i].replies.push(res.data);
+        if (!_this16.modalPostComments[i].loadRepliesMore) {
+          _this16.modalPostComments[i].replies.push(res.data);
         }
 
-        _this15.modalPostComments[i].replyCount++;
-        _this15.modalPostComments[i].replyInput = '';
-        _this15.modalPostComments[i].replyErrors = [];
-        _this15.posts[_this15.modalPostIndex].commentCount++;
-        _this15.modalPostCommentCount++;
-        _this15.modalPostComments[i].replyFormOpened = false;
-        _this15.replyProcessing = false;
+        _this16.modalPostComments[i].replyCount++;
+        _this16.modalPostComments[i].replyInput = '';
+        _this16.modalPostComments[i].replyErrors = [];
+        _this16.posts[_this16.modalPostIndex].commentCount++;
+        _this16.modalPostCommentCount++;
+        _this16.modalPostComments[i].replyFormOpened = false;
+        _this16.replyProcessing = false;
       })["catch"](function (error) {
-        _this15.modalPostComments[i].replyErrors = error.response.data.errors;
-        _this15.replyProcessing = false; // console.log(this.modalPostComments[i].replyErrors)
+        _this16.modalPostComments[i].replyErrors = error.response.data.errors;
+        _this16.replyProcessing = false; // console.log(this.modalPostComments[i].replyErrors)
       });
     },
     // コメントへの返信の削除
     deleteReply: function deleteReply(comId, repId) {
-      var _this16 = this;
+      var _this17 = this;
 
       if (window.confirm('削除しますか？')) {
         axios.post('/api/reply/delete/' + repId).then(function () {
-          var comment = _this16.modalPostComments.find(function (v) {
+          var comment = _this17.modalPostComments.find(function (v) {
             return v.id === comId;
           });
 
@@ -13139,8 +13568,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
           comment.replies.splice(replyIndex, 1);
           comment.replyCount--;
-          _this16.modalPostCommentCount--;
-          _this16.posts[_this16.modalPostIndex].commentCount--;
+          _this17.modalPostCommentCount--;
+          _this17.posts[_this17.modalPostIndex].commentCount--;
         })["catch"](function (error) {
           console.log(error);
         });
@@ -13199,7 +13628,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     }
   },
   mounted: function mounted() {
-    var _this17 = this;
+    var _this18 = this;
 
     // 認証ユーザー情報、全ジャンルを取得
     this.getInitInfo(this.$route.params.word); // 投稿の無限スクロール
@@ -13208,8 +13637,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       // スクロール位置が一番下ならtrue
       var bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight;
 
-      if (bottomOfWindow && !_this17.modalPostShow && !_this17.modalPostEditShow && !_this17.deletePostModalOpened && !_this17.modalImageShow) {
-        _this17.getPosts(_this17.$route.params.word);
+      if (bottomOfWindow && !_this18.modalPostShow && !_this18.modalPostEditShow && !_this18.deletePostModalOpened && !_this18.modalImageShow) {
+        _this18.getPosts(_this18.$route.params.word);
       }
     };
   },
@@ -13413,7 +13842,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       axios.get('/api/search/users/' + word + '?page=' + this.page).then(function (res) {
         var _this2$users;
 
-        // console.log(res.data);
+        console.log(res.data);
+
         (_this2$users = _this2.users).push.apply(_this2$users, _toConsumableArray(res.data.data));
 
         _this2.itemLoading = false;
@@ -13423,6 +13853,11 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         }
 
         _this2.page++;
+
+        _this2.$nextTick(function () {
+          var bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight;
+          if (bottomOfWindow && _this2.users.length < res.data.total) _this2.getUsers(word);
+        });
       })["catch"](function (error) {
         console.log(error);
         _this2.itemLoading = false;
@@ -13587,6 +14022,8 @@ function _nonIterableRest() { throw new TypeError("Invalid attempt to destructur
 function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
@@ -14335,7 +14772,13 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
           _this2.loadMorePosts = false;
         }
 
-        _this2.postsLoading = false; // console.log(this.posts.length);
+        _this2.postsLoading = false;
+
+        _this2.$nextTick(function () {
+          var bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight;
+          if (bottomOfWindow && _this2.posts.length < res.data.postsTotal) _this2.getPosts(tagName);
+        }); // console.log(this.posts.length);
+
       })["catch"](function (error) {
         console.log(error);
         _this2.postsLoading = false;
@@ -14406,6 +14849,11 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         _this5.deletePostModalClose();
 
         _this5.deleteProssesing = false;
+
+        _this5.$nextTick(function () {
+          var bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight;
+          if (bottomOfWindow) _this5.getPosts();
+        });
       })["catch"](function (error) {
         console.log(error);
         _this5.deleteProssesing = false;
@@ -14476,35 +14924,76 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     // 投稿編集の画像アップロード
     uploadEditFile: function uploadEditFile() {
-      var files = this.$refs.editpreview.files; // 画像ファイルじゃないものを除外
+      var _this7 = this;
 
-      for (var i = 0; i < files.length; i++) {
-        if (!files[i].type.match('image.*')) {
-          files.splice(i, 1);
-        }
-      } // ４枚以上アップロードしようとするとアラート
-
+      var files = this.$refs.editpreview.files;
 
       if (this.editUrls.length + files.length > 4) {
+        // 枚数制限バリデーション
         window.alert('画像は４枚までです！');
-      } else {
-        for (var _i = 0; _i < files.length; _i++) {
-          var addFile = new Object();
-          addFile.id = this.nextNewImageId; // 新しく追加する画像にはマイナス値のidを付与（既存の画像と区別するため）
+        return;
+      }
 
-          addFile.file = files[_i];
-          this.newImages.push(addFile); // プレビュー用URLをプッシュ
+      var totalFileSize = 0;
 
-          var addUrl = new Object();
-          addUrl.id = this.nextNewImageId;
-          addUrl.path = URL.createObjectURL(files[_i]);
-          this.editUrls.push(addUrl);
-          this.nextNewImageId--;
+      for (var i = 0; i < this.newImages.length; i++) {
+        totalFileSize += this.newImages[i].file.size;
+      }
+
+      var loadedImagesCount = 0;
+
+      var _loop = function _loop(_i) {
+        totalFileSize += files[_i].size;
+        console.log(totalFileSize); // コンソール
+
+        if (!files[_i].type.match('image.*') || totalFileSize > 1600000) {
+          // 合計ファイルサイズ、画像でないファイルのバリデーション
+          window.alert('送信するファイルサイズの合計が1.6MBを超えているか、画像でないファイルをアップロードしようとしています！');
+          return {
+            v: void 0
+          };
         }
 
-        this.$refs.editpreview.value = ''; // console.log(this.editPost.deleteOldImagesId);
-        // console.log(this.newImages);
-        // console.log(this.editUrls);
+        var image = new Image();
+        image.src = URL.createObjectURL(files[_i]);
+        image.addEventListener('load', function () {
+          loadedImagesCount++;
+          console.log(image.naturalWidth);
+          console.log(image.naturalHeight);
+
+          if (image.naturalWidth > 2500 || image.naturalHeight > 2500) {
+            window.alert('画像は縦・横それぞれ2500px以下のものを選択してください！');
+            return;
+          }
+
+          if (loadedImagesCount === files.length) {
+            for (var _i2 = 0; _i2 < files.length; _i2++) {
+              var addFile = new Object();
+              addFile.id = _this7.nextNewImageId; // 新しく追加する画像にはマイナス値のidを付与（既存の画像と区別するため）
+
+              addFile.file = files[_i2];
+
+              _this7.newImages.push(addFile); // プレビュー用URLをプッシュ
+
+
+              var addUrl = new Object();
+              addUrl.id = _this7.nextNewImageId;
+              addUrl.path = URL.createObjectURL(files[_i2]);
+
+              _this7.editUrls.push(addUrl);
+
+              _this7.nextNewImageId--;
+            }
+
+            _this7.$refs.editpreview.value = '';
+          }
+        });
+      };
+
+      for (var _i = 0; _i < files.length; _i++) {
+        var _ret = _loop(_i);
+
+        if (_typeof(_ret) === "object") return _ret.v;
       }
     },
     // 投稿編集の画像プレビューの削除
@@ -14528,7 +15017,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     // 編集した投稿を送信
     editSubmit: function editSubmit() {
-      var _this7 = this;
+      var _this8 = this;
 
       if (this.editProcessing) return;
       this.editProcessing = true; // 文字数判定
@@ -14563,18 +15052,23 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       });
       axios.post('/api/post/edit', data).then(function (res) {
         // このページのタグを削除していたらこのページの投稿一覧から削除
-        if (_this7.editPost.tags.includes(_this7.$route.params.name)) {
-          _this7.posts.splice(_this7.editPostIndex, 1, res.data.post);
+        if (_this8.editPost.tags.includes(_this8.$route.params.name)) {
+          _this8.posts.splice(_this8.editPostIndex, 1, res.data.post);
         } else {
-          _this7.posts.splice(_this7.editPostIndex, 1);
+          _this8.posts.splice(_this8.editPostIndex, 1);
         }
 
-        _this7.editPostModalClose();
+        _this8.editPostModalClose();
 
-        _this7.editProcessing = false;
+        _this8.editProcessing = false;
+
+        _this8.$nextTick(function () {
+          var bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight;
+          if (bottomOfWindow) _this8.getPosts();
+        });
       })["catch"](function (error) {
-        _this7.editErrors = error.response.data.errors;
-        _this7.editProcessing = false;
+        _this8.editErrors = error.response.data.errors;
+        _this8.editProcessing = false;
       });
     },
     // どんまい機能の処理
@@ -14671,25 +15165,25 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     // コメントの取得
     getComments: function getComments() {
-      var _this8 = this;
+      var _this9 = this;
 
       if (!this.loadCommentsMore) return;
       if (this.commentsLoading) return;
       this.commentsLoading = true;
       axios.get('/api/comments/get/' + this.modalPostId + '?loaded_comments_count=' + this.modalPostComments.length).then(function (res) {
-        var _this8$modalPostComme;
+        var _this9$modalPostComme;
 
         // console.log(res.data);
-        (_this8$modalPostComme = _this8.modalPostComments).push.apply(_this8$modalPostComme, _toConsumableArray(res.data.comments));
+        (_this9$modalPostComme = _this9.modalPostComments).push.apply(_this9$modalPostComme, _toConsumableArray(res.data.comments));
 
-        if (_this8.modalPostComments.length === res.data.commentsTotal) {
-          _this8.loadCommentsMore = false;
+        if (_this9.modalPostComments.length === res.data.commentsTotal) {
+          _this9.loadCommentsMore = false;
         }
 
-        _this8.commentsLoading = false; // console.log(this.modalPostComments.length);
+        _this9.commentsLoading = false; // console.log(this.modalPostComments.length);
       })["catch"](function (error) {
         console.log(error);
-        _this8.commentsLoading = false;
+        _this9.commentsLoading = false;
       });
     },
     // コメントの無限スクロールページネーション
@@ -14703,31 +15197,31 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     // どんまいしたユーザーの取得
     getDonmaiUsers: function getDonmaiUsers() {
-      var _this9 = this;
+      var _this10 = this;
 
       if (this.isLastDonmaiPage) return;
       if (this.donmaiLoading) return;
       this.donmaiLoading = true;
       axios.get('/api/donmai/users/' + this.modalPostId + '?page=' + this.donmaiPage).then(function (res) {
-        var _this9$modalDonmaiUse;
+        var _this10$modalDonmaiUs;
 
         // console.log(res.data);
         var users = res.data.data.map(function (obj) {
           return obj.user;
         });
 
-        (_this9$modalDonmaiUse = _this9.modalDonmaiUsers).push.apply(_this9$modalDonmaiUse, _toConsumableArray(users));
+        (_this10$modalDonmaiUs = _this10.modalDonmaiUsers).push.apply(_this10$modalDonmaiUs, _toConsumableArray(users));
 
-        _this9.donmaiLoading = false;
+        _this10.donmaiLoading = false;
 
-        if (_this9.donmaiPage === res.data.last_page) {
-          _this9.isLastDonmaiPage = true;
+        if (_this10.donmaiPage === res.data.last_page) {
+          _this10.isLastDonmaiPage = true;
         }
 
-        _this9.donmaiPage++;
+        _this10.donmaiPage++;
       })["catch"](function (error) {
         console.log(error);
-        _this9.donmaiLoading = false;
+        _this10.donmaiLoading = false;
       });
     },
     // どんまいしたユーザー一覧のモーダルを開く
@@ -14797,26 +15291,26 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     // どんまいしたユーザーのフォローとアンフォロー
     donmaiFollow: function donmaiFollow(i) {
-      var _this10 = this;
+      var _this11 = this;
 
       axios.post('/api/follow', this.modalDonmaiUsers[i]).then(function () {
-        _this10.modalDonmaiUsers[i].followed = true;
+        _this11.modalDonmaiUsers[i].followed = true;
       })["catch"](function () {
         return;
       });
     },
     donmaiUnFollow: function donmaiUnFollow(i) {
-      var _this11 = this;
+      var _this12 = this;
 
       axios.post('/api/unfollow', this.modalDonmaiUsers[i]).then(function () {
-        _this11.modalDonmaiUsers[i].followed = false;
+        _this12.modalDonmaiUsers[i].followed = false;
       })["catch"](function () {
         return;
       });
     },
     // コメント投稿
     commentPost: function commentPost() {
-      var _this12 = this;
+      var _this13 = this;
 
       if (this.commentProcessing) return;
       this.commentProcessing = true; // 文字数判定
@@ -14837,30 +15331,30 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       data.append('body', this.commentInput);
       axios.post('/api/comment', data).then(function (res) {
         // console.log(res.data);
-        _this12.modalPostComments.unshift(res.data);
+        _this13.modalPostComments.unshift(res.data);
 
-        _this12.commentInput = '';
-        _this12.posts[_this12.modalPostIndex].commentCount++;
-        _this12.modalPostCommentCount++;
-        _this12.commentErrors = [];
-        _this12.commentProcessing = false;
+        _this13.commentInput = '';
+        _this13.posts[_this13.modalPostIndex].commentCount++;
+        _this13.modalPostCommentCount++;
+        _this13.commentErrors = [];
+        _this13.commentProcessing = false;
       })["catch"](function (error) {
         // console.log(error.response.data.errors);
         // this.modalPostComments[i].replyErrors = [];
-        _this12.commentErrors = error.response.data.errors;
-        _this12.commentProcessing = false;
+        _this13.commentErrors = error.response.data.errors;
+        _this13.commentProcessing = false;
       });
     },
     // コメント削除
     deleteComment: function deleteComment(i) {
-      var _this13 = this;
+      var _this14 = this;
 
       if (window.confirm('削除しますか？')) {
         axios.post('/api/comment/delete/' + this.modalPostComments[i].id).then(function () {
-          _this13.modalPostComments.splice(i, 1);
+          _this14.modalPostComments.splice(i, 1);
 
-          _this13.modalPostCommentCount--;
-          _this13.posts[_this13.modalPostIndex].commentCount--;
+          _this14.modalPostCommentCount--;
+          _this14.posts[_this14.modalPostIndex].commentCount--;
         })["catch"](function (error) {
           console.log(error);
         });
@@ -14868,25 +15362,25 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     // コメントへの返信の取得
     getReplies: function getReplies(i) {
-      var _this14 = this;
+      var _this15 = this;
 
       if (!this.modalPostComments[i].loadRepliesMore) return;
       if (this.modalPostComments[i].repliesLoading) return;
       this.modalPostComments[i].repliesLoading = true;
       axios.get('/api/replies/get/' + this.modalPostComments[i].id + '?loaded_replies_count=' + this.modalPostComments[i].replies.length).then(function (res) {
-        var _this14$modalPostComm;
+        var _this15$modalPostComm;
 
         // console.log(res.data);
-        (_this14$modalPostComm = _this14.modalPostComments[i].replies).push.apply(_this14$modalPostComm, _toConsumableArray(res.data.replies));
+        (_this15$modalPostComm = _this15.modalPostComments[i].replies).push.apply(_this15$modalPostComm, _toConsumableArray(res.data.replies));
 
-        if (_this14.modalPostComments[i].replies.length === res.data.repliesTotal) {
-          _this14.modalPostComments[i].loadRepliesMore = false;
+        if (_this15.modalPostComments[i].replies.length === res.data.repliesTotal) {
+          _this15.modalPostComments[i].loadRepliesMore = false;
         }
 
-        _this14.modalPostComments[i].repliesLoading = false; // console.log(this.modalPostComments[i].replies.length);
+        _this15.modalPostComments[i].repliesLoading = false; // console.log(this.modalPostComments[i].replies.length);
       })["catch"](function (error) {
         console.log(error);
-        _this14.modalPostComments[i].repliesLoading = false;
+        _this15.modalPostComments[i].repliesLoading = false;
       });
     },
     //コメントへの返信の表示と非表示
@@ -14918,7 +15412,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     // コメントへの返信の投稿
     reply: function reply(i) {
-      var _this15 = this;
+      var _this16 = this;
 
       if (this.replyProcessing) return;
       this.replyProcessing = true; // 文字数判定
@@ -14939,29 +15433,29 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       data.append('commentId', this.modalPostComments[i].id);
       axios.post('/api/comment/reply', data).then(function (res) {
         // console.log(res.data);
-        if (!_this15.modalPostComments[i].loadRepliesMore) {
-          _this15.modalPostComments[i].replies.push(res.data);
+        if (!_this16.modalPostComments[i].loadRepliesMore) {
+          _this16.modalPostComments[i].replies.push(res.data);
         }
 
-        _this15.modalPostComments[i].replyCount++;
-        _this15.modalPostComments[i].replyInput = '';
-        _this15.modalPostComments[i].replyErrors = [];
-        _this15.posts[_this15.modalPostIndex].commentCount++;
-        _this15.modalPostCommentCount++;
-        _this15.modalPostComments[i].replyFormOpened = false;
-        _this15.replyProcessing = false;
+        _this16.modalPostComments[i].replyCount++;
+        _this16.modalPostComments[i].replyInput = '';
+        _this16.modalPostComments[i].replyErrors = [];
+        _this16.posts[_this16.modalPostIndex].commentCount++;
+        _this16.modalPostCommentCount++;
+        _this16.modalPostComments[i].replyFormOpened = false;
+        _this16.replyProcessing = false;
       })["catch"](function (error) {
-        _this15.modalPostComments[i].replyErrors = error.response.data.errors;
-        _this15.replyProcessing = false; // console.log(this.modalPostComments[i].replyErrors)
+        _this16.modalPostComments[i].replyErrors = error.response.data.errors;
+        _this16.replyProcessing = false; // console.log(this.modalPostComments[i].replyErrors)
       });
     },
     // コメントへの返信の削除
     deleteReply: function deleteReply(comId, repId) {
-      var _this16 = this;
+      var _this17 = this;
 
       if (window.confirm('削除しますか？')) {
         axios.post('/api/reply/delete/' + repId).then(function () {
-          var comment = _this16.modalPostComments.find(function (v) {
+          var comment = _this17.modalPostComments.find(function (v) {
             return v.id === comId;
           });
 
@@ -14972,8 +15466,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
           comment.replies.splice(replyIndex, 1);
           comment.replyCount--;
-          _this16.modalPostCommentCount--;
-          _this16.posts[_this16.modalPostIndex].commentCount--;
+          _this17.modalPostCommentCount--;
+          _this17.posts[_this17.modalPostIndex].commentCount--;
         })["catch"](function (error) {
           console.log(error);
         });
@@ -15032,7 +15526,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     }
   },
   mounted: function mounted() {
-    var _this17 = this;
+    var _this18 = this;
 
     // 認証ユーザー情報、全ジャンルを取得
     this.getInitInfo(this.$route.params.name); // 投稿の無限スクロール
@@ -15041,8 +15535,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       // スクロール位置が一番下ならtrue
       var bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight;
 
-      if (bottomOfWindow && !_this17.modalPostShow && !_this17.modalPostEditShow && !_this17.deletePostModalOpened && !_this17.modalImageShow) {
-        _this17.getPosts(_this17.$route.params.name);
+      if (bottomOfWindow && !_this18.modalPostShow && !_this18.modalPostEditShow && !_this18.deletePostModalOpened && !_this18.modalImageShow) {
+        _this18.getPosts(_this18.$route.params.name);
       }
     };
   },
@@ -15147,6 +15641,8 @@ function _nonIterableRest() { throw new TypeError("Invalid attempt to destructur
 function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
@@ -15886,7 +16382,12 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       if (!this.loadMorePosts) return;
       if (this.postsLoading) return;
       this.postsLoading = true;
-      axios.get('/api/post/tags/popular/' + tagName + '?loaded_posts_count=' + this.posts.length).then(function (res) {
+      var postIds = this.posts.map(function (obj) {
+        return obj.id;
+      });
+      var postIdsString = postIds.join('-'); // axios.get('/api/post/tags/popular/' + tagName + '?loaded_posts_count=' + this.posts.length)
+
+      axios.get('/api/post/tags/popular/' + tagName + '?loaded_post_ids=' + postIdsString).then(function (res) {
         var _this2$posts;
 
         // console.log(res.data);
@@ -15896,7 +16397,13 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
           _this2.loadMorePosts = false;
         }
 
-        _this2.postsLoading = false; // console.log(this.posts.length);
+        _this2.postsLoading = false;
+
+        _this2.$nextTick(function () {
+          var bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight;
+          if (bottomOfWindow && _this2.posts.length < res.data.postsTotal) _this2.getPosts(tagName);
+        }); // console.log(this.posts.length);
+
       })["catch"](function (error) {
         console.log(error);
         _this2.postsLoading = false;
@@ -15967,6 +16474,11 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         _this5.deletePostModalClose();
 
         _this5.deleteProssesing = false;
+
+        _this5.$nextTick(function () {
+          var bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight;
+          if (bottomOfWindow) _this5.getPosts();
+        });
       })["catch"](function (error) {
         console.log(error);
         _this5.deleteProssesing = false;
@@ -16038,35 +16550,76 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     // 投稿編集の画像アップロード
     uploadEditFile: function uploadEditFile() {
-      var files = this.$refs.editpreview.files; // 画像ファイルじゃないものを除外
+      var _this7 = this;
 
-      for (var i = 0; i < files.length; i++) {
-        if (!files[i].type.match('image.*')) {
-          files.splice(i, 1);
-        }
-      } // ４枚以上アップロードしようとするとアラート
-
+      var files = this.$refs.editpreview.files;
 
       if (this.editUrls.length + files.length > 4) {
+        // 枚数制限バリデーション
         window.alert('画像は４枚までです！');
-      } else {
-        for (var _i = 0; _i < files.length; _i++) {
-          var addFile = new Object();
-          addFile.id = this.nextNewImageId; // 新しく追加する画像にはマイナス値のidを付与（既存の画像と区別するため）
+        return;
+      }
 
-          addFile.file = files[_i];
-          this.newImages.push(addFile); // プレビュー用URLをプッシュ
+      var totalFileSize = 0;
 
-          var addUrl = new Object();
-          addUrl.id = this.nextNewImageId;
-          addUrl.path = URL.createObjectURL(files[_i]);
-          this.editUrls.push(addUrl);
-          this.nextNewImageId--;
+      for (var i = 0; i < this.newImages.length; i++) {
+        totalFileSize += this.newImages[i].file.size;
+      }
+
+      var loadedImagesCount = 0;
+
+      var _loop = function _loop(_i) {
+        totalFileSize += files[_i].size;
+        console.log(totalFileSize); // コンソール
+
+        if (!files[_i].type.match('image.*') || totalFileSize > 1600000) {
+          // 合計ファイルサイズ、画像でないファイルのバリデーション
+          window.alert('送信するファイルサイズの合計が1.6MBを超えているか、画像でないファイルをアップロードしようとしています！');
+          return {
+            v: void 0
+          };
         }
 
-        this.$refs.editpreview.value = ''; // console.log(this.editPost.deleteOldImagesId);
-        // console.log(this.newImages);
-        // console.log(this.editUrls);
+        var image = new Image();
+        image.src = URL.createObjectURL(files[_i]);
+        image.addEventListener('load', function () {
+          loadedImagesCount++;
+          console.log(image.naturalWidth);
+          console.log(image.naturalHeight);
+
+          if (image.naturalWidth > 2500 || image.naturalHeight > 2500) {
+            window.alert('画像は縦・横それぞれ2500px以下のものを選択してください！');
+            return;
+          }
+
+          if (loadedImagesCount === files.length) {
+            for (var _i2 = 0; _i2 < files.length; _i2++) {
+              var addFile = new Object();
+              addFile.id = _this7.nextNewImageId; // 新しく追加する画像にはマイナス値のidを付与（既存の画像と区別するため）
+
+              addFile.file = files[_i2];
+
+              _this7.newImages.push(addFile); // プレビュー用URLをプッシュ
+
+
+              var addUrl = new Object();
+              addUrl.id = _this7.nextNewImageId;
+              addUrl.path = URL.createObjectURL(files[_i2]);
+
+              _this7.editUrls.push(addUrl);
+
+              _this7.nextNewImageId--;
+            }
+
+            _this7.$refs.editpreview.value = '';
+          }
+        });
+      };
+
+      for (var _i = 0; _i < files.length; _i++) {
+        var _ret = _loop(_i);
+
+        if (_typeof(_ret) === "object") return _ret.v;
       }
     },
     // 投稿編集の画像プレビューの削除
@@ -16090,7 +16643,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     // 編集した投稿を送信
     editSubmit: function editSubmit() {
-      var _this7 = this;
+      var _this8 = this;
 
       if (this.editProcessing) return;
       this.editProcessing = true; // 文字数判定
@@ -16126,19 +16679,24 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       axios.post('/api/post/edit', data).then(function (res) {
         // console.log(res.data);
         // このページのタグを削除していたらこのページの投稿一覧から削除
-        if (_this7.editPost.tags.includes(_this7.$route.params.name)) {
-          _this7.posts.splice(_this7.editPostIndex, 1, res.data.post);
+        if (_this8.editPost.tags.includes(_this8.$route.params.name)) {
+          _this8.posts.splice(_this8.editPostIndex, 1, res.data.post);
         } else {
-          _this7.posts.splice(_this7.editPostIndex, 1);
+          _this8.posts.splice(_this8.editPostIndex, 1);
         }
 
-        _this7.editPostModalClose();
+        _this8.editPostModalClose();
 
-        _this7.editProcessing = false;
+        _this8.editProcessing = false;
+
+        _this8.$nextTick(function () {
+          var bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight;
+          if (bottomOfWindow) _this8.getPosts();
+        });
       })["catch"](function (error) {
-        _this7.editErrors = error.response.data.errors;
+        _this8.editErrors = error.response.data.errors;
         console.log(error);
-        _this7.editProcessing = false;
+        _this8.editProcessing = false;
       });
     },
     // どんまい機能の処理
@@ -16235,25 +16793,25 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     // コメントの取得
     getComments: function getComments() {
-      var _this8 = this;
+      var _this9 = this;
 
       if (!this.loadCommentsMore) return;
       if (this.commentsLoading) return;
       this.commentsLoading = true;
       axios.get('/api/comments/get/' + this.modalPostId + '?loaded_comments_count=' + this.modalPostComments.length).then(function (res) {
-        var _this8$modalPostComme;
+        var _this9$modalPostComme;
 
         // console.log(res.data);
-        (_this8$modalPostComme = _this8.modalPostComments).push.apply(_this8$modalPostComme, _toConsumableArray(res.data.comments));
+        (_this9$modalPostComme = _this9.modalPostComments).push.apply(_this9$modalPostComme, _toConsumableArray(res.data.comments));
 
-        if (_this8.modalPostComments.length === res.data.commentsTotal) {
-          _this8.loadCommentsMore = false;
+        if (_this9.modalPostComments.length === res.data.commentsTotal) {
+          _this9.loadCommentsMore = false;
         }
 
-        _this8.commentsLoading = false; // console.log(this.modalPostComments.length);
+        _this9.commentsLoading = false; // console.log(this.modalPostComments.length);
       })["catch"](function (error) {
         console.log(error);
-        _this8.commentsLoading = false;
+        _this9.commentsLoading = false;
       });
     },
     // コメントの無限スクロールページネーション
@@ -16267,31 +16825,31 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     // どんまいしたユーザーの取得
     getDonmaiUsers: function getDonmaiUsers() {
-      var _this9 = this;
+      var _this10 = this;
 
       if (this.isLastDonmaiPage) return;
       if (this.donmaiLoading) return;
       this.donmaiLoading = true;
       axios.get('/api/donmai/users/' + this.modalPostId + '?page=' + this.donmaiPage).then(function (res) {
-        var _this9$modalDonmaiUse;
+        var _this10$modalDonmaiUs;
 
         // console.log(res.data);
         var users = res.data.data.map(function (obj) {
           return obj.user;
         });
 
-        (_this9$modalDonmaiUse = _this9.modalDonmaiUsers).push.apply(_this9$modalDonmaiUse, _toConsumableArray(users));
+        (_this10$modalDonmaiUs = _this10.modalDonmaiUsers).push.apply(_this10$modalDonmaiUs, _toConsumableArray(users));
 
-        _this9.donmaiLoading = false;
+        _this10.donmaiLoading = false;
 
-        if (_this9.donmaiPage === res.data.last_page) {
-          _this9.isLastDonmaiPage = true;
+        if (_this10.donmaiPage === res.data.last_page) {
+          _this10.isLastDonmaiPage = true;
         }
 
-        _this9.donmaiPage++;
+        _this10.donmaiPage++;
       })["catch"](function (error) {
         console.log(error);
-        _this9.donmaiLoading = false;
+        _this10.donmaiLoading = false;
       });
     },
     // どんまいしたユーザー一覧のモーダルを開く
@@ -16361,26 +16919,26 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     // どんまいしたユーザーのフォローとアンフォロー
     donmaiFollow: function donmaiFollow(i) {
-      var _this10 = this;
+      var _this11 = this;
 
       axios.post('/api/follow', this.modalDonmaiUsers[i]).then(function () {
-        _this10.modalDonmaiUsers[i].followed = true;
+        _this11.modalDonmaiUsers[i].followed = true;
       })["catch"](function () {
         return;
       });
     },
     donmaiUnFollow: function donmaiUnFollow(i) {
-      var _this11 = this;
+      var _this12 = this;
 
       axios.post('/api/unfollow', this.modalDonmaiUsers[i]).then(function () {
-        _this11.modalDonmaiUsers[i].followed = false;
+        _this12.modalDonmaiUsers[i].followed = false;
       })["catch"](function () {
         return;
       });
     },
     // コメント投稿
     commentPost: function commentPost() {
-      var _this12 = this;
+      var _this13 = this;
 
       if (this.commentProcessing) return;
       this.commentProcessing = true; // 文字数判定
@@ -16401,30 +16959,30 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       data.append('body', this.commentInput);
       axios.post('/api/comment', data).then(function (res) {
         // console.log(res.data);
-        _this12.modalPostComments.unshift(res.data);
+        _this13.modalPostComments.unshift(res.data);
 
-        _this12.commentInput = '';
-        _this12.posts[_this12.modalPostIndex].commentCount++;
-        _this12.modalPostCommentCount++;
-        _this12.commentErrors = [];
-        _this12.commentProcessing = false;
+        _this13.commentInput = '';
+        _this13.posts[_this13.modalPostIndex].commentCount++;
+        _this13.modalPostCommentCount++;
+        _this13.commentErrors = [];
+        _this13.commentProcessing = false;
       })["catch"](function (error) {
         // console.log(error.response.data.errors);
         // this.modalPostComments[i].replyErrors = [];
-        _this12.commentErrors = error.response.data.errors;
-        _this12.commentProcessing = false;
+        _this13.commentErrors = error.response.data.errors;
+        _this13.commentProcessing = false;
       });
     },
     // コメント削除
     deleteComment: function deleteComment(i) {
-      var _this13 = this;
+      var _this14 = this;
 
       if (window.confirm('削除しますか？')) {
         axios.post('/api/comment/delete/' + this.modalPostComments[i].id).then(function () {
-          _this13.modalPostComments.splice(i, 1);
+          _this14.modalPostComments.splice(i, 1);
 
-          _this13.modalPostCommentCount--;
-          _this13.posts[_this13.modalPostIndex].commentCount--;
+          _this14.modalPostCommentCount--;
+          _this14.posts[_this14.modalPostIndex].commentCount--;
         })["catch"](function (error) {
           console.log(error);
         });
@@ -16432,25 +16990,25 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     // コメントへの返信の取得
     getReplies: function getReplies(i) {
-      var _this14 = this;
+      var _this15 = this;
 
       if (!this.modalPostComments[i].loadRepliesMore) return;
       if (this.modalPostComments[i].repliesLoading) return;
       this.modalPostComments[i].repliesLoading = true;
       axios.get('/api/replies/get/' + this.modalPostComments[i].id + '?loaded_replies_count=' + this.modalPostComments[i].replies.length).then(function (res) {
-        var _this14$modalPostComm;
+        var _this15$modalPostComm;
 
         // console.log(res.data);
-        (_this14$modalPostComm = _this14.modalPostComments[i].replies).push.apply(_this14$modalPostComm, _toConsumableArray(res.data.replies));
+        (_this15$modalPostComm = _this15.modalPostComments[i].replies).push.apply(_this15$modalPostComm, _toConsumableArray(res.data.replies));
 
-        if (_this14.modalPostComments[i].replies.length === res.data.repliesTotal) {
-          _this14.modalPostComments[i].loadRepliesMore = false;
+        if (_this15.modalPostComments[i].replies.length === res.data.repliesTotal) {
+          _this15.modalPostComments[i].loadRepliesMore = false;
         }
 
-        _this14.modalPostComments[i].repliesLoading = false; // console.log(this.modalPostComments[i].replies.length);
+        _this15.modalPostComments[i].repliesLoading = false; // console.log(this.modalPostComments[i].replies.length);
       })["catch"](function (error) {
         console.log(error);
-        _this14.modalPostComments[i].repliesLoading = false;
+        _this15.modalPostComments[i].repliesLoading = false;
       });
     },
     //コメントへの返信の表示と非表示
@@ -16482,7 +17040,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     // コメントへの返信の投稿
     reply: function reply(i) {
-      var _this15 = this;
+      var _this16 = this;
 
       if (this.replyProcessing) return;
       this.replyProcessing = true; // 文字数判定
@@ -16503,29 +17061,29 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       data.append('commentId', this.modalPostComments[i].id);
       axios.post('/api/comment/reply', data).then(function (res) {
         // console.log(res.data);
-        if (!_this15.modalPostComments[i].loadRepliesMore) {
-          _this15.modalPostComments[i].replies.push(res.data);
+        if (!_this16.modalPostComments[i].loadRepliesMore) {
+          _this16.modalPostComments[i].replies.push(res.data);
         }
 
-        _this15.modalPostComments[i].replyCount++;
-        _this15.modalPostComments[i].replyInput = '';
-        _this15.modalPostComments[i].replyErrors = [];
-        _this15.posts[_this15.modalPostIndex].commentCount++;
-        _this15.modalPostCommentCount++;
-        _this15.modalPostComments[i].replyFormOpened = false;
-        _this15.replyProcessing = false;
+        _this16.modalPostComments[i].replyCount++;
+        _this16.modalPostComments[i].replyInput = '';
+        _this16.modalPostComments[i].replyErrors = [];
+        _this16.posts[_this16.modalPostIndex].commentCount++;
+        _this16.modalPostCommentCount++;
+        _this16.modalPostComments[i].replyFormOpened = false;
+        _this16.replyProcessing = false;
       })["catch"](function (error) {
-        _this15.modalPostComments[i].replyErrors = error.response.data.errors;
-        _this15.replyProcessing = false; // console.log(this.modalPostComments[i].replyErrors)
+        _this16.modalPostComments[i].replyErrors = error.response.data.errors;
+        _this16.replyProcessing = false; // console.log(this.modalPostComments[i].replyErrors)
       });
     },
     // コメントへの返信の削除
     deleteReply: function deleteReply(comId, repId) {
-      var _this16 = this;
+      var _this17 = this;
 
       if (window.confirm('削除しますか？')) {
         axios.post('/api/reply/delete/' + repId).then(function () {
-          var comment = _this16.modalPostComments.find(function (v) {
+          var comment = _this17.modalPostComments.find(function (v) {
             return v.id === comId;
           });
 
@@ -16536,8 +17094,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
           comment.replies.splice(replyIndex, 1);
           comment.replyCount--;
-          _this16.modalPostCommentCount--;
-          _this16.posts[_this16.modalPostIndex].commentCount--;
+          _this17.modalPostCommentCount--;
+          _this17.posts[_this17.modalPostIndex].commentCount--;
         })["catch"](function (error) {
           console.log(error);
         });
@@ -16596,7 +17154,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     }
   },
   mounted: function mounted() {
-    var _this17 = this;
+    var _this18 = this;
 
     // 認証ユーザー情報、全ジャンルを取得
     this.getInitInfo(this.$route.params.name); // 投稿の無限スクロール
@@ -16605,8 +17163,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       // スクロール位置が一番下ならtrue
       var bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight;
 
-      if (bottomOfWindow && !_this17.modalPostShow && !_this17.modalPostEditShow && !_this17.deletePostModalOpened && !_this17.modalImageShow) {
-        _this17.getPosts(_this17.$route.params.name);
+      if (bottomOfWindow && !_this18.modalPostShow && !_this18.modalPostEditShow && !_this18.deletePostModalOpened && !_this18.modalImageShow) {
+        _this18.getPosts(_this18.$route.params.name);
       }
     };
   },
@@ -17385,6 +17943,8 @@ function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -18132,7 +18692,13 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
           _this2.loadMorePosts = false;
         }
 
-        _this2.postsLoading = false; // console.log(this.posts.length);
+        _this2.postsLoading = false;
+
+        _this2.$nextTick(function () {
+          var bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight;
+          if (bottomOfWindow && _this2.posts.length < res.data.postsTotal) _this2.getPosts(userId);
+        }); // console.log(this.posts.length);
+
       })["catch"](function (error) {
         console.log(error);
         _this2.postsLoading = false;
@@ -18203,6 +18769,11 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         _this5.deletePostModalClose();
 
         _this5.deleteProssesing = false;
+
+        _this5.$nextTick(function () {
+          var bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight;
+          if (bottomOfWindow) _this5.getPosts();
+        });
       })["catch"](function (error) {
         console.log(error);
         _this5.deleteProssesing = false;
@@ -18273,35 +18844,76 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     // 投稿編集の画像アップロード
     uploadEditFile: function uploadEditFile() {
-      var files = this.$refs.editpreview.files; // 画像ファイルじゃないものを除外
+      var _this7 = this;
 
-      for (var i = 0; i < files.length; i++) {
-        if (!files[i].type.match('image.*')) {
-          files.splice(i, 1);
-        }
-      } // ４枚以上アップロードしようとするとアラート
-
+      var files = this.$refs.editpreview.files;
 
       if (this.editUrls.length + files.length > 4) {
+        // 枚数制限バリデーション
         window.alert('画像は４枚までです！');
-      } else {
-        for (var _i = 0; _i < files.length; _i++) {
-          var addFile = new Object();
-          addFile.id = this.nextNewImageId; // 新しく追加する画像にはマイナス値のidを付与（既存の画像と区別するため）
+        return;
+      }
 
-          addFile.file = files[_i];
-          this.newImages.push(addFile); // プレビュー用URLをプッシュ
+      var totalFileSize = 0;
 
-          var addUrl = new Object();
-          addUrl.id = this.nextNewImageId;
-          addUrl.path = URL.createObjectURL(files[_i]);
-          this.editUrls.push(addUrl);
-          this.nextNewImageId--;
+      for (var i = 0; i < this.newImages.length; i++) {
+        totalFileSize += this.newImages[i].file.size;
+      }
+
+      var loadedImagesCount = 0;
+
+      var _loop = function _loop(_i) {
+        totalFileSize += files[_i].size;
+        console.log(totalFileSize); // コンソール
+
+        if (!files[_i].type.match('image.*') || totalFileSize > 1600000) {
+          // 合計ファイルサイズ、画像でないファイルのバリデーション
+          window.alert('送信するファイルサイズの合計が1.6MBを超えているか、画像でないファイルをアップロードしようとしています！');
+          return {
+            v: void 0
+          };
         }
 
-        this.$refs.editpreview.value = ''; // console.log(this.editPost.deleteOldImagesId);
-        // console.log(this.newImages);
-        // console.log(this.editUrls);
+        var image = new Image();
+        image.src = URL.createObjectURL(files[_i]);
+        image.addEventListener('load', function () {
+          loadedImagesCount++;
+          console.log(image.naturalWidth);
+          console.log(image.naturalHeight);
+
+          if (image.naturalWidth > 2500 || image.naturalHeight > 2500) {
+            window.alert('画像は縦・横それぞれ2500px以下のものを選択してください！');
+            return;
+          }
+
+          if (loadedImagesCount === files.length) {
+            for (var _i2 = 0; _i2 < files.length; _i2++) {
+              var addFile = new Object();
+              addFile.id = _this7.nextNewImageId; // 新しく追加する画像にはマイナス値のidを付与（既存の画像と区別するため）
+
+              addFile.file = files[_i2];
+
+              _this7.newImages.push(addFile); // プレビュー用URLをプッシュ
+
+
+              var addUrl = new Object();
+              addUrl.id = _this7.nextNewImageId;
+              addUrl.path = URL.createObjectURL(files[_i2]);
+
+              _this7.editUrls.push(addUrl);
+
+              _this7.nextNewImageId--;
+            }
+
+            _this7.$refs.editpreview.value = '';
+          }
+        });
+      };
+
+      for (var _i = 0; _i < files.length; _i++) {
+        var _ret = _loop(_i);
+
+        if (_typeof(_ret) === "object") return _ret.v;
       }
     },
     // 投稿編集の画像プレビューの削除
@@ -18325,7 +18937,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     // 編集した投稿を送信
     editSubmit: function editSubmit() {
-      var _this7 = this;
+      var _this8 = this;
 
       if (this.editProcessing) return;
       this.editProcessing = true; // 文字数判定
@@ -18359,14 +18971,19 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         }
       });
       axios.post('/api/post/edit', data).then(function (res) {
-        _this7.posts.splice(_this7.editPostIndex, 1, res.data.post);
+        _this8.posts.splice(_this8.editPostIndex, 1, res.data.post);
 
-        _this7.editPostModalClose();
+        _this8.editPostModalClose();
 
-        _this7.editProcessing = false;
+        _this8.editProcessing = false;
+
+        _this8.$nextTick(function () {
+          var bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight;
+          if (bottomOfWindow) _this8.getPosts();
+        });
       })["catch"](function (error) {
-        _this7.editErrors = error.response.data.errors;
-        _this7.editProcessing = false;
+        _this8.editErrors = error.response.data.errors;
+        _this8.editProcessing = false;
       });
     },
     // どんまい機能の処理
@@ -18463,25 +19080,25 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     // コメントの取得
     getComments: function getComments() {
-      var _this8 = this;
+      var _this9 = this;
 
       if (!this.loadCommentsMore) return;
       if (this.commentsLoading) return;
       this.commentsLoading = true;
       axios.get('/api/comments/get/' + this.modalPostId + '?loaded_comments_count=' + this.modalPostComments.length).then(function (res) {
-        var _this8$modalPostComme;
+        var _this9$modalPostComme;
 
         // console.log(res.data);
-        (_this8$modalPostComme = _this8.modalPostComments).push.apply(_this8$modalPostComme, _toConsumableArray(res.data.comments));
+        (_this9$modalPostComme = _this9.modalPostComments).push.apply(_this9$modalPostComme, _toConsumableArray(res.data.comments));
 
-        if (_this8.modalPostComments.length === res.data.commentsTotal) {
-          _this8.loadCommentsMore = false;
+        if (_this9.modalPostComments.length === res.data.commentsTotal) {
+          _this9.loadCommentsMore = false;
         }
 
-        _this8.commentsLoading = false; // console.log(this.modalPostComments.length);
+        _this9.commentsLoading = false; // console.log(this.modalPostComments.length);
       })["catch"](function (error) {
         console.log(error);
-        _this8.commentsLoading = false;
+        _this9.commentsLoading = false;
       });
     },
     // コメントの無限スクロールページネーション
@@ -18495,31 +19112,31 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     // どんまいしたユーザーの取得
     getDonmaiUsers: function getDonmaiUsers() {
-      var _this9 = this;
+      var _this10 = this;
 
       if (this.isLastDonmaiPage) return;
       if (this.donmaiLoading) return;
       this.donmaiLoading = true;
       axios.get('/api/donmai/users/' + this.modalPostId + '?page=' + this.donmaiPage).then(function (res) {
-        var _this9$modalDonmaiUse;
+        var _this10$modalDonmaiUs;
 
         // console.log(res.data);
         var users = res.data.data.map(function (obj) {
           return obj.user;
         });
 
-        (_this9$modalDonmaiUse = _this9.modalDonmaiUsers).push.apply(_this9$modalDonmaiUse, _toConsumableArray(users));
+        (_this10$modalDonmaiUs = _this10.modalDonmaiUsers).push.apply(_this10$modalDonmaiUs, _toConsumableArray(users));
 
-        _this9.donmaiLoading = false;
+        _this10.donmaiLoading = false;
 
-        if (_this9.donmaiPage === res.data.last_page) {
-          _this9.isLastDonmaiPage = true;
+        if (_this10.donmaiPage === res.data.last_page) {
+          _this10.isLastDonmaiPage = true;
         }
 
-        _this9.donmaiPage++;
+        _this10.donmaiPage++;
       })["catch"](function (error) {
         console.log(error);
-        _this9.donmaiLoading = false;
+        _this10.donmaiLoading = false;
       });
     },
     // どんまいしたユーザー一覧のモーダルを開く
@@ -18589,26 +19206,26 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     // どんまいしたユーザーのフォローとアンフォロー
     donmaiFollow: function donmaiFollow(i) {
-      var _this10 = this;
+      var _this11 = this;
 
       axios.post('/api/follow', this.modalDonmaiUsers[i]).then(function () {
-        _this10.modalDonmaiUsers[i].followed = true;
+        _this11.modalDonmaiUsers[i].followed = true;
       })["catch"](function () {
         return;
       });
     },
     donmaiUnFollow: function donmaiUnFollow(i) {
-      var _this11 = this;
+      var _this12 = this;
 
       axios.post('/api/unfollow', this.modalDonmaiUsers[i]).then(function () {
-        _this11.modalDonmaiUsers[i].followed = false;
+        _this12.modalDonmaiUsers[i].followed = false;
       })["catch"](function () {
         return;
       });
     },
     // コメント投稿
     commentPost: function commentPost() {
-      var _this12 = this;
+      var _this13 = this;
 
       if (this.commentProcessing) return;
       this.commentProcessing = true; // 文字数判定
@@ -18629,30 +19246,30 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       data.append('body', this.commentInput);
       axios.post('/api/comment', data).then(function (res) {
         // console.log(res.data);
-        _this12.modalPostComments.unshift(res.data);
+        _this13.modalPostComments.unshift(res.data);
 
-        _this12.commentInput = '';
-        _this12.posts[_this12.modalPostIndex].commentCount++;
-        _this12.modalPostCommentCount++;
-        _this12.commentErrors = [];
-        _this12.commentProcessing = false;
+        _this13.commentInput = '';
+        _this13.posts[_this13.modalPostIndex].commentCount++;
+        _this13.modalPostCommentCount++;
+        _this13.commentErrors = [];
+        _this13.commentProcessing = false;
       })["catch"](function (error) {
         // console.log(error.response.data.errors);
         // this.modalPostComments[i].replyErrors = [];
-        _this12.commentErrors = error.response.data.errors;
-        _this12.commentProcessing = false;
+        _this13.commentErrors = error.response.data.errors;
+        _this13.commentProcessing = false;
       });
     },
     // コメント削除
     deleteComment: function deleteComment(i) {
-      var _this13 = this;
+      var _this14 = this;
 
       if (window.confirm('削除しますか？')) {
         axios.post('/api/comment/delete/' + this.modalPostComments[i].id).then(function () {
-          _this13.modalPostComments.splice(i, 1);
+          _this14.modalPostComments.splice(i, 1);
 
-          _this13.modalPostCommentCount--;
-          _this13.posts[_this13.modalPostIndex].commentCount--;
+          _this14.modalPostCommentCount--;
+          _this14.posts[_this14.modalPostIndex].commentCount--;
         })["catch"](function (error) {
           console.log(error);
         });
@@ -18660,25 +19277,25 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     // コメントへの返信の取得
     getReplies: function getReplies(i) {
-      var _this14 = this;
+      var _this15 = this;
 
       if (!this.modalPostComments[i].loadRepliesMore) return;
       if (this.modalPostComments[i].repliesLoading) return;
       this.modalPostComments[i].repliesLoading = true;
       axios.get('/api/replies/get/' + this.modalPostComments[i].id + '?loaded_replies_count=' + this.modalPostComments[i].replies.length).then(function (res) {
-        var _this14$modalPostComm;
+        var _this15$modalPostComm;
 
         // console.log(res.data);
-        (_this14$modalPostComm = _this14.modalPostComments[i].replies).push.apply(_this14$modalPostComm, _toConsumableArray(res.data.replies));
+        (_this15$modalPostComm = _this15.modalPostComments[i].replies).push.apply(_this15$modalPostComm, _toConsumableArray(res.data.replies));
 
-        if (_this14.modalPostComments[i].replies.length === res.data.repliesTotal) {
-          _this14.modalPostComments[i].loadRepliesMore = false;
+        if (_this15.modalPostComments[i].replies.length === res.data.repliesTotal) {
+          _this15.modalPostComments[i].loadRepliesMore = false;
         }
 
-        _this14.modalPostComments[i].repliesLoading = false; // console.log(this.modalPostComments[i].replies.length);
+        _this15.modalPostComments[i].repliesLoading = false; // console.log(this.modalPostComments[i].replies.length);
       })["catch"](function (error) {
         console.log(error);
-        _this14.modalPostComments[i].repliesLoading = false;
+        _this15.modalPostComments[i].repliesLoading = false;
       });
     },
     //コメントへの返信の表示と非表示
@@ -18710,7 +19327,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     // コメントへの返信の投稿
     reply: function reply(i) {
-      var _this15 = this;
+      var _this16 = this;
 
       if (this.replyProcessing) return;
       this.replyProcessing = true; // 文字数判定
@@ -18731,29 +19348,29 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       data.append('commentId', this.modalPostComments[i].id);
       axios.post('/api/comment/reply', data).then(function (res) {
         // console.log(res.data);
-        if (!_this15.modalPostComments[i].loadRepliesMore) {
-          _this15.modalPostComments[i].replies.push(res.data);
+        if (!_this16.modalPostComments[i].loadRepliesMore) {
+          _this16.modalPostComments[i].replies.push(res.data);
         }
 
-        _this15.modalPostComments[i].replyCount++;
-        _this15.modalPostComments[i].replyInput = '';
-        _this15.modalPostComments[i].replyErrors = [];
-        _this15.posts[_this15.modalPostIndex].commentCount++;
-        _this15.modalPostCommentCount++;
-        _this15.modalPostComments[i].replyFormOpened = false;
-        _this15.replyProcessing = false;
+        _this16.modalPostComments[i].replyCount++;
+        _this16.modalPostComments[i].replyInput = '';
+        _this16.modalPostComments[i].replyErrors = [];
+        _this16.posts[_this16.modalPostIndex].commentCount++;
+        _this16.modalPostCommentCount++;
+        _this16.modalPostComments[i].replyFormOpened = false;
+        _this16.replyProcessing = false;
       })["catch"](function (error) {
-        _this15.modalPostComments[i].replyErrors = error.response.data.errors;
-        _this15.replyProcessing = false; // console.log(this.modalPostComments[i].replyErrors)
+        _this16.modalPostComments[i].replyErrors = error.response.data.errors;
+        _this16.replyProcessing = false; // console.log(this.modalPostComments[i].replyErrors)
       });
     },
     // コメントへの返信の削除
     deleteReply: function deleteReply(comId, repId) {
-      var _this16 = this;
+      var _this17 = this;
 
       if (window.confirm('削除しますか？')) {
         axios.post('/api/reply/delete/' + repId).then(function () {
-          var comment = _this16.modalPostComments.find(function (v) {
+          var comment = _this17.modalPostComments.find(function (v) {
             return v.id === comId;
           });
 
@@ -18764,8 +19381,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
           comment.replies.splice(replyIndex, 1);
           comment.replyCount--;
-          _this16.modalPostCommentCount--;
-          _this16.posts[_this16.modalPostIndex].commentCount--;
+          _this17.modalPostCommentCount--;
+          _this17.posts[_this17.modalPostIndex].commentCount--;
         })["catch"](function (error) {
           console.log(error);
         });
@@ -18814,7 +19431,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     }
   },
   mounted: function mounted() {
-    var _this17 = this;
+    var _this18 = this;
 
     // 認証ユーザー情報、全ジャンルを取得
     this.getInitInfo(this.$route.params.id); // 投稿の無限スクロール
@@ -18823,8 +19440,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       // スクロール位置が一番下ならtrue
       var bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight;
 
-      if (bottomOfWindow && !_this17.modalPostShow && !_this17.modalPostEditShow && !_this17.deletePostModalOpened && !_this17.modalImageShow) {
-        _this17.getPosts(_this17.$route.params.id);
+      if (bottomOfWindow && !_this18.modalPostShow && !_this18.modalPostEditShow && !_this18.deletePostModalOpened && !_this18.modalImageShow) {
+        _this18.getPosts(_this18.$route.params.id);
       }
     };
   },
@@ -19067,19 +19684,22 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     // 画像の検証とプレビュー表示
     uploadIcon: function uploadIcon() {
-      this.form.iconImage = this.$refs.preview.files[0];
+      var _this = this;
 
-      if (!this.form.iconImage.type.match('image.*')) {
-        this.message = '画像ファイルを選択してください';
-        this.form.iconImage = null;
-        return;
-      }
+      var file = this.$refs.preview.files[0];
+      var image = new Image();
+      image.src = URL.createObjectURL(file);
+      image.addEventListener('load', function () {
+        if (!file.type.match('image.*') || file.size > 1600000 || image.naturalWidth > 2500 || image.naturalHeight > 2500) {
+          window.alert('ファイルサイズが1.6MBを超える画像、または画像でないファイルはアップロードできません。画像は縦・横それぞれ2500px以下のものを選択してください。');
+          return;
+        }
 
-      this.form.icon = null;
-      this.url = URL.createObjectURL(this.form.iconImage);
-      this.$refs.preview.value = '';
-      this.message = ''; // console.log(this.form.iconImage);
-      // console.log(this.url);
+        _this.form.icon = null;
+        _this.form.iconImage = file;
+        _this.url = URL.createObjectURL(_this.form.iconImage);
+        _this.$refs.preview.value = '';
+      });
     },
     // 画像のプレビュー削除
     deletePreview: function deletePreview() {
@@ -19092,7 +19712,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     // 変更を送信
     submit: function submit() {
-      var _this = this;
+      var _this2 = this;
 
       if (this.editProcessing) return;
       this.editProcessing = true; // 文字数判定
@@ -19135,17 +19755,17 @@ __webpack_require__.r(__webpack_exports__);
           document.getElementById('header-icon').src = '/image/user.png';
         }
 
-        _this.editProcessing = false;
+        _this2.editProcessing = false;
 
-        _this.$router.push({
+        _this2.$router.push({
           name: 'user',
           params: {
-            id: _this.form.id
+            id: _this2.form.id
           }
         });
       })["catch"](function (error) {
-        _this.errors = error.response.data.errors;
-        _this.editProcessing = false;
+        _this2.errors = error.response.data.errors;
+        _this2.editProcessing = false;
       });
     },
     // フォームの値をチェック
@@ -19154,19 +19774,19 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   mounted: function mounted() {
-    var _this2 = this;
+    var _this3 = this;
 
     axios.get('/api/user').then(function (res) {
       // console.log(res.data);
-      _this2.email = res.data.email;
+      _this3.email = res.data.email;
 
-      _this2.$set(_this2.form, 'id', res.data.id);
+      _this3.$set(_this3.form, 'id', res.data.id);
 
-      _this2.$set(_this2.form, 'icon', res.data.icon);
+      _this3.$set(_this3.form, 'icon', res.data.icon);
 
-      _this2.$set(_this2.form, 'name', res.data.name);
+      _this3.$set(_this3.form, 'name', res.data.name);
 
-      _this2.$set(_this2.form, 'pr', res.data.pr);
+      _this3.$set(_this3.form, 'pr', res.data.pr);
     });
   },
   beforeRouteLeave: function beforeRouteLeave(to, from, next) {
@@ -19608,6 +20228,8 @@ function _nonIterableRest() { throw new TypeError("Invalid attempt to destructur
 function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
@@ -20352,7 +20974,13 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
           _this2.loadMorePosts = false;
         }
 
-        _this2.postsLoading = false; // console.log(this.posts.length);
+        _this2.postsLoading = false;
+
+        _this2.$nextTick(function () {
+          var bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight;
+          if (bottomOfWindow && _this2.posts.length < res.data.postsTotal) _this2.getPosts(userId);
+        }); // console.log(this.posts.length);
+
       })["catch"](function (error) {
         console.log(error);
         _this2.postsLoading = false;
@@ -20423,6 +21051,11 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         _this5.deletePostModalClose();
 
         _this5.deleteProssesing = false;
+
+        _this5.$nextTick(function () {
+          var bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight;
+          if (bottomOfWindow) _this5.getPosts();
+        });
       })["catch"](function (error) {
         console.log(error);
         _this5.deleteProssesing = false;
@@ -20493,35 +21126,76 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     // 投稿編集の画像アップロード
     uploadEditFile: function uploadEditFile() {
-      var files = this.$refs.editpreview.files; // 画像ファイルじゃないものを除外
+      var _this7 = this;
 
-      for (var i = 0; i < files.length; i++) {
-        if (!files[i].type.match('image.*')) {
-          files.splice(i, 1);
-        }
-      } // ４枚以上アップロードしようとするとアラート
-
+      var files = this.$refs.editpreview.files;
 
       if (this.editUrls.length + files.length > 4) {
+        // 枚数制限バリデーション
         window.alert('画像は４枚までです！');
-      } else {
-        for (var _i = 0; _i < files.length; _i++) {
-          var addFile = new Object();
-          addFile.id = this.nextNewImageId; // 新しく追加する画像にはマイナス値のidを付与（既存の画像と区別するため）
+        return;
+      }
 
-          addFile.file = files[_i];
-          this.newImages.push(addFile); // プレビュー用URLをプッシュ
+      var totalFileSize = 0;
 
-          var addUrl = new Object();
-          addUrl.id = this.nextNewImageId;
-          addUrl.path = URL.createObjectURL(files[_i]);
-          this.editUrls.push(addUrl);
-          this.nextNewImageId--;
+      for (var i = 0; i < this.newImages.length; i++) {
+        totalFileSize += this.newImages[i].file.size;
+      }
+
+      var loadedImagesCount = 0;
+
+      var _loop = function _loop(_i) {
+        totalFileSize += files[_i].size;
+        console.log(totalFileSize); // コンソール
+
+        if (!files[_i].type.match('image.*') || totalFileSize > 1600000) {
+          // 合計ファイルサイズ、画像でないファイルのバリデーション
+          window.alert('送信するファイルサイズの合計が1.6MBを超えているか、画像でないファイルをアップロードしようとしています！');
+          return {
+            v: void 0
+          };
         }
 
-        this.$refs.editpreview.value = ''; // console.log(this.editPost.deleteOldImagesId);
-        // console.log(this.newImages);
-        // console.log(this.editUrls);
+        var image = new Image();
+        image.src = URL.createObjectURL(files[_i]);
+        image.addEventListener('load', function () {
+          loadedImagesCount++;
+          console.log(image.naturalWidth);
+          console.log(image.naturalHeight);
+
+          if (image.naturalWidth > 2500 || image.naturalHeight > 2500) {
+            window.alert('画像は縦・横それぞれ2500px以下のものを選択してください！');
+            return;
+          }
+
+          if (loadedImagesCount === files.length) {
+            for (var _i2 = 0; _i2 < files.length; _i2++) {
+              var addFile = new Object();
+              addFile.id = _this7.nextNewImageId; // 新しく追加する画像にはマイナス値のidを付与（既存の画像と区別するため）
+
+              addFile.file = files[_i2];
+
+              _this7.newImages.push(addFile); // プレビュー用URLをプッシュ
+
+
+              var addUrl = new Object();
+              addUrl.id = _this7.nextNewImageId;
+              addUrl.path = URL.createObjectURL(files[_i2]);
+
+              _this7.editUrls.push(addUrl);
+
+              _this7.nextNewImageId--;
+            }
+
+            _this7.$refs.editpreview.value = '';
+          }
+        });
+      };
+
+      for (var _i = 0; _i < files.length; _i++) {
+        var _ret = _loop(_i);
+
+        if (_typeof(_ret) === "object") return _ret.v;
       }
     },
     // 投稿編集の画像プレビューの削除
@@ -20545,7 +21219,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     // 編集した投稿を送信
     editSubmit: function editSubmit() {
-      var _this7 = this;
+      var _this8 = this;
 
       if (this.editProcessing) return;
       this.editProcessing = true; // 文字数判定
@@ -20579,14 +21253,19 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         }
       });
       axios.post('/api/post/edit', data).then(function (res) {
-        _this7.posts.splice(_this7.editPostIndex, 1, res.data.post);
+        _this8.posts.splice(_this8.editPostIndex, 1, res.data.post);
 
-        _this7.editPostModalClose();
+        _this8.editPostModalClose();
 
-        _this7.editProcessing = false;
+        _this8.editProcessing = false;
+
+        _this8.$nextTick(function () {
+          var bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight;
+          if (bottomOfWindow) _this8.getPosts();
+        });
       })["catch"](function (error) {
-        _this7.editErrors = error.response.data.errors;
-        _this7.editProcessing = false;
+        _this8.editErrors = error.response.data.errors;
+        _this8.editProcessing = false;
       });
     },
     // どんまい機能の処理
@@ -20683,25 +21362,25 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     // コメントの取得
     getComments: function getComments() {
-      var _this8 = this;
+      var _this9 = this;
 
       if (!this.loadCommentsMore) return;
       if (this.commentsLoading) return;
       this.commentsLoading = true;
       axios.get('/api/comments/get/' + this.modalPostId + '?loaded_comments_count=' + this.modalPostComments.length).then(function (res) {
-        var _this8$modalPostComme;
+        var _this9$modalPostComme;
 
         // console.log(res.data);
-        (_this8$modalPostComme = _this8.modalPostComments).push.apply(_this8$modalPostComme, _toConsumableArray(res.data.comments));
+        (_this9$modalPostComme = _this9.modalPostComments).push.apply(_this9$modalPostComme, _toConsumableArray(res.data.comments));
 
-        if (_this8.modalPostComments.length === res.data.commentsTotal) {
-          _this8.loadCommentsMore = false;
+        if (_this9.modalPostComments.length === res.data.commentsTotal) {
+          _this9.loadCommentsMore = false;
         }
 
-        _this8.commentsLoading = false; // console.log(this.modalPostComments.length);
+        _this9.commentsLoading = false; // console.log(this.modalPostComments.length);
       })["catch"](function (error) {
         console.log(error);
-        _this8.commentsLoading = false;
+        _this9.commentsLoading = false;
       });
     },
     // コメントの無限スクロールページネーション
@@ -20715,31 +21394,31 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     // どんまいしたユーザーの取得
     getDonmaiUsers: function getDonmaiUsers() {
-      var _this9 = this;
+      var _this10 = this;
 
       if (this.isLastDonmaiPage) return;
       if (this.donmaiLoading) return;
       this.donmaiLoading = true;
       axios.get('/api/donmai/users/' + this.modalPostId + '?page=' + this.donmaiPage).then(function (res) {
-        var _this9$modalDonmaiUse;
+        var _this10$modalDonmaiUs;
 
         // console.log(res.data);
         var users = res.data.data.map(function (obj) {
           return obj.user;
         });
 
-        (_this9$modalDonmaiUse = _this9.modalDonmaiUsers).push.apply(_this9$modalDonmaiUse, _toConsumableArray(users));
+        (_this10$modalDonmaiUs = _this10.modalDonmaiUsers).push.apply(_this10$modalDonmaiUs, _toConsumableArray(users));
 
-        _this9.donmaiLoading = false;
+        _this10.donmaiLoading = false;
 
-        if (_this9.donmaiPage === res.data.last_page) {
-          _this9.isLastDonmaiPage = true;
+        if (_this10.donmaiPage === res.data.last_page) {
+          _this10.isLastDonmaiPage = true;
         }
 
-        _this9.donmaiPage++;
+        _this10.donmaiPage++;
       })["catch"](function (error) {
         console.log(error);
-        _this9.donmaiLoading = false;
+        _this10.donmaiLoading = false;
       });
     },
     // どんまいしたユーザー一覧のモーダルを開く
@@ -20809,26 +21488,26 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     // どんまいしたユーザーのフォローとアンフォロー
     donmaiFollow: function donmaiFollow(i) {
-      var _this10 = this;
+      var _this11 = this;
 
       axios.post('/api/follow', this.modalDonmaiUsers[i]).then(function () {
-        _this10.modalDonmaiUsers[i].followed = true;
+        _this11.modalDonmaiUsers[i].followed = true;
       })["catch"](function () {
         return;
       });
     },
     donmaiUnFollow: function donmaiUnFollow(i) {
-      var _this11 = this;
+      var _this12 = this;
 
       axios.post('/api/unfollow', this.modalDonmaiUsers[i]).then(function () {
-        _this11.modalDonmaiUsers[i].followed = false;
+        _this12.modalDonmaiUsers[i].followed = false;
       })["catch"](function () {
         return;
       });
     },
     // コメント投稿
     commentPost: function commentPost() {
-      var _this12 = this;
+      var _this13 = this;
 
       if (this.commentProcessing) return;
       this.commentProcessing = true; // 文字数判定
@@ -20849,30 +21528,30 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       data.append('body', this.commentInput);
       axios.post('/api/comment', data).then(function (res) {
         // console.log(res.data);
-        _this12.modalPostComments.unshift(res.data);
+        _this13.modalPostComments.unshift(res.data);
 
-        _this12.commentInput = '';
-        _this12.posts[_this12.modalPostIndex].commentCount++;
-        _this12.modalPostCommentCount++;
-        _this12.commentErrors = [];
-        _this12.commentProcessing = false;
+        _this13.commentInput = '';
+        _this13.posts[_this13.modalPostIndex].commentCount++;
+        _this13.modalPostCommentCount++;
+        _this13.commentErrors = [];
+        _this13.commentProcessing = false;
       })["catch"](function (error) {
         // console.log(error.response.data.errors);
         // this.modalPostComments[i].replyErrors = [];
-        _this12.commentErrors = error.response.data.errors;
-        _this12.commentProcessing = false;
+        _this13.commentErrors = error.response.data.errors;
+        _this13.commentProcessing = false;
       });
     },
     // コメント削除
     deleteComment: function deleteComment(i) {
-      var _this13 = this;
+      var _this14 = this;
 
       if (window.confirm('削除しますか？')) {
         axios.post('/api/comment/delete/' + this.modalPostComments[i].id).then(function () {
-          _this13.modalPostComments.splice(i, 1);
+          _this14.modalPostComments.splice(i, 1);
 
-          _this13.modalPostCommentCount--;
-          _this13.posts[_this13.modalPostIndex].commentCount--;
+          _this14.modalPostCommentCount--;
+          _this14.posts[_this14.modalPostIndex].commentCount--;
         })["catch"](function (error) {
           console.log(error);
         });
@@ -20880,25 +21559,25 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     // コメントへの返信の取得
     getReplies: function getReplies(i) {
-      var _this14 = this;
+      var _this15 = this;
 
       if (!this.modalPostComments[i].loadRepliesMore) return;
       if (this.modalPostComments[i].repliesLoading) return;
       this.modalPostComments[i].repliesLoading = true;
       axios.get('/api/replies/get/' + this.modalPostComments[i].id + '?loaded_replies_count=' + this.modalPostComments[i].replies.length).then(function (res) {
-        var _this14$modalPostComm;
+        var _this15$modalPostComm;
 
         // console.log(res.data);
-        (_this14$modalPostComm = _this14.modalPostComments[i].replies).push.apply(_this14$modalPostComm, _toConsumableArray(res.data.replies));
+        (_this15$modalPostComm = _this15.modalPostComments[i].replies).push.apply(_this15$modalPostComm, _toConsumableArray(res.data.replies));
 
-        if (_this14.modalPostComments[i].replies.length === res.data.repliesTotal) {
-          _this14.modalPostComments[i].loadRepliesMore = false;
+        if (_this15.modalPostComments[i].replies.length === res.data.repliesTotal) {
+          _this15.modalPostComments[i].loadRepliesMore = false;
         }
 
-        _this14.modalPostComments[i].repliesLoading = false; // console.log(this.modalPostComments[i].replies.length);
+        _this15.modalPostComments[i].repliesLoading = false; // console.log(this.modalPostComments[i].replies.length);
       })["catch"](function (error) {
         console.log(error);
-        _this14.modalPostComments[i].repliesLoading = false;
+        _this15.modalPostComments[i].repliesLoading = false;
       });
     },
     //コメントへの返信の表示と非表示
@@ -20930,7 +21609,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     // コメントへの返信の投稿
     reply: function reply(i) {
-      var _this15 = this;
+      var _this16 = this;
 
       if (this.replyProcessing) return;
       this.replyProcessing = true; // 文字数判定
@@ -20951,29 +21630,29 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       data.append('commentId', this.modalPostComments[i].id);
       axios.post('/api/comment/reply', data).then(function (res) {
         // console.log(res.data);
-        if (!_this15.modalPostComments[i].loadRepliesMore) {
-          _this15.modalPostComments[i].replies.push(res.data);
+        if (!_this16.modalPostComments[i].loadRepliesMore) {
+          _this16.modalPostComments[i].replies.push(res.data);
         }
 
-        _this15.modalPostComments[i].replyCount++;
-        _this15.modalPostComments[i].replyInput = '';
-        _this15.modalPostComments[i].replyErrors = [];
-        _this15.posts[_this15.modalPostIndex].commentCount++;
-        _this15.modalPostCommentCount++;
-        _this15.modalPostComments[i].replyFormOpened = false;
-        _this15.replyProcessing = false;
+        _this16.modalPostComments[i].replyCount++;
+        _this16.modalPostComments[i].replyInput = '';
+        _this16.modalPostComments[i].replyErrors = [];
+        _this16.posts[_this16.modalPostIndex].commentCount++;
+        _this16.modalPostCommentCount++;
+        _this16.modalPostComments[i].replyFormOpened = false;
+        _this16.replyProcessing = false;
       })["catch"](function (error) {
-        _this15.modalPostComments[i].replyErrors = error.response.data.errors;
-        _this15.replyProcessing = false; // console.log(this.modalPostComments[i].replyErrors)
+        _this16.modalPostComments[i].replyErrors = error.response.data.errors;
+        _this16.replyProcessing = false; // console.log(this.modalPostComments[i].replyErrors)
       });
     },
     // コメントへの返信の削除
     deleteReply: function deleteReply(comId, repId) {
-      var _this16 = this;
+      var _this17 = this;
 
       if (window.confirm('削除しますか？')) {
         axios.post('/api/reply/delete/' + repId).then(function () {
-          var comment = _this16.modalPostComments.find(function (v) {
+          var comment = _this17.modalPostComments.find(function (v) {
             return v.id === comId;
           });
 
@@ -20984,8 +21663,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
           comment.replies.splice(replyIndex, 1);
           comment.replyCount--;
-          _this16.modalPostCommentCount--;
-          _this16.posts[_this16.modalPostIndex].commentCount--;
+          _this17.modalPostCommentCount--;
+          _this17.posts[_this17.modalPostIndex].commentCount--;
         })["catch"](function (error) {
           console.log(error);
         });
@@ -21034,7 +21713,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     }
   },
   mounted: function mounted() {
-    var _this17 = this;
+    var _this18 = this;
 
     // 認証ユーザー情報、全ジャンルを取得
     this.getInitInfo(this.$route.params.id); // 投稿の無限スクロール
@@ -21043,8 +21722,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       // スクロール位置が一番下ならtrue
       var bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight;
 
-      if (bottomOfWindow && !_this17.modalPostShow && !_this17.modalPostEditShow && !_this17.deletePostModalOpened && !_this17.modalImageShow) {
-        _this17.getPosts(_this17.$route.params.id);
+      if (bottomOfWindow && !_this18.modalPostShow && !_this18.modalPostEditShow && !_this18.deletePostModalOpened && !_this18.modalImageShow) {
+        _this18.getPosts(_this18.$route.params.id);
       }
     };
   },
@@ -68963,89 +69642,92 @@ var render = function() {
                   ),
                   _vm._v(" "),
                   _c("div", { staticClass: "input-area" }, [
-                    _c("div", { staticClass: "post-name-menu" }, [
-                      _c(
-                        "div",
-                        { staticClass: "user-name-post" },
-                        [
+                    post.user && _vm.authUser.id
+                      ? _c("div", { staticClass: "post-name-menu" }, [
                           _c(
-                            "router-link",
-                            {
-                              attrs: {
-                                to: {
-                                  name: "user",
-                                  params: { id: post.user.id }
-                                }
-                              }
-                            },
-                            [
-                              _vm._v(
-                                "\n                " +
-                                  _vm._s(post.user.name) +
-                                  "\n              "
-                              )
-                            ]
-                          )
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      post.user.id === _vm.authUser.id && !post.postMenuOpened
-                        ? _c(
                             "div",
-                            {
-                              staticClass: "post-menu-btn",
-                              on: {
-                                click: function($event) {
-                                  return _vm.openPostMenu(index)
-                                }
-                              }
-                            },
-                            [_vm._v("\n              ...\n            ")]
-                          )
-                        : _vm._e(),
-                      _vm._v(" "),
-                      post.postMenuOpened
-                        ? _c("div", { staticClass: "post-menus" }, [
-                            _c(
-                              "div",
-                              {
-                                staticClass: "post-menu-edit",
+                            { staticClass: "user-name-post" },
+                            [
+                              _c(
+                                "router-link",
+                                {
+                                  attrs: {
+                                    to: {
+                                      name: "user",
+                                      params: { id: post.user.id }
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                " +
+                                      _vm._s(post.user.name) +
+                                      "\n              "
+                                  )
+                                ]
+                              )
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          post.user.id === _vm.authUser.id &&
+                          !post.postMenuOpened
+                            ? _c(
+                                "div",
+                                {
+                                  staticClass: "post-menu-btn",
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.openPostMenu(index)
+                                    }
+                                  }
+                                },
+                                [_vm._v("\n              ...\n            ")]
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
+                          post.postMenuOpened
+                            ? _c("div", { staticClass: "post-menus" }, [
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass: "post-menu-edit",
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.editPostModalOpen(index)
+                                      }
+                                    }
+                                  },
+                                  [_vm._v("編集")]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass: "post-menu-delete",
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.deletePostModalOpen(index)
+                                      }
+                                    }
+                                  },
+                                  [_vm._v("削除")]
+                                )
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
+                          post.postMenuOpened
+                            ? _c("div", {
+                                staticClass: "post-menu-cover",
                                 on: {
                                   click: function($event) {
-                                    return _vm.editPostModalOpen(index)
+                                    return _vm.closePostMenu(index)
                                   }
                                 }
-                              },
-                              [_vm._v("編集")]
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "div",
-                              {
-                                staticClass: "post-menu-delete",
-                                on: {
-                                  click: function($event) {
-                                    return _vm.deletePostModalOpen(index)
-                                  }
-                                }
-                              },
-                              [_vm._v("削除")]
-                            )
-                          ])
-                        : _vm._e(),
-                      _vm._v(" "),
-                      post.postMenuOpened
-                        ? _c("div", {
-                            staticClass: "post-menu-cover",
-                            on: {
-                              click: function($event) {
-                                return _vm.closePostMenu(index)
-                              }
-                            }
-                          })
-                        : _vm._e()
-                    ]),
+                              })
+                            : _vm._e()
+                        ])
+                      : _vm._e(),
                     _vm._v(" "),
                     _c("div", { staticClass: "post-body" }, [
                       _vm._v(_vm._s(post.body))
@@ -70714,89 +71396,96 @@ var render = function() {
                     ),
                     _vm._v(" "),
                     _c("div", { staticClass: "input-area" }, [
-                      _c("div", { staticClass: "post-name-menu" }, [
-                        _c(
-                          "div",
-                          { staticClass: "user-name-post" },
-                          [
+                      post.user && _vm.authUser
+                        ? _c("div", { staticClass: "post-name-menu" }, [
                             _c(
-                              "router-link",
-                              {
-                                attrs: {
-                                  to: {
-                                    name: "user",
-                                    params: { id: post.user.id }
-                                  }
-                                }
-                              },
-                              [
-                                _vm._v(
-                                  "\n                  " +
-                                    _vm._s(post.user.name) +
-                                    "\n                "
-                                )
-                              ]
-                            )
-                          ],
-                          1
-                        ),
-                        _vm._v(" "),
-                        post.user.id === _vm.authUser.id && !post.postMenuOpened
-                          ? _c(
                               "div",
-                              {
-                                staticClass: "post-menu-btn",
-                                on: {
-                                  click: function($event) {
-                                    return _vm.openPostMenu(index)
-                                  }
-                                }
-                              },
-                              [_vm._v("\n                ...\n              ")]
-                            )
-                          : _vm._e(),
-                        _vm._v(" "),
-                        post.postMenuOpened
-                          ? _c("div", { staticClass: "post-menus" }, [
-                              _c(
-                                "div",
-                                {
-                                  staticClass: "post-menu-edit",
+                              { staticClass: "user-name-post" },
+                              [
+                                _c(
+                                  "router-link",
+                                  {
+                                    attrs: {
+                                      to: {
+                                        name: "user",
+                                        params: { id: post.user.id }
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _vm._v(
+                                      "\n                  " +
+                                        _vm._s(post.user.name) +
+                                        "\n                "
+                                    )
+                                  ]
+                                )
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            post.user.id === _vm.authUser.id &&
+                            !post.postMenuOpened
+                              ? _c(
+                                  "div",
+                                  {
+                                    staticClass: "post-menu-btn",
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.openPostMenu(index)
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _vm._v(
+                                      "\n                ...\n              "
+                                    )
+                                  ]
+                                )
+                              : _vm._e(),
+                            _vm._v(" "),
+                            post.postMenuOpened
+                              ? _c("div", { staticClass: "post-menus" }, [
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass: "post-menu-edit",
+                                      on: {
+                                        click: function($event) {
+                                          return _vm.editPostModalOpen(index)
+                                        }
+                                      }
+                                    },
+                                    [_vm._v("編集")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass: "post-menu-delete",
+                                      on: {
+                                        click: function($event) {
+                                          return _vm.deletePostModalOpen(index)
+                                        }
+                                      }
+                                    },
+                                    [_vm._v("削除")]
+                                  )
+                                ])
+                              : _vm._e(),
+                            _vm._v(" "),
+                            post.postMenuOpened
+                              ? _c("div", {
+                                  staticClass: "post-menu-cover",
                                   on: {
                                     click: function($event) {
-                                      return _vm.editPostModalOpen(index)
+                                      return _vm.closePostMenu(index)
                                     }
                                   }
-                                },
-                                [_vm._v("編集")]
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "div",
-                                {
-                                  staticClass: "post-menu-delete",
-                                  on: {
-                                    click: function($event) {
-                                      return _vm.deletePostModalOpen(index)
-                                    }
-                                  }
-                                },
-                                [_vm._v("削除")]
-                              )
-                            ])
-                          : _vm._e(),
-                        _vm._v(" "),
-                        post.postMenuOpened
-                          ? _c("div", {
-                              staticClass: "post-menu-cover",
-                              on: {
-                                click: function($event) {
-                                  return _vm.closePostMenu(index)
-                                }
-                              }
-                            })
-                          : _vm._e()
-                      ]),
+                                })
+                              : _vm._e()
+                          ])
+                        : _vm._e(),
                       _vm._v(" "),
                       _c("div", { staticClass: "post-body" }, [
                         _vm._v(_vm._s(post.body))
@@ -73324,89 +74013,92 @@ var render = function() {
                   ),
                   _vm._v(" "),
                   _c("div", { staticClass: "input-area" }, [
-                    _c("div", { staticClass: "post-name-menu" }, [
-                      _c(
-                        "div",
-                        { staticClass: "user-name-post" },
-                        [
+                    post.user && _vm.authUser
+                      ? _c("div", { staticClass: "post-name-menu" }, [
                           _c(
-                            "router-link",
-                            {
-                              attrs: {
-                                to: {
-                                  name: "user",
-                                  params: { id: post.user.id }
-                                }
-                              }
-                            },
-                            [
-                              _vm._v(
-                                "\n                " +
-                                  _vm._s(post.user.name) +
-                                  "\n              "
-                              )
-                            ]
-                          )
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      post.user.id === _vm.authUser.id && !post.postMenuOpened
-                        ? _c(
                             "div",
-                            {
-                              staticClass: "post-menu-btn",
-                              on: {
-                                click: function($event) {
-                                  return _vm.openPostMenu(index)
-                                }
-                              }
-                            },
-                            [_vm._v("\n              ...\n            ")]
-                          )
-                        : _vm._e(),
-                      _vm._v(" "),
-                      post.postMenuOpened
-                        ? _c("div", { staticClass: "post-menus" }, [
-                            _c(
-                              "div",
-                              {
-                                staticClass: "post-menu-edit",
+                            { staticClass: "user-name-post" },
+                            [
+                              _c(
+                                "router-link",
+                                {
+                                  attrs: {
+                                    to: {
+                                      name: "user",
+                                      params: { id: post.user.id }
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                " +
+                                      _vm._s(post.user.name) +
+                                      "\n              "
+                                  )
+                                ]
+                              )
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          post.user.id === _vm.authUser.id &&
+                          !post.postMenuOpened
+                            ? _c(
+                                "div",
+                                {
+                                  staticClass: "post-menu-btn",
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.openPostMenu(index)
+                                    }
+                                  }
+                                },
+                                [_vm._v("\n              ...\n            ")]
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
+                          post.postMenuOpened
+                            ? _c("div", { staticClass: "post-menus" }, [
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass: "post-menu-edit",
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.editPostModalOpen(index)
+                                      }
+                                    }
+                                  },
+                                  [_vm._v("編集")]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass: "post-menu-delete",
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.deletePostModalOpen(index)
+                                      }
+                                    }
+                                  },
+                                  [_vm._v("削除")]
+                                )
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
+                          post.postMenuOpened
+                            ? _c("div", {
+                                staticClass: "post-menu-cover",
                                 on: {
                                   click: function($event) {
-                                    return _vm.editPostModalOpen(index)
+                                    return _vm.closePostMenu(index)
                                   }
                                 }
-                              },
-                              [_vm._v("編集")]
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "div",
-                              {
-                                staticClass: "post-menu-delete",
-                                on: {
-                                  click: function($event) {
-                                    return _vm.deletePostModalOpen(index)
-                                  }
-                                }
-                              },
-                              [_vm._v("削除")]
-                            )
-                          ])
-                        : _vm._e(),
-                      _vm._v(" "),
-                      post.postMenuOpened
-                        ? _c("div", {
-                            staticClass: "post-menu-cover",
-                            on: {
-                              click: function($event) {
-                                return _vm.closePostMenu(index)
-                              }
-                            }
-                          })
-                        : _vm._e()
-                    ]),
+                              })
+                            : _vm._e()
+                        ])
+                      : _vm._e(),
                     _vm._v(" "),
                     _c("div", { staticClass: "post-body" }, [
                       _vm._v(_vm._s(post.body))
@@ -75088,89 +75780,92 @@ var render = function() {
                   ),
                   _vm._v(" "),
                   _c("div", { staticClass: "input-area" }, [
-                    _c("div", { staticClass: "post-name-menu" }, [
-                      _c(
-                        "div",
-                        { staticClass: "user-name-post" },
-                        [
+                    post.user && _vm.authUser
+                      ? _c("div", { staticClass: "post-name-menu" }, [
                           _c(
-                            "router-link",
-                            {
-                              attrs: {
-                                to: {
-                                  name: "user",
-                                  params: { id: post.user.id }
-                                }
-                              }
-                            },
-                            [
-                              _vm._v(
-                                "\n                " +
-                                  _vm._s(post.user.name) +
-                                  "\n              "
-                              )
-                            ]
-                          )
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      post.user.id === _vm.authUser.id && !post.postMenuOpened
-                        ? _c(
                             "div",
-                            {
-                              staticClass: "post-menu-btn",
-                              on: {
-                                click: function($event) {
-                                  return _vm.openPostMenu(index)
-                                }
-                              }
-                            },
-                            [_vm._v("\n              ...\n            ")]
-                          )
-                        : _vm._e(),
-                      _vm._v(" "),
-                      post.postMenuOpened
-                        ? _c("div", { staticClass: "post-menus" }, [
-                            _c(
-                              "div",
-                              {
-                                staticClass: "post-menu-edit",
+                            { staticClass: "user-name-post" },
+                            [
+                              _c(
+                                "router-link",
+                                {
+                                  attrs: {
+                                    to: {
+                                      name: "user",
+                                      params: { id: post.user.id }
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                " +
+                                      _vm._s(post.user.name) +
+                                      "\n              "
+                                  )
+                                ]
+                              )
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          post.user.id === _vm.authUser.id &&
+                          !post.postMenuOpened
+                            ? _c(
+                                "div",
+                                {
+                                  staticClass: "post-menu-btn",
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.openPostMenu(index)
+                                    }
+                                  }
+                                },
+                                [_vm._v("\n              ...\n            ")]
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
+                          post.postMenuOpened
+                            ? _c("div", { staticClass: "post-menus" }, [
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass: "post-menu-edit",
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.editPostModalOpen(index)
+                                      }
+                                    }
+                                  },
+                                  [_vm._v("編集")]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass: "post-menu-delete",
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.deletePostModalOpen(index)
+                                      }
+                                    }
+                                  },
+                                  [_vm._v("削除")]
+                                )
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
+                          post.postMenuOpened
+                            ? _c("div", {
+                                staticClass: "post-menu-cover",
                                 on: {
                                   click: function($event) {
-                                    return _vm.editPostModalOpen(index)
+                                    return _vm.closePostMenu(index)
                                   }
                                 }
-                              },
-                              [_vm._v("編集")]
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "div",
-                              {
-                                staticClass: "post-menu-delete",
-                                on: {
-                                  click: function($event) {
-                                    return _vm.deletePostModalOpen(index)
-                                  }
-                                }
-                              },
-                              [_vm._v("削除")]
-                            )
-                          ])
-                        : _vm._e(),
-                      _vm._v(" "),
-                      post.postMenuOpened
-                        ? _c("div", {
-                            staticClass: "post-menu-cover",
-                            on: {
-                              click: function($event) {
-                                return _vm.closePostMenu(index)
-                              }
-                            }
-                          })
-                        : _vm._e()
-                    ]),
+                              })
+                            : _vm._e()
+                        ])
+                      : _vm._e(),
                     _vm._v(" "),
                     _c("div", { staticClass: "post-body" }, [
                       _vm._v(_vm._s(post.body))
@@ -77095,89 +77790,92 @@ var render = function() {
                   ),
                   _vm._v(" "),
                   _c("div", { staticClass: "input-area" }, [
-                    _c("div", { staticClass: "post-name-menu" }, [
-                      _c(
-                        "div",
-                        { staticClass: "user-name-post" },
-                        [
+                    post.user && _vm.authUser
+                      ? _c("div", { staticClass: "post-name-menu" }, [
                           _c(
-                            "router-link",
-                            {
-                              attrs: {
-                                to: {
-                                  name: "user",
-                                  params: { id: post.user.id }
-                                }
-                              }
-                            },
-                            [
-                              _vm._v(
-                                "\n                " +
-                                  _vm._s(post.user.name) +
-                                  "\n              "
-                              )
-                            ]
-                          )
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      post.user.id === _vm.authUser.id && !post.postMenuOpened
-                        ? _c(
                             "div",
-                            {
-                              staticClass: "post-menu-btn",
-                              on: {
-                                click: function($event) {
-                                  return _vm.openPostMenu(index)
-                                }
-                              }
-                            },
-                            [_vm._v("\n              ...\n            ")]
-                          )
-                        : _vm._e(),
-                      _vm._v(" "),
-                      post.postMenuOpened
-                        ? _c("div", { staticClass: "post-menus" }, [
-                            _c(
-                              "div",
-                              {
-                                staticClass: "post-menu-edit",
+                            { staticClass: "user-name-post" },
+                            [
+                              _c(
+                                "router-link",
+                                {
+                                  attrs: {
+                                    to: {
+                                      name: "user",
+                                      params: { id: post.user.id }
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                " +
+                                      _vm._s(post.user.name) +
+                                      "\n              "
+                                  )
+                                ]
+                              )
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          post.user.id === _vm.authUser.id &&
+                          !post.postMenuOpened
+                            ? _c(
+                                "div",
+                                {
+                                  staticClass: "post-menu-btn",
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.openPostMenu(index)
+                                    }
+                                  }
+                                },
+                                [_vm._v("\n              ...\n            ")]
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
+                          post.postMenuOpened
+                            ? _c("div", { staticClass: "post-menus" }, [
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass: "post-menu-edit",
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.editPostModalOpen(index)
+                                      }
+                                    }
+                                  },
+                                  [_vm._v("編集")]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass: "post-menu-delete",
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.deletePostModalOpen(index)
+                                      }
+                                    }
+                                  },
+                                  [_vm._v("削除")]
+                                )
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
+                          post.postMenuOpened
+                            ? _c("div", {
+                                staticClass: "post-menu-cover",
                                 on: {
                                   click: function($event) {
-                                    return _vm.editPostModalOpen(index)
+                                    return _vm.closePostMenu(index)
                                   }
                                 }
-                              },
-                              [_vm._v("編集")]
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "div",
-                              {
-                                staticClass: "post-menu-delete",
-                                on: {
-                                  click: function($event) {
-                                    return _vm.deletePostModalOpen(index)
-                                  }
-                                }
-                              },
-                              [_vm._v("削除")]
-                            )
-                          ])
-                        : _vm._e(),
-                      _vm._v(" "),
-                      post.postMenuOpened
-                        ? _c("div", {
-                            staticClass: "post-menu-cover",
-                            on: {
-                              click: function($event) {
-                                return _vm.closePostMenu(index)
-                              }
-                            }
-                          })
-                        : _vm._e()
-                    ]),
+                              })
+                            : _vm._e()
+                        ])
+                      : _vm._e(),
                     _vm._v(" "),
                     _c("div", { staticClass: "post-body" }, [
                       _vm._v(_vm._s(post.body))
@@ -78854,89 +79552,92 @@ var render = function() {
                   ),
                   _vm._v(" "),
                   _c("div", { staticClass: "input-area" }, [
-                    _c("div", { staticClass: "post-name-menu" }, [
-                      _c(
-                        "div",
-                        { staticClass: "user-name-post" },
-                        [
+                    post.user && _vm.authUser
+                      ? _c("div", { staticClass: "post-name-menu" }, [
                           _c(
-                            "router-link",
-                            {
-                              attrs: {
-                                to: {
-                                  name: "user",
-                                  params: { id: post.user.id }
-                                }
-                              }
-                            },
-                            [
-                              _vm._v(
-                                "\n                " +
-                                  _vm._s(post.user.name) +
-                                  "\n              "
-                              )
-                            ]
-                          )
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      post.user.id === _vm.authUser.id && !post.postMenuOpened
-                        ? _c(
                             "div",
-                            {
-                              staticClass: "post-menu-btn",
-                              on: {
-                                click: function($event) {
-                                  return _vm.openPostMenu(index)
-                                }
-                              }
-                            },
-                            [_vm._v("\n              ...\n            ")]
-                          )
-                        : _vm._e(),
-                      _vm._v(" "),
-                      post.postMenuOpened
-                        ? _c("div", { staticClass: "post-menus" }, [
-                            _c(
-                              "div",
-                              {
-                                staticClass: "post-menu-edit",
+                            { staticClass: "user-name-post" },
+                            [
+                              _c(
+                                "router-link",
+                                {
+                                  attrs: {
+                                    to: {
+                                      name: "user",
+                                      params: { id: post.user.id }
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                " +
+                                      _vm._s(post.user.name) +
+                                      "\n              "
+                                  )
+                                ]
+                              )
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          post.user.id === _vm.authUser.id &&
+                          !post.postMenuOpened
+                            ? _c(
+                                "div",
+                                {
+                                  staticClass: "post-menu-btn",
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.openPostMenu(index)
+                                    }
+                                  }
+                                },
+                                [_vm._v("\n              ...\n            ")]
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
+                          post.postMenuOpened
+                            ? _c("div", { staticClass: "post-menus" }, [
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass: "post-menu-edit",
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.editPostModalOpen(index)
+                                      }
+                                    }
+                                  },
+                                  [_vm._v("編集")]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass: "post-menu-delete",
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.deletePostModalOpen(index)
+                                      }
+                                    }
+                                  },
+                                  [_vm._v("削除")]
+                                )
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
+                          post.postMenuOpened
+                            ? _c("div", {
+                                staticClass: "post-menu-cover",
                                 on: {
                                   click: function($event) {
-                                    return _vm.editPostModalOpen(index)
+                                    return _vm.closePostMenu(index)
                                   }
                                 }
-                              },
-                              [_vm._v("編集")]
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "div",
-                              {
-                                staticClass: "post-menu-delete",
-                                on: {
-                                  click: function($event) {
-                                    return _vm.deletePostModalOpen(index)
-                                  }
-                                }
-                              },
-                              [_vm._v("削除")]
-                            )
-                          ])
-                        : _vm._e(),
-                      _vm._v(" "),
-                      post.postMenuOpened
-                        ? _c("div", {
-                            staticClass: "post-menu-cover",
-                            on: {
-                              click: function($event) {
-                                return _vm.closePostMenu(index)
-                              }
-                            }
-                          })
-                        : _vm._e()
-                    ]),
+                              })
+                            : _vm._e()
+                        ])
+                      : _vm._e(),
                     _vm._v(" "),
                     _c("div", { staticClass: "post-body" }, [
                       _vm._v(_vm._s(post.body))
@@ -81250,89 +81951,92 @@ var render = function() {
                   ),
                   _vm._v(" "),
                   _c("div", { staticClass: "input-area" }, [
-                    _c("div", { staticClass: "post-name-menu" }, [
-                      _c(
-                        "div",
-                        { staticClass: "user-name-post" },
-                        [
+                    post.user && _vm.authUser
+                      ? _c("div", { staticClass: "post-name-menu" }, [
                           _c(
-                            "router-link",
-                            {
-                              attrs: {
-                                to: {
-                                  name: "user",
-                                  params: { id: post.user.id }
-                                }
-                              }
-                            },
-                            [
-                              _vm._v(
-                                "\n                " +
-                                  _vm._s(post.user.name) +
-                                  "\n              "
-                              )
-                            ]
-                          )
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      post.user.id === _vm.authUser.id && !post.postMenuOpened
-                        ? _c(
                             "div",
-                            {
-                              staticClass: "post-menu-btn",
-                              on: {
-                                click: function($event) {
-                                  return _vm.openPostMenu(index)
-                                }
-                              }
-                            },
-                            [_vm._v("\n              ...\n            ")]
-                          )
-                        : _vm._e(),
-                      _vm._v(" "),
-                      post.postMenuOpened
-                        ? _c("div", { staticClass: "post-menus" }, [
-                            _c(
-                              "div",
-                              {
-                                staticClass: "post-menu-edit",
+                            { staticClass: "user-name-post" },
+                            [
+                              _c(
+                                "router-link",
+                                {
+                                  attrs: {
+                                    to: {
+                                      name: "user",
+                                      params: { id: post.user.id }
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                " +
+                                      _vm._s(post.user.name) +
+                                      "\n              "
+                                  )
+                                ]
+                              )
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          post.user.id === _vm.authUser.id &&
+                          !post.postMenuOpened
+                            ? _c(
+                                "div",
+                                {
+                                  staticClass: "post-menu-btn",
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.openPostMenu(index)
+                                    }
+                                  }
+                                },
+                                [_vm._v("\n              ...\n            ")]
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
+                          post.postMenuOpened
+                            ? _c("div", { staticClass: "post-menus" }, [
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass: "post-menu-edit",
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.editPostModalOpen(index)
+                                      }
+                                    }
+                                  },
+                                  [_vm._v("編集")]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass: "post-menu-delete",
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.deletePostModalOpen(index)
+                                      }
+                                    }
+                                  },
+                                  [_vm._v("削除")]
+                                )
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
+                          post.postMenuOpened
+                            ? _c("div", {
+                                staticClass: "post-menu-cover",
                                 on: {
                                   click: function($event) {
-                                    return _vm.editPostModalOpen(index)
+                                    return _vm.closePostMenu(index)
                                   }
                                 }
-                              },
-                              [_vm._v("編集")]
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "div",
-                              {
-                                staticClass: "post-menu-delete",
-                                on: {
-                                  click: function($event) {
-                                    return _vm.deletePostModalOpen(index)
-                                  }
-                                }
-                              },
-                              [_vm._v("削除")]
-                            )
-                          ])
-                        : _vm._e(),
-                      _vm._v(" "),
-                      post.postMenuOpened
-                        ? _c("div", {
-                            staticClass: "post-menu-cover",
-                            on: {
-                              click: function($event) {
-                                return _vm.closePostMenu(index)
-                              }
-                            }
-                          })
-                        : _vm._e()
-                    ]),
+                              })
+                            : _vm._e()
+                        ])
+                      : _vm._e(),
                     _vm._v(" "),
                     _c("div", { staticClass: "post-body" }, [
                       _vm._v(_vm._s(post.body))
@@ -83710,89 +84414,92 @@ var render = function() {
                   ),
                   _vm._v(" "),
                   _c("div", { staticClass: "input-area" }, [
-                    _c("div", { staticClass: "post-name-menu" }, [
-                      _c(
-                        "div",
-                        { staticClass: "user-name-post" },
-                        [
+                    post.user && _vm.authUser
+                      ? _c("div", { staticClass: "post-name-menu" }, [
                           _c(
-                            "router-link",
-                            {
-                              attrs: {
-                                to: {
-                                  name: "user",
-                                  params: { id: post.user.id }
-                                }
-                              }
-                            },
-                            [
-                              _vm._v(
-                                "\n                " +
-                                  _vm._s(post.user.name) +
-                                  "\n              "
-                              )
-                            ]
-                          )
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      post.user.id === _vm.authUser.id && !post.postMenuOpened
-                        ? _c(
                             "div",
-                            {
-                              staticClass: "post-menu-btn",
-                              on: {
-                                click: function($event) {
-                                  return _vm.openPostMenu(index)
-                                }
-                              }
-                            },
-                            [_vm._v("\n              ...\n            ")]
-                          )
-                        : _vm._e(),
-                      _vm._v(" "),
-                      post.postMenuOpened
-                        ? _c("div", { staticClass: "post-menus" }, [
-                            _c(
-                              "div",
-                              {
-                                staticClass: "post-menu-edit",
+                            { staticClass: "user-name-post" },
+                            [
+                              _c(
+                                "router-link",
+                                {
+                                  attrs: {
+                                    to: {
+                                      name: "user",
+                                      params: { id: post.user.id }
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                " +
+                                      _vm._s(post.user.name) +
+                                      "\n              "
+                                  )
+                                ]
+                              )
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          post.user.id === _vm.authUser.id &&
+                          !post.postMenuOpened
+                            ? _c(
+                                "div",
+                                {
+                                  staticClass: "post-menu-btn",
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.openPostMenu(index)
+                                    }
+                                  }
+                                },
+                                [_vm._v("\n              ...\n            ")]
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
+                          post.postMenuOpened
+                            ? _c("div", { staticClass: "post-menus" }, [
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass: "post-menu-edit",
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.editPostModalOpen(index)
+                                      }
+                                    }
+                                  },
+                                  [_vm._v("編集")]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass: "post-menu-delete",
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.deletePostModalOpen(index)
+                                      }
+                                    }
+                                  },
+                                  [_vm._v("削除")]
+                                )
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
+                          post.postMenuOpened
+                            ? _c("div", {
+                                staticClass: "post-menu-cover",
                                 on: {
                                   click: function($event) {
-                                    return _vm.editPostModalOpen(index)
+                                    return _vm.closePostMenu(index)
                                   }
                                 }
-                              },
-                              [_vm._v("編集")]
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "div",
-                              {
-                                staticClass: "post-menu-delete",
-                                on: {
-                                  click: function($event) {
-                                    return _vm.deletePostModalOpen(index)
-                                  }
-                                }
-                              },
-                              [_vm._v("削除")]
-                            )
-                          ])
-                        : _vm._e(),
-                      _vm._v(" "),
-                      post.postMenuOpened
-                        ? _c("div", {
-                            staticClass: "post-menu-cover",
-                            on: {
-                              click: function($event) {
-                                return _vm.closePostMenu(index)
-                              }
-                            }
-                          })
-                        : _vm._e()
-                    ]),
+                              })
+                            : _vm._e()
+                        ])
+                      : _vm._e(),
                     _vm._v(" "),
                     _c("div", { staticClass: "post-body" }, [
                       _vm._v(_vm._s(post.body))

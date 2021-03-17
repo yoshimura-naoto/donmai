@@ -193,6 +193,7 @@
   height: 80px;
   background: #b9b9b9;
   background-size: cover;
+  background-position: center;
   margin: 0 auto;
 }
 
@@ -302,6 +303,7 @@
   height: 50px;
   margin-left: 5px;
   background-size: cover;
+  background-position: center;
 }
 
 .thread-list-icon .none {

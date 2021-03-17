@@ -233,6 +233,7 @@
   height: 100px;
   margin-bottom: 3px;
   background-size: cover;
+  background-position: center;
   border-radius: 50%;
 }
 

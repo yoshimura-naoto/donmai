@@ -144,18 +144,19 @@ export default {
   methods: {
     // 画像の検証とプレビュー表示
     uploadIcon() {
-      this.form.iconImage = this.$refs.preview.files[0];
-      if (!this.form.iconImage.type.match('image.*')) {
-        this.message = '画像ファイルを選択してください';
-        this.form.iconImage = null;
-        return;
-      }
-      this.form.icon = null;
-      this.url = URL.createObjectURL(this.form.iconImage);
-      this.$refs.preview.value = '';
-      this.message = '';
-      // console.log(this.form.iconImage);
-      // console.log(this.url);
+      const file = this.$refs.preview.files[0];
+      let image = new Image();
+      image.src = URL.createObjectURL(file);
+      image.addEventListener('load', () => {
+        if (!file.type.match('image.*') || file.size > 1600000 || image.naturalWidth > 2500 || image.naturalHeight > 2500) {
+          window.alert('ファイルサイズが1.6MBを超える画像、または画像でないファイルはアップロードできません。画像は縦・横それぞれ2500px以下のものを選択してください。');
+          return;
+        }
+        this.form.icon = null;
+        this.form.iconImage = file;
+        this.url = URL.createObjectURL(this.form.iconImage);
+        this.$refs.preview.value = '';
+      });
     },
     // 画像のプレビュー削除
     deletePreview() {

@@ -227,17 +227,18 @@ export default {
     },
     // 画像アップロードのプレビュー
     uploadFile() {
-      this.form.icon = this.$refs.preview.files[0];
-      if (!this.form.icon.type.match('image.*')) {
-        this.message = '画像ファイルを選択してください';
-        this.form.icon = null;
-        return;
-      }
-      this.url = URL.createObjectURL(this.form.icon);
-      this.$refs.preview.value = '';
-      this.message = '';
-      // console.log(this.form.icon);
-      // console.log(this.url);
+      const file = this.$refs.preview.files[0];
+      let image = new Image();
+      image.src = URL.createObjectURL(file);
+      image.addEventListener('load', () => {
+        if (!file.type.match('image.*') || file.size > 1600000 || image.naturalWidth > 2500 || image.naturalHeight > 2500) {
+          window.alert('ファイルサイズが1.6MBを超える画像、または画像でないファイルはアップロードできません。画像は縦・横それぞれ2500px以下のものを選択してください。');
+          return;
+        }
+        this.form.icon = file;
+        this.url = URL.createObjectURL(this.form.icon);
+        this.$refs.preview.value = '';
+      });
     },
     // 画像プレビューの削除
     deletePreview() {

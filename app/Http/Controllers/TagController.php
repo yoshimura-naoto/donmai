@@ -21,7 +21,8 @@ class TagController extends Controller
     // タグのトレンドランキング（ここ１週間以内で紐つけられた投稿が多い順）
     public function getTrend()
     {
-        $lastWeek = new Carbon('-7 day', 'Asia/Tokyo');
+        // $lastWeek = new Carbon('-7 day', 'Asia/Tokyo');
+        $lastWeek = new Carbon('-200 day', 'Asia/Tokyo');  // 今だけ-200日に設定
 
         $tags = Tag::withCount(['posts' => function (Builder $query) use ($lastWeek) {
                         $query->where('posts.created_at', '>', $lastWeek);
@@ -103,8 +104,11 @@ class TagController extends Controller
     // タグページで投稿のみをどんまい数が多い順で取得
     public function getTagsPopularPosts($name, Request $request)
     {
+        $loadedPostIds = array_map('intval', explode('-', $request->loaded_post_ids));  // すでに読み込まれた投稿のIDの配列
+
         // 投稿一覧の取得
-        $posts = Post::whereHas('tags', function (Builder $query) use ($name) {
+        $posts = Post::whereNotIn('id', $loadedPostIds)
+                    ->whereHas('tags', function (Builder $query) use ($name) {
                         $query->where('name', $name);
                     })
                     ->with(['user:id,name,icon', 'tags', 'postImages', 'donmais' => function ($query) {
@@ -114,7 +118,7 @@ class TagController extends Controller
                     ->orderBy('donmais_count', 'desc')
                     ->orderBy('comments_count', 'desc')
                     ->orderBy('id', 'desc')
-                    ->offset($request->loaded_posts_count)
+                    // ->offset($request->loaded_posts_count)
                     ->limit(3)
                     ->get();
 

@@ -7,6 +7,8 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
 
+use InterventionImage;
+
 use Carbon\Carbon;
 
 use App\User;
@@ -76,6 +78,9 @@ class PostController extends Controller
 
         if ($images) {
             foreach ($images as $image) {
+                InterventionImage::make($image)
+                    ->encode('jpg')
+                    ->save($image);
                 $path = Storage::disk('s3')
                         ->putFile('post_images', $image, 'public');
                 PostImage::create([
@@ -148,6 +153,9 @@ class PostController extends Controller
         $images = $request->file('newImageFiles');
         if ($images) {
             foreach ($images as $image) {
+                InterventionImage::make($image)
+                    ->encode('jpg')
+                    ->save($image);
                 $path = Storage::disk('s3')
                                 ->putFile('post_images', $image, 'public');
                 PostImage::create([
@@ -224,29 +232,35 @@ class PostController extends Controller
 
         // 認証ユーザーがフォローしてるユーザーの合計投稿数
         $followPostsCount = Post::whereIn('user_id', $followsId)
-                                // ->where('created_at', '>=', $yesterday)  // もしアプリを本格運用するなら１日以内の投稿のみ取得
+                                // ->where('created_at', '>=', $yesterday)  // もしサービスを本格運用するなら１日以内の投稿数のみ取得
                                 ->count();
 
-        if ($request->loaded_posts_count < $followPostsCount) {
+        $loadedPostIds = array_map('intval', explode('-', $request->loaded_post_ids));  // すでに読み込まれた投稿のIDの配列
+        if ($loadedPostIds[0] === 0) $loadedPostIds = [];  // 空の場合に配列に0が加わるのを防ぐ
+
+        // if ($request->loaded_posts_count < $followPostsCount) {
+        if (count($loadedPostIds) < $followPostsCount) {
             // 先に認証ユーザーがフォローしているユーザーの投稿と自分の投稿を新着順で取得
             $posts = Post::whereIn('user_id', $followsId)
+                        ->whereNotIn('id', $loadedPostIds)
                         ->with(['user:id,name,icon', 'tags', 'postImages', 'donmais' => function ($query) {
                             $query->where('user_id', Auth::id());
                         }])
                         ->withCount('donmais', 'comments', 'replies')
                         ->orderBy('id', 'desc')
-                        ->offset($request->loaded_posts_count)
+                        // ->offset($request->loaded_posts_count)
                         ->limit(3)
                         ->get();
         } else {
             // フォロー中のユーザーの投稿を全て読み終えたらフォローしていないユーザーの投稿を新着順で取得
             $posts = Post::whereNotIn('user_id', $followsId)
+                        ->whereNotIn('id', $loadedPostIds)
                         ->with(['user:id,name,icon', 'tags', 'postImages', 'donmais' => function ($query) {
                             $query->where('user_id', Auth::id());
                         }])
                         ->withCount('donmais', 'comments', 'replies')
                         ->orderBy('id', 'desc')
-                        ->offset($request->loaded_posts_count - $followPostsCount)
+                        // ->offset($request->loaded_posts_count - $followPostsCount)
                         ->limit(3)
                         ->get();
         }
@@ -316,10 +330,14 @@ class PostController extends Controller
     // 話題の投稿ページで、ここ１週間以内でどんまい数が多い順に投稿を取得
     public function getHotPosts(Request $request)
     {
-        $lastWeek = new Carbon('-7 day', 'Asia/Tokyo');  // 今だけ20日に設定
+        // $lastWeek = new Carbon('-7 day', 'Asia/Tokyo');
+        $lastWeek = new Carbon('-200 day', 'Asia/Tokyo');  // 今だけ-200日に設定。
+    
+        $loadedPostIds = array_map('intval', explode('-', $request->loaded_post_ids));  // すでに読み込まれた投稿のIDの配列
 
         // 投稿一覧をdonmais数が多い順で取得（３件ずつ無限スクロール）
         $posts = Post::where('created_at', '>=', $lastWeek)
+                    ->whereNotIn('id', $loadedPostIds)
                     ->with(['user:id,name,icon', 'tags', 'postImages', 'donmais' => function ($query) {
                         $query->where('user_id', Auth::id());
                     }])
@@ -327,7 +345,6 @@ class PostController extends Controller
                     ->orderBy('donmais_count', 'desc')
                     ->orderBy('comments_count', 'desc')
                     ->orderBy('id', 'desc')
-                    ->offset($request->loaded_posts_count)
                     ->limit(3)
                     ->get();
 
@@ -471,7 +488,10 @@ class PostController extends Controller
     // 検索したワードをタグに含む投稿をどんまい数が多い順で取得（３件ずつ無限スクロール）
     public function getSearchPopularPostsOnly($word, Request $request)
     {
-        $posts = Post::whereHas('tags', function (Builder $query) use ($word) {
+        $loadedPostIds = array_map('intval', explode('-', $request->loaded_post_ids));  // すでに読み込まれた投稿のIDの配列
+
+        $posts = Post::whereNotIn('id', $loadedPostIds)
+                    ->whereHas('tags', function (Builder $query) use ($word) {
                         $query->where('name', $word);
                     })
                     ->with(['user:id,name,icon', 'tags', 'postImages'])
@@ -481,7 +501,7 @@ class PostController extends Controller
                                  }])
                     ->orderBy('donmais_count', 'desc')
                     ->orderBy('comments_count', 'desc')
-                    ->offset($request->loaded_posts_count)
+                    // ->offset($request->loaded_posts_count)
                     ->limit(3)
                     ->get();
 

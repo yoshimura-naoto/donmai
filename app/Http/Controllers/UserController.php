@@ -54,6 +54,7 @@ class UserController extends Controller
             // アイコン画像を正方形にリサイズして保存
             InterventionImage::make($image)
                 ->fit(200, 200)
+                ->encode('jpg')
                 ->save($image);
             $path = Storage::disk('s3')->putFile('user_icon', $image, 'public');
             // 現在のアイコン画像の削除して新たなアイコン画像のパスを取得
