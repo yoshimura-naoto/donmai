@@ -7,7 +7,7 @@
 ## 技術詳細
 ### バックエンドLaravelで使用したライブラリ
 `fruitcake/laravel-cors`：認証で外部からのアクセスを許可するために使用  
-`laravel/sanctum`：認証機能で使用  
+`laravel/sanctum`：SPA認証で使用  
 `intervention/image`：画像をリサイズして保存する際に使用  
 `laravel/ui`：フロントエンド開発のベース  
 `league/flysystem-aws-s3-v3`：AmazonS3画像アップロード用  
@@ -73,4 +73,3 @@
 * パスワード変更。
 
 ### テストコード
-* コントローラーの各メソッドのテストをfactoryを使って書きました。
