@@ -428,9 +428,9 @@
             </div>
 
             <!-- テスト用 -->
-            <div class="submit">
+            <!-- <div class="submit">
               <div class="submit-btn" @click="editCheck">チェック</div>
-            </div>
+            </div> -->
             
           </div>
 
