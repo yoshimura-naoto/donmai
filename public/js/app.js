@@ -3844,7 +3844,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
       var _loop = function _loop(_i) {
         totalFileSize += files[_i].size;
-        console.log(totalFileSize); // コンソール
 
         if (!files[_i].type.match('image.*') || totalFileSize > 1600000) {
           // 合計ファイルサイズ、画像でないファイルのバリデーション
@@ -3858,8 +3857,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         image.src = URL.createObjectURL(files[_i]);
         image.addEventListener('load', function () {
           loadedImagesCount++;
-          console.log(image.naturalWidth);
-          console.log(image.naturalHeight);
 
           if (image.naturalWidth > 2500 || image.naturalHeight > 2500) {
             window.alert('画像は縦・横それぞれ2500px以下のものを選択してください！');
@@ -3884,53 +3881,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         var _ret = _loop(_i);
 
         if (_typeof(_ret) === "object") return _ret.v;
-      } // for (let i = 0; i < addImages.length; i++) {
-      //   totalFileSize += addImages[i].size;
-      //   if (!addImages[i].type.match('image.*') || totalFileSize > 1600000) {
-      //     window.alert('送信する合計のファイルサイズが1.6MBを超えている、または画像でないファイルがアップロードされています！');
-      //     return;
-      //   }
-      // }
-      // if (this.form.images.length + addImages.length > 3) {
-      //   window.alert('画像は１投稿につき３枚までです！');
-      // } else {
-      //   this.form.images.push(...addImages);
-      //   for (let i = 0; i < addImages.length; i++) {
-      //     this.urls.push(URL.createObjectURL(addImages[i]));
-      //   }
-      //   this.$refs.threadPreview.value = '';
-      //   this.message = null;
-      //   // console.log(this.urls);
-      //   // console.log(this.form.images);
-      // }
-
+      }
     },
-    // uploadFile() {
-    //   const addImages = this.$refs.threadPreview.files;
-    //   let totalFileSize = 0;
-    //   for (let i = 0; i < this.form.images.length; i++) {
-    //     totalFileSize += this.form.images[i].size;
-    //   }
-    //   for (let i = 0; i < addImages.length; i++) {
-    //     totalFileSize += addImages[i].size;
-    //     if (!addImages[i].type.match('image.*') || totalFileSize > 1600000) {
-    //       window.alert('送信する合計のファイルサイズが1.6MBを超えている、または画像でないファイルがアップロードされています！');
-    //       return;
-    //     }
-    //   }
-    //   if (this.form.images.length + addImages.length > 3) {
-    //     window.alert('画像は１投稿につき３枚までです！');
-    //   } else {
-    //     this.form.images.push(...addImages);
-    //     for (let i = 0; i < addImages.length; i++) {
-    //       this.urls.push(URL.createObjectURL(addImages[i]));
-    //     }
-    //     this.$refs.threadPreview.value = '';
-    //     this.message = null;
-    //     // console.log(this.urls);
-    //     // console.log(this.form.images);
-    //   }
-    // },
     // 画像プレビューの削除
     deletePreview: function deletePreview(url, index) {
       this.urls.splice(index, 1);
@@ -5822,7 +5774,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
       var _loop = function _loop(_i2) {
         totalFileSize += files[_i2].size;
-        console.log(totalFileSize); // コンソール
 
         if (!files[_i2].type.match('image.*') || totalFileSize > 1600000) {
           // 合計ファイルサイズ、画像でないファイルのバリデーション
@@ -5836,8 +5787,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         image.src = URL.createObjectURL(files[_i2]);
         image.addEventListener('load', function () {
           loadedImagesCount++;
-          console.log(image.naturalWidth);
-          console.log(image.naturalHeight);
 
           if (image.naturalWidth > 2500 || image.naturalHeight > 2500) {
             window.alert('画像は縦・横それぞれ2500px以下のものを選択してください！');
@@ -5854,7 +5803,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
             }
 
             _this7.$refs.preview.value = '';
-            console.log(_this7.newPost.images);
           }
         });
       };
@@ -5999,7 +5947,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
       var _loop2 = function _loop2(_i4) {
         totalFileSize += files[_i4].size;
-        console.log(totalFileSize); // コンソール
 
         if (!files[_i4].type.match('image.*') || totalFileSize > 1600000) {
           // 合計ファイルサイズ、画像でないファイルのバリデーション
@@ -6013,8 +5960,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         image.src = URL.createObjectURL(files[_i4]);
         image.addEventListener('load', function () {
           loadedImagesCount++;
-          console.log(image.naturalWidth);
-          console.log(image.naturalHeight);
 
           if (image.naturalWidth > 2500 || image.naturalHeight > 2500) {
             window.alert('画像は縦・横それぞれ2500px以下のものを選択してください！');
@@ -7607,7 +7552,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
       var _loop = function _loop(_i) {
         totalFileSize += files[_i].size;
-        console.log(totalFileSize); // コンソール
 
         if (!files[_i].type.match('image.*') || totalFileSize > 1600000) {
           // 合計ファイルサイズ、画像でないファイルのバリデーション
@@ -7621,8 +7565,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         image.src = URL.createObjectURL(files[_i]);
         image.addEventListener('load', function () {
           loadedImagesCount++;
-          console.log(image.naturalWidth);
-          console.log(image.naturalHeight);
 
           if (image.naturalWidth > 2500 || image.naturalHeight > 2500) {
             window.alert('画像は縦・横それぞれ2500px以下のものを選択してください！');
@@ -9225,7 +9167,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
       var _loop = function _loop(_i) {
         totalFileSize += files[_i].size;
-        console.log(totalFileSize); // コンソール
 
         if (!files[_i].type.match('image.*') || totalFileSize > 1600000) {
           // 合計ファイルサイズ、画像でないファイルのバリデーション
@@ -9239,8 +9180,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         image.src = URL.createObjectURL(files[_i]);
         image.addEventListener('load', function () {
           loadedImagesCount++;
-          console.log(image.naturalWidth);
-          console.log(image.naturalHeight);
 
           if (image.naturalWidth > 2500 || image.naturalHeight > 2500) {
             window.alert('画像は縦・横それぞれ2500px以下のものを選択してください！');
@@ -11424,7 +11363,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
       var _loop = function _loop(_i) {
         totalFileSize += files[_i].size;
-        console.log(totalFileSize); // コンソール
 
         if (!files[_i].type.match('image.*') || totalFileSize > 1600000) {
           // 合計ファイルサイズ、画像でないファイルのバリデーション
@@ -11438,8 +11376,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         image.src = URL.createObjectURL(files[_i]);
         image.addEventListener('load', function () {
           loadedImagesCount++;
-          console.log(image.naturalWidth);
-          console.log(image.naturalHeight);
 
           if (image.naturalWidth > 2500 || image.naturalHeight > 2500) {
             window.alert('画像は縦・横それぞれ2500px以下のものを選択してください！');
@@ -13046,7 +12982,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
       var _loop = function _loop(_i) {
         totalFileSize += files[_i].size;
-        console.log(totalFileSize); // コンソール
 
         if (!files[_i].type.match('image.*') || totalFileSize > 1600000) {
           // 合計ファイルサイズ、画像でないファイルのバリデーション
@@ -13060,8 +12995,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         image.src = URL.createObjectURL(files[_i]);
         image.addEventListener('load', function () {
           loadedImagesCount++;
-          console.log(image.naturalWidth);
-          console.log(image.naturalHeight);
 
           if (image.naturalWidth > 2500 || image.naturalHeight > 2500) {
             window.alert('画像は縦・横それぞれ2500px以下のものを選択してください！');
@@ -14944,7 +14877,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
       var _loop = function _loop(_i) {
         totalFileSize += files[_i].size;
-        console.log(totalFileSize); // コンソール
 
         if (!files[_i].type.match('image.*') || totalFileSize > 1600000) {
           // 合計ファイルサイズ、画像でないファイルのバリデーション
@@ -14958,8 +14890,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         image.src = URL.createObjectURL(files[_i]);
         image.addEventListener('load', function () {
           loadedImagesCount++;
-          console.log(image.naturalWidth);
-          console.log(image.naturalHeight);
 
           if (image.naturalWidth > 2500 || image.naturalHeight > 2500) {
             window.alert('画像は縦・横それぞれ2500px以下のものを選択してください！');
@@ -16570,7 +16500,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
       var _loop = function _loop(_i) {
         totalFileSize += files[_i].size;
-        console.log(totalFileSize); // コンソール
 
         if (!files[_i].type.match('image.*') || totalFileSize > 1600000) {
           // 合計ファイルサイズ、画像でないファイルのバリデーション
@@ -16584,8 +16513,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         image.src = URL.createObjectURL(files[_i]);
         image.addEventListener('load', function () {
           loadedImagesCount++;
-          console.log(image.naturalWidth);
-          console.log(image.naturalHeight);
 
           if (image.naturalWidth > 2500 || image.naturalHeight > 2500) {
             window.alert('画像は縦・横それぞれ2500px以下のものを選択してください！');
@@ -18864,7 +18791,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
       var _loop = function _loop(_i) {
         totalFileSize += files[_i].size;
-        console.log(totalFileSize); // コンソール
 
         if (!files[_i].type.match('image.*') || totalFileSize > 1600000) {
           // 合計ファイルサイズ、画像でないファイルのバリデーション
@@ -18878,8 +18804,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         image.src = URL.createObjectURL(files[_i]);
         image.addEventListener('load', function () {
           loadedImagesCount++;
-          console.log(image.naturalWidth);
-          console.log(image.naturalHeight);
 
           if (image.naturalWidth > 2500 || image.naturalHeight > 2500) {
             window.alert('画像は縦・横それぞれ2500px以下のものを選択してください！');
@@ -21146,7 +21070,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
       var _loop = function _loop(_i) {
         totalFileSize += files[_i].size;
-        console.log(totalFileSize); // コンソール
 
         if (!files[_i].type.match('image.*') || totalFileSize > 1600000) {
           // 合計ファイルサイズ、画像でないファイルのバリデーション
@@ -21160,8 +21083,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         image.src = URL.createObjectURL(files[_i]);
         image.addEventListener('load', function () {
           loadedImagesCount++;
-          console.log(image.naturalWidth);
-          console.log(image.naturalHeight);
 
           if (image.naturalWidth > 2500 || image.naturalHeight > 2500) {
             window.alert('画像は縦・横それぞれ2500px以下のものを選択してください！');
@@ -83439,17 +83360,6 @@ var render = function() {
                         on: { click: _vm.editSubmit }
                       },
                       [_vm._v("更新")]
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "submit" }, [
-                    _c(
-                      "div",
-                      {
-                        staticClass: "submit-btn",
-                        on: { click: _vm.editCheck }
-                      },
-                      [_vm._v("チェック")]
                     )
                   ])
                 ])

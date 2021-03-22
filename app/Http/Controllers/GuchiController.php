@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 
 use App\Events\GuchiCreated;
 use App\Events\GuchiDeleted;
@@ -36,24 +37,27 @@ class GuchiController extends Controller
         // バリデーション
         $request->validate(GuchiRoom::$guchiRoomRules, GuchiRoom::$guchiRoomsValMessages);
 
-        // アイコン画像保存処理
-        if ($request->icon) {
-            $image = $request->file('icon');
-            InterventionImage::make($image)
-                    ->encode('jpg')
-                    ->save($image);
-            $path = Storage::disk('s3')->putFile('guchiroom_icon', $image, 'public');
-            $iconUrl = Storage::disk('s3')->url($path);
-        } else {
-            $iconUrl = null;
-        }
+        DB::transaction(function () use ($request) {
+            // アイコン画像保存処理
+            if ($request->icon) {
+                $image = $request->file('icon');
+                InterventionImage::make($image)
+                        ->encode('jpg')
+                        ->save($image);
+                $path = Storage::disk('s3')->putFile('guchiroom_icon', $image, 'public');
+                $iconUrl = Storage::disk('s3')->url($path);
+            } else {
+                $iconUrl = null;
+            }
+    
+            GuchiRoom::create([
+                'icon' => $iconUrl,
+                'title' => $request->title,
+                'genre' => $request->genre,
+                'user_id' => Auth::id(),
+            ]);
+        });
 
-        GuchiRoom::create([
-            'icon' => $iconUrl,
-            'title' => $request->title,
-            'genre' => $request->genre,
-            'user_id' => Auth::id(),
-        ]);
     }
 
 
@@ -306,38 +310,41 @@ class GuchiController extends Controller
     {
         $request->validate(Guchi::$guchiRules, Guchi::$guchiValMessages);
 
-        // 匿名かどうかの決定
-        if ($request->anonymous) {
-            $userId = null;
-        } else {
-            $userId = Auth::id();
-        }
-
-        // グチのレコード作成
-        $guchi = Guchi::create([
-            'user_id' => $userId,
-            'guchi_room_id' => $request->roomId,
-            'body' => $request->body,
-        ]);
-
-        // 画像の保存
-        $images = $request->file('images');
-
-        if ($images) {
-            foreach ($images as $image) {
-                InterventionImage::make($image)
-                    ->encode('jpg')
-                    ->save($image);
-                $path = Storage::disk('s3')
-                                ->putFile('guchi_images', $image, 'public');
-                GuchiImage::create([
-                    'guchi_id' => $guchi->id,
-                    'path' => Storage::disk('s3')->url($path),
-                ]);
+        DB::transaction(function () use ($request) {
+            // 匿名かどうかの決定
+            if ($request->anonymous) {
+                $userId = null;
+            } else {
+                $userId = Auth::id();
             }
-        }
+    
+            // グチのレコード作成
+            $guchi = Guchi::create([
+                'user_id' => $userId,
+                'guchi_room_id' => $request->roomId,
+                'body' => $request->body,
+            ]);
+    
+            // 画像の保存
+            $images = $request->file('images');
+    
+            if ($images) {
+                foreach ($images as $image) {
+                    InterventionImage::make($image)
+                        ->encode('jpg')
+                        ->save($image);
+                    $path = Storage::disk('s3')
+                                    ->putFile('guchi_images', $image, 'public');
+                    GuchiImage::create([
+                        'guchi_id' => $guchi->id,
+                        'path' => Storage::disk('s3')->url($path),
+                    ]);
+                }
+            }
 
-        event(new GuchiCreated($guchi));
+            event(new GuchiCreated($guchi));
+        });
+
     }
 
 
@@ -348,21 +355,24 @@ class GuchiController extends Controller
         $guchi = Guchi::where('id', $id)
                     ->with(['guchiImages'])
                     ->first();
-        
-        if (count($guchi->guchiImages) > 0) {
-            foreach ($guchi->guchiImages as $image) {
-                Storage::disk('s3')->delete(parse_url($image->path, PHP_URL_PATH));
+
+        DB::transaction(function () use ($guchi) {
+            if (count($guchi->guchiImages) > 0) {
+                foreach ($guchi->guchiImages as $image) {
+                    Storage::disk('s3')->delete(parse_url($image->path, PHP_URL_PATH));
+                }
             }
-        }
-
-        $guchi->delete();
-
-        $guchiData = [
-            'id' => $guchi->id,
-            'guchi_room_id' => $guchi->guchi_room_id,
-        ];
-
-        event(new GuchiDeleted($guchiData));
+    
+            $guchi->delete();
+    
+            $guchiData = [
+                'id' => $guchi->id,
+                'guchi_room_id' => $guchi->guchi_room_id,
+            ];
+    
+            event(new GuchiDeleted($guchiData));
+        });
+        
     }
 
 
