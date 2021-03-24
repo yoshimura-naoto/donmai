@@ -5467,6 +5467,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       // 無限スクロール用
       postsLoading: false,
       loadMorePosts: true,
+      visitTime: null,
       // 投稿
       posts: [// {
         //   id: 1,
@@ -5597,6 +5598,9 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
       axios.get('/api/authandgenre').then(function (res) {
         // console.log(res.data);
+        var now = new Date();
+        var month = now.getMonth() + 1;
+        _this.visitTime = now.getFullYear() + '-' + month + '-' + now.getDate() + '+' + now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds();
         _this.authUser = res.data.authUser;
         _this.genres = res.data.genres;
 
@@ -5622,7 +5626,14 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         return obj.id;
       });
       var postIdsString = postIds.join('-');
-      axios.get('/api/post/get?loaded_post_ids=' + postIdsString).then(function (res) {
+
+      if (this.willReload) {
+        var now = new Date();
+        var month = now.getMonth() + 1;
+        this.visitTime = now.getFullYear() + '-' + month + '-' + now.getDate() + '+' + now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds();
+      }
+
+      axios.get('/api/post/get?loaded_post_ids=' + postIdsString + '&visit_time=' + this.visitTime).then(function (res) {
         var _this2$posts;
 
         // console.log(res.data);
@@ -6167,17 +6178,25 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       if (!this.loadCommentsMore) return;
       if (this.commentsLoading) return;
       this.commentsLoading = true;
-      axios.get('/api/comments/get/' + this.modalPostId + '?loaded_comments_count=' + this.modalPostComments.length).then(function (res) {
+      var lastCommentId = null;
+
+      if (this.modalPostComments.length > 0) {
+        lastCommentId = this.modalPostComments.slice(-1)[0].id;
+      } else {
+        lastCommentId = 'nothing';
+      }
+
+      axios.get('/api/comments/get/' + this.modalPostId + '?last_comment_id=' + lastCommentId).then(function (res) {
         var _this12$modalPostComm;
 
         // console.log(res.data);
         (_this12$modalPostComm = _this12.modalPostComments).push.apply(_this12$modalPostComm, _toConsumableArray(res.data.comments));
 
-        if (_this12.modalPostComments.length === res.data.commentsTotal) {
+        if (_this12.modalPostComments.length > 0 && _this12.modalPostComments.slice(-1)[0].id === res.data.lastCommentId || !res.data.lastCommentId) {
           _this12.loadCommentsMore = false;
         }
 
-        _this12.commentsLoading = false; // console.log(this.modalPostComments.length);
+        _this12.commentsLoading = false;
       })["catch"](function (error) {
         console.log(error);
         _this12.commentsLoading = false;
@@ -7370,13 +7389,21 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       if (!this.loadMorePosts) return;
       if (this.postsLoading) return;
       this.postsLoading = true;
-      axios.get('/api/post/genre/get/' + genreName + '?loaded_posts_count=' + this.posts.length).then(function (res) {
+      var lastPostId = null;
+
+      if (this.posts.length > 0) {
+        lastPostId = this.posts.slice(-1)[0].id;
+      } else {
+        lastPostId = 'nothing';
+      }
+
+      axios.get('/api/post/genre/get/' + genreName + '?last_post_id=' + lastPostId).then(function (res) {
         var _this2$posts;
 
         // console.log(res.data);
         (_this2$posts = _this2.posts).push.apply(_this2$posts, _toConsumableArray(res.data.posts));
 
-        if (_this2.posts.length === res.data.postsTotal) {
+        if (_this2.posts.length > 0 && _this2.posts.slice(-1)[0].id === res.data.lastPostId || !res.data.lastPostId) {
           _this2.loadMorePosts = false;
         }
 
@@ -7384,9 +7411,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
         _this2.$nextTick(function () {
           var bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight;
-          if (bottomOfWindow && _this2.posts.length < res.data.postsTotal) _this2.getPosts(genreName);
-        }); // console.log(this.posts.length);
-
+          if (bottomOfWindow && _this2.posts.length > 0 && _this2.posts.slice(-1)[0].id > res.data.lastPostId) _this2.getPosts(genreName);
+        });
       })["catch"](function (error) {
         console.log(error);
         _this2.postsLoading = false;
@@ -7776,17 +7802,25 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       if (!this.loadCommentsMore) return;
       if (this.commentsLoading) return;
       this.commentsLoading = true;
-      axios.get('/api/comments/get/' + this.modalPostId + '?loaded_comments_count=' + this.modalPostComments.length).then(function (res) {
+      var lastCommentId = null;
+
+      if (this.modalPostComments.length > 0) {
+        lastCommentId = this.modalPostComments.slice(-1)[0].id;
+      } else {
+        lastCommentId = 'nothing';
+      }
+
+      axios.get('/api/comments/get/' + this.modalPostId + '?last_comment_id=' + lastCommentId).then(function (res) {
         var _this9$modalPostComme;
 
         // console.log(res.data);
         (_this9$modalPostComme = _this9.modalPostComments).push.apply(_this9$modalPostComme, _toConsumableArray(res.data.comments));
 
-        if (_this9.modalPostComments.length === res.data.commentsTotal) {
+        if (_this9.modalPostComments.length > 0 && _this9.modalPostComments.slice(-1)[0].id === res.data.lastCommentId || !res.data.lastCommentId) {
           _this9.loadCommentsMore = false;
         }
 
-        _this9.commentsLoading = false; // console.log(this.modalPostComments.length);
+        _this9.commentsLoading = false;
       })["catch"](function (error) {
         console.log(error);
         _this9.commentsLoading = false;
@@ -9386,17 +9420,25 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       if (!this.loadCommentsMore) return;
       if (this.commentsLoading) return;
       this.commentsLoading = true;
-      axios.get('/api/comments/get/' + this.modalPostId + '?loaded_comments_count=' + this.modalPostComments.length).then(function (res) {
+      var lastCommentId = null;
+
+      if (this.modalPostComments.length > 0) {
+        lastCommentId = this.modalPostComments.slice(-1)[0].id;
+      } else {
+        lastCommentId = 'nothing';
+      }
+
+      axios.get('/api/comments/get/' + this.modalPostId + '?last_comment_id=' + lastCommentId).then(function (res) {
         var _this9$modalPostComme;
 
         // console.log(res.data);
         (_this9$modalPostComme = _this9.modalPostComments).push.apply(_this9$modalPostComme, _toConsumableArray(res.data.comments));
 
-        if (_this9.modalPostComments.length === res.data.commentsTotal) {
+        if (_this9.modalPostComments.length > 0 && _this9.modalPostComments.slice(-1)[0].id === res.data.lastCommentId || !res.data.lastCommentId) {
           _this9.loadCommentsMore = false;
         }
 
-        _this9.commentsLoading = false; // console.log(this.modalPostComments.length);
+        _this9.commentsLoading = false;
       })["catch"](function (error) {
         console.log(error);
         _this9.commentsLoading = false;
@@ -11181,13 +11223,21 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       if (!this.loadMorePosts) return;
       if (this.postsLoading) return;
       this.postsLoading = true;
-      axios.get('/api/post/search/new/' + word + '?loaded_posts_count=' + this.posts.length).then(function (res) {
+      var lastPostId = null;
+
+      if (this.posts.length > 0) {
+        lastPostId = this.posts.slice(-1)[0].id;
+      } else {
+        lastPostId = 'nothing';
+      }
+
+      axios.get('/api/post/search/new/' + word + '?last_post_id=' + lastPostId).then(function (res) {
         var _this2$posts;
 
         // console.log(res.data);
         (_this2$posts = _this2.posts).push.apply(_this2$posts, _toConsumableArray(res.data.posts));
 
-        if (_this2.posts.length === res.data.postsTotal) {
+        if (_this2.posts.length > 0 && _this2.posts.slice(-1)[0].id === res.data.lastPostId || !res.data.lastPostId) {
           _this2.loadMorePosts = false;
         }
 
@@ -11195,9 +11245,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
         _this2.$nextTick(function () {
           var bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight;
-          if (bottomOfWindow && _this2.posts.length < res.data.postsTotal) _this2.getPosts(word);
-        }); // console.log(this.posts.length);
-
+          if (bottomOfWindow && _this2.posts.length > 0 && _this2.posts.slice(-1)[0].id > res.data.lastPostId) _this2.getPosts(word);
+        });
       })["catch"](function (error) {
         console.log(error);
         _this2.postsLoading = false;
@@ -11586,17 +11635,25 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       if (!this.loadCommentsMore) return;
       if (this.commentsLoading) return;
       this.commentsLoading = true;
-      axios.get('/api/comments/get/' + this.modalPostId + '?loaded_comments_count=' + this.modalPostComments.length).then(function (res) {
+      var lastCommentId = null;
+
+      if (this.modalPostComments.length > 0) {
+        lastCommentId = this.modalPostComments.slice(-1)[0].id;
+      } else {
+        lastCommentId = 'nothing';
+      }
+
+      axios.get('/api/comments/get/' + this.modalPostId + '?last_comment_id=' + lastCommentId).then(function (res) {
         var _this9$modalPostComme;
 
         // console.log(res.data);
         (_this9$modalPostComme = _this9.modalPostComments).push.apply(_this9$modalPostComme, _toConsumableArray(res.data.comments));
 
-        if (_this9.modalPostComments.length === res.data.commentsTotal) {
+        if (_this9.modalPostComments.length > 0 && _this9.modalPostComments.slice(-1)[0].id === res.data.lastCommentId || !res.data.lastCommentId) {
           _this9.loadCommentsMore = false;
         }
 
-        _this9.commentsLoading = false; // console.log(this.modalPostComments.length);
+        _this9.commentsLoading = false;
       })["catch"](function (error) {
         console.log(error);
         _this9.commentsLoading = false;
@@ -13205,17 +13262,25 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       if (!this.loadCommentsMore) return;
       if (this.commentsLoading) return;
       this.commentsLoading = true;
-      axios.get('/api/comments/get/' + this.modalPostId + '?loaded_comments_count=' + this.modalPostComments.length).then(function (res) {
+      var lastCommentId = null;
+
+      if (this.modalPostComments.length > 0) {
+        lastCommentId = this.modalPostComments.slice(-1)[0].id;
+      } else {
+        lastCommentId = 'nothing';
+      }
+
+      axios.get('/api/comments/get/' + this.modalPostId + '?last_comment_id=' + lastCommentId).then(function (res) {
         var _this9$modalPostComme;
 
         // console.log(res.data);
         (_this9$modalPostComme = _this9.modalPostComments).push.apply(_this9$modalPostComme, _toConsumableArray(res.data.comments));
 
-        if (_this9.modalPostComments.length === res.data.commentsTotal) {
+        if (_this9.modalPostComments.length > 0 && _this9.modalPostComments.slice(-1)[0].id === res.data.lastCommentId || !res.data.lastCommentId) {
           _this9.loadCommentsMore = false;
         }
 
-        _this9.commentsLoading = false; // console.log(this.modalPostComments.length);
+        _this9.commentsLoading = false;
       })["catch"](function (error) {
         console.log(error);
         _this9.commentsLoading = false;
@@ -13775,8 +13840,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       axios.get('/api/search/users/' + word + '?page=' + this.page).then(function (res) {
         var _this2$users;
 
-        console.log(res.data);
-
+        // console.log(res.data);
         (_this2$users = _this2.users).push.apply(_this2$users, _toConsumableArray(res.data.data));
 
         _this2.itemLoading = false;
@@ -14695,13 +14759,21 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       if (!this.loadMorePosts) return;
       if (this.postsLoading) return;
       this.postsLoading = true;
-      axios.get('/api/post/tags/new/' + tagName + '?loaded_posts_count=' + this.posts.length).then(function (res) {
+      var lastPostId = null;
+
+      if (this.posts.length > 0) {
+        lastPostId = this.posts.slice(-1)[0].id;
+      } else {
+        lastPostId = 'nothing';
+      }
+
+      axios.get('/api/post/tags/new/' + tagName + '?last_post_id=' + lastPostId).then(function (res) {
         var _this2$posts;
 
         // console.log(res.data);
         (_this2$posts = _this2.posts).push.apply(_this2$posts, _toConsumableArray(res.data.posts));
 
-        if (_this2.posts.length === res.data.postsTotal) {
+        if (_this2.posts.length > 0 && _this2.posts.slice(-1)[0].id === res.data.lastPostId || !res.data.lastPostId) {
           _this2.loadMorePosts = false;
         }
 
@@ -14709,7 +14781,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
         _this2.$nextTick(function () {
           var bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight;
-          if (bottomOfWindow && _this2.posts.length < res.data.postsTotal) _this2.getPosts(tagName);
+          if (bottomOfWindow && _this2.posts.length > 0 && _this2.posts.slice(-1)[0].id > res.data.lastPostId) _this2.getPosts(tagName);
         }); // console.log(this.posts.length);
 
       })["catch"](function (error) {
@@ -15100,17 +15172,25 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       if (!this.loadCommentsMore) return;
       if (this.commentsLoading) return;
       this.commentsLoading = true;
-      axios.get('/api/comments/get/' + this.modalPostId + '?loaded_comments_count=' + this.modalPostComments.length).then(function (res) {
+      var lastCommentId = null;
+
+      if (this.modalPostComments.length > 0) {
+        lastCommentId = this.modalPostComments.slice(-1)[0].id;
+      } else {
+        lastCommentId = 'nothing';
+      }
+
+      axios.get('/api/comments/get/' + this.modalPostId + '?last_comment_id=' + lastCommentId).then(function (res) {
         var _this9$modalPostComme;
 
         // console.log(res.data);
         (_this9$modalPostComme = _this9.modalPostComments).push.apply(_this9$modalPostComme, _toConsumableArray(res.data.comments));
 
-        if (_this9.modalPostComments.length === res.data.commentsTotal) {
+        if (_this9.modalPostComments.length > 0 && _this9.modalPostComments.slice(-1)[0].id === res.data.lastCommentId || !res.data.lastCommentId) {
           _this9.loadCommentsMore = false;
         }
 
-        _this9.commentsLoading = false; // console.log(this.modalPostComments.length);
+        _this9.commentsLoading = false;
       })["catch"](function (error) {
         console.log(error);
         _this9.commentsLoading = false;
@@ -16725,17 +16805,25 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       if (!this.loadCommentsMore) return;
       if (this.commentsLoading) return;
       this.commentsLoading = true;
-      axios.get('/api/comments/get/' + this.modalPostId + '?loaded_comments_count=' + this.modalPostComments.length).then(function (res) {
+      var lastCommentId = null;
+
+      if (this.modalPostComments.length > 0) {
+        lastCommentId = this.modalPostComments.slice(-1)[0].id;
+      } else {
+        lastCommentId = 'nothing';
+      }
+
+      axios.get('/api/comments/get/' + this.modalPostId + '?last_comment_id=' + lastCommentId).then(function (res) {
         var _this9$modalPostComme;
 
         // console.log(res.data);
         (_this9$modalPostComme = _this9.modalPostComments).push.apply(_this9$modalPostComme, _toConsumableArray(res.data.comments));
 
-        if (_this9.modalPostComments.length === res.data.commentsTotal) {
+        if (_this9.modalPostComments.length > 0 && _this9.modalPostComments.slice(-1)[0].id === res.data.lastCommentId || !res.data.lastCommentId) {
           _this9.loadCommentsMore = false;
         }
 
-        _this9.commentsLoading = false; // console.log(this.modalPostComments.length);
+        _this9.commentsLoading = false;
       })["catch"](function (error) {
         console.log(error);
         _this9.commentsLoading = false;
@@ -18458,6 +18546,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       // 無限スクロール用
       postsLoading: false,
       loadMorePosts: true,
+      lastDonmaiId: 'nothing',
       // 投稿
       posts: [// {
         //   id: 1,
@@ -18605,17 +18694,18 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       if (!this.loadMorePosts) return;
       if (this.postsLoading) return;
       this.postsLoading = true;
-      axios.get('/api/post/user/donmai/' + userId + '?loaded_posts_count=' + this.posts.length).then(function (res) {
+      axios.get('/api/post/user/donmai/' + userId + '?last_donmai_id=' + this.lastDonmaiId).then(function (res) {
         var _this2$posts;
 
         // console.log(res.data);
+        _this2.lastDonmaiId = res.data.donmais.slice(-1)[0].id;
         var posts = res.data.donmais.map(function (obj) {
           return obj.post;
         });
 
         (_this2$posts = _this2.posts).push.apply(_this2$posts, _toConsumableArray(posts));
 
-        if (_this2.posts.length === res.data.postsTotal) {
+        if (_this2.posts.length > 0 && _this2.lastDonmaiId === res.data.lastDonmaiId || !res.data.lastDonmaiId) {
           _this2.loadMorePosts = false;
         }
 
@@ -18623,7 +18713,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
         _this2.$nextTick(function () {
           var bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight;
-          if (bottomOfWindow && _this2.posts.length < res.data.postsTotal) _this2.getPosts(userId);
+          if (bottomOfWindow && _this2.posts.length > 0 && _this2.lastDonmaiId > res.data.lastDonmaiId) _this2.getPosts(userId);
         }); // console.log(this.posts.length);
 
       })["catch"](function (error) {
@@ -19009,17 +19099,25 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       if (!this.loadCommentsMore) return;
       if (this.commentsLoading) return;
       this.commentsLoading = true;
-      axios.get('/api/comments/get/' + this.modalPostId + '?loaded_comments_count=' + this.modalPostComments.length).then(function (res) {
+      var lastCommentId = null;
+
+      if (this.modalPostComments.length > 0) {
+        lastCommentId = this.modalPostComments.slice(-1)[0].id;
+      } else {
+        lastCommentId = 'nothing';
+      }
+
+      axios.get('/api/comments/get/' + this.modalPostId + '?last_comment_id=' + lastCommentId).then(function (res) {
         var _this9$modalPostComme;
 
         // console.log(res.data);
         (_this9$modalPostComme = _this9.modalPostComments).push.apply(_this9$modalPostComme, _toConsumableArray(res.data.comments));
 
-        if (_this9.modalPostComments.length === res.data.commentsTotal) {
+        if (_this9.modalPostComments.length > 0 && _this9.modalPostComments.slice(-1)[0].id === res.data.lastCommentId || !res.data.lastCommentId) {
           _this9.loadCommentsMore = false;
         }
 
-        _this9.commentsLoading = false; // console.log(this.modalPostComments.length);
+        _this9.commentsLoading = false;
       })["catch"](function (error) {
         console.log(error);
         _this9.commentsLoading = false;
@@ -20888,13 +20986,21 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       if (!this.loadMorePosts) return;
       if (this.postsLoading) return;
       this.postsLoading = true;
-      axios.get('/api/post/user/get/' + userId + '?loaded_posts_count=' + this.posts.length).then(function (res) {
+      var lastPostId = null;
+
+      if (this.posts.length > 0) {
+        lastPostId = this.posts.slice(-1)[0].id;
+      } else {
+        lastPostId = 'nothing';
+      }
+
+      axios.get('/api/post/user/get/' + userId + '?last_post_id=' + lastPostId).then(function (res) {
         var _this2$posts;
 
         // console.log(res.data);
         (_this2$posts = _this2.posts).push.apply(_this2$posts, _toConsumableArray(res.data.posts));
 
-        if (_this2.posts.length === res.data.postsTotal) {
+        if (_this2.posts.length > 0 && _this2.posts.slice(-1)[0].id === res.data.lastPostId || !res.data.lastPostId) {
           _this2.loadMorePosts = false;
         }
 
@@ -20902,9 +21008,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
         _this2.$nextTick(function () {
           var bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight;
-          if (bottomOfWindow && _this2.posts.length < res.data.postsTotal) _this2.getPosts(userId);
-        }); // console.log(this.posts.length);
-
+          if (bottomOfWindow && _this2.posts.length > 0 && _this2.posts.slice(-1)[0].id > res.data.lastPostId) _this2.getPosts(genreName);
+        });
       })["catch"](function (error) {
         console.log(error);
         _this2.postsLoading = false;
@@ -21288,17 +21393,25 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       if (!this.loadCommentsMore) return;
       if (this.commentsLoading) return;
       this.commentsLoading = true;
-      axios.get('/api/comments/get/' + this.modalPostId + '?loaded_comments_count=' + this.modalPostComments.length).then(function (res) {
+      var lastCommentId = null;
+
+      if (this.modalPostComments.length > 0) {
+        lastCommentId = this.modalPostComments.slice(-1)[0].id;
+      } else {
+        lastCommentId = 'nothing';
+      }
+
+      axios.get('/api/comments/get/' + this.modalPostId + '?last_comment_id=' + lastCommentId).then(function (res) {
         var _this9$modalPostComme;
 
         // console.log(res.data);
         (_this9$modalPostComme = _this9.modalPostComments).push.apply(_this9$modalPostComme, _toConsumableArray(res.data.comments));
 
-        if (_this9.modalPostComments.length === res.data.commentsTotal) {
+        if (_this9.modalPostComments.length > 0 && _this9.modalPostComments.slice(-1)[0].id === res.data.lastCommentId || !res.data.lastCommentId) {
           _this9.loadCommentsMore = false;
         }
 
-        _this9.commentsLoading = false; // console.log(this.modalPostComments.length);
+        _this9.commentsLoading = false;
       })["catch"](function (error) {
         console.log(error);
         _this9.commentsLoading = false;

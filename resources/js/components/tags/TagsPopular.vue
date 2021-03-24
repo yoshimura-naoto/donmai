@@ -1072,15 +1072,20 @@ export default {
       if (!this.loadCommentsMore) return;
       if (this.commentsLoading) return;
       this.commentsLoading = true;
-      axios.get('/api/comments/get/' + this.modalPostId + '?loaded_comments_count=' + this.modalPostComments.length)
+      let lastCommentId = null;
+      if (this.modalPostComments.length > 0) {
+        lastCommentId = this.modalPostComments.slice(-1)[0].id;
+      } else {
+        lastCommentId = 'nothing';
+      }
+      axios.get('/api/comments/get/' + this.modalPostId + '?last_comment_id=' + lastCommentId)
         .then((res) => {
           // console.log(res.data);
           this.modalPostComments.push(...res.data.comments);
-          if (this.modalPostComments.length === res.data.commentsTotal) {
+          if ((this.modalPostComments.length > 0 && this.modalPostComments.slice(-1)[0].id === res.data.lastCommentId) || !res.data.lastCommentId) {
             this.loadCommentsMore = false;
           }
           this.commentsLoading = false;
-          // console.log(this.modalPostComments.length);
         }).catch((error) => {
           console.log(error);
           this.commentsLoading = false;
