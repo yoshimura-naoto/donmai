@@ -65,15 +65,38 @@ class TagController extends Controller
     // そのタグを関連づけた投稿を新着順で取得（３件ずつ無限スクロール）
     public function getTagsNewPosts($name, Request $request)
     {
+        $totalPostsCount = Post::whereHas('tags', function (Builder $query) use ($name) {
+                                $query->where('name', $name);
+                            })
+                            ->count();
+
+        if ($totalPostsCount === 0) {
+            $data = [
+                'posts' => [],
+                'lastPostId' => null,
+            ];
+    
+            return $data;
+        }
+
+        $loadedLastPostId = $request->last_post_id;
+
+        if ($loadedLastPostId === 'nothing') {
+            $loadedLastPostId = Post::whereHas('tags', function (Builder $query) use ($name) {
+                                    $query->where('name', $name);
+                                })
+                                ->latest()->first()->id + 1;
+        }
+
         $posts = Post::whereHas('tags', function (Builder $query) use ($name) {
                         $query->where('name', $name);
                     })
+                    ->where('id', '<', $loadedLastPostId)
                     ->with(['user:id,name,icon', 'tags', 'postImages', 'donmais' => function ($query) {
                         $query->where('user_id', Auth::id());
                     }])
                     ->withCount('donmais', 'comments', 'replies')
                     ->orderBy('id', 'desc')
-                    ->offset($request->loaded_posts_count)
                     ->limit(3)
                     ->get();
 
@@ -91,10 +114,13 @@ class TagController extends Controller
 
         $data = [
             'posts' => $posts,
-            'postsTotal' => Post::whereHas('tags', function (Builder $query) use ($name) {
+            'lastPostId' => Post::whereHas('tags', function (Builder $query) use ($name) {
                                     $query->where('name', $name);
                                 })
-                                ->count(),
+                                ->select('id')
+                                ->orderBy('id', 'asc')
+                                ->first()
+                                ->id,
         ];
 
         return $data;

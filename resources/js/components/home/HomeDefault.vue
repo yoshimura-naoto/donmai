@@ -670,6 +670,7 @@ export default {
       // 無限スクロール用
       postsLoading: false,
       loadMorePosts: true,
+      visitTime: null,
       // 投稿
       posts: [
         // {
@@ -801,6 +802,9 @@ export default {
       axios.get('/api/authandgenre')
         .then((res) => {
           // console.log(res.data);
+          let now = new Date();
+          let month = now.getMonth() + 1;
+          this.visitTime = now.getFullYear() + '-' + month + '-' + now.getDate() + '+' + now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds();
           this.authUser = res.data.authUser;
           this.genres = res.data.genres;
           if (!this.authUser.icon) {
@@ -820,7 +824,12 @@ export default {
         return obj.id;
       });
       const postIdsString = postIds.join('-');
-      axios.get('/api/post/get?loaded_post_ids=' + postIdsString)
+      if (this.willReload) {
+        let now = new Date();
+        let month = now.getMonth() + 1;
+        this.visitTime = now.getFullYear() + '-' + month + '-' + now.getDate() + '+' + now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds();
+      }
+      axios.get('/api/post/get?loaded_post_ids=' + postIdsString + '&visit_time=' + this.visitTime)
         .then((res) => {
           // console.log(res.data);
           this.posts.push(...res.data.posts);
@@ -1278,15 +1287,20 @@ export default {
       if (!this.loadCommentsMore) return;
       if (this.commentsLoading) return;
       this.commentsLoading = true;
-      axios.get('/api/comments/get/' + this.modalPostId + '?loaded_comments_count=' + this.modalPostComments.length)
+      let lastCommentId = null;
+      if (this.modalPostComments.length > 0) {
+        lastCommentId = this.modalPostComments.slice(-1)[0].id;
+      } else {
+        lastCommentId = 'nothing';
+      }
+      axios.get('/api/comments/get/' + this.modalPostId + '?last_comment_id=' + lastCommentId)
         .then((res) => {
           // console.log(res.data);
           this.modalPostComments.push(...res.data.comments);
-          if (this.modalPostComments.length === res.data.commentsTotal) {
+          if ((this.modalPostComments.length > 0 && this.modalPostComments.slice(-1)[0].id === res.data.lastCommentId) || !res.data.lastCommentId) {
             this.loadCommentsMore = false;
           }
           this.commentsLoading = false;
-          // console.log(this.modalPostComments.length);
         }).catch((error) => {
           console.log(error);
           this.commentsLoading = false;

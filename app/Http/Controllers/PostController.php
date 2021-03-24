@@ -232,6 +232,9 @@ class PostController extends Controller
     // フォロー中のユーザーの投稿優先で、投稿を新着順で全て取得（３件ずつ無限スクロール）
     public function getPosts(Request $request)
     {
+        // ユーザーがページを訪れた時間
+        $visitTime = str_replace('+', ' ', $request->visit_time);
+
         $authUser = Auth::User();
         $followsId = array_column($authUser->follows->all(), 'following_user_id');  // 認証ユーザーがフォローしているユーザーのIDの配列
         array_push($followsId, Auth::id());  // 自分のIDも追加
@@ -239,8 +242,9 @@ class PostController extends Controller
         // $yesterday = new Carbon('-1 day', 'Asia/Tokyo');
 
         // 認証ユーザーがフォローしてるユーザーの合計投稿数
-        $followPostsCount = Post::whereIn('user_id', $followsId)
+        $followPostsCount = Post::where('created_at', '<=', $visitTime)
                                 // ->where('created_at', '>=', $yesterday)  // もしサービスを本格運用するなら１日以内の投稿数のみ取得
+                                ->whereIn('user_id', $followsId)
                                 ->count();
 
         $loadedPostIds = array_map('intval', explode('-', $request->loaded_post_ids));  // すでに読み込まれた投稿のIDの配列
@@ -248,7 +252,8 @@ class PostController extends Controller
 
         if (count($loadedPostIds) < $followPostsCount) {
             // 先に認証ユーザーがフォローしているユーザーの投稿と自分の投稿を新着順で取得
-            $posts = Post::whereIn('user_id', $followsId)
+            $posts = Post::where('created_at', '<=', $visitTime)
+                        ->whereIn('user_id', $followsId)
                         ->whereNotIn('id', $loadedPostIds)
                         ->with(['user:id,name,icon', 'tags', 'postImages', 'donmais' => function ($query) {
                             $query->where('user_id', Auth::id());
@@ -259,7 +264,8 @@ class PostController extends Controller
                         ->get();
         } else {
             // フォロー中のユーザーの投稿を全て読み終えたらフォローしていないユーザーの投稿を新着順で取得
-            $posts = Post::whereNotIn('user_id', $followsId)
+            $posts = Post::where('created_at', '<=', $visitTime)
+                        ->whereNotIn('user_id', $followsId)
                         ->whereNotIn('id', $loadedPostIds)
                         ->with(['user:id,name,icon', 'tags', 'postImages', 'donmais' => function ($query) {
                             $query->where('user_id', Auth::id());
@@ -285,7 +291,7 @@ class PostController extends Controller
 
         $data = [
             'posts' => $posts,
-            'postsTotal' => Post::count(),
+            'postsTotal' => Post::where('created_at', '<=', $visitTime)->count(),
         ];
 
         return $data;
@@ -299,16 +305,31 @@ class PostController extends Controller
         $genreRoutes = array_column(Post::$genres, 'route');
         $genreIndex = array_search($name, $genreRoutes);
 
+        if (Post::where('genre_index', $genreIndex)->count() === 0) {
+            $data = [
+                'posts' => [],
+                'lastPostId' => null,
+            ];
+    
+            return $data;
+        }
+
+        $loadedLastPostId = $request->last_post_id;
+
+        if ($loadedLastPostId === 'nothing') {
+            $loadedLastPostId = Post::where('genre_index', $genreIndex)->latest()->first()->id + 1;
+        }
+
         // そのジャンルの投稿、投稿したユーザー、タグ、画像、を取得
         $posts = Post::where('genre_index', $genreIndex)
-                ->with(['user:id,name,icon', 'tags', 'postImages', 'donmais' => function ($query) {
-                    $query->where('user_id', Auth::id());
-                }])
-                ->withCount('donmais', 'comments', 'replies')
-                ->orderBy('id', 'desc')
-                ->offset($request->loaded_posts_count)
-                ->limit(3)
-                ->get();
+                    ->where('id', '<', $loadedLastPostId)
+                    ->with(['user:id,name,icon', 'tags', 'postImages', 'donmais' => function ($query) {
+                        $query->where('user_id', Auth::id());
+                    }])
+                    ->withCount('donmais', 'comments', 'replies')
+                    ->orderBy('id', 'desc')
+                    ->limit(3)
+                    ->get();
 
         foreach ($posts as $post) {
             $post->genre = Post::$genres[$post->genre_index];
@@ -324,7 +345,7 @@ class PostController extends Controller
 
         $data = [
             'posts' => $posts,
-            'postsTotal' => Post::where('genre_index', $genreIndex)->count(),
+            'lastPostId' => Post::where('genre_index', $genreIndex)->select('id')->first()->id,
         ];
 
         return $data;
@@ -378,14 +399,29 @@ class PostController extends Controller
     // ユーザーページでユーザーの投稿を新着順で取得（３件ずつ無限スクロール）
     public function getUserPostsOnly($id, Request $request)
     {
+        if (Post::where('user_id', $id)->count() === 0) {
+            $data = [
+                'posts' => [],
+                'lastPostId' => null,
+            ];
+    
+            return $data;
+        }
+
+        $loadedLastPostId = $request->last_post_id;
+
+        if ($loadedLastPostId === 'nothing') {
+            $loadedLastPostId = Post::where('user_id', $id)->latest()->first()->id + 1;
+        }
+
         $posts = Post::where('user_id', $id)
+                    ->where('id', '<', $loadedLastPostId)
                     ->with(['user:id,name,icon', 'tags', 'postImages'])
                     ->withCount(['donmais', 'comments', 'replies',
                                  'donmais as donmai_by_user' => function (Builder $query) {
                                     $query->where('user_id', Auth::id());
                                 }])
                     ->orderBy('id', 'desc')
-                    ->offset($request->loaded_posts_count)
                     ->limit(3)
                     ->get();
 
@@ -404,7 +440,7 @@ class PostController extends Controller
 
         $data = [
             'posts' => $posts,
-            'postsTotal' => Post::where('user_id', $id)->count(),
+            'lastPostId' => Post::where('user_id', $id)->select('id')->first()->id,
         ];
 
         return $data;
@@ -412,10 +448,26 @@ class PostController extends Controller
 
 
 
-    // ユーザーがどんまいした投稿を、どんまいした日が新しい順に取得（３件ずつ無限スクロール）
+    // ユーザーがどんまいした投稿を、どんまいした日時が新しい順に取得（３件ずつ無限スクロール）
     public function getUserDonmaiPostsOnly($id, Request $request)
     {
+        if (Donmai::where('user_id', $id)->count() === 0) {
+            $data = [
+                'donmais' => [],
+                'lastDonmaisId' => null,
+            ];
+    
+            return $data;
+        }
+
+        $loadedLastDonmaiId = $request->last_donmai_id;
+
+        if ($loadedLastDonmaiId === 'nothing') {
+            $loadedLastDonmaiId = Donmai::where('user_id', $id)->latest()->first()->id + 1;
+        }
+
         $donmais = Donmai::where('user_id', $id)
+                        ->where('id', '<', intval($loadedLastDonmaiId))
                         ->with(['post.user:id,name,icon',
                                 'post.tags', 
                                 'post.postImages',
@@ -423,7 +475,6 @@ class PostController extends Controller
                                     $query->withCount(['donmais', 'comments', 'replies']);
                                 }])
                         ->orderBy('id', 'desc')
-                        ->offset($request->loaded_posts_count)
                         ->limit(3)
                         ->get();
 
@@ -437,10 +488,7 @@ class PostController extends Controller
 
         $data = [
             'donmais' => $donmais,
-            'postsTotal' => Post::whereHas('donmais', function (Builder $query) use ($id) {
-                                    $query->where('user_id', $id);
-                                })
-                                ->count(),
+            'lastDonmaiId' => Donmai::where('user_id', $id)->select('id')->first()->id,
         ];
 
         return $data;
@@ -451,16 +499,41 @@ class PostController extends Controller
     // 検索したワードをタグに含む投稿を新着順で取得（３件ずつ無限スクロール）
     public function getSearchNewPostsOnly($word, Request $request)
     {
+        $totalPostsCount = Post::whereHas('tags', function (Builder $query) use ($word) {
+                                $query->where('name', $word);
+                            })
+                            ->count();
+
+        if ($totalPostsCount === 0) {
+            $data = [
+                'posts' => [],
+                'lastPostId' => null,
+            ];
+    
+            return $data;
+        }
+
+        $loadedLastPostId = $request->last_post_id;
+
+        if ($loadedLastPostId === 'nothing') {
+            $loadedLastPostId = Post::whereHas('tags', function (Builder $query) use ($word) {
+                                    $query->where('name', $word);
+                                })
+                                ->latest()
+                                ->first()
+                                ->id + 1;
+        }
+
         $posts = Post::whereHas('tags', function (Builder $query) use ($word) {
                         $query->where('name', $word);
                     })
+                    ->where('id', '<', $loadedLastPostId)
                     ->with(['user:id,name,icon', 'tags', 'postImages'])
                     ->withCount(['donmais', 'comments', 'replies',
                                  'donmais as donmai_by_user' => function (Builder $query) {
                                     $query->where('user_id', Auth::id());
                                  }])
                     ->orderBy('id', 'desc')
-                    ->offset($request->loaded_posts_count)
                     ->limit(3)
                     ->get();
 
@@ -479,10 +552,13 @@ class PostController extends Controller
 
         $data = [
             'posts' => $posts,
-            'postsTotal' => Post::whereHas('tags', function (Builder $query) use ($word) {
+            'lastPostId' => Post::whereHas('tags', function (Builder $query) use ($word) {
                                 $query->where('name', $word);
                             })
-                            ->count(),
+                            ->select('id')
+                            ->orderBy('id', 'asc')
+                            ->first()
+                            ->id,
         ];
 
         return $data;
@@ -506,7 +582,6 @@ class PostController extends Controller
                                  }])
                     ->orderBy('donmais_count', 'desc')
                     ->orderBy('comments_count', 'desc')
-                    // ->offset($request->loaded_posts_count)
                     ->limit(3)
                     ->get();
 

@@ -90,7 +90,7 @@ export default {
       this.itemLoading = true;
       axios.get('/api/search/users/' + word + '?page=' + this.page)
         .then((res) => {
-          console.log(res.data);
+          // console.log(res.data);
           this.users.push(...res.data.data);
           this.itemLoading = false;
           if (this.page === res.data.last_page) {
