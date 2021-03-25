@@ -14,6 +14,7 @@ class CommentController extends Controller
     // 投稿のコメントを最新順で取得（５件ずつ無限スクロール）
     public function getComments($id, Request $request)
     {
+        // コメントが０件だった場合はからのデータを返す
         if (Comment::where('post_id', $id)->count() === 0) {
             $data = [
                 'comments' => [],
@@ -23,8 +24,9 @@ class CommentController extends Controller
             return $data;
         };
 
-        $loadedLastCommentId = $request->last_comment_id;
+        $loadedLastCommentId = $request->last_comment_id;  // フロントで取得された最後のコメントのID
 
+        // まだフロントで全くコメントを取得していない場合
         if ($loadedLastCommentId === 'nothing') {
             $loadedLastCommentId = Comment::where('post_id', $id)->select('id')->latest()->first()->id + 1;
         }
@@ -61,7 +63,7 @@ class CommentController extends Controller
 
         $data = [
             'comments' => $comments,
-            'lastCommentId' => Comment::where('post_id', $id)->select('id')->first()->id,
+            'lastCommentId' => Comment::where('post_id', $id)->select('id')->first()->id,  // 取得する最後のコメントのID
         ];
 
         return $data;
@@ -85,6 +87,7 @@ class CommentController extends Controller
                             ->with(['user:id,name,icon', 'commentGoods', 'replies.user', 'replies.replyGoods'])
                             ->first();
 
+        // フロントエンド用にデータ初期化
         $newComment->goodCount = 0;
         $newComment->gooded = false;
         $newComment->replyShow = false;

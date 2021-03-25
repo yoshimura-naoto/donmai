@@ -36,6 +36,7 @@ class PostController extends Controller
     }
 
 
+
     // 全ジャンルの取得
     public function getGenres()
     {
@@ -53,14 +54,14 @@ class PostController extends Controller
         DB::transaction(function () use ($request) {
             // タグの保存
             $tagsText = $request->tags;   // ユーザーが入力したタグを文字列の状態（'#りんご #バナナ'）で取得
-            $tagsList = preg_match_all('/#([^\s#]+)/', str_replace('　', ' ', $tagsText), $m) ? $m[1] : [];  // $tagsTextを配列に変換（ハッシュタグから始まる単語を取得して配列に）
+            $tagsList = preg_match_all('/#([^\s#]+)/', str_replace('　', ' ', $tagsText), $m) ? $m[1] : [];  // $tagsTextを配列に変換（ハッシュタグから始まる単語を取得して配列に。）
             $uniqueTagsList = array_unique($tagsList);  // 重複を除去
             $tags = [];     // タグのレコード（tagsテーブルのレコード）の配列
             foreach ($uniqueTagsList as $tag) {
                 $record = Tag::firstOrCreate(['name' => $tag]);
                 array_push($tags, $record);
             }
-            $tags_id = [];  // この投稿が持つタグのidの配列
+            $tags_id = [];  // この投稿に紐つくタグのidの配列
             foreach ($tags as $tag) {
                 array_push($tags_id, $tag['id']);
             }
@@ -118,7 +119,7 @@ class PostController extends Controller
             $tagsText = $request->tags;
             $newTags = preg_match_all('/#([^\s#]+)/', str_replace('　', ' ', $tagsText), $m) ? $m[1] : [];  // リクエストで取得したタグの配列
             $oldTags = array_column($post->tags->all(), 'name');  // 今までこの投稿に紐ついていたタグの配列
-            // 今までのタグで削除するものがあれば削除
+            // 今まで紐ついていたタグで削除するものがあれば削除
             $deleteOldTags = array_values(array_diff($oldTags, $newTags)); // oldTagsにあってnewTagsにないタグ名の配列（消すタグ名の配列）
             $deleteOldTagRecords = $post->tags
                                         ->whereIn('name', $deleteOldTags)
@@ -237,7 +238,9 @@ class PostController extends Controller
 
         $authUser = Auth::User();
         $followsId = array_column($authUser->follows->all(), 'following_user_id');  // 認証ユーザーがフォローしているユーザーのIDの配列
-        array_push($followsId, Auth::id());  // 自分のIDも追加
+        if (count($followsId) > 0) {
+            array_push($followsId, Auth::id());  // 自分のIDも追加
+        }
 
         // $yesterday = new Carbon('-1 day', 'Asia/Tokyo');
 
@@ -247,12 +250,13 @@ class PostController extends Controller
                                 ->whereIn('user_id', $followsId)
                                 ->count();
 
-        $loadedPostIds = array_map('intval', explode('-', $request->loaded_post_ids));  // すでに読み込まれた投稿のIDの配列
+        $loadedPostIds = array_map('intval', explode('-', $request->loaded_post_ids));  // フロントですでに読み込まれた投稿のIDの配列
         if ($loadedPostIds[0] === 0) $loadedPostIds = [];  // 空の場合に配列に0が加わるのを防ぐ
 
         if (count($loadedPostIds) < $followPostsCount) {
             // 先に認証ユーザーがフォローしているユーザーの投稿と自分の投稿を新着順で取得
             $posts = Post::where('created_at', '<=', $visitTime)
+                        // ->where('created_at', '>=', $yesterday)  // もしサービスを本格運用するなら１日以内の投稿のみ取得
                         ->whereIn('user_id', $followsId)
                         ->whereNotIn('id', $loadedPostIds)
                         ->with(['user:id,name,icon', 'tags', 'postImages', 'donmais' => function ($query) {
@@ -265,6 +269,7 @@ class PostController extends Controller
         } else {
             // フォロー中のユーザーの投稿を全て読み終えたらフォローしていないユーザーの投稿を新着順で取得
             $posts = Post::where('created_at', '<=', $visitTime)
+                        // ->where('created_at', '>=', $yesterday)  // もしサービスを本格運用するなら１日以内の投稿のみ取得
                         ->whereNotIn('user_id', $followsId)
                         ->whereNotIn('id', $loadedPostIds)
                         ->with(['user:id,name,icon', 'tags', 'postImages', 'donmais' => function ($query) {
@@ -305,6 +310,7 @@ class PostController extends Controller
         $genreRoutes = array_column(Post::$genres, 'route');
         $genreIndex = array_search($name, $genreRoutes);
 
+        // そのジャンルの投稿がない場合はからのデータを返す
         if (Post::where('genre_index', $genreIndex)->count() === 0) {
             $data = [
                 'posts' => [],
@@ -314,8 +320,9 @@ class PostController extends Controller
             return $data;
         }
 
-        $loadedLastPostId = $request->last_post_id;
+        $loadedLastPostId = $request->last_post_id;  // フロントで読み込まれている最後の投稿のID
 
+        // フロントでまだ何も読み込まれていない場合
         if ($loadedLastPostId === 'nothing') {
             $loadedLastPostId = Post::where('genre_index', $genreIndex)->latest()->first()->id + 1;
         }
@@ -359,7 +366,7 @@ class PostController extends Controller
         // $lastWeek = new Carbon('-7 day', 'Asia/Tokyo');
         $lastWeek = new Carbon('-200 day', 'Asia/Tokyo');  // 今だけ-200日に設定。
     
-        $loadedPostIds = array_map('intval', explode('-', $request->loaded_post_ids));  // すでに読み込まれた投稿のIDの配列
+        $loadedPostIds = array_map('intval', explode('-', $request->loaded_post_ids));  // フロントですでに読み込まれた投稿のIDの配列
 
         // 投稿一覧をdonmais数が多い順で取得（３件ずつ無限スクロール）
         $posts = Post::where('created_at', '>=', $lastWeek)
@@ -399,6 +406,7 @@ class PostController extends Controller
     // ユーザーページでユーザーの投稿を新着順で取得（３件ずつ無限スクロール）
     public function getUserPostsOnly($id, Request $request)
     {
+        // 投稿が全くない場合はからのデータを返す
         if (Post::where('user_id', $id)->count() === 0) {
             $data = [
                 'posts' => [],
@@ -451,6 +459,7 @@ class PostController extends Controller
     // ユーザーがどんまいした投稿を、どんまいした日時が新しい順に取得（３件ずつ無限スクロール）
     public function getUserDonmaiPostsOnly($id, Request $request)
     {
+        // 該当するレコードが全くない場合はからのデータを返す
         if (Donmai::where('user_id', $id)->count() === 0) {
             $data = [
                 'donmais' => [],
@@ -569,7 +578,7 @@ class PostController extends Controller
     // 検索したワードをタグに含む投稿をどんまい数が多い順で取得（３件ずつ無限スクロール）
     public function getSearchPopularPostsOnly($word, Request $request)
     {
-        $loadedPostIds = array_map('intval', explode('-', $request->loaded_post_ids));  // すでに読み込まれた投稿のIDの配列
+        $loadedPostIds = array_map('intval', explode('-', $request->loaded_post_ids));  // フロントですでに読み込まれた投稿のIDの配列
 
         $posts = Post::whereNotIn('id', $loadedPostIds)
                     ->whereHas('tags', function (Builder $query) use ($word) {

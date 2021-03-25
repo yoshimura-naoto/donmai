@@ -42,7 +42,7 @@ class TagController extends Controller
 
 
 
-    // そのタグを関連づけた投稿の数を取得
+    // そのタグが紐ついている投稿の数を取得
     public function tagCount($name)
     {
         $tag = Tag::where('name', $name)
@@ -65,11 +65,13 @@ class TagController extends Controller
     // そのタグを関連づけた投稿を新着順で取得（３件ずつ無限スクロール）
     public function getTagsNewPosts($name, Request $request)
     {
+        // そのタグが紐ついている投稿の合計
         $totalPostsCount = Post::whereHas('tags', function (Builder $query) use ($name) {
                                 $query->where('name', $name);
                             })
                             ->count();
 
+        // 該当するレコードが１つもない場合
         if ($totalPostsCount === 0) {
             $data = [
                 'posts' => [],
@@ -81,6 +83,7 @@ class TagController extends Controller
 
         $loadedLastPostId = $request->last_post_id;
 
+        // フロントでまだ１つも投稿が取得されていない場合
         if ($loadedLastPostId === 'nothing') {
             $loadedLastPostId = Post::whereHas('tags', function (Builder $query) use ($name) {
                                     $query->where('name', $name);
@@ -144,7 +147,6 @@ class TagController extends Controller
                     ->orderBy('donmais_count', 'desc')
                     ->orderBy('comments_count', 'desc')
                     ->orderBy('id', 'desc')
-                    // ->offset($request->loaded_posts_count)
                     ->limit(3)
                     ->get();
 

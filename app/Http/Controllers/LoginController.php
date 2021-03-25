@@ -13,8 +13,7 @@ class LoginController extends Controller
     // ログイン処理
     public function login(Request $request) 
     {
-        $form = $request
-                ->validate(User::$loginRules, User::$loginValMessages);
+        $form = $request->validate(User::$loginRules, User::$loginValMessages);
 
         if (Auth::attempt($form))
         {
