@@ -125,11 +125,13 @@ class PostController extends Controller
                                         ->whereIn('name', $deleteOldTags)
                                         ->all();  // 消すtagsテーブルのレコードの配列 
             // 紐つく投稿が0になる場合はそのタグを削除
+            $deleteTagIds = [];
             foreach ($post->tags->whereIn('name', $deleteOldTags) as $tag) {
                 if ($tag->posts_count === 1) {
-                    $tag->delete();
+                    array_push($deleteTagIds, $tag->id);
                 }
             }
+            Tag::whereIn('id', $deleteTagIds)->delete();
             // 中間テーブルpost_tagで削除するものを削除
             $post->tags()->detach(array_column($deleteOldTagRecords, 'id'));
             // 新しく追加するタグを作成
@@ -218,11 +220,13 @@ class PostController extends Controller
             }
     
             // この投稿を削除した際、どの投稿にも紐つけられないタグが発生する場合はそのタグを削除
+            $deleteTagIds = [];
             foreach ($post->tags as $tag) {
                 if ($tag->posts_count === 1) {
-                    $tag->delete();
+                    array_push($deleteTagIds, $tag->id);
                 }
             }
+            Tag::whereIn('id', $deleteTagIds)->delete();
     
             $post->delete();
         });
