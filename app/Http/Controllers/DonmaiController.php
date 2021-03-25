@@ -12,7 +12,7 @@ use App\Donmai;
 
 class DonmaiController extends Controller
 {
-    // 投稿へのどんまい
+    // 投稿へのどんまい（ツイッターなどでいういいね機能）
     public function donmai($id)
     {
         Donmai::create([
@@ -22,7 +22,7 @@ class DonmaiController extends Controller
     }
 
 
-    // どんまいキャンセル処理
+    // どんまいのキャンセル処理
     public function unDonmai($id)
     {
         Donmai::where('user_id', Auth::id())

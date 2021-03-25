@@ -26,7 +26,7 @@ class UserController extends Controller
                                  'followers',
                                  'followers as followed_by_me_count' => function (Builder $query) {
                                      $query->where('user_id', Auth::id());
-                                 }])
+                                }])
                     ->first();
         
         // 認証ユーザーがフォローしているかどうか

@@ -42,7 +42,7 @@ class GuchiController extends Controller
             if ($request->icon) {
                 $image = $request->file('icon');
                 InterventionImage::make($image)
-                        ->encode('jpg')
+                        ->encode('jpg')  // webpなどが未対応のブラウザがあるためjpgにエンコード
                         ->save($image);
                 $path = Storage::disk('s3')->putFile('guchiroom_icon', $image, 'public');
                 $iconUrl = Storage::disk('s3')->url($path);
@@ -70,6 +70,9 @@ class GuchiController extends Controller
                             ->first();
 
         // アイコン画像削除
+        Storage::disk('s3')->delete(parse_url($guchiRoom->icon, PHP_URL_PATH));
+
+        // このグチ部屋の全てのチャットに紐ついている画像を削除
         if (count($guchiRoom->guchiImages) > 0) {
             foreach ($guchiRoom->guchiImages as $image) {
                 Storage::disk('s3')->delete(parse_url($image->path, PHP_URL_PATH));
@@ -129,7 +132,7 @@ class GuchiController extends Controller
 
 
 
-    // グチ部屋全部をグチが多い順で取得
+    // グチ部屋全部をチャットが多い順で取得
     public function getRoomsTrend()
     {
         $rooms = GuchiRoom::with(['guchiBookmarks' => function ($query) {
@@ -305,7 +308,7 @@ class GuchiController extends Controller
 
 
 
-    // グチの投稿
+    // グチ（各チャット）の投稿
     public function guchiCreate(Request $request)
     {
         $request->validate(Guchi::$guchiRules, Guchi::$guchiValMessages);
@@ -349,7 +352,7 @@ class GuchiController extends Controller
 
 
 
-    // グチの削除
+    // グチ（各チャット）の削除
     public function guchiDelete($id)
     {
         $guchi = Guchi::where('id', $id)
@@ -396,7 +399,7 @@ class GuchiController extends Controller
 
 
 
-    // あるグチ部屋で最新のグチを１件取得
+    // あるグチ部屋で最新のグチ（チャット）を１件取得
     public function getLatestGuchi($id)
     {
         $guchi = Guchi::where('guchi_room_id', $id)
@@ -419,14 +422,14 @@ class GuchiController extends Controller
     }
 
 
-    // グチ部屋のグチ（発言）の最新５件を古い順で取得（５件ずつ無限スクロール）
+    // グチ部屋のグチ（チャット）の最新５件を古い順で取得（５件ずつ無限スクロール）
     public function guchiGet($id, Request $request)
     {
         $guchis = Guchi::where('guchi_room_id', $id)
                         ->with(['user:id,name,icon', 'guchiImages',])
                         ->withCount(['guchiImages',
                                      'guchiGoods',
-                                     'guchiGoods as guchi_good_by_user' => function (Builder $query) {
+                                     'guchiGoods as guchi_good_by_user' => function (Builder $query) {  // 認証ユーザーがチャットにいいねしているかどうか
                                         $query->where('user_id', Auth::id());
                                     }])
                         ->orderBy('id', 'desc')
@@ -434,7 +437,7 @@ class GuchiController extends Controller
                         ->limit(5)
                         ->get();
 
-        $imagesCount = 0;  // 今回読み込む画像の合計数
+        $imagesCount = 0;  // 今回のスクロールで読み込む画像の合計数
 
         foreach ($guchis as $guchi) {
             // 認証ユーザーがいいねしてるかどうか
@@ -449,7 +452,7 @@ class GuchiController extends Controller
             } else {
                 $guchi->isSelf = false;
             }
-            // 各投稿の画像数を足し合わせる
+            // 各チャットの画像数を足し合わせる
             $imagesCount += $guchi->guchi_images_count;
         }
 
