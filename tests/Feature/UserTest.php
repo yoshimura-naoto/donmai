@@ -124,17 +124,6 @@ class UserTest extends TestCase
         $this->actingAs($user)
             ->postJson('/api/user/edit', $form)
             ->assertStatus(422);
-
-        // 自己紹介は１００文字以内じゃないとダメ
-        $rand_pr = '';
-        for ($i = 0; $i < 101; $i++) {
-            $rand_pr = $rand_pr . chr(mt_rand(65, 90));
-        }
-        $form['name'] = 'あほ';
-        $form['pr'] = $rand_pr;
-        $this->actingAs($user)
-            ->postJson('/api/user/edit', $form)
-            ->assertStatus(422);
     }
 
 

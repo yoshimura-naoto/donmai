@@ -722,7 +722,6 @@ export default {
       });
       const postIdsString = postIds.join('-');
       // console.log(postIdsString);
-      // axios.get('/api/post/hot/get?loaded_posts_count=' + this.posts.length + '&loaded_post_ids=' + postIdsString)
       axios.get('/api/post/hot/get?loaded_post_ids=' + postIdsString)
         .then((res) => {
           // console.log(res.data);

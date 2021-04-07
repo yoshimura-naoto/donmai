@@ -52,12 +52,14 @@ class CommentTest extends TestCase
         CommentGood::create(['user_id' => $authUser->id, 'comment_id' => $comment5->id]);
         CommentGood::create(['user_id' => $authUser->id, 'comment_id' => $comment7->id]);
 
-        $this->getJson('/api/comments/get/' . $post->id . '?loaded_comments_count=0')
+        $firstCommentIdPlusOne = $comment7->id + 1;
+
+        $this->getJson('/api/comments/get/' . $post->id . '?last_comment_id=' . $firstCommentIdPlusOne)
             ->assertStatus(401);
 
         // ０スクロールでのレスポンス
         $this->actingAs($authUser)
-            ->getJson('/api/comments/get/' . $post->id . '?loaded_comments_count=0')
+            ->getJson('/api/comments/get/' . $post->id . '?last_comment_id=' . $firstCommentIdPlusOne)
             ->assertOk()
             ->assertSeeInOrder([
                 $comment7->body, '"gooded":true',
@@ -69,12 +71,12 @@ class CommentTest extends TestCase
             ->assertDontSee(
                 $comment1->body,
                 $comment2->body,
-                $comment8->body
+                $comment8->body,
             )
-            ->assertJsonFragment(['commentsTotal' => 7]);
+            ->assertJsonFragment(['lastCommentId' => $comment1->id]);
 
         // １スクロールでのレスポンス
-        $this->getJson('/api/comments/get/' . $post->id . '?loaded_comments_count=5')
+        $this->getJson('/api/comments/get/' . $post->id . '?last_comment_id=' . $comment3->id)
             ->assertOk()
             ->assertSeeInOrder([
                 $comment2->body, '"gooded":true',
@@ -88,7 +90,7 @@ class CommentTest extends TestCase
                 $comment4->body,
                 $comment3->body,
             )
-            ->assertJsonFragment(['commentsTotal' => 7]);
+            ->assertJsonFragment(['lastCommentId' => $comment1->id]);
     }
 
 

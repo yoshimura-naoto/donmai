@@ -94,7 +94,6 @@ class User extends Authenticatable
     public static $updateValMessages = [
         'name.required' => '名前を入力してください！',
         'name.max' => '名前は30文字以内で入力してください！',
-        'pr.max' => '自己紹介は100文字以内にしてください！',
     ];
 
 

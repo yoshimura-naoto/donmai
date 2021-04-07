@@ -1683,6 +1683,14 @@ export default {
     this.changeHeight();
   },
 
+  beforeRouteEnter (to, from, next) {
+    next(vm => {
+      let now = new Date();
+      let month = now.getMonth() + 1;
+      vm.visitTime = now.getFullYear() + '-' + month + '-' + now.getDate() + '+' + now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds();
+    });
+  },
+
   beforeRouteLeave (to, from, next) {
     if (this.modalPostShow || this.modalImageShow || this.deletePostModalOpened || this.modalPostEditShow) {
       this.keepScrollWhenClose();
