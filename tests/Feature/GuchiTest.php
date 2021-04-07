@@ -32,8 +32,8 @@ class GuchiTest extends TestCase
                 'jobs',
                 'dozi',
                 'love',
-                'game',
                 'disease',
+                'game',
             ]);
     }
 

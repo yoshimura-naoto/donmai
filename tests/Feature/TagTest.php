@@ -47,7 +47,7 @@ class TagTest extends TestCase
             'created_at' => new Carbon('-6 day', 'Asia/Tokyo'),
         ]);
         $post7 = factory(Post::class)->create([
-            'created_at' => new Carbon('-8 day', 'Asia/Tokyo'),
+            'created_at' => new Carbon('-300 day', 'Asia/Tokyo'),
         ]);
 
         $tag1->posts()->attach([$post1->id, $post2->id]);
@@ -109,27 +109,29 @@ class TagTest extends TestCase
             $post4->id,
             $post5->id,
         ]);
+
+        $firstPostIdPlusOne = $post5->id + 1;
         
-        $this->getJson('/api/post/tags/new/' . $tag->name . '?loaded_posts_count=0')
+        $this->getJson('/api/post/tags/new/' . $tag->name . '?last_post_id=' . $firstPostIdPlusOne)
             ->assertStatus(401);
 
         $this->actingAs($user)
-            ->getJson('/api/post/tags/new/' . $tag->name . '?loaded_posts_count=0')
+            ->getJson('/api/post/tags/new/' . $tag->name . '?last_post_id=' . $firstPostIdPlusOne)
             ->assertOk()
             ->assertSeeInOrder([
                 $post5->body,
                 $post4->body,
                 $post3->body,
             ])
-            ->assertJsonFragment(['postsTotal' => 5]);
+            ->assertJsonFragment(['lastPostId' => $post1->id]);
 
-        $this->getJson('/api/post/tags/new/' . $tag->name . '?loaded_posts_count=3')
+        $this->getJson('/api/post/tags/new/' . $tag->name . '?last_post_id=' . $post3->id)
             ->assertOk()
             ->assertSeeInOrder([
                 $post2->body,
                 $post1->body,
             ])
-            ->assertJsonFragment(['postsTotal' => 5]);
+            ->assertJsonFragment(['lastPostId' => $post1->id]);
     }
 
 
@@ -164,11 +166,11 @@ class TagTest extends TestCase
             $post5->id,
         ]);
 
-        $this->getJson('/api/post/tags/popular/' . $tag->name . '?loaded_posts_count=0')
+        $this->getJson('/api/post/tags/popular/' . $tag->name . '?loaded_post_ids=')
             ->assertStatus(401);
 
         $this->actingAs($user)
-            ->getJson('/api/post/tags/popular/' . $tag->name . '?loaded_posts_count=0')
+            ->getJson('/api/post/tags/popular/' . $tag->name . '?loaded_post_ids=')
             ->assertOk()
             ->assertSeeInOrder([
                 $post5->body,
@@ -177,7 +179,7 @@ class TagTest extends TestCase
             ])
             ->assertJsonFragment(['postsTotal' => 5]);
 
-        $this->getJson('/api/post/tags/popular/' . $tag->name . '?loaded_posts_count=3')
+        $this->getJson('/api/post/tags/popular/' . $tag->name . '?loaded_post_ids=' . $post5->id . '-' . $post4->id . '-' . $post3->id)
             ->assertOk()
             ->assertSeeInOrder([
                 $post2->body,

@@ -210,16 +210,18 @@ class PostTest extends TestCase
             'user_id' => $user1->id,
         ]);
 
-        $this->getJson('/api/post/get?loaded_posts_count=0')
+        $visitTime = new Carbon('now');
+
+        $this->getJson('/api/post/get?loaded_post_ids=&visit_time=' . $visitTime)
             ->assertStatus(401);
 
         $this->actingAs($authUser)
-            ->getJson('/api/post/get?loaded_posts_count=0')
+            ->getJson('/api/post/get?loaded_post_ids=&visit_time=' . $visitTime)
             ->assertStatus(200)
             ->assertSeeInOrder([$post5->body, $post4->body, $post2->body])  // 先にフォロー中のユーザーの投稿を送信しているかテスト
             ->assertJsonFragment(['postsTotal' => 5]);
 
-        $this->getJson('/api/post/get?loaded_posts_count=3')
+        $this->getJson('/api/post/get?loaded_post_ids=' . $post5->id . '-' . $post4->id . '-' . $post2->id . '&visit_time=' . $visitTime)
             ->assertStatus(200)
             ->assertSeeInOrder([$post3->body, $post1->body])  // 後でフォローしていないユーザーの投稿を送信しているはず
             ->assertJsonFragment(['postsTotal' => 5]);
@@ -256,20 +258,22 @@ class PostTest extends TestCase
             'genre_index' => 3,
         ]);
 
-        $this->getJson('/api/post/genre/get/life?loaded_posts_count=0')
+        $firstPostIdPlusOne = $post4->id + 1;
+
+        $this->getJson('/api/post/genre/get/life?last_post_id=' . $firstPostIdPlusOne)
             ->assertStatus(401);
 
         $this->actingAs($user)
-            ->getJson('/api/post/genre/get/life?loaded_posts_count=0')
+            ->getJson('/api/post/genre/get/life?last_post_id=' . $firstPostIdPlusOne)
             ->assertStatus(200)
             ->assertSeeInOrder([$post4->body, $post3->body, $post2->body])
             ->assertDontSee($post5->body, $post6->body)
-            ->assertJsonFragment(['postsTotal' => 4]);
+            ->assertJsonFragment(['lastPostId' => $post1->id]);
 
-        $this->getJson('/api/post/genre/get/life?loaded_posts_count=3')
+        $this->getJson('/api/post/genre/get/life?last_post_id=' . $post2->id)
             ->assertSee($post1->body)
             ->assertDontSee($post5->body, $post6->body)
-            ->assertJsonFragment(['postsTotal' => 4]);
+            ->assertJsonFragment(['lastPostId' => $post1->id]);
     }
 
 
@@ -278,12 +282,12 @@ class PostTest extends TestCase
     {
         $user = factory(User::class)->create();
 
-        $date1 = new Carbon('-10 day', 'Asia/Tokyo');
+        $date1 = new Carbon('-300 day', 'Asia/Tokyo');
         $post1 = factory(Post::class)->create([
             'user_id' => $user->id,
             'created_at' => $date1,
         ]);
-        $date2 = new Carbon('-9 day', 'Asia/Tokyo');
+        $date2 = new Carbon('-400 day', 'Asia/Tokyo');
         $post2 = factory(Post::class)->create([
             'user_id' => $user->id,
             'created_at' => $date2,
@@ -321,17 +325,17 @@ class PostTest extends TestCase
             'post_id' => $post6->id,
         ]);
 
-        $this->getJson('/api/post/hot/get?loaded_posts_count=0')
+        $this->getJson('/api/post/hot/get?loaded_post_ids=')
             ->assertStatus(401);
 
         $this->actingAs($user)
-            ->getJson('/api/post/hot/get?loaded_posts_count=0')
+            ->getJson('/api/post/hot/get?loaded_post_ids=')
             ->assertStatus(200)
             ->assertSeeInOrder([$post3->body, $post5->body, $post6->body])
             ->assertDontSee($post1->body, $post2->body, $post4->body)
             ->assertJsonFragment(['postsTotal' => 4]);
 
-        $this->getJson('/api/post/hot/get?loaded_posts_count=3')
+        $this->getJson('/api/post/hot/get?loaded_post_ids=' . $post3->id . '-' . $post5->id . '-' . $post6->id)
             ->assertStatus(200)
             ->assertSee($post4->body)
             ->assertDontSee($post1->body, $post2->body, $post3->body, $post5->body, $post6->body)
@@ -359,25 +363,28 @@ class PostTest extends TestCase
         $post5 = factory(Post::class)->create([
             'user_id' => $user->id,
         ]);
+        $post6 = factory(Post::class)->create();
 
-        $this->getJson('/api/post/user/get/' . $user->id . '?loaded_posts_count=0')
+        $firstPostIdPlusOne = $post5->id + 1;
+
+        $this->getJson('/api/post/user/get/' . $user->id . '?last_post_id=' . $firstPostIdPlusOne)
             ->assertStatus(401);
         
         // ０スクロールでのレスポンス
         $this->actingAs($user)
-            ->getJson('/api/post/user/get/' . $user->id . '?loaded_posts_count=0')
+            ->getJson('/api/post/user/get/' . $user->id . '?last_post_id=' . $firstPostIdPlusOne)
             ->assertOK()
             ->assertSeeInOrder([$post5->body, $post4->body, $post3->body])
-            ->assertDontSee($post2->body, $post1->body)
-            ->assertJsonFragment(['postsTotal' => 5]);
+            ->assertDontSee($post6->body, $post2->body, $post1->body)
+            ->assertJsonFragment(['lastPostId' => $post1->id]);
 
         // １スクロールでのレスポンス
         $this->actingAs($user)
-            ->getJson('/api/post/user/get/' . $user->id . '?loaded_posts_count=3')
+            ->getJson('/api/post/user/get/' . $user->id . '?last_post_id=' . $post3->id)
             ->assertOK()
             ->assertSeeInOrder([$post2->body, $post1->body])
-            ->assertDontSee($post5->body, $post4->body, $post3->body)
-            ->assertJsonFragment(['postsTotal' => 5]);
+            ->assertDontSee($post6->body, $post5->body, $post4->body, $post3->body)
+            ->assertJsonFragment(['lastPostId' => $post1->id]);
     }
 
 
@@ -388,49 +395,51 @@ class PostTest extends TestCase
         $user2 = factory(User::class)->create();
 
         $post1 = factory(Post::class)->create();
-        factory(Donmai::class)->create([
+        $donmai1 = factory(Donmai::class)->create([
             'user_id' => $user->id,
             'post_id' => $post1->id,
         ]);
         $post2 = factory(Post::class)->create();
-        factory(Donmai::class)->create([
+        $donmai2 = factory(Donmai::class)->create([
             'user_id' => $user->id,
             'post_id' => $post2->id,
         ]);
         $post3 = factory(Post::class)->create();
-        factory(Donmai::class)->create([
+        $donmai3 = factory(Donmai::class)->create([
             'user_id' => $user->id,
             'post_id' => $post3->id,
         ]);
         $post4 = factory(Post::class)->create();
-        factory(Donmai::class)->create([
+        $donmai4 = factory(Donmai::class)->create([
             'user_id' => $user->id,
             'post_id' => $post4->id,
         ]);
         $post5 = factory(Post::class)->create();
-        factory(Donmai::class)->create([
+        $donmai5 = factory(Donmai::class)->create([
             'user_id' => $user2->id,
             'post_id' => $post5->id,
         ]);
+
+        $firstPostIdPlusOne = $post4->id + 1;
         
-        $this->getJson('/api/post/user/donmai/' . $user->id . '?loaded_posts_count=0')
+        $this->getJson('/api/post/user/donmai/' . $user->id . '?last_donmai_id=' . $firstPostIdPlusOne)
             ->assertStatus(401);
 
         // ０スクロールでのレスポンス
         $this->actingAs($user)
-            ->getJson('/api/post/user/donmai/' . $user->id . '?loaded_posts_count=0')
+            ->getJson('/api/post/user/donmai/' . $user->id . '?last_donmai_id=' . $firstPostIdPlusOne)
             ->assertStatus(200)
             ->assertDontSee($post5->body, $post1->body)
             ->assertSeeInOrder([$post4->body, $post3->body, $post2->body])
-            ->assertJsonFragment(['postsTotal' => 4]);
+            ->assertJsonFragment(['lastDonmaiId' => $donmai1->id]);
 
         // １スクロールでのレスポンス
         $this->actingAs($user)
-            ->getJson('/api/post/user/donmai/' . $user->id . '?loaded_posts_count=1')
+            ->getJson('/api/post/user/donmai/' . $user->id . '?last_donmai_id=' . $donmai2->id)
             ->assertStatus(200)
             ->assertDontSee($post5->body, $post4->body, $post3->body, $post2->body)
             ->assertSee($post1->body)
-            ->assertJsonFragment(['postsTotal' => 4]);
+            ->assertJsonFragment(['lastDonmaiId' => $donmai1->id]);
     }
 
 
@@ -452,24 +461,24 @@ class PostTest extends TestCase
         $tag1->posts()->attach([$post1->id, $post2->id, $post3->id, $post4->id]);
         $tag2->posts()->attach([$post5->id, $post6->id]);
 
-        $this->getJson('/api/post/search/new/' . urlencode('いちご') . '?loaded_posts_count=0')
+        $this->getJson('/api/post/search/new/' . urlencode('いちご') . '?last_post_id=' . $post5->id)
             ->assertStatus(401);
 
         // ０スクロールでのレスポンス（検索ワードはエンコードしてテスト）
         $this->actingAs($user)
-            ->getJson('/api/post/search/new/' . urlencode('いちご') . '?loaded_posts_count=0')
+            ->getJson('/api/post/search/new/' . urlencode('いちご') . '?last_post_id=' . $post5->id)
             ->assertStatus(200)
             ->assertDontSee($post5->body, $post6->body, $post4->body)
             ->assertSeeInOrder([$post4->body, $post3->body, $post2->body])
-            ->assertJsonFragment(['postsTotal' => 4]);
+            ->assertJsonFragment(['lastPostId' => $post1->id]);
 
         // １スクロールでのレスポンス（検索ワードはエンコードしてテスト）
         $this->actingAs($user)
-            ->getJson('/api/post/search/new/' . urlencode('いちご') . '?loaded_posts_count=3')
+            ->getJson('/api/post/search/new/' . urlencode('いちご') . '?last_post_id=' . $post2->id)
             ->assertStatus(200)
             ->assertDontSee($post5->body, $post6->body, $post4->body, $post3->body, $post2->body)
             ->assertSee($post1->body)
-            ->assertJsonFragment(['postsTotal' => 4]);
+            ->assertJsonFragment(['lastPostId' => $post1->id]);
     }
 
 
@@ -504,19 +513,19 @@ class PostTest extends TestCase
         $tag1->posts()->attach([$post1->id, $post2->id, $post3->id, $post4->id]);
         $tag2->posts()->attach([$post5->id, $post6->id]);
 
-        $this->getJson('/api/post/search/popular/' . urlencode('いちご') . '?loaded_posts_count=0')
+        $this->getJson('/api/post/search/popular/' . urlencode('いちご') . '?loaded_post_ids=')
             ->assertStatus(401);
 
         // ０スクロールでのレスポンス（検索ワードはエンコードしてテスト）
         $this->actingAs($user)
-            ->getJson('/api/post/search/popular/' . urlencode('いちご') . '?loaded_posts_count=0')
+            ->getJson('/api/post/search/popular/' . urlencode('いちご') . '?loaded_post_ids=')
             ->assertStatus(200)
             ->assertDontSee($post5->body, $post6->body, $post2->body)
             ->assertSeeInOrder([$post3->body, $post1->body, $post4->body])
             ->assertJsonFragment(['postsTotal' => 4]);
 
         // １スクロールでのレスポンス（検索ワードはエンコードしてテスト）
-        $this->getJson('/api/post/search/popular/' . urlencode('いちご') . '?loaded_posts_count=3')
+        $this->getJson('/api/post/search/popular/' . urlencode('いちご') . '?loaded_post_ids=' . $post3->id . '-' . $post1->id . '-' . $post4->id)
             ->assertStatus(200)
             ->assertDontSee($post5->body, $post6->body, $post3->body, $post1->body, $post4->body)
             ->assertSee($post2->body)

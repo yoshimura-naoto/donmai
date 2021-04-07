@@ -6613,6 +6613,13 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
     this.changeHeight();
   },
+  beforeRouteEnter: function beforeRouteEnter(to, from, next) {
+    next(function (vm) {
+      var now = new Date();
+      var month = now.getMonth() + 1;
+      vm.visitTime = now.getFullYear() + '-' + month + '-' + now.getDate() + '+' + now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds();
+    });
+  },
   beforeRouteLeave: function beforeRouteLeave(to, from, next) {
     if (this.modalPostShow || this.modalImageShow || this.deletePostModalOpened || this.modalPostEditShow) {
       this.keepScrollWhenClose();
