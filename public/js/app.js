@@ -5575,6 +5575,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         // followed: false,
         // },
       ],
+      lastDonmaiId: 'nothing',
       // どんまいモーダルの無限スクロール用
       donmaiLoading: false,
       donmaiLoadMore: true,
@@ -6218,23 +6219,25 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       if (this.isLastDonmaiPage) return;
       if (this.donmaiLoading) return;
       this.donmaiLoading = true;
-      axios.get('/api/donmai/users/' + this.modalPostId + '?page=' + this.donmaiPage).then(function (res) {
+      axios.get('/api/donmai/users/' + this.modalPostId + '?last_donmai_id=' + this.lastDonmaiId).then(function (res) {
         var _this13$modalDonmaiUs;
 
         // console.log(res.data);
-        var users = res.data.data.map(function (obj) {
+        if (res.data.donmais.length > 0) {
+          _this13.lastDonmaiId = res.data.donmais.slice(-1)[0].id;
+        }
+
+        var users = res.data.donmais.map(function (obj) {
           return obj.user;
         });
 
         (_this13$modalDonmaiUs = _this13.modalDonmaiUsers).push.apply(_this13$modalDonmaiUs, _toConsumableArray(users));
 
-        _this13.donmaiLoading = false;
-
-        if (_this13.donmaiPage === res.data.last_page) {
+        if (_this13.lastDonmaiId === res.data.lastDonmaiId || !res.data.lastDonmaiId) {
           _this13.isLastDonmaiPage = true;
         }
 
-        _this13.donmaiPage++;
+        _this13.donmaiLoading = false;
       })["catch"](function (error) {
         console.log(error);
         _this13.donmaiLoading = false;
@@ -6254,6 +6257,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       this.donmaiLoadMore = true;
       this.donmaiPage = 1;
       this.isLastDonmaiPage = false;
+      this.lastDonmaiId = 'nothing';
     },
     // どんまいしたユーザー一覧モーダルの無限スクロール
     donmaiPaginate: function donmaiPaginate() {
@@ -7354,6 +7358,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         //   followed: false,
         // },
       ],
+      lastDonmaiId: 'nothing',
       // どんまいモーダルの無限スクロール用
       donmaiLoading: false,
       donmaiLoadMore: true,
@@ -7849,23 +7854,25 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       if (this.isLastDonmaiPage) return;
       if (this.donmaiLoading) return;
       this.donmaiLoading = true;
-      axios.get('/api/donmai/users/' + this.modalPostId + '?page=' + this.donmaiPage).then(function (res) {
+      axios.get('/api/donmai/users/' + this.modalPostId + '?last_donmai_id=' + this.lastDonmaiId).then(function (res) {
         var _this10$modalDonmaiUs;
 
         // console.log(res.data);
-        var users = res.data.data.map(function (obj) {
+        if (res.data.donmais.length > 0) {
+          _this10.lastDonmaiId = res.data.donmais.slice(-1)[0].id;
+        }
+
+        var users = res.data.donmais.map(function (obj) {
           return obj.user;
         });
 
         (_this10$modalDonmaiUs = _this10.modalDonmaiUsers).push.apply(_this10$modalDonmaiUs, _toConsumableArray(users));
 
-        _this10.donmaiLoading = false;
-
-        if (_this10.donmaiPage === res.data.last_page) {
+        if (_this10.lastDonmaiId === res.data.lastDonmaiId || !res.data.lastDonmaiId) {
           _this10.isLastDonmaiPage = true;
         }
 
-        _this10.donmaiPage++;
+        _this10.donmaiLoading = false;
       })["catch"](function (error) {
         console.log(error);
         _this10.donmaiLoading = false;
@@ -7884,6 +7891,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       this.donmaiLoadMore = true;
       this.donmaiPage = 1;
       this.isLastDonmaiPage = false;
+      this.lastDonmaiId = 'nothing';
     },
     // どんまいしたユーザー一覧モーダルの無限スクロール
     donmaiPaginate: function donmaiPaginate() {
@@ -8978,6 +8986,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         //   followed: false,
         // },
       ],
+      lastDonmaiId: 'nothing',
       // どんまいモーダルの無限スクロール用
       donmaiLoading: false,
       donmaiLoadMore: true,
@@ -9024,7 +9033,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         return obj.id;
       });
       var postIdsString = postIds.join('-'); // console.log(postIdsString);
-      // axios.get('/api/post/hot/get?loaded_posts_count=' + this.posts.length + '&loaded_post_ids=' + postIdsString)
 
       axios.get('/api/post/hot/get?loaded_post_ids=' + postIdsString).then(function (res) {
         var _this2$posts;
@@ -9467,23 +9475,25 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       if (this.isLastDonmaiPage) return;
       if (this.donmaiLoading) return;
       this.donmaiLoading = true;
-      axios.get('/api/donmai/users/' + this.modalPostId + '?page=' + this.donmaiPage).then(function (res) {
+      axios.get('/api/donmai/users/' + this.modalPostId + '?last_donmai_id=' + this.lastDonmaiId).then(function (res) {
         var _this10$modalDonmaiUs;
 
         // console.log(res.data);
-        var users = res.data.data.map(function (obj) {
+        if (res.data.donmais.length > 0) {
+          _this10.lastDonmaiId = res.data.donmais.slice(-1)[0].id;
+        }
+
+        var users = res.data.donmais.map(function (obj) {
           return obj.user;
         });
 
         (_this10$modalDonmaiUs = _this10.modalDonmaiUsers).push.apply(_this10$modalDonmaiUs, _toConsumableArray(users));
 
-        _this10.donmaiLoading = false;
-
-        if (_this10.donmaiPage === res.data.last_page) {
+        if (_this10.lastDonmaiId === res.data.lastDonmaiId || !res.data.lastDonmaiId) {
           _this10.isLastDonmaiPage = true;
         }
 
-        _this10.donmaiPage++;
+        _this10.donmaiLoading = false;
       })["catch"](function (error) {
         console.log(error);
         _this10.donmaiLoading = false;
@@ -9502,6 +9512,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       this.donmaiLoadMore = true;
       this.donmaiPage = 1;
       this.isLastDonmaiPage = false;
+      this.lastDonmaiId = 'nothing';
     },
     // どんまいしたユーザー一覧モーダルの無限スクロール
     donmaiPaginate: function donmaiPaginate() {
@@ -11192,6 +11203,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         //   followed: false,
         // },
       ],
+      lastDonmaiId: 'nothing',
       // どんまいモーダルの無限スクロール用
       donmaiLoading: false,
       donmaiLoadMore: true,
@@ -11682,23 +11694,25 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       if (this.isLastDonmaiPage) return;
       if (this.donmaiLoading) return;
       this.donmaiLoading = true;
-      axios.get('/api/donmai/users/' + this.modalPostId + '?page=' + this.donmaiPage).then(function (res) {
+      axios.get('/api/donmai/users/' + this.modalPostId + '?last_donmai_id=' + this.lastDonmaiId).then(function (res) {
         var _this10$modalDonmaiUs;
 
         // console.log(res.data);
-        var users = res.data.data.map(function (obj) {
+        if (res.data.donmais.length > 0) {
+          _this10.lastDonmaiId = res.data.donmais.slice(-1)[0].id;
+        }
+
+        var users = res.data.donmais.map(function (obj) {
           return obj.user;
         });
 
         (_this10$modalDonmaiUs = _this10.modalDonmaiUsers).push.apply(_this10$modalDonmaiUs, _toConsumableArray(users));
 
-        _this10.donmaiLoading = false;
-
-        if (_this10.donmaiPage === res.data.last_page) {
+        if (_this10.lastDonmaiId === res.data.lastDonmaiId || !res.data.lastDonmaiId) {
           _this10.isLastDonmaiPage = true;
         }
 
-        _this10.donmaiPage++;
+        _this10.donmaiLoading = false;
       })["catch"](function (error) {
         console.log(error);
         _this10.donmaiLoading = false;
@@ -11717,6 +11731,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       this.donmaiLoadMore = true;
       this.donmaiPage = 1;
       this.isLastDonmaiPage = false;
+      this.lastDonmaiId = 'nothing';
     },
     // どんまいしたユーザー一覧モーダルの無限スクロール
     donmaiPaginate: function donmaiPaginate() {
@@ -12821,6 +12836,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         //   followed: false,
         // },
       ],
+      lastDonmaiId: 'nothing',
       // どんまいモーダルの無限スクロール用
       donmaiLoading: false,
       donmaiLoadMore: true,
@@ -13309,23 +13325,25 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       if (this.isLastDonmaiPage) return;
       if (this.donmaiLoading) return;
       this.donmaiLoading = true;
-      axios.get('/api/donmai/users/' + this.modalPostId + '?page=' + this.donmaiPage).then(function (res) {
+      axios.get('/api/donmai/users/' + this.modalPostId + '?last_donmai_id=' + this.lastDonmaiId).then(function (res) {
         var _this10$modalDonmaiUs;
 
         // console.log(res.data);
-        var users = res.data.data.map(function (obj) {
+        if (res.data.donmais.length > 0) {
+          _this10.lastDonmaiId = res.data.donmais.slice(-1)[0].id;
+        }
+
+        var users = res.data.donmais.map(function (obj) {
           return obj.user;
         });
 
         (_this10$modalDonmaiUs = _this10.modalDonmaiUsers).push.apply(_this10$modalDonmaiUs, _toConsumableArray(users));
 
-        _this10.donmaiLoading = false;
-
-        if (_this10.donmaiPage === res.data.last_page) {
+        if (_this10.lastDonmaiId === res.data.lastDonmaiId || !res.data.lastDonmaiId) {
           _this10.isLastDonmaiPage = true;
         }
 
-        _this10.donmaiPage++;
+        _this10.donmaiLoading = false;
       })["catch"](function (error) {
         console.log(error);
         _this10.donmaiLoading = false;
@@ -13344,6 +13362,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       this.donmaiLoadMore = true;
       this.donmaiPage = 1;
       this.isLastDonmaiPage = false;
+      this.lastDonmaiId = 'nothing';
     },
     // どんまいしたユーザー一覧モーダルの無限スクロール
     donmaiPaginate: function donmaiPaginate() {
@@ -14724,6 +14743,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         //   followed: false,
         // },
       ],
+      lastDonmaiId: 'nothing',
       // どんまいモーダルの無限スクロール用
       donmaiLoading: false,
       donmaiLoadMore: true,
@@ -15219,23 +15239,25 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       if (this.isLastDonmaiPage) return;
       if (this.donmaiLoading) return;
       this.donmaiLoading = true;
-      axios.get('/api/donmai/users/' + this.modalPostId + '?page=' + this.donmaiPage).then(function (res) {
+      axios.get('/api/donmai/users/' + this.modalPostId + '?last_donmai_id=' + this.lastDonmaiId).then(function (res) {
         var _this10$modalDonmaiUs;
 
         // console.log(res.data);
-        var users = res.data.data.map(function (obj) {
+        if (res.data.donmais.length > 0) {
+          _this10.lastDonmaiId = res.data.donmais.slice(-1)[0].id;
+        }
+
+        var users = res.data.donmais.map(function (obj) {
           return obj.user;
         });
 
         (_this10$modalDonmaiUs = _this10.modalDonmaiUsers).push.apply(_this10$modalDonmaiUs, _toConsumableArray(users));
 
-        _this10.donmaiLoading = false;
-
-        if (_this10.donmaiPage === res.data.last_page) {
+        if (_this10.lastDonmaiId === res.data.lastDonmaiId || !res.data.lastDonmaiId) {
           _this10.isLastDonmaiPage = true;
         }
 
-        _this10.donmaiPage++;
+        _this10.donmaiLoading = false;
       })["catch"](function (error) {
         console.log(error);
         _this10.donmaiLoading = false;
@@ -15254,6 +15276,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       this.donmaiLoadMore = true;
       this.donmaiPage = 1;
       this.isLastDonmaiPage = false;
+      this.lastDonmaiId = 'nothing';
     },
     // どんまいしたユーザー一覧モーダルの無限スクロール
     donmaiPaginate: function donmaiPaginate() {
@@ -16357,6 +16380,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         //   followed: false,
         // },
       ],
+      lastDonmaiId: 'nothing',
       // どんまいモーダルの無限スクロール用
       donmaiLoading: false,
       donmaiLoadMore: true,
@@ -16402,8 +16426,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       var postIds = this.posts.map(function (obj) {
         return obj.id;
       });
-      var postIdsString = postIds.join('-'); // axios.get('/api/post/tags/popular/' + tagName + '?loaded_posts_count=' + this.posts.length)
-
+      var postIdsString = postIds.join('-');
       axios.get('/api/post/tags/popular/' + tagName + '?loaded_post_ids=' + postIdsString).then(function (res) {
         var _this2$posts;
 
@@ -16852,23 +16875,25 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       if (this.isLastDonmaiPage) return;
       if (this.donmaiLoading) return;
       this.donmaiLoading = true;
-      axios.get('/api/donmai/users/' + this.modalPostId + '?page=' + this.donmaiPage).then(function (res) {
+      axios.get('/api/donmai/users/' + this.modalPostId + '?last_donmai_id=' + this.lastDonmaiId).then(function (res) {
         var _this10$modalDonmaiUs;
 
         // console.log(res.data);
-        var users = res.data.data.map(function (obj) {
+        if (res.data.donmais.length > 0) {
+          _this10.lastDonmaiId = res.data.donmais.slice(-1)[0].id;
+        }
+
+        var users = res.data.donmais.map(function (obj) {
           return obj.user;
         });
 
         (_this10$modalDonmaiUs = _this10.modalDonmaiUsers).push.apply(_this10$modalDonmaiUs, _toConsumableArray(users));
 
-        _this10.donmaiLoading = false;
-
-        if (_this10.donmaiPage === res.data.last_page) {
+        if (_this10.lastDonmaiId === res.data.lastDonmaiId || !res.data.lastDonmaiId) {
           _this10.isLastDonmaiPage = true;
         }
 
-        _this10.donmaiPage++;
+        _this10.donmaiLoading = false;
       })["catch"](function (error) {
         console.log(error);
         _this10.donmaiLoading = false;
@@ -16887,6 +16912,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       this.donmaiLoadMore = true;
       this.donmaiPage = 1;
       this.isLastDonmaiPage = false;
+      this.lastDonmaiId = 'nothing';
     },
     // どんまいしたユーザー一覧モーダルの無限スクロール
     donmaiPaginate: function donmaiPaginate() {
@@ -17676,11 +17702,13 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       followsLoadMore: true,
       followsPage: 1,
       isLastFollowsPage: false,
+      lastFollowId: 'nothing',
       // フォロワーモーダルの無限スクロール用
       followersLoading: false,
       followersLoadMore: true,
       followersPage: 1,
-      isLastFollowersPage: false
+      isLastFollowersPage: false,
+      lastFollowerId: 'nothing'
     };
   },
   methods: {
@@ -17735,24 +17763,25 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       if (this.isLastFollowsPage) return;
       if (this.followsLoading) return;
       this.followsLoading = true;
-      axios.get('/api/following/' + this.user.id + '?page=' + this.followsPage).then(function (res) {
+      axios.get('/api/following/' + this.user.id + '?last_follow_id=' + this.lastFollowId).then(function (res) {
         var _this3$modalFollows;
 
         // console.log(res.data);
-        var follows = res.data.data.map(function (obj) {
+        if (res.data.follows.length > 0) {
+          _this3.lastFollowId = res.data.follows.slice(-1)[0].id;
+        }
+
+        var follows = res.data.follows.map(function (obj) {
           return obj.followed_user;
         });
 
-        (_this3$modalFollows = _this3.modalFollows).push.apply(_this3$modalFollows, _toConsumableArray(follows)); // this.modalFollows.push(...res.data.data);
+        (_this3$modalFollows = _this3.modalFollows).push.apply(_this3$modalFollows, _toConsumableArray(follows));
 
-
-        _this3.followsLoading = false;
-
-        if (_this3.followsPage === res.data.last_page) {
+        if (_this3.lastFollowId === res.data.lastFollowId || !res.data.lastFollowId) {
           _this3.isLastFollowsPage = true;
         }
 
-        _this3.followsPage++;
+        _this3.followsLoading = false;
       })["catch"](function (error) {
         console.log(error);
         _this3.followsLoading = false;
@@ -17765,23 +17794,25 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       if (this.isLastFollowersPage) return;
       if (this.followersLoading) return;
       this.followersLoading = true;
-      axios.get('/api/follower/' + this.user.id + '?page=' + this.followersPage).then(function (res) {
+      axios.get('/api/follower/' + this.user.id + '?last_follower_id=' + this.lastFollowerId).then(function (res) {
         var _this4$modalFollowers;
 
         // console.log(res.data);
-        var followers = res.data.data.map(function (obj) {
+        if (res.data.followers.length > 0) {
+          _this4.lastFollowerId = res.data.followers.slice(-1)[0].id;
+        }
+
+        var followers = res.data.followers.map(function (obj) {
           return obj.user;
         });
 
         (_this4$modalFollowers = _this4.modalFollowers).push.apply(_this4$modalFollowers, _toConsumableArray(followers));
 
-        _this4.followersLoading = false;
-
-        if (_this4.followersPage === res.data.last_page) {
+        if (_this4.lastFollowerId === res.data.lastFollowerId || !res.data.lastFollowerId) {
           _this4.isLastFollowersPage = true;
         }
 
-        _this4.followersPage++;
+        _this4.followersLoading = false;
       })["catch"](function (error) {
         console.log(error);
         _this4.followersLoading = false;
@@ -17813,12 +17844,14 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       this.followsLoading = false;
       this.followsLoadMore = true;
       this.followsPage = 1;
-      this.isLastFollowsPage = false; // フォロワー無限スクロールの初期化
+      this.isLastFollowsPage = false;
+      this.lastFollowId = 'nothing'; // フォロワー無限スクロールの初期化
 
       this.followersLoading = false;
       this.followersLoadMore = true;
       this.followersPage = 1;
       this.isLastFollowersPage = false;
+      this.lastFollowerId = 'nothing';
     },
     // フォローモーダルの無限スクロール
     followsPaginate: function followsPaginate() {
@@ -17971,8 +18004,6 @@ function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (O
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -17984,6 +18015,8 @@ function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.it
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 //
 //
@@ -18506,7 +18539,9 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
-    return {
+    var _ref;
+
+    return _ref = {
       // 認証ユーザー
       authUser: null,
       // 投稿一覧部分のみリロードするためのキー
@@ -18662,13 +18697,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         //   name: 'ジェイコブ・デグロム',
         //   followed: false,
         // },
-      ],
-      // どんまいモーダルの無限スクロール用
-      donmaiLoading: false,
-      donmaiLoadMore: true,
-      donmaiPage: 1,
-      isLastDonmaiPage: false
-    };
+      ]
+    }, _defineProperty(_ref, "lastDonmaiId", 'nothing'), _defineProperty(_ref, "donmaiLoading", false), _defineProperty(_ref, "donmaiLoadMore", true), _defineProperty(_ref, "donmaiPage", 1), _defineProperty(_ref, "isLastDonmaiPage", false), _ref;
   },
   methods: {
     // 投稿編集のチェックのテスト
@@ -18978,10 +19008,10 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         return obj.file;
       });
       var data = new FormData();
-      Object.entries(this.editPost).forEach(function (_ref) {
-        var _ref2 = _slicedToArray(_ref, 2),
-            key = _ref2[0],
-            value = _ref2[1];
+      Object.entries(this.editPost).forEach(function (_ref2) {
+        var _ref3 = _slicedToArray(_ref2, 2),
+            key = _ref3[0],
+            value = _ref3[1];
 
         if (Array.isArray(value)) {
           value.forEach(function (v, i) {
@@ -19146,23 +19176,25 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       if (this.isLastDonmaiPage) return;
       if (this.donmaiLoading) return;
       this.donmaiLoading = true;
-      axios.get('/api/donmai/users/' + this.modalPostId + '?page=' + this.donmaiPage).then(function (res) {
+      axios.get('/api/donmai/users/' + this.modalPostId + '?last_donmai_id=' + this.lastDonmaiId).then(function (res) {
         var _this10$modalDonmaiUs;
 
         // console.log(res.data);
-        var users = res.data.data.map(function (obj) {
+        if (res.data.donmais.length > 0) {
+          _this10.lastDonmaiId = res.data.donmais.slice(-1)[0].id;
+        }
+
+        var users = res.data.donmais.map(function (obj) {
           return obj.user;
         });
 
         (_this10$modalDonmaiUs = _this10.modalDonmaiUsers).push.apply(_this10$modalDonmaiUs, _toConsumableArray(users));
 
-        _this10.donmaiLoading = false;
-
-        if (_this10.donmaiPage === res.data.last_page) {
+        if (_this10.lastDonmaiId === res.data.lastDonmaiId || !res.data.lastDonmaiId) {
           _this10.isLastDonmaiPage = true;
         }
 
-        _this10.donmaiPage++;
+        _this10.donmaiLoading = false;
       })["catch"](function (error) {
         console.log(error);
         _this10.donmaiLoading = false;
@@ -19181,6 +19213,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       this.donmaiLoadMore = true;
       this.donmaiPage = 1;
       this.isLastDonmaiPage = false;
+      this.lastDonmaiId = 'nothing';
     },
     // どんまいしたユーザー一覧モーダルの無限スクロール
     donmaiPaginate: function donmaiPaginate() {
@@ -20955,6 +20988,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         //   followed: false,
         // },
       ],
+      lastDonmaiId: 'nothing',
       // どんまいモーダルの無限スクロール用
       donmaiLoading: false,
       donmaiLoadMore: true,
@@ -21440,23 +21474,25 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       if (this.isLastDonmaiPage) return;
       if (this.donmaiLoading) return;
       this.donmaiLoading = true;
-      axios.get('/api/donmai/users/' + this.modalPostId + '?page=' + this.donmaiPage).then(function (res) {
+      axios.get('/api/donmai/users/' + this.modalPostId + '?last_donmai_id=' + this.lastDonmaiId).then(function (res) {
         var _this10$modalDonmaiUs;
 
         // console.log(res.data);
-        var users = res.data.data.map(function (obj) {
+        if (res.data.donmais.length > 0) {
+          _this10.lastDonmaiId = res.data.donmais.slice(-1)[0].id;
+        }
+
+        var users = res.data.donmais.map(function (obj) {
           return obj.user;
         });
 
         (_this10$modalDonmaiUs = _this10.modalDonmaiUsers).push.apply(_this10$modalDonmaiUs, _toConsumableArray(users));
 
-        _this10.donmaiLoading = false;
-
-        if (_this10.donmaiPage === res.data.last_page) {
+        if (_this10.lastDonmaiId === res.data.lastDonmaiId || !res.data.lastDonmaiId) {
           _this10.isLastDonmaiPage = true;
         }
 
-        _this10.donmaiPage++;
+        _this10.donmaiLoading = false;
       })["catch"](function (error) {
         console.log(error);
         _this10.donmaiLoading = false;
@@ -21475,6 +21511,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       this.donmaiLoadMore = true;
       this.donmaiPage = 1;
       this.isLastDonmaiPage = false;
+      this.lastDonmaiId = 'nothing';
     },
     // どんまいしたユーザー一覧モーダルの無限スクロール
     donmaiPaginate: function donmaiPaginate() {

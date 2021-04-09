@@ -33,17 +33,36 @@ class FollowController extends Controller
 
 
     // あるユーザーのフォロー中の人たちを、そのユーザーが最近フォローした順で返す（８件ずつ無限スクロール）
-    public function followingShow($id)
+    public function followingShow($id, Request $request)
     {
+        // 誰もフォローしていない場合は空のデータを返す
+        if (Follow::where('user_id', $id)->count() === 0) {
+            $data = [
+                'follows' => [],
+                'lastFollowId' => null,
+            ];
+
+            return $data;
+        }
+
+        $loadedLastFollowId = $request->last_follow_id;  // フロントで取得された最後のフォロー中のユーザーのID
+
+        // まだフロントで全くフォロー中のユーザーを取得していない場合
+        if ($loadedLastFollowId === 'nothing') {
+            $loadedLastFollowId = Follow::where('user_id', $id)->select('id')->latest()->first()->id + 1;
+        }
+
         // そのユーザーがフォローしてる人々と、彼らがそれぞれ自分（認証ユーザー）をフォロワーに持つかどうかを取得
         $follows = Follow::where('user_id', $id)
+                        ->where('id', '<', $loadedLastFollowId)
                         ->with(['followedUser' => function ($query) {
                             $query->with(['followers' => function ($query) {
                                 $query->where('user_id', Auth::id());
                             }]);
                         }])
                         ->orderBy('id', 'desc')
-                        ->paginate(8);
+                        ->limit(6)
+                        ->get();
 
         // 認証ユーザーが、そのユーザーがフォローしているユーザーをフォローしているかどうか
         foreach ($follows as $follow) {
@@ -54,23 +73,47 @@ class FollowController extends Controller
             }
         }
 
-        return $follows;
+        $data = [
+            'follows' => $follows,
+            'lastFollowId' => Follow::where('user_id', $id)->select('id')->first()->id,
+        ];
+
+        return $data;
     }
 
 
 
     // あるユーザーのフォロワーたちを、そのユーザーを最近フォローした人順で返す（８件ずつ無限スクロール）
-    public function followerShow($id)
+    public function followerShow($id, Request $request)
     {
+        // フォロワーが全くいない場合は空のデータを返す
+        if (Follow::where('following_user_id', $id)->count() === 0) {
+            $data = [
+                'followers' => [],
+                'lastFollowerId' => null,
+            ];
+
+            return $data;
+        }
+
+        $loadedLastFollowerId = $request->last_follower_id;  // フロントで取得された最後のフォロワーのID
+
+        // まだフロントで全くフォロワーを取得していない場合
+        if ($loadedLastFollowerId === 'nothing') {
+            $loadedLastFollowerId = Follow::where('following_user_id', $id)->select('id')->latest()->first()->id + 1;
+        }
+
         // あるユーザーのフォロワーと、彼らがそれぞれ自分（認証ユーザー）をフォロワーに持つかどうかを取得
         $follows = Follow::where('following_user_id', $id)
+                        ->where('id', '<', $loadedLastFollowerId)
                         ->with(['user' => function ($query) {
                             $query->with(['followers' => function ($query) {
                                 $query->where('user_id', Auth::id());
                             }]);
                         }])
                         ->orderBy('id', 'desc')
-                        ->paginate(8);
+                        ->limit(6)
+                        ->get();
         
         // 認証ユーザーがそのユーザーのフォロワーをフォローしているか
         foreach ($follows as $follow) {
@@ -81,6 +124,11 @@ class FollowController extends Controller
             }
         }
 
-        return $follows;
+        $data = [
+            'followers' => $follows,
+            'lastFollowerId' => Follow::where('following_user_id', $id)->select('id')->first()->id,
+        ];
+
+        return $data;
     }
 }

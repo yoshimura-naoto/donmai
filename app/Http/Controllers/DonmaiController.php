@@ -32,16 +32,35 @@ class DonmaiController extends Controller
 
 
     // その投稿にどんまいしたユーザーたちを、最近どんまいした人順で取得
-    public function getDonmaiUser($id)
+    public function getDonmaiUser($id, Request $request)
     {
+        // どんまいが０件だった場合は空のデータを返す
+        if (Donmai::where('post_id', $id)->count() === 0) {
+            $data = [
+                'donmais' => [],
+                'lastDonamiId' => null,
+            ];
+
+            return $data;
+        }
+
+        $loadedLastDonmaiId = $request->last_donmai_id;  // フロントで取得された最後のどんまいのID
+
+        // まだフロントで全くコメントを取得していない場合
+        if ($loadedLastDonmaiId === 'nothing') {
+            $loadedLastDonmaiId = Donmai::where('post_id', $id)->select('id')->latest()->first()->id + 1;
+        }
+
         $donmais = Donmai::where('post_id', $id)
+                        ->where('id', '<', $loadedLastDonmaiId)
                         ->with(['user' => function ($query) {
                             $query->withCount(['followers' => function (Builder $query) {
                                 $query->where('user_id', Auth::id());
                             }]);
                         }])
                         ->orderBy('id', 'desc')
-                        ->paginate(8);
+                        ->limit(8)
+                        ->get();
 
         // それぞれのユーザーを認証ユーザーがフォローしているか判定
         foreach ($donmais as $donmai) {
@@ -52,6 +71,11 @@ class DonmaiController extends Controller
             }
         }
 
-        return $donmais;
+        $data = [
+            'donmais' => $donmais,
+            'lastDonmaiId' => Donmai::where('post_id', $id)->select('id')->first()->id,
+        ];
+
+        return $data;
     }
 }

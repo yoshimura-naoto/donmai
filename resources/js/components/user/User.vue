@@ -256,11 +256,13 @@ export default {
       followsLoadMore: true,
       followsPage: 1,
       isLastFollowsPage: false,
+      lastFollowId: 'nothing',
       // フォロワーモーダルの無限スクロール用
       followersLoading: false,
       followersLoadMore: true,
       followersPage: 1,
       isLastFollowersPage: false,
+      lastFollowerId: 'nothing',
     }
   },
 
@@ -311,19 +313,20 @@ export default {
       if (this.isLastFollowsPage) return;
       if (this.followsLoading) return;
       this.followsLoading = true;
-      axios.get('/api/following/' + this.user.id + '?page=' + this.followsPage)
+      axios.get('/api/following/' + this.user.id + '?last_follow_id=' + this.lastFollowId)
         .then((res) => {
           // console.log(res.data);
-          const follows = res.data.data.map((obj) => {
+          if (res.data.follows.length > 0) {
+            this.lastFollowId = res.data.follows.slice(-1)[0].id;
+          }
+          const follows = res.data.follows.map((obj) => {
             return obj.followed_user;
           });
           this.modalFollows.push(...follows);
-          // this.modalFollows.push(...res.data.data);
-          this.followsLoading = false;
-          if (this.followsPage === res.data.last_page) {
+          if (this.lastFollowId === res.data.lastFollowId || !res.data.lastFollowId) {
             this.isLastFollowsPage = true;
           }
-          this.followsPage++;
+          this.followsLoading = false;
         }).catch((error) => {
           console.log(error);
           this.followsLoading = false;
@@ -334,18 +337,20 @@ export default {
       if (this.isLastFollowersPage) return;
       if (this.followersLoading) return;
       this.followersLoading = true;
-      axios.get('/api/follower/' + this.user.id + '?page=' + this.followersPage)
+      axios.get('/api/follower/' + this.user.id + '?last_follower_id=' + this.lastFollowerId)
         .then((res) => {
           // console.log(res.data);
-          const followers = res.data.data.map((obj) => {
+          if (res.data.followers.length > 0) {
+            this.lastFollowerId = res.data.followers.slice(-1)[0].id;
+          }
+          const followers = res.data.followers.map((obj) => {
             return obj.user;
           });
           this.modalFollowers.push(...followers);
-          this.followersLoading = false;
-          if (this.followersPage === res.data.last_page) {
+          if (this.lastFollowerId === res.data.lastFollowerId || !res.data.lastFollowerId) {
             this.isLastFollowersPage = true;
           }
-          this.followersPage++;
+          this.followersLoading = false;
         }).catch((error) => {
           console.log(error);
           this.followersLoading = false;
@@ -378,11 +383,13 @@ export default {
       this.followsLoadMore = true;
       this.followsPage = 1;
       this.isLastFollowsPage = false;
+      this.lastFollowId = 'nothing';
       // フォロワー無限スクロールの初期化
       this.followersLoading = false;
       this.followersLoadMore = true;
       this.followersPage = 1;
       this.isLastFollowersPage = false;
+      this.lastFollowerId = 'nothing';
     },
     // フォローモーダルの無限スクロール
     followsPaginate() {
