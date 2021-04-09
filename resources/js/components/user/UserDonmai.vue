@@ -675,6 +675,7 @@ export default {
         //   followed: false,
         // },
       ],
+      lastDonmaiId: 'nothing',
       // どんまいモーダルの無限スクロール用
       donmaiLoading: false,
       donmaiLoadMore: true,
@@ -1091,18 +1092,20 @@ export default {
       if (this.isLastDonmaiPage) return;
       if (this.donmaiLoading) return;
       this.donmaiLoading = true;
-      axios.get('/api/donmai/users/' + this.modalPostId + '?page=' + this.donmaiPage)
+      axios.get('/api/donmai/users/' + this.modalPostId + '?last_donmai_id=' + this.lastDonmaiId)
         .then((res) => {
           // console.log(res.data);
-          const users = res.data.data.map((obj) => {
+          if (res.data.donmais.length > 0) {
+            this.lastDonmaiId = res.data.donmais.slice(-1)[0].id;
+          }
+          const users = res.data.donmais.map((obj) => {
             return obj.user;
           });
           this.modalDonmaiUsers.push(...users);
-          this.donmaiLoading = false;
-          if (this.donmaiPage === res.data.last_page) {
+          if (this.lastDonmaiId === res.data.lastDonmaiId || !res.data.lastDonmaiId) {
             this.isLastDonmaiPage = true;
           }
-          this.donmaiPage++;
+          this.donmaiLoading = false;
         }).catch((error) => {
           console.log(error);
           this.donmaiLoading = false;
@@ -1121,6 +1124,7 @@ export default {
       this.donmaiLoadMore = true;
       this.donmaiPage = 1;
       this.isLastDonmaiPage = false;
+      this.lastDonmaiId = 'nothing';
     },
     // どんまいしたユーザー一覧モーダルの無限スクロール
     donmaiPaginate() {
