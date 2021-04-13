@@ -3661,6 +3661,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       guchisLoading: false,
       loadMoreGuchis: true,
       chatScrollHeight: 0,
+      // これから取得するグチのID
+      latestGuchiId: null,
       // 一番下にスクロールするかどうか
       scrollToBottom: false,
       // マウント中かどうか
@@ -3744,9 +3746,10 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
       if (guchiChatArea.scrollTop >= guchiChatArea.scrollHeight - guchiChatArea.clientHeight * 2) {
         this.scrollToBottom = true;
-      }
+      } // axios.get('/api/guchi/latest/' + this.$route.params.id)
 
-      axios.get('/api/guchi/latest/' + this.$route.params.id).then(function (res) {
+
+      axios.get('/api/guchi/latest/' + this.latestGuchiId).then(function (res) {
         // console.log(res.data);
         _this3.newImageCount = res.data.guchi_images_count;
 
@@ -4076,6 +4079,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       // console.log(this.$route.params.id);
       if (e.guchi.guchi_room_id == _this9.$route.params.id) {
         _this9.guchisTotal++;
+        _this9.latestGuchiId = e.guchi.id;
 
         _this9.getLatestGuchi();
       }
@@ -5630,6 +5634,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
       if (this.willReload) {
         var now = new Date();
+        now.setSeconds(now.getSeconds() + 5);
         var month = now.getMonth() + 1;
         this.visitTime = now.getFullYear() + '-' + month + '-' + now.getDate() + '+' + now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds();
       }

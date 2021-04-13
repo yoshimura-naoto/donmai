@@ -80,27 +80,29 @@ class FollowTest extends TestCase
         $user11 = factory(User::class)->create();
         $user12 = factory(User::class)->create();
         
-        Follow::create(['user_id' => $user1->id, 'following_user_id' => $user2->id]);
-        Follow::create(['user_id' => $user1->id, 'following_user_id' => $user3->id]);
-        Follow::create(['user_id' => $user1->id, 'following_user_id' => $user4->id]);
-        Follow::create(['user_id' => $user1->id, 'following_user_id' => $user5->id]);
-        Follow::create(['user_id' => $user1->id, 'following_user_id' => $user6->id]);
-        Follow::create(['user_id' => $user1->id, 'following_user_id' => $user7->id]);
-        Follow::create(['user_id' => $user1->id, 'following_user_id' => $user8->id]);
-        Follow::create(['user_id' => $user1->id, 'following_user_id' => $user9->id]);
-        Follow::create(['user_id' => $user1->id, 'following_user_id' => $user10->id]);
-        Follow::create(['user_id' => $user1->id, 'following_user_id' => $user11->id]);
+        $follow1 = Follow::create(['user_id' => $user1->id, 'following_user_id' => $user2->id]);
+        $follow2 = Follow::create(['user_id' => $user1->id, 'following_user_id' => $user3->id]);
+        $follow3 = Follow::create(['user_id' => $user1->id, 'following_user_id' => $user4->id]);
+        $follow4 = Follow::create(['user_id' => $user1->id, 'following_user_id' => $user5->id]);
+        $follow5 = Follow::create(['user_id' => $user1->id, 'following_user_id' => $user6->id]);
+        $follow6 = Follow::create(['user_id' => $user1->id, 'following_user_id' => $user7->id]);
+        $follow7 = Follow::create(['user_id' => $user1->id, 'following_user_id' => $user8->id]);
+        $follow8 = Follow::create(['user_id' => $user1->id, 'following_user_id' => $user9->id]);
+        $follow9 = Follow::create(['user_id' => $user1->id, 'following_user_id' => $user10->id]);
+        $follow10 = Follow::create(['user_id' => $user1->id, 'following_user_id' => $user11->id]);
+
+        $lastFollowIdPlusOne = $follow10->id + 1;
 
         Follow::create(['user_id' => $authUser->id, 'following_user_id' => $user3->id]);
         Follow::create(['user_id' => $authUser->id, 'following_user_id' => $user6->id]);
         Follow::create(['user_id' => $authUser->id, 'following_user_id' => $user11->id]);
         
-        $this->getJson('/api/following/' . $user1->id . '?page=1')
+        $this->getJson('/api/following/' . $user1->id . '?last_follow_id=' . $lastFollowIdPlusOne)
             ->assertStatus(401);
 
         // ０スクロールでのレスポンス
         $this->actingAs($authUser)
-            ->getJson('/api/following/' . $user1->id . '?page=1')
+            ->getJson('/api/following/' . $user1->id . '?last_follow_id=' . $lastFollowIdPlusOne)
             ->assertOk()
             ->assertSeeInOrder([
                 $user11->name, '"followed":true',
@@ -118,11 +120,11 @@ class FollowTest extends TestCase
                 $user2->name,
                 $user3->name,
                 $user12->name)
-            ->assertJsonFragment(['total' => 10]);
+            ->assertJsonFragment(['lastFollowId' => $follow1->id]);
 
         // 1スクロールでのレスポンス
         $this->actingAs($authUser)
-            ->getJson('/api/following/' . $user1->id . '?page=2')
+            ->getJson('/api/following/' . $user1->id . '?last_follow_id=' . $follow3->id)
             ->assertOk()
             ->assertSeeInOrder([
                 $user3->name, '"followed":true',
@@ -134,7 +136,7 @@ class FollowTest extends TestCase
                 $user5->name, 
                 $user7->name,
                 $user9->name)
-            ->assertJsonFragment(['total' => 10]);
+            ->assertJsonFragment(['lastFollowId' => $follow1->id]);
     }
 
 
@@ -155,27 +157,29 @@ class FollowTest extends TestCase
         $user11 = factory(User::class)->create();
         $user12 = factory(User::class)->create();
         
-        Follow::create(['user_id' => $user2->id, 'following_user_id' => $user1->id]);
-        Follow::create(['user_id' => $user3->id, 'following_user_id' => $user1->id]);
-        Follow::create(['user_id' => $user4->id, 'following_user_id' => $user1->id]);
-        Follow::create(['user_id' => $user5->id, 'following_user_id' => $user1->id]);
-        Follow::create(['user_id' => $user6->id, 'following_user_id' => $user1->id]);
-        Follow::create(['user_id' => $user7->id, 'following_user_id' => $user1->id]);
-        Follow::create(['user_id' => $user8->id, 'following_user_id' => $user1->id]);
-        Follow::create(['user_id' => $user9->id, 'following_user_id' => $user1->id]);
-        Follow::create(['user_id' => $user10->id, 'following_user_id' => $user1->id]);
-        Follow::create(['user_id' => $user11->id, 'following_user_id' => $user1->id]);
+        $follow1 = Follow::create(['user_id' => $user2->id, 'following_user_id' => $user1->id]);
+        $follow2 = Follow::create(['user_id' => $user3->id, 'following_user_id' => $user1->id]);
+        $follow3 = Follow::create(['user_id' => $user4->id, 'following_user_id' => $user1->id]);
+        $follow4 = Follow::create(['user_id' => $user5->id, 'following_user_id' => $user1->id]);
+        $follow5 = Follow::create(['user_id' => $user6->id, 'following_user_id' => $user1->id]);
+        $follow6 = Follow::create(['user_id' => $user7->id, 'following_user_id' => $user1->id]);
+        $follow7 = Follow::create(['user_id' => $user8->id, 'following_user_id' => $user1->id]);
+        $follow8 = Follow::create(['user_id' => $user9->id, 'following_user_id' => $user1->id]);
+        $follow9 = Follow::create(['user_id' => $user10->id, 'following_user_id' => $user1->id]);
+        $follow10 = Follow::create(['user_id' => $user11->id, 'following_user_id' => $user1->id]);
 
         Follow::create(['user_id' => $authUser->id, 'following_user_id' => $user3->id]);
         Follow::create(['user_id' => $authUser->id, 'following_user_id' => $user6->id]);
         Follow::create(['user_id' => $authUser->id, 'following_user_id' => $user11->id]);
+
+        $lastFollowIdPlusOne = $follow10->id + 1;
         
-        $this->getJson('/api/follower/' . $user1->id . '?page=1')
+        $this->getJson('/api/follower/' . $user1->id . '?last_follower_id=' . $lastFollowIdPlusOne)
             ->assertStatus(401);
 
         // ０スクロールでのレスポンス
         $this->actingAs($authUser)
-            ->getJson('/api/follower/' . $user1->id . '?page=1')
+            ->getJson('/api/follower/' . $user1->id . '?last_follower_id=' . $lastFollowIdPlusOne)
             ->assertOk()
             ->assertSeeInOrder([
                 $user11->name, '"followed":true',
@@ -194,11 +198,11 @@ class FollowTest extends TestCase
                 $user3->name, 
                 $user12->name
             )
-            ->assertJsonFragment(['total' => 10]);
+            ->assertJsonFragment(['lastFollowerId' => $follow1->id]);
 
         // 1スクロールでのレスポンス
         $this->actingAs($authUser)
-            ->getJson('/api/follower/' . $user1->id . '?page=2')
+            ->getJson('/api/follower/' . $user1->id . '?last_follower_id=' . $follow3->id)
             ->assertOk()
             ->assertSeeInOrder([
                 $user3->name, '"followed":true',
@@ -211,6 +215,6 @@ class FollowTest extends TestCase
                 $user7->name,
                 $user9->name,
                 $user12->name)
-            ->assertJsonFragment(['total' => 10]);
+            ->assertJsonFragment(['lastFollowerId' => $follow1->id]);
     }
 }

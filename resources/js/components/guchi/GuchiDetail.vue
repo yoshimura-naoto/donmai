@@ -259,6 +259,8 @@ export default {
       guchisLoading: false,
       loadMoreGuchis: true,
       chatScrollHeight: 0,
+      // これから取得するグチのID
+      latestGuchiId: null,
       // 一番下にスクロールするかどうか
       scrollToBottom: false,
       // マウント中かどうか
@@ -333,7 +335,7 @@ export default {
       if (guchiChatArea.scrollTop >= guchiChatArea.scrollHeight - guchiChatArea.clientHeight * 2) {
         this.scrollToBottom = true;
       }
-      axios.get('/api/guchi/latest/' + this.$route.params.id)
+      axios.get('/api/guchi/latest/' + this.latestGuchiId)
         .then((res) => {
           // console.log(res.data);
           this.newImageCount = res.data.guchi_images_count;
@@ -625,6 +627,7 @@ export default {
         // console.log(this.$route.params.id);
         if (e.guchi.guchi_room_id == this.$route.params.id) {
           this.guchisTotal++;
+          this.latestGuchiId = e.guchi.id;
           this.getLatestGuchi();
         }
       });

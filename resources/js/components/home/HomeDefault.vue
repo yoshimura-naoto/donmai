@@ -827,6 +827,7 @@ export default {
       const postIdsString = postIds.join('-');
       if (this.willReload) {
         let now = new Date();
+        now.setSeconds(now.getSeconds() + 5);
         let month = now.getMonth() + 1;
         this.visitTime = now.getFullYear() + '-' + month + '-' + now.getDate() + '+' + now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds();
       }

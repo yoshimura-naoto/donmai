@@ -51,6 +51,7 @@ class DonmaiController extends Controller
             $loadedLastDonmaiId = Donmai::where('post_id', $id)->select('id')->latest()->first()->id + 1;
         }
 
+        // 新着順で８件ずつコメント取得
         $donmais = Donmai::where('post_id', $id)
                         ->where('id', '<', $loadedLastDonmaiId)
                         ->with(['user' => function ($query) {
