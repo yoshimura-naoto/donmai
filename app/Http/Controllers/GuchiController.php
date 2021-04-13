@@ -293,7 +293,7 @@ class GuchiController extends Controller
 
 
 
-    // グチ詳細ページ（各スレ）用に認証ユーザー情報とグチ部屋情報を取得する
+    // グチ詳細ページ（チャット部屋）用に認証ユーザー情報とグチ部屋情報を取得する
     public function init($id)
     {
         $guchiRoom = GuchiRoom::where('id', $id)->first();
@@ -402,7 +402,7 @@ class GuchiController extends Controller
     // あるグチ部屋で最新のグチ（チャット）を１件取得
     public function getLatestGuchi($id)
     {
-        $guchi = Guchi::where('guchi_room_id', $id)
+        $guchi = Guchi::where('id', $id)
                         ->with(['user:id,name,icon', 'guchiImages',])
                         ->withCount(['guchiGoods', 'guchiImages'])
                         ->orderBy('id', 'desc')

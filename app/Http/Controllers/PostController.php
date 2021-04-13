@@ -116,15 +116,15 @@ class PostController extends Controller
             $post->genre_index = $request->genreIndex;
     
             // タグの更新
-            $tagsText = $request->tags;
-            $newTags = preg_match_all('/#([^\s#]+)/', str_replace('　', ' ', $tagsText), $m) ? $m[1] : [];  // リクエストで取得したタグの配列
-            $oldTags = array_column($post->tags->all(), 'name');  // 今までこの投稿に紐ついていたタグの配列
+            $tagsText = $request->tags;  // '#ああ #いい'
+            $newTags = preg_match_all('/#([^\s#]+)/', str_replace('　', ' ', $tagsText), $m) ? $m[1] : [];  // リクエストで取得したタグ文字列から、ハッシュタグから始まる単語を抽出して配列に（['ああ', 'いい']）
+            $oldTags = array_column($post->tags->all(), 'name');  // 今までこの投稿に紐ついていたタグの配列（['いい', 'うう']）
             // 今まで紐ついていたタグで削除するものがあれば削除
-            $deleteOldTags = array_values(array_diff($oldTags, $newTags)); // oldTagsにあってnewTagsにないタグ名の配列（消すタグ名の配列）
+            $deleteOldTags = array_values(array_diff($oldTags, $newTags)); // oldTagsにあってnewTagsにないタグ名の配列（消すタグ名の配列）['うう']
             $deleteOldTagRecords = $post->tags
                                         ->whereIn('name', $deleteOldTags)
-                                        ->all();  // 消すtagsテーブルのレコードの配列 
-            // 紐つく投稿が0になる場合はそのタグを削除
+                                        ->all();  // 消すtagsテーブルのレコードの配列
+            // 紐つく投稿が0になるタグを削除（['うう']を削除）
             $deleteTagIds = [];
             foreach ($post->tags->whereIn('name', $deleteOldTags) as $tag) {
                 if ($tag->posts_count === 1) {
@@ -135,13 +135,13 @@ class PostController extends Controller
             // 中間テーブルpost_tagで削除するものを削除
             $post->tags()->detach(array_column($deleteOldTagRecords, 'id'));
             // 新しく追加するタグを作成
-            $newAddTag = array_values(array_diff($newTags, $oldTags));  // newTagsにあってoldTagsにないタグ名の配列（新しく追加するタグ名の配列）
-            $tags = [];  // タグ(tagsテーブル)のレコードの配列
+            $newAddTag = array_values(array_diff($newTags, $oldTags));  // newTagsにあってoldTagsにないタグ名の配列（新しく追加するタグ名の配列）['ああ']
+            $tags = [];  // 新たなタグ(tagsテーブル)のレコードの配列
             foreach ($newAddTag as $tag) {
                 $record = Tag::firstOrCreate(['name' => $tag]); // tagsテーブルのレコード作成
                 array_push($tags, $record);
             }
-            $tags_id = [];  // この投稿が持つタグのidの配列
+            $tags_id = [];  // この投稿が新たに持つタグのidの配列
             foreach ($tags as $tag) {
                 array_push($tags_id, $tag['id']);
             }
@@ -175,7 +175,6 @@ class PostController extends Controller
             // 投稿の更新
             $post->save();
         });
-
 
         // 編集した投稿をレスポンスとして返す
         $post = Post::where('id', $request->id)
@@ -254,7 +253,7 @@ class PostController extends Controller
                                 ->whereIn('user_id', $followsId)
                                 ->count();
 
-        $loadedPostIds = array_map('intval', explode('-', $request->loaded_post_ids));  // フロントですでに読み込まれた投稿のIDの配列
+        $loadedPostIds = array_map('intval', explode('-', $request->loaded_post_ids));  // フロントですでに読み込まれた投稿のIDの配列([10, 9, 8])
         if ($loadedPostIds[0] === 0) $loadedPostIds = [];  // 空の場合に配列に0が加わるのを防ぐ
 
         if (count($loadedPostIds) < $followPostsCount) {
@@ -320,7 +319,7 @@ class PostController extends Controller
                 'posts' => [],
                 'lastPostId' => null,
             ];
-    
+
             return $data;
         }
 
@@ -370,7 +369,7 @@ class PostController extends Controller
         // $lastWeek = new Carbon('-7 day', 'Asia/Tokyo');
         $lastWeek = new Carbon('-200 day', 'Asia/Tokyo');  // 今だけ-200日に設定。
     
-        $loadedPostIds = array_map('intval', explode('-', $request->loaded_post_ids));  // フロントですでに読み込まれた投稿のIDの配列
+        $loadedPostIds = array_map('intval', explode('-', $request->loaded_post_ids));  // フロントですでに読み込まれた投稿のIDの配列（?loaded_post_id=10-9-8）
 
         // 投稿一覧をdonmais数が多い順で取得（３件ずつ無限スクロール）
         $posts = Post::where('created_at', '>=', $lastWeek)

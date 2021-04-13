@@ -45,7 +45,7 @@ class FollowController extends Controller
             return $data;
         }
 
-        $loadedLastFollowId = $request->last_follow_id;  // フロントで取得された最後のフォロー中のユーザーのID
+        $loadedLastFollowId = $request->last_follow_id;  // フロントで取得された最後のフォロー（中間テーブル）のID
 
         // まだフロントで全くフォロー中のユーザーを取得していない場合
         if ($loadedLastFollowId === 'nothing') {
@@ -61,7 +61,7 @@ class FollowController extends Controller
                             }]);
                         }])
                         ->orderBy('id', 'desc')
-                        ->limit(6)
+                        ->limit(8)
                         ->get();
 
         // 認証ユーザーが、そのユーザーがフォローしているユーザーをフォローしているかどうか
@@ -112,7 +112,7 @@ class FollowController extends Controller
                             }]);
                         }])
                         ->orderBy('id', 'desc')
-                        ->limit(6)
+                        ->limit(8)
                         ->get();
         
         // 認証ユーザーがそのユーザーのフォロワーをフォローしているか

@@ -82,20 +82,22 @@ class DonmaiTest extends TestCase
 
         $post = factory(Post::class)->create();
 
-        Donmai::create([
+        $donmai1 = Donmai::create([
             'user_id' => $user1->id,
             'post_id' => $post->id,
         ]);
-        Donmai::create([
+        $donmai2 = Donmai::create([
             'user_id' => $user2->id,
             'post_id' => $post->id,
         ]);
 
-        $this->getJson('/api/donmai/users/' . $post->id . '?page=0')
+        $lastDonmaiIdPlusOne = $donmai2->id + 1;
+
+        $this->getJson('/api/donmai/users/' . $post->id . '?last_donmai_id=' . $lastDonmaiIdPlusOne)
             ->assertStatus(401);
 
         $this->actingAs($user1)
-            ->getJson('/api/donmai/users/' . $post->id . '?page=0')
+            ->getJson('/api/donmai/users/' . $post->id . '?last_donmai_id=' . $lastDonmaiIdPlusOne)
             ->assertStatus(200)
             ->assertSeeInOrder([
                 $user2->name, '"followed":true',
